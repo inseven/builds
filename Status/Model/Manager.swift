@@ -56,11 +56,14 @@ class Manager: ObservableObject {
         // TODO: Make a faulting filter.
         print(workflowRuns)
 
-        guard let latestRun = workflowRuns.first(where: { workflowRun in
-            return workflowRun.workflowId == action.workflowId
-        }) else {
-            // TODO: Use the correct error here.
-            throw GitHubError.invalidUrl
+        let latestRun = workflowRuns.first { workflowRun in
+            if workflowRun.workflowId != action.workflowId {
+                return false
+            }
+            if let branch = action.branch {
+                return workflowRun.headBranch == branch
+            }
+            return true
         }
 
         return ActionStatus(action: action, workflowRun: latestRun)
