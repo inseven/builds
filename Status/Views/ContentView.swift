@@ -22,6 +22,7 @@ struct ContentView: View {
 
     @State var sheet: SheetType?
 
+    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject var manager: Manager
 
     var body: some View {
@@ -39,7 +40,7 @@ struct ContentView: View {
                     .buttonStyle(.borderedProminent)
                 }
             }
-            .navigationTitle("Dashboard")
+            .navigationTitle("Actions")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -85,5 +86,17 @@ struct ContentView: View {
                 }
             }
         })
+        .onChange(of: scenePhase) { phase in
+            switch phase {
+            case .background:
+                break
+            case .inactive:
+                break
+            case .active:
+                manager.refresh()
+            @unknown default:
+                break
+            }
+        }
     }
 }
