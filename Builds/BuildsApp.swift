@@ -23,12 +23,11 @@ extension GitHub.Authentication: RawRepresentable {
 }
 
 @main
-struct StatusApp: App {
+struct BuildsApp: App {
 
     let settings = Settings()
     var manager: Manager!
 
-    // TODO: I wonder if this is actually set up correctly.
     @AppStorage("authentication") var authentication: GitHub.Authentication?
 
     init() {
@@ -37,6 +36,7 @@ struct StatusApp: App {
 
     var body: some Scene {
 
+        // TODO: Make this a single window.
         WindowGroup {
             ContentView()
                 .onOpenURL { url in

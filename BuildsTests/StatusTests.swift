@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Status
+@testable import Builds
 
 class StatusTests: XCTestCase {
 

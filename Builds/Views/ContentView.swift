@@ -46,7 +46,7 @@ struct ContentView: View {
                     .buttonStyle(.borderedProminent)
                 }
             }
-            .navigationTitle("Actions")
+            .navigationTitle("Builds")
 #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
 #endif
