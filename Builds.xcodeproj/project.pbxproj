@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,8 @@
 		D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F8280479B7001BA6C0 /* Configuration.swift */; };
 		D8D413FB28047AEE001BA6C0 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D413FA28047AEE001BA6C0 /* configuration.json */; };
 		D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413FC28047B85001BA6C0 /* Bundle.swift */; };
+		D8DDD5F12B65F910003FAB23 /* Interact in Frameworks */ = {isa = PBXBuildFile; productRef = D8DDD5F02B65F910003FAB23 /* Interact */; };
+		D8DDD5F42B65FB11003FAB23 /* Diligence in Frameworks */ = {isa = PBXBuildFile; productRef = D8DDD5F32B65FB11003FAB23 /* Diligence */; };
 		D8F0CDFC27F7998100F4EC83 /* WorkflowRunsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CDFB27F7998100F4EC83 /* WorkflowRunsView.swift */; };
 		D8F0CDFF27F79A0C00F4EC83 /* WorkflowPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CDFE27F79A0C00F4EC83 /* WorkflowPicker.swift */; };
 		D8F0CE0127F8874C00F4EC83 /* RepositoryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CE0027F8874C00F4EC83 /* RepositoryPicker.swift */; };
@@ -92,6 +94,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8DDD5F12B65F910003FAB23 /* Interact in Frameworks */,
+				D8DDD5F42B65FB11003FAB23 /* Diligence in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +234,8 @@
 			);
 			name = Builds;
 			packageProductDependencies = (
+				D8DDD5F02B65F910003FAB23 /* Interact */,
+				D8DDD5F32B65FB11003FAB23 /* Diligence */,
 			);
 			productName = Status;
 			productReference = D8FEAE0827F591AE00FDADFA /* Builds.app */;
@@ -304,6 +310,8 @@
 			);
 			mainGroup = D8FEADFF27F591AE00FDADFA;
 			packageReferences = (
+				D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */,
+				D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "diligence" */,
 			);
 			productRefGroup = D8FEAE0927F591AE00FDADFA /* Products */;
 			projectDirPath = "";
@@ -717,6 +725,28 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = interact;
+		};
+		D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "diligence" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = diligence;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D8DDD5F02B65F910003FAB23 /* Interact */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Interact;
+		};
+		D8DDD5F32B65FB11003FAB23 /* Diligence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Diligence;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8FEAE0027F591AE00FDADFA /* Project object */;
 }

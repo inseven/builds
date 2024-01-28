@@ -72,6 +72,7 @@ struct ActionWizard: View {
             }
         }
         .formStyle(.grouped)
+        .navigationTitle("Add Action")
 #if os(macOS)
         .safeAreaInset(edge: .bottom) {
             HStack {
@@ -82,7 +83,6 @@ struct ActionWizard: View {
             .padding()
         }
 #endif
-        .navigationTitle("Add Action")
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
