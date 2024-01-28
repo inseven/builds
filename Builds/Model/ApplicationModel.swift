@@ -40,7 +40,7 @@ class ApplicationModel: ObservableObject {
             }
             return status
         }
-        .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
+        .sorted { $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending }
     }
 
     init(settings: Settings, authentication: Binding<GitHub.Authentication?>) {
