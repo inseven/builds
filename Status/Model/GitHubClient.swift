@@ -38,8 +38,31 @@ class GitHubClient: ObservableObject {
         }
     }
 
+    // TODO: Maybe make this a variable?
+    // TODO: Capitalisation
     func authorizationUrl() -> URL {
         return api.authorizationUrl
+    }
+
+    var permissionsURL: URL {
+        return api.permissionsURL
+    }
+
+    enum ClientError: Error {
+        case fuck
+    }
+
+    func authenticate(with url: URL) async -> Result<GitHub.Authentication, Error> {
+
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              components.scheme == "x-builds-auth",
+              components.host == "oauth",
+              let code = components.queryItems?.first(where: { $0.name == "code" })?.value
+        else {
+            return .failure(ClientError.fuck)
+        }
+
+        return await authenticate(with: code)
     }
 
     func authenticate(with code: String) async -> Result<GitHub.Authentication, Error> {

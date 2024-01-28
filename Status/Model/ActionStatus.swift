@@ -29,19 +29,19 @@ extension ActionStatus {
 
     var statusColor: Color {
         guard let workflowRun = workflowRun else {
-            return Color(UIColor.systemGray)
+            return .gray
         }
         if workflowRun.status == .inProgress {
-            return Color(uiColor: .systemOrange)
+            return .orange
         }
         guard let conclusion = workflowRun.conclusion else {
-            return Color(UIColor.systemGray)
+            return .gray
         }
         switch conclusion {
         case .success:
-            return Color(UIColor.systemGreen)
+            return .green
         case .failure:
-            return Color(UIColor.systemRed)
+            return .red
         }
     }
 

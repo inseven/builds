@@ -26,13 +26,37 @@ extension GitHub.Authentication: RawRepresentable {
 struct StatusApp: App {
 
     let settings = Settings()
+    var manager: Manager!
 
+    // TODO: I wonder if this is actually set up correctly.
     @AppStorage("authentication") var authentication: GitHub.Authentication?
 
+    init() {
+        manager = Manager(settings: settings, authentication: $authentication)
+    }
+
     var body: some Scene {
+
         WindowGroup {
             ContentView()
-                .environmentObject(Manager(settings: settings, authentication: $authentication))
+                .onOpenURL { url in
+                    print(url)
+                    Task {
+                        await manager.client.authenticate(with: url)
+                    }
+                }
+                .environmentObject(manager)
+                .handlesExternalEvents(preferring: ["x-builds-auth://oauth"], allowing: [])
         }
+
+#if os(macOS)
+
+        SwiftUI.Settings {
+            SettingsView()
+                .environmentObject(manager)
+        }
+
+#endif
+
     }
 }

@@ -17,6 +17,19 @@ struct ActionWizard: View {
     @State var workflow: GitHub.Workflow?
     @State var branch: GitHub.Branch?
 
+    func add() {
+        guard let repository = repository,
+              let workflow = workflow
+        else {
+            return
+        }
+        let action = Action(repositoryName: repository.fullName,
+                            workflowId: workflow.id,
+                            branch: branch?.name)
+        manager.addAction(action)
+        presentationMode.wrappedValue.dismiss()
+    }
+
     var body: some View {
         Form {
             NavigationLink {
@@ -58,26 +71,30 @@ struct ActionWizard: View {
                 }
             }
         }
+        .formStyle(.grouped)
+#if os(macOS)
+        .safeAreaInset(edge: .bottom) {
+            HStack {
+                Button("Add") {
+                    add()
+                }
+            }
+            .padding()
+        }
+#endif
         .navigationTitle("Add Action")
+#if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+#endif
         .toolbar(content: {
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .secondaryAction) {
                 Button("Cancel") {
                     presentationMode.wrappedValue.dismiss()
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .primaryAction) {
                 Button("Add") {
-                    guard let repository = repository,
-                          let workflow = workflow
-                    else {
-                        return
-                    }
-                    let action = Action(repositoryName: repository.fullName,
-                                        workflowId: workflow.id,
-                                        branch: branch?.name)
-                    manager.addAction(action)
-                    presentationMode.wrappedValue.dismiss()
+                    add()
                 }
             }
         })

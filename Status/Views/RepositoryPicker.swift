@@ -68,7 +68,9 @@ struct RepositoryPicker: View {
 
         }
         .navigationTitle("Repository")
+#if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+#endif
         .alert(error?.localizedDescription ?? "None", isPresented: $error.mappedToBool(), actions: {
             Button("OK") {}
         })

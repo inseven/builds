@@ -141,6 +141,8 @@ class GitHub {
             case status = "status"
             case conclusion = "conclusion"
             case workflowId = "workflow_id"
+            case url = "url"
+            case htmlURL = "html_url"
             case createdAt = "created_at"
             case updatedAt = "updated_at"
         }
@@ -157,6 +159,8 @@ class GitHub {
         let status: Status
         let conclusion: Conclusion?
         let workflowId: Int
+        let url: URL
+        let htmlURL: URL
 
         let createdAt: Date
         let updatedAt: Date
@@ -183,6 +187,7 @@ class GitHub {
     enum Path: String {
         case authorize = "/login/oauth/authorize"
         case accessToken = "/login/oauth/access_token"
+        case settingsConnectionsApplications = "/settings/connections/applications"
     }
 
     let clientId: String
@@ -194,11 +199,15 @@ class GitHub {
 
     // TODO: Make this a method
     var authorizationUrl: URL {
-        url(.authorize, parameters: [
+        return url(.authorize, parameters: [
             "client_id": clientId,
             "redirect_uri": redirectUri,
             "scope": "workflow repo",
         ])!
+    }
+
+    var permissionsURL: URL {
+        return url(.settingsConnectionsApplications)!.appendingPathComponent(clientId)
     }
 
     init(clientId: String, clientSecret: String, redirectUri: String) {

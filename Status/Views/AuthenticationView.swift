@@ -8,6 +8,8 @@
 import SwiftUI
 import WebKit
 
+#if os(iOS)
+
 struct AuthenticationView: UIViewRepresentable {
 
     class Coordinator: NSObject, WKNavigationDelegate {
@@ -82,3 +84,23 @@ struct AuthenticationView: UIViewRepresentable {
     }
 
 }
+
+#else
+
+struct AuthenticationView: View {
+
+    var client: GitHubClient
+    var completion: (Result<GitHub.Authentication, Error>) -> Void
+
+    init(client: GitHubClient, completion: @escaping (Result<GitHub.Authentication, Error>) -> Void) {
+        self.client = client
+        self.completion = completion
+    }
+
+    var body: some View {
+        Text("Authentication View!")
+    }
+
+}
+
+#endif

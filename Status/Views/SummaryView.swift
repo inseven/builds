@@ -11,9 +11,12 @@ struct SummaryView: View {
 
     @EnvironmentObject var manager: Manager
 
+    @Environment(\.openURL) var openURL
+
     private var layout = [GridItem(.flexible())]
 
     var body: some View {
+        // TODO: Maybe not a grid?
         ScrollView {
             LazyVGrid(columns: layout) {
                 ForEach(manager.status) { status in
@@ -30,7 +33,15 @@ struct SummaryView: View {
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
-                    }
+                        }
+                        // TODO: Is there a better interaction model for this? Maybe it should be a selectable list?
+                        .onTapGesture {
+                            guard let workflowRun = status.workflowRun else {
+                                return
+                            }
+                            openURL(workflowRun.htmlURL)
+                        }
+
                 }
             }
             .padding()

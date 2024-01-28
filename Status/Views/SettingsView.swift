@@ -11,25 +11,41 @@ struct SettingsView: View {
 
     @EnvironmentObject var manager: Manager
 
+    @Environment(\.openURL) var openURL
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
-        List {
-            Button {
-                manager.client.logOut()
-                presentationMode.wrappedValue.dismiss()
-            } label: {
-                Text("Log Out")
+        Form {
+            Section("Account") {
+
+                Button {
+                    manager.client.logOut()
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("Log Out")
+                }
+
+                Button {
+                    openURL(manager.client.permissionsURL)
+                } label: {
+                    Text("Manage Permissions")
+                }
+                
             }
         }
+        .formStyle(.grouped)
         .navigationTitle("Settings")
+#if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+#endif
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+#if os(iOS)
+            ToolbarItem(/* placement: .navigationBarTrailing */) {
                 Button("Done") {
                     presentationMode.wrappedValue.dismiss()
                 }
             }
+#endif
         }
     }
 

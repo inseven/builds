@@ -27,14 +27,21 @@ class Manager: ObservableObject {
             }
             return status
         }
+        .sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending }
     }
 
     init(settings: Settings, authentication: Binding<GitHub.Authentication?>) {
         self.settings = settings
         let configuration = Bundle.main.configuration()
+#if os(iOS)
         let api = GitHub(clientId: configuration.clientId,
                          clientSecret: configuration.clientSecret,
                          redirectUri: "http://127.0.0.1")
+#else
+        let api = GitHub(clientId: configuration.clientId,
+                         clientSecret: configuration.clientSecret,
+                         redirectUri: "x-builds-auth://oauth")
+#endif
         self.client = GitHubClient(api: api, authentication: authentication)
         settingsSink = settings.objectWillChange.receive(on: DispatchQueue.main).sink(receiveValue: { [weak self] _ in
             guard let self = self else {

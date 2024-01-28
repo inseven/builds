@@ -22,18 +22,24 @@ struct ContentView: View {
 
     @State var sheet: SheetType?
 
+    @Environment(\.openURL) var openURL
     @Environment(\.scenePhase) var scenePhase
+
     @EnvironmentObject var manager: Manager
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 switch manager.client.state {
                 case .authorized:
                     SummaryView()
                 case .unauthorized:
                     Button {
+#if os(iOS)
                         sheet = .authenticate
+#else
+                        openURL(manager.client.authorizationUrl())
+#endif
                     } label: {
                         Text("Authenticate")
                     }
@@ -41,22 +47,29 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("Actions")
+#if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+#endif
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+
+#if os(iOS)
+                ToolbarItem(placement: .secondaryAction) {
                     Button {
                         sheet = .settings
                     } label: {
                         Image(systemName: "gear")
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
+#endif
+
+                ToolbarItem(placement: .primaryAction) {
                     Button {
                         sheet = .add
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
+
             }
             .onAppear {
                 manager.refresh()
@@ -77,9 +90,12 @@ struct ContentView: View {
                     self.sheet = nil
                 }
             case .add:
-                NavigationView {
+                NavigationStack {
                     ActionWizard()
                 }
+#if os(macOS)
+                .frame(minWidth: 300, minHeight: 300)
+#endif
             case .settings:
                 NavigationView {
                     SettingsView()
