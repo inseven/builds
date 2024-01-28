@@ -1,0 +1,34 @@
+{
+  "bottomColor" : {
+    "blue" : 0.25577041506767273,
+    "red" : 0.15083318948745728,
+    "green" : 0.804050862789154,
+    "alpha" : 1
+  },
+  "topColor" : {
+    "red" : 0.1454072892665863,
+    "green" : 1,
+    "alpha" : 1,
+    "blue" : 0.32683974504470825
+  },
+  "version" : 1,
+  "iconScale" : 1.2,
+  "symbol" : {
+    "family" : "material-icons",
+    "name" : "play_arrow",
+    "variant" : "round"
+  },
+  "shadowHeight" : 0.14048828125,
+  "iconOffset" : [
+    0,
+    0
+  ],
+  "shadowOpacity" : 0.32300325520833334,
+  "symbolColor" : {
+    "alpha" : 1,
+    "green" : 0.9999999403953552,
+    "blue" : 0.9999999403953552,
+    "red" : 0.9999999403953552
+  },
+  "id" : "24670896-9CE6-40DD-86CB-111B3E0DEB8D"
+}
