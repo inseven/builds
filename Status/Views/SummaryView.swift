@@ -22,12 +22,6 @@ struct SummaryView: View {
                 ForEach(manager.status) { status in
                     SummaryCell(status: status)
                         .contextMenu {
-                            Button {
-
-                            } label: {
-                                Label("Run Workflow", systemImage: "play")
-                            }
-                            Divider()
                             Button(role: .destructive) {
                                 manager.removeAction(status.action)
                             } label: {
