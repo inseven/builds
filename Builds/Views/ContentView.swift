@@ -15,7 +15,6 @@ struct ContentView: View {
             return self
         }
 
-        case authenticate
         case add
         case settings
     }
@@ -35,11 +34,7 @@ struct ContentView: View {
                     SummaryView()
                 case .unauthorized:
                     Button {
-#if os(iOS)
-                        sheet = .authenticate
-#else
                         openURL(manager.client.authorizationUrl())
-#endif
                     } label: {
                         Text("Authenticate")
                     }
@@ -53,7 +48,7 @@ struct ContentView: View {
             .toolbar {
 
 #if os(iOS)
-                ToolbarItem(placement: .secondaryAction) {
+                ToolbarItem(placement: .topBarLeading) {
                     Button {
                         sheet = .settings
                     } label: {
@@ -76,19 +71,8 @@ struct ContentView: View {
             }
 
         }
-        .sheet(item: $sheet, content: { sheet in
+        .sheet(item: $sheet) { sheet in
             switch sheet {
-            case .authenticate:
-                AuthenticationView(client: manager.client) { result in
-                    dispatchPrecondition(condition: .onQueue(.main))
-                    switch result {
-                    case .success:
-                        print("AUTHENTICATED!")
-                    case .failure(let error):
-                        print("FAILED WITH ERROR \(error)")
-                    }
-                    self.sheet = nil
-                }
             case .add:
                 NavigationStack {
                     ActionWizard()
@@ -101,9 +85,9 @@ struct ContentView: View {
                     SettingsView()
                 }
             }
-        })
-        .onChange(of: scenePhase) { phase in
-            switch phase {
+        }
+        .onChange(of: scenePhase) { oldValue, newValue in
+            switch newValue {
             case .background:
                 break
             case .inactive:

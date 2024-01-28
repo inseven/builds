@@ -11,7 +11,7 @@ struct ActionWizard: View {
 
     @EnvironmentObject var manager: Manager
 
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
 
     @State var repository: GitHub.Repository?
     @State var workflow: GitHub.Workflow?
@@ -27,7 +27,7 @@ struct ActionWizard: View {
                             workflowId: workflow.id,
                             branch: branch?.name)
         manager.addAction(action)
-        presentationMode.wrappedValue.dismiss()
+        dismiss()
     }
 
     var body: some View {
@@ -85,19 +85,19 @@ struct ActionWizard: View {
         .navigationTitle("Add Action")
 #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-#endif
-        .toolbar(content: {
-            ToolbarItem(placement: .secondaryAction) {
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
                 Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
+                    dismiss()
                 }
             }
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button("Add") {
                     add()
                 }
             }
-        })
+        }
+#endif
     }
 
 }
