@@ -32,7 +32,7 @@
 		D8FEAE0E27F591AE00FDADFA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE0D27F591AE00FDADFA /* ContentView.swift */; };
 		D8FEAE1027F591B200FDADFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FEAE0F27F591B200FDADFA /* Assets.xcassets */; };
 		D8FEAE1327F591B200FDADFA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FEAE1227F591B200FDADFA /* Preview Assets.xcassets */; };
-		D8FEAE1D27F591B200FDADFA /* StatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE1C27F591B200FDADFA /* StatusTests.swift */; };
+		D8FEAE1D27F591B200FDADFA /* BuildsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE1C27F591B200FDADFA /* BuildsTests.swift */; };
 		D8FEAE2727F591B200FDADFA /* StatusUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE2627F591B200FDADFA /* StatusUITests.swift */; };
 		D8FEAE2927F591B200FDADFA /* StatusUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE2827F591B200FDADFA /* StatusUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
@@ -83,7 +83,7 @@
 		D8FEAE0F27F591B200FDADFA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8FEAE1227F591B200FDADFA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D8FEAE1827F591B200FDADFA /* BuildsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8FEAE1C27F591B200FDADFA /* StatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusTests.swift; sourceTree = "<group>"; };
+		D8FEAE1C27F591B200FDADFA /* BuildsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildsTests.swift; sourceTree = "<group>"; };
 		D8FEAE2227F591B200FDADFA /* BuildsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FEAE2627F591B200FDADFA /* StatusUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusUITests.swift; sourceTree = "<group>"; };
 		D8FEAE2827F591B200FDADFA /* StatusUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				D8D413FA28047AEE001BA6C0 /* configuration.json */,
 				D8FEAE0A27F591AE00FDADFA /* Builds */,
 				D8FEAE1B27F591B200FDADFA /* BuildsTests */,
-				D8FEAE2527F591B200FDADFA /* StatusUITests */,
+				D8FEAE2527F591B200FDADFA /* BuildsUITests */,
 				D8FEAE0927F591AE00FDADFA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -202,18 +202,18 @@
 		D8FEAE1B27F591B200FDADFA /* BuildsTests */ = {
 			isa = PBXGroup;
 			children = (
-				D8FEAE1C27F591B200FDADFA /* StatusTests.swift */,
+				D8FEAE1C27F591B200FDADFA /* BuildsTests.swift */,
 			);
 			path = BuildsTests;
 			sourceTree = "<group>";
 		};
-		D8FEAE2527F591B200FDADFA /* StatusUITests */ = {
+		D8FEAE2527F591B200FDADFA /* BuildsUITests */ = {
 			isa = PBXGroup;
 			children = (
 				D8FEAE2627F591B200FDADFA /* StatusUITests.swift */,
 				D8FEAE2827F591B200FDADFA /* StatusUITestsLaunchTests.swift */,
 			);
-			path = StatusUITests;
+			path = BuildsUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,7 +380,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8FEAE1D27F591B200FDADFA /* StatusTests.swift in Sources */,
+				D8FEAE1D27F591B200FDADFA /* BuildsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,7 +460,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -515,7 +516,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -547,7 +549,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = uk.co.inseven.actions;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.actions.apps.appstore;
 				PRODUCT_NAME = Builds;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -580,7 +582,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = uk.co.inseven.actions;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.actions.apps.appstore;
 				PRODUCT_NAME = Builds;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -600,10 +602,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S4WXAUZQEV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.inseven.StatusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -620,10 +625,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S4WXAUZQEV;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.inseven.StatusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -642,6 +650,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.inseven.StatusUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -660,6 +671,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.inseven.StatusUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
