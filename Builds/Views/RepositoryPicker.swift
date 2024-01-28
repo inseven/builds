@@ -22,7 +22,7 @@ import SwiftUI
 
 struct RepositoryPicker: View {
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -34,7 +34,7 @@ struct RepositoryPicker: View {
     func fetch() {
         Task {
             do {
-                let content = try await manager.client
+                let content = try await applicationModel.client
                     .repositories()
                     .sorted { $0.fullName.localizedStandardCompare($1.fullName) == .orderedAscending }
                 DispatchQueue.main.async {

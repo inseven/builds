@@ -22,7 +22,7 @@ import SwiftUI
 
 struct SettingsView: View {
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.openURL) var openURL
     @Environment(\.presentationMode) var presentationMode
@@ -32,14 +32,14 @@ struct SettingsView: View {
             Section("Account") {
 
                 Button {
-                    manager.client.logOut()
+                    applicationModel.client.logOut()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
                     Text("Log Out")
                 }
 
                 Button {
-                    openURL(manager.client.permissionsURL)
+                    openURL(applicationModel.client.permissionsURL)
                 } label: {
                     Text("Manage Permissions")
                 }

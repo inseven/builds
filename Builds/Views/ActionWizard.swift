@@ -22,7 +22,7 @@ import SwiftUI
 
 struct ActionWizard: View {
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.dismiss) var dismiss
 
@@ -39,7 +39,7 @@ struct ActionWizard: View {
         let action = Action(repositoryName: repository.fullName,
                             workflowId: workflow.id,
                             branch: branch?.name)
-        manager.addAction(action)
+        applicationModel.addAction(action)
         dismiss()
     }
 
@@ -95,8 +95,7 @@ struct ActionWizard: View {
             }
             .padding()
         }
-#endif
-#if os(iOS)
+#else
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

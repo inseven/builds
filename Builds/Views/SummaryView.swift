@@ -22,7 +22,7 @@ import SwiftUI
 
 struct SummaryView: View {
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.openURL) var openURL
 
@@ -32,11 +32,11 @@ struct SummaryView: View {
         // TODO: Maybe not a grid?
         ScrollView {
             LazyVGrid(columns: layout) {
-                ForEach(manager.status) { status in
+                ForEach(applicationModel.status) { status in
                     SummaryCell(status: status)
                         .contextMenu {
                             Button(role: .destructive) {
-                                manager.removeAction(status.action)
+                                applicationModel.removeAction(status.action)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }

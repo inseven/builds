@@ -37,17 +37,17 @@ struct ContentView: View {
     @Environment(\.openURL) var openURL
     @Environment(\.scenePhase) var scenePhase
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     var body: some View {
         NavigationStack {
             VStack {
-                switch manager.client.state {
+                switch applicationModel.client.state {
                 case .authorized:
                     SummaryView()
                 case .unauthorized:
                     Button {
-                        openURL(manager.client.authorizationUrl())
+                        openURL(applicationModel.client.authorizationUrl())
                     } label: {
                         Text("Authenticate")
                     }
@@ -80,7 +80,7 @@ struct ContentView: View {
 
             }
             .onAppear {
-                manager.refresh()
+                applicationModel.refresh()
             }
 
         }
@@ -106,7 +106,7 @@ struct ContentView: View {
             case .inactive:
                 break
             case .active:
-                manager.refresh()
+                applicationModel.refresh()
             @unknown default:
                 break
             }

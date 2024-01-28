@@ -24,7 +24,7 @@ struct WorkflowPicker: View {
 
     var repository: GitHub.Repository
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -36,7 +36,7 @@ struct WorkflowPicker: View {
     func fetch() {
         Task {
             do {
-                let workflows = try await manager.client.workflows(for: repository)
+                let workflows = try await applicationModel.client.workflows(for: repository)
                 DispatchQueue.main.async {
                     self.workflows = workflows
                 }

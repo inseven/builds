@@ -22,7 +22,7 @@ import Combine
 import SwiftUI
 
 @MainActor
-class Manager: ObservableObject {
+class ApplicationModel: ObservableObject {
 
     let settings: Settings
     let client: GitHubClient

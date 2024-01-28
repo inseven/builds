@@ -42,12 +42,12 @@ extension GitHub.Authentication: RawRepresentable {
 struct BuildsApp: App {
 
     let settings = Settings()
-    var manager: Manager!
+    var applicationModel: ApplicationModel!
 
     @AppStorage("authentication") var authentication: GitHub.Authentication?
 
     init() {
-        manager = Manager(settings: settings, authentication: $authentication)
+        applicationModel = ApplicationModel(settings: settings, authentication: $authentication)
     }
 
     var body: some Scene {
@@ -58,18 +58,19 @@ struct BuildsApp: App {
                 .onOpenURL { url in
                     print(url)
                     Task {
-                        await manager.client.authenticate(with: url)
+                        await applicationModel.client.authenticate(with: url)
                     }
                 }
-                .environmentObject(manager)
+                .environmentObject(applicationModel)
                 .handlesExternalEvents(preferring: ["x-builds-auth://oauth"], allowing: [])
         }
+        .defaultSize(CGSize(width: 360, height: 800))
 
 #if os(macOS)
 
         SwiftUI.Settings {
             SettingsView()
-                .environmentObject(manager)
+                .environmentObject(applicationModel)
         }
 
         let title = "Builds Support (\(Bundle.main.version ?? "Unknown Version"))"

@@ -24,7 +24,7 @@ struct BranchPicker: View {
 
     var repository: GitHub.Repository
 
-    @EnvironmentObject var manager: Manager
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -36,7 +36,7 @@ struct BranchPicker: View {
     func fetch() {
         Task {
             do {
-                let branches = try await manager.client.branches(for: repository)
+                let branches = try await applicationModel.client.branches(for: repository)
                 DispatchQueue.main.async {
                     self.branches = branches
                 }
