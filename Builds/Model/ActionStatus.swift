@@ -25,7 +25,6 @@ struct ActionStatus: Identifiable {
     var id: Action { action }
 
     var action: Action
-    // TODO: Rename this to latestRun
     var workflowRun: GitHub.WorkflowRun?
 
 }
