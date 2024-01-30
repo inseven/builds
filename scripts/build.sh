@@ -114,9 +114,13 @@ function cleanup {
     build-tools delete-keychain "$KEYCHAIN_PATH"
     rm -rf "$TEMPORARY_DIRECTORY"
     rm -rf ~/.appstoreconnect/private_keys
+    rm -rf "${ROOT_DIRECTORY}/configuration.json"
 }
 
 trap cleanup EXIT
+
+# Create the configuration file.
+echo $APP_CONFIGURATION > "${ROOT_DIRECTORY}/configuration.json"
 
 # Determine the version and build number.
 VERSION_NUMBER=`changes version`
