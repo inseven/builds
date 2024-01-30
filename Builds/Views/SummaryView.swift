@@ -29,7 +29,6 @@ struct SummaryView: View {
     private var layout = [GridItem(.adaptive(minimum: 300))]
 
     var body: some View {
-        // TODO: Maybe not a grid?
         ScrollView {
             LazyVGrid(columns: layout) {
                 ForEach(applicationModel.status) { status in
@@ -41,7 +40,6 @@ struct SummaryView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                         }
-                        // TODO: Is there a better interaction model for this? Maybe it should be a selectable list?
                         .onTapGesture {
                             guard let workflowRun = status.workflowRun else {
                                 return
