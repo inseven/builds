@@ -48,6 +48,7 @@ struct SummaryCell: View {
                     .opacity(0.6)
             }
         }
+        .lineLimit(1)
         .frame(maxWidth: .infinity)
         .padding()
         .background(status.statusColor)
