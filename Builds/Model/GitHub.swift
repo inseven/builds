@@ -46,7 +46,7 @@ class GitHub {
         let tokenType: String
     }
 
-    struct Workflow: Codable, Identifiable, Equatable {
+    struct Workflow: Codable, Identifiable, Equatable, Hashable {
 
         static func == (lhs: Workflow, rhs: Workflow) -> Bool {
             return lhs.id == rhs.id
@@ -83,7 +83,7 @@ class GitHub {
         let items: [Repository]
     }
 
-    struct Repository: Codable, Identifiable, Equatable {
+    struct Repository: Codable, Identifiable, Equatable, Hashable {
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
@@ -92,18 +92,21 @@ class GitHub {
             case fullName = "full_name"
             case owner = "owner"
             case url = "url"
+            case defaultBranch = "default_branch"
         }
 
         static func == (lhs: Repository, rhs: Repository) -> Bool {
             return lhs.id == rhs.id
         }
-
+        
         let id: Int
         let nodeId: String
         let name: String
         let fullName: String
         let owner: User
         let url: URL
+        let defaultBranch: String
+
     }
 
     struct WorkflowRuns: Codable {
@@ -117,7 +120,7 @@ class GitHub {
         let workflowRuns: [WorkflowRun]
     }
 
-    struct Branch: Codable, Identifiable {
+    struct Branch: Codable, Identifiable, Hashable {
 
         enum CodingKeys: String, CodingKey {
             case name = "name"
@@ -187,7 +190,7 @@ class GitHub {
 
 
 
-    struct User: Codable {
+    struct User: Codable, Hashable {
 
         let login: String
         let id: Int

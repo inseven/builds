@@ -96,7 +96,7 @@ struct ContentView: View {
             switch sheet {
             case .add:
                 NavigationStack {
-                    ActionWizard()
+                    AddActionView(applicationModel: applicationModel)
                 }
 #if os(macOS)
                 .frame(minWidth: 300, minHeight: 300)
