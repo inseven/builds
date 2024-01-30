@@ -26,7 +26,7 @@ struct SummaryView: View {
 
     @Environment(\.openURL) var openURL
 
-    private var layout = [GridItem(.flexible())]
+    private var layout = [GridItem(.adaptive(minimum: 300))]
 
     var body: some View {
         // TODO: Maybe not a grid?
