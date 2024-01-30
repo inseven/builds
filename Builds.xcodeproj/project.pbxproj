@@ -28,7 +28,6 @@
 		D8F0CDFC27F7998100F4EC83 /* WorkflowRunsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CDFB27F7998100F4EC83 /* WorkflowRunsView.swift */; };
 		D8F0CE0327F887BC00F4EC83 /* OrganizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CE0227F887BC00F4EC83 /* OrganizationsView.swift */; };
 		D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CE0427F89A8100F4EC83 /* GitHubClient.swift */; };
-		D8F0CE0727F8A08500F4EC83 /* Binding+mappedToBool.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CE0627F8A08500F4EC83 /* Binding+mappedToBool.swift */; };
 		D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */; };
 		D8FEAE0E27F591AE00FDADFA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE0D27F591AE00FDADFA /* ContentView.swift */; };
 		D8FEAE1027F591B200FDADFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FEAE0F27F591B200FDADFA /* Assets.xcassets */; };
@@ -77,7 +76,6 @@
 		D8F0CDFB27F7998100F4EC83 /* WorkflowRunsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowRunsView.swift; sourceTree = "<group>"; };
 		D8F0CE0227F887BC00F4EC83 /* OrganizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationsView.swift; sourceTree = "<group>"; };
 		D8F0CE0427F89A8100F4EC83 /* GitHubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubClient.swift; sourceTree = "<group>"; };
-		D8F0CE0627F8A08500F4EC83 /* Binding+mappedToBool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Binding+mappedToBool.swift"; sourceTree = "<group>"; };
 		D8FEAE0827F591AE00FDADFA /* Builds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Builds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildsApp.swift; sourceTree = "<group>"; };
 		D8FEAE0D27F591AE00FDADFA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -190,7 +188,6 @@
 			children = (
 				D8092EFF2B698E9F00FD21C8 /* Builds.entitlements */,
 				D89E58172B65D2AA0027EB4E /* Info.plist */,
-				D8F0CE0627F8A08500F4EC83 /* Binding+mappedToBool.swift */,
 				D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */,
 				D8FEAE0F27F591B200FDADFA /* Assets.xcassets */,
 				D8355DD027F674EB0091BAFD /* Extensions */,
@@ -379,7 +376,6 @@
 				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8F0CDFC27F7998100F4EC83 /* WorkflowRunsView.swift in Sources */,
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
-				D8F0CE0727F8A08500F4EC83 /* Binding+mappedToBool.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
 				D8D413ED2804539C001BA6C0 /* AddActionView.swift in Sources */,
 				D866F250280350BC00FC6EBB /* SettingsView.swift in Sources */,
