@@ -140,6 +140,7 @@ class GitHub {
         }
 
         enum Status: String, Codable {
+            case waiting = "waiting"
             case inProgress = "in_progress"
             case completed = "completed"
         }

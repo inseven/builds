@@ -68,7 +68,6 @@ class ApplicationModel: ObservableObject {
     func update(action: Action) async throws -> ActionStatus {
         let workflowRuns = try await client.workflowRuns(for: action.repositoryName)
         // TODO: Make a faulting filter.
-        print(workflowRuns)
 
         let latestRun = workflowRuns.first { workflowRun in
             if workflowRun.workflowId != action.workflowId {
@@ -102,7 +101,7 @@ class ApplicationModel: ObservableObject {
                         self.cachedStatus[action] = status
                     }
                 } catch {
-                    print("FAILED WITH ERROR")
+                    print("Failed to update with error \(error).")
                 }
             }
         }
