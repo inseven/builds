@@ -43,6 +43,9 @@ extension ActionStatus {
         guard let workflowRun = workflowRun else {
             return .gray
         }
+        if workflowRun.status == .waiting {
+            return .yellow
+        }
         if workflowRun.status == .inProgress {
             return .orange
         }
