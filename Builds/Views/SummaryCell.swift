@@ -25,34 +25,49 @@ struct SummaryCell: View {
     let status: ActionStatus
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(status.action.repositoryName)
-                    .font(Font.headline)
+        Grid(alignment: .leadingFirstTextBaseline) {
+            GridRow {
+                HStack {
+                    Text(status.action.repositoryName)
+                        .font(Font.headline)
+                    Spacer()
+                }
+                if let workflowRun = status.workflowRun {
+                    switch workflowRun.status {
+                    case .waiting:
+                        Image(systemName: "clock")
+                    case .inProgress:
+                        Image(systemName: "play")
+                    case .completed:
+                        switch workflowRun.conclusion {
+                        case .success:
+                            Image(systemName: "checkmark")
+                        case .failure:
+                            Image(systemName: "xmark")
+                        case .none:
+                            Image(systemName: "questionmark")
+                        }
+                    }
+                }
+
+            }
+            GridRow {
                 Text(status.name)
                     .font(Font.subheadline)
                     .opacity(0.6)
-            }
-            Spacer()
-            VStack(alignment: .trailing) {
-                if let conclusion = status.workflowRun?.conclusion {
-                    switch conclusion {
-                    case .success:
-                        Image(systemName: "checkmark.circle.fill")
-                    case .failure:
-                        Image(systemName: "xmark.circle.fill")
-                    }
-                }
                 Text(status.lastRun)
                     .font(Font.subheadline)
                     .opacity(0.6)
+                    .gridColumnAlignment(.trailing)
             }
+
         }
         .lineLimit(1)
         .frame(maxWidth: .infinity)
         .padding()
         .background(status.statusColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .foregroundColor(.black)
     }
 
 }
