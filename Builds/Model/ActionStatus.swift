@@ -51,20 +51,29 @@ extension ActionStatus {
         guard let workflowRun = workflowRun else {
             return .gray
         }
-        if workflowRun.status == .waiting {
+
+        switch workflowRun.status {
+        case .queued:
             return .yellow
-        }
-        if workflowRun.status == .inProgress {
+        case .waiting:
+            return .yellow
+        case .inProgress:
             return .orange
+        case .completed:
+            break
         }
+
         guard let conclusion = workflowRun.conclusion else {
             return .gray
         }
+
         switch conclusion {
         case .success:
             return .green
         case .failure:
             return .red
+        case .cancelled:
+            return .gray
         }
     }
 

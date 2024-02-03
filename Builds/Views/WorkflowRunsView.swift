@@ -71,6 +71,9 @@ struct WorkflowRunsView: View {
                         case .failure:
                             Image(systemName: "xmark.circle.fill")
                                 .foregroundColor(Color(.systemRed))
+                        case .cancelled:
+                            Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.pink)
                         }
                     }
                     VStack(alignment: .leading) {

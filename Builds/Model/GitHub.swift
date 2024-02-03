@@ -150,6 +150,7 @@ class GitHub {
 
         enum Conclusion: String, Codable {
             case success
+            case cancelled
             case failure
         }
 
