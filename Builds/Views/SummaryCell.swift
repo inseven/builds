@@ -76,17 +76,20 @@ struct SummaryCell: View {
                     if let workflowRun = status.workflowRun {
                         switch workflowRun.status {
                         case .queued:
-                            Image(systemName: "arrow.right")
+                            Image(systemName: "clock.arrow.circlepath")
                         case .waiting:
                             Image(systemName: "clock")
                         case .inProgress:
-                            Image(systemName: "play")
+                            ProgressView()
+                                .controlSize(.regular)
                         case .completed:
                             switch workflowRun.conclusion {
                             case .success:
                                 Image(systemName: "checkmark")
                             case .failure:
                                 Image(systemName: "xmark")
+                            case .cancelled:
+                                Image(systemName: "exclamationmark.octagon")
                             case .none:
                                 Image(systemName: "questionmark")
                             }
