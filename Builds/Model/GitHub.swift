@@ -120,6 +120,20 @@ class GitHub {
         let workflowRuns: [WorkflowRun]
     }
 
+    struct WorkflowJobs: Codable {
+
+        let total_count: Int
+        let jobs: [WorkflowJob]
+
+    }
+
+    struct WorkflowJob: Codable, Hashable {
+
+        let id: Int
+        let run_id: Int
+
+    }
+
     struct Branch: Codable, Identifiable, Hashable {
 
         enum CodingKeys: String, CodingKey {
@@ -189,14 +203,19 @@ class GitHub {
         let id: Int
     }
 
-
-
     struct User: Codable, Hashable {
 
         let login: String
         let id: Int
         let node_id: String
         let avatar_url: URL
+    }
+
+    struct Annotation: Codable, Hashable {
+
+        let annotation_level: String
+        let title: String
+
     }
 
     // TODO: Paged fetch
@@ -240,7 +259,12 @@ class GitHub {
         let (data, _) = try await URLSession.shared.data(for: request)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode(T.self, from: data)
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            print(String(data: data, encoding: .utf8))
+            throw error
+        }
     }
 
     private func fetch<T: Decodable>(_ url: URL,
@@ -257,6 +281,7 @@ class GitHub {
         return response
     }
 
+    // TODO: Remove the 'for'
     func workflowRuns(for repositoryName: String, authentication: Authentication) async throws -> [WorkflowRun] {
         // TODO: Assemble the path?
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs")!
@@ -295,6 +320,20 @@ class GitHub {
     func organizations(authentication: Authentication) async throws -> [Organization] {
         let url = URL(string: "https://api.github.com/users/jbmorley/orgs")!
         let response: [Organization] = try await fetch(url, authentication: authentication)
+        return response
+    }
+
+    func workflowJobs(for repositoryName: String,
+                      workflowRun: WorkflowRun,
+                      authentication: Authentication) async throws -> [WorkflowJob] {
+        let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs/\(workflowRun.id)/jobs")!
+        let response: WorkflowJobs = try await fetch(url, authentication: authentication)
+        return response.jobs
+    }
+
+    func annotations(for repositoryName: String, workflowJob: WorkflowJob, authentication: Authentication) async throws -> [Annotation] {
+        let url = URL(string: "https://api.github.com/repos/\(repositoryName)/check-runs/\(workflowJob.id)/annotations")!
+        let response: [Annotation] = try await fetch(url, authentication: authentication)
         return response
     }
 

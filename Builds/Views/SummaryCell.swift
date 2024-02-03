@@ -32,20 +32,25 @@ struct SummaryCell: View {
                         .font(Font.headline)
                     Spacer()
                 }
-                if let workflowRun = status.workflowRun {
-                    switch workflowRun.status {
-                    case .waiting:
-                        Image(systemName: "clock")
-                    case .inProgress:
-                        Image(systemName: "play")
-                    case .completed:
-                        switch workflowRun.conclusion {
-                        case .success:
-                            Image(systemName: "checkmark")
-                        case .failure:
-                            Image(systemName: "xmark")
-                        case .none:
-                            Image(systemName: "questionmark")
+                HStack {
+                    if status.annotations.count > 0 {
+                        Image(systemName: "exclamationmark.triangle")
+                    }
+                    if let workflowRun = status.workflowRun {
+                        switch workflowRun.status {
+                        case .waiting:
+                            Image(systemName: "clock")
+                        case .inProgress:
+                            Image(systemName: "play")
+                        case .completed:
+                            switch workflowRun.conclusion {
+                            case .success:
+                                Image(systemName: "checkmark")
+                            case .failure:
+                                Image(systemName: "xmark")
+                            case .none:
+                                Image(systemName: "questionmark")
+                            }
                         }
                     }
                 }
@@ -60,7 +65,6 @@ struct SummaryCell: View {
                     .opacity(0.6)
                     .gridColumnAlignment(.trailing)
             }
-
         }
         .lineLimit(1)
         .frame(maxWidth: .infinity)

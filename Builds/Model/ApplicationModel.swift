@@ -79,7 +79,23 @@ class ApplicationModel: ObservableObject {
             return true
         }
 
-        return ActionStatus(action: action, workflowRun: latestRun)
+        guard let latestRun else {
+            return ActionStatus(action: action, workflowRun: latestRun)
+        }
+
+        let workflowJobs = try await client.workflowJobs(for: action.repositoryName, workflowRun: latestRun)
+        print("workflowJobs = \(workflowJobs)")
+
+
+        // TODO: Can I do async map?
+
+        var annotations: [GitHub.Annotation] = []
+        for workflowJob in workflowJobs {
+            annotations.append(contentsOf: try await client.annotations(for: action.repositoryName,
+                                                                        workflowJob: workflowJob))
+        }
+
+        return ActionStatus(action: action, workflowRun: latestRun, annotations: annotations)
     }
 
     func addAction(_ action: Action) {
