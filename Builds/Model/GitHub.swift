@@ -154,6 +154,7 @@ class GitHub {
         }
 
         enum Status: String, Codable {
+            case queued = "queued"
             case waiting = "waiting"
             case inProgress = "in_progress"
             case completed = "completed"
@@ -213,8 +214,15 @@ class GitHub {
 
     struct Annotation: Codable, Hashable {
 
+        let path: String
+        let start_line: Int
+        let end_line: Int
+        let start_column: Int?
+        let end_column: Int?
+
         let annotation_level: String
         let title: String
+        let message: String
 
     }
 
