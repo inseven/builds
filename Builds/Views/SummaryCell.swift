@@ -81,7 +81,8 @@ struct SummaryCell: View {
                             Image(systemName: "clock")
                         case .inProgress:
                             ProgressView()
-                                .controlSize(.regular)
+                                .controlSize(.small)
+                                .padding(.leading, 4)
                         case .completed:
                             switch workflowRun.conclusion {
                             case .success:
