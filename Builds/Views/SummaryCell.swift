@@ -20,7 +20,17 @@
 
 import SwiftUI
 
+extension GitHub.Annotation: Identifiable {
+
+    var id: String {
+        return "\(path):\(start_line):\(end_line):\(start_column ?? -1):\(end_column ?? -1)"
+    }
+
+}
+
 struct SummaryCell: View {
+
+    @State var isPresented: Bool = false
 
     let status: ActionStatus
 
@@ -34,10 +44,39 @@ struct SummaryCell: View {
                 }
                 HStack {
                     if status.annotations.count > 0 {
-                        Image(systemName: "exclamationmark.triangle")
+                        Button {
+                            isPresented = true
+                            print("Annotations = \(status.annotations)")
+                        } label: {
+                            Image(systemName: "text.alignleft")
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .popover(isPresented: $isPresented, arrowEdge: .bottom) {
+                            VStack(alignment: .leading) {
+                                ForEach(status.annotations) { annotation in
+                                    HStack(alignment: .firstTextBaseline) {
+                                        if annotation.annotation_level == "warning" {
+                                            Image(systemName: "exclamationmark.triangle")
+                                        }
+                                        VStack(alignment: .leading) {
+                                            Text("Unknown Job")
+                                                .fontWeight(.bold)
+                                            Text(annotation.message)
+                                                .lineLimit(10)
+                                        }
+                                    }
+                                }
+                            }
+                            .padding()
+                            .frame(maxWidth: 300)
+                            .foregroundColor(.primary)
+                        }
                     }
                     if let workflowRun = status.workflowRun {
                         switch workflowRun.status {
+                        case .queued:
+                            Image(systemName: "arrow.right")
                         case .waiting:
                             Image(systemName: "clock")
                         case .inProgress:
@@ -60,10 +99,12 @@ struct SummaryCell: View {
                 Text(status.name)
                     .font(Font.subheadline)
                     .opacity(0.6)
-                Text(status.lastRun)
-                    .font(Font.subheadline)
-                    .opacity(0.6)
-                    .gridColumnAlignment(.trailing)
+                TimelineView(.periodic(from: Date(), by: 1)) { _ in
+                    Text(status.lastRun)
+                        .font(Font.subheadline)
+                        .opacity(0.6)
+                }
+                .gridColumnAlignment(.trailing)
             }
         }
         .lineLimit(1)
