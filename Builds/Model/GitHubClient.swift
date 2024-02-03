@@ -126,4 +126,19 @@ class GitHubClient: ObservableObject {
     func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
         return try await api.workflows(for: repository, authentication: try getAuthentication())
     }
+
+    func workflowJobs(for repositoryName: String,
+                      workflowRun: GitHub.WorkflowRun) async throws -> [GitHub.WorkflowJob] {
+        return try await api.workflowJobs(for: repositoryName,
+                                          workflowRun: workflowRun,
+                                          authentication: try getAuthentication())
+    }
+
+    func annotations(for repositoryName: String,
+                     workflowJob: GitHub.WorkflowJob) async throws -> [GitHub.Annotation] {
+        return try await api.annotations(for: repositoryName,
+                                         workflowJob: workflowJob,
+                                         authentication: try getAuthentication())
+    }
+
 }
