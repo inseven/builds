@@ -34,6 +34,15 @@ struct SummaryView: View {
                 ForEach(applicationModel.status) { status in
                     SummaryCell(status: status)
                         .contextMenu {
+                            Button {
+                                guard let workflowRun = status.workflowRun else {
+                                    return
+                                }
+                                openURL(workflowRun.htmlURL)
+                            } label: {
+                                Text("Open")
+                            }
+                            Divider()
                             Button(role: .destructive) {
                                 applicationModel.removeAction(status.action)
                             } label: {
