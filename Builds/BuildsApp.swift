@@ -65,6 +65,9 @@ struct BuildsApp: App {
                 .handlesExternalEvents(preferring: ["x-builds-auth://oauth"], allowing: [])
         }
         .defaultSize(CGSize(width: 360, height: 800))
+        .commands {
+            ToolbarCommands()
+        }
 
 #if os(macOS)
 
