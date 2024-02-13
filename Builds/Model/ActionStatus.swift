@@ -58,7 +58,7 @@ extension ActionStatus {
         case .waiting:
             return .yellow
         case .inProgress:
-            return .orange
+            return .yellow
         case .completed:
             break
         }
