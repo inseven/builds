@@ -23,58 +23,45 @@ import SwiftUI
 import Diligence
 import Interact
 
-struct SettingsView: View {
+#if os(iOS)
 
-    @EnvironmentObject var applicationModel: ApplicationModel
+struct AboutButton: View {
+
+    enum SheetType: Identifiable {
+
+        var id: Self {
+            return self
+        }
+
+        case about
+    }
 
     @Environment(\.dismiss) var dismiss
-    @Environment(\.openURL) var openURL
+
+    let contents: Contents
+
+    @State var sheet: SheetType?
+
+    init(_ contents: Contents) {
+        self.contents = contents
+    }
 
     var body: some View {
-        Form {
-
-#if os(iOS)
-            Section {
-                AboutButton(Legal.contents)
-            }
-#endif
-
-            Section {
-
-                Button {
-                    applicationModel.client.logOut()
-                    dismiss()
-                } label: {
-                    Text("Log Out")
-                }
-
-            }
-
-            Section {
-
-                Button {
-                    openURL(applicationModel.client.permissionsURL)
-                } label: {
-                    Text("Manage Permissions")
-                }
-
-            }
-
+        Button {
+            sheet = .about
+        } label: {
+            Text("About \(Bundle.main.preferredName ?? "")...")
+                .foregroundColor(.primary)
         }
-        .formStyle(.grouped)
-        .navigationTitle("Settings")
-#if os(iOS)
-        .navigationBarTitleDisplayMode(.inline)
-#endif
-        .toolbar {
-#if os(iOS)
-            ToolbarItem(/* placement: .navigationBarTrailing */) {
-                Button("Done") {
-                    dismiss()
-                }
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .about:
+                Diligence.AboutView(contents)
             }
-#endif
         }
+
     }
 
 }
+
+#endif
