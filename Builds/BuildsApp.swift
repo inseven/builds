@@ -76,25 +76,7 @@ struct BuildsApp: App {
                 .environmentObject(applicationModel)
         }
 
-        let title = "Builds Support (\(Bundle.main.version ?? "Unknown Version"))"
-
-        About(repository: "inseven/builds", copyright: "Copyright © 2021-2024 Jason Morley") {
-            Diligence.Action("GitHub", url: URL(string: "https://github.com/inseven/builds")!)
-            Diligence.Action("Support", url: URL(address: "support@jbmorley.co.uk", subject: title)!)
-        } acknowledgements: {
-            Acknowledgements("Developers") {
-                Credit("Jason Morley", url: URL(string: "https://jbmorley.co.uk"))
-            }
-            Acknowledgements("Thanks") {
-                Credit("Lukas Fittl")
-                Credit("Mike Rhodes")
-                Credit("Sarah Barbour")
-            }
-        } licenses: {
-            License("Builds", author: "Jason Morley", filename: "builds-license")
-            License(Interact.Package.name, author: Interact.Package.author, url: Interact.Package.licenseURL)
-            License("Material Icons", author: "Google", filename: "material-icons-license")
-        }
+        About(Legal.contents)
 
 #endif
 
