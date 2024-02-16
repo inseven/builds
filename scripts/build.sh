@@ -158,14 +158,6 @@ xcodebuild \
     -exportPath "$BUILD_DIRECTORY" \
     -exportOptionsPlist "ExportOptions_macOS.plist"
 
-APP_BASENAME="Builds.app"
-APP_PATH="$BUILD_DIRECTORY/$APP_BASENAME"
-PKG_PATH="$BUILD_DIRECTORY/Builds.pkg"
-
-# Install the private key.
-mkdir -p ~/.appstoreconnect/private_keys/
-echo -n "$APPLE_API_KEY_BASE64" | base64 --decode -o ~/".appstoreconnect/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8"
-
 # Archive the build directory.
 ZIP_BASENAME="build-${VERSION_NUMBER}-${BUILD_NUMBER}.zip"
 ZIP_PATH="${BUILD_DIRECTORY}/${ZIP_BASENAME}"
@@ -175,12 +167,19 @@ popd
 
 if $RELEASE ; then
 
+    IPA_PATH="${BUILD_DIRECTORY}/Builds.ipa"
+    PKG_PATH="${BUILD_DIRECTORY}/Builds.pkg"
+
+    # Install the private key.
+    mkdir -p ~/.appstoreconnect/private_keys/
+    echo -n "$APPLE_API_KEY_BASE64" | base64 --decode -o ~/".appstoreconnect/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8"
+
     changes \
         release \
         --skip-if-empty \
         --pre-release \
         --push \
         --exec "${RELEASE_SCRIPT_PATH}" \
-        "${PKG_PATH}" "${ZIP_PATH}"
+        "${IPA_PATH}" "${PKG_PATH}" "${ZIP_PATH}"
 
 fi
