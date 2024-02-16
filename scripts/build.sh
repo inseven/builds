@@ -140,7 +140,7 @@ sudo xcode-select --switch "$IOS_XCODE_PATH"
 xcode_project \
     -scheme "Builds" \
     -config Release \
-    -destination "platform=iOS" \
+    -destination "platform=iOS,arch=arm64" \
     -archivePath "$IOS_ARCHIVE_PATH" \
     OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
     BUILD_NUMBER=$BUILD_NUMBER \
