@@ -73,27 +73,15 @@ if [ -f "$ENV_PATH" ] ; then
     source "$ENV_PATH"
 fi
 
-function xcode_project {
-    xcodebuild \
-        -project Builds.xcodeproj "$@"
-}
-
-function build_scheme {
-    # Disable code signing for the build server.
-    xcode_project \
-        -scheme "$1" \
-        CODE_SIGN_IDENTITY="" \
-        CODE_SIGNING_REQUIRED=NO \
-        CODE_SIGNING_ALLOWED=NO "${@:2}"
-}
-
 cd "$ROOT_DIRECTORY"
 
 # Select the correct Xcode.
 sudo xcode-select --switch "$MACOS_XCODE_PATH"
 
 # List the available schemes.
-xcode_project -list
+xcodebuild \
+    -project Builds.xcodeproj \
+    -list
 
 # Clean up the build directory.
 if [ -d "$BUILD_DIRECTORY" ] ; then
@@ -137,7 +125,8 @@ build-tools install-provisioning-profile "Builds_Mac_App_Store_Profile.provision
 
 # Build and archive the iOS project.
 sudo xcode-select --switch "$IOS_XCODE_PATH"
-xcode_project \
+xcodebuild \
+    -project Builds.xcodeproj \
     -scheme "Builds" \
     -config Release \
     -destination "platform=iOS,arch=arm64" \
@@ -154,7 +143,8 @@ xcodebuild \
 
 # Build and archive the macOS project.
 sudo xcode-select --switch "$MACOS_XCODE_PATH"
-xcode_project \
+xcodebuild \
+    -project Builds.xcodeproj \
     -scheme "Builds" \
     -config Release \
     -archivePath "$MACOS_ARCHIVE_PATH" \
