@@ -64,7 +64,7 @@ struct BuildsApp: App {
                 .environmentObject(applicationModel)
                 .handlesExternalEvents(preferring: ["x-builds-auth://oauth"], allowing: [])
         }
-        .defaultSize(CGSize(width: 360, height: 800))
+        .defaultSize(CGSize(width: 800, height: 720))
         .commands {
             ToolbarCommands()
         }
