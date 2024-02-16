@@ -132,14 +132,15 @@ echo "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" | build-tools import-base64-cert
 echo "$MACOS_DEVELOPER_INSTALLER_CERTIFICATE_PASSWORD" | build-tools import-base64-certificate --password "$KEYCHAIN_PATH" "$MACOS_DEVELOPER_INSTALLER_CERTIFICATE_BASE64"
 
 # Install the provisioning profiles.
+build-tools install-provisioning-profile "Builds_App_Store_Profile.mobileprovision"
 build-tools install-provisioning-profile "Builds_Mac_App_Store_Profile.provisionprofile"
 
 # Build and archive the iOS project.
 sudo xcode-select --switch "$IOS_XCODE_PATH"
 xcode_project \
     -scheme "Builds" \
-    -destination "platform=iOS" \
     -config Release \
+    -destination "platform=iOS" \
     -archivePath "$IOS_ARCHIVE_PATH" \
     OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
     BUILD_NUMBER=$BUILD_NUMBER \
