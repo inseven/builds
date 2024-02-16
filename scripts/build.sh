@@ -134,17 +134,7 @@ xcodebuild \
     OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
     BUILD_NUMBER=$BUILD_NUMBER \
     MARKETING_VERSION=$VERSION_NUMBER \
-    clean
-xcodebuild \
-    -project Builds.xcodeproj \
-    -scheme "Builds" \
-    -config Release \
-    -destination "platform=iOS,arch=arm64" \
-    -archivePath "$IOS_ARCHIVE_PATH" \
-    OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
-    BUILD_NUMBER=$BUILD_NUMBER \
-    MARKETING_VERSION=$VERSION_NUMBER \
-    archive
+    clean archive
 xcodebuild \
     -archivePath "$IOS_ARCHIVE_PATH" \
     -exportArchive \
