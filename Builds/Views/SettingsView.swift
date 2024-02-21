@@ -42,10 +42,9 @@ struct SettingsView: View {
             Section {
 
                 Button {
-                    applicationModel.client.logOut()
-                    dismiss()
+                    openURL(applicationModel.client.permissionsURL)
                 } label: {
-                    Text("Log Out")
+                    Text("Manage GitHub Permissions")
                 }
 
             }
@@ -53,9 +52,10 @@ struct SettingsView: View {
             Section {
 
                 Button {
-                    openURL(applicationModel.client.permissionsURL)
+                    applicationModel.client.logOut()
+                    dismiss()
                 } label: {
-                    Text("Manage Permissions")
+                    Text("Log Out")
                 }
 
             }
