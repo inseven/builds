@@ -40,8 +40,8 @@ public struct Legal {
             Credit("Sarah Barbour")
         }
     } licenses: {
+        .interact
         License("Builds", author: "Jason Morley", filename: "builds-license")
-        License(Interact.Package.name, author: Interact.Package.author, url: Interact.Package.licenseURL)
         License("Material Icons", author: "Google", filename: "material-icons-license")
     }
 
