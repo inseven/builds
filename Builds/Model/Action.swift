@@ -24,12 +24,14 @@ struct Action: Identifiable, Hashable, Codable {
 
     let id: UUID
     let repositoryName: String
+    let repositoryFullName: String
     let workflowId: Int
     let branch: String?
 
-    init(repositoryName: String, workflowId: Int, branch: String?) {
+    init(repositoryName: String, repositoryFullName: String, workflowId: Int, branch: String?) {
         self.id = UUID()
         self.repositoryName = repositoryName
+        self.repositoryFullName = repositoryFullName
         self.workflowId = workflowId
         self.branch = branch
     }

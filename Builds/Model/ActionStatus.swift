@@ -20,14 +20,13 @@
 
 import SwiftUI
 
-// TODO: let?
-struct ActionStatus: Identifiable {
+struct ActionStatus: Identifiable, Codable {
 
     var id: Action { action }
 
-    var action: Action
-    var workflowRun: GitHub.WorkflowRun?
-    var annotations: [GitHub.Annotation]
+    let action: Action
+    let workflowRun: GitHub.WorkflowRun?
+    let annotations: [GitHub.Annotation]
 
     init(action: Action, workflowRun: GitHub.WorkflowRun?, annotations: [GitHub.Annotation] = []) {
         self.action = action
