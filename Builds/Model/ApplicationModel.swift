@@ -66,7 +66,7 @@ class ApplicationModel: ObservableObject {
 
     // TODO: Move this into the client?
     func update(action: Action) async throws -> ActionStatus {
-        let workflowRuns = try await client.workflowRuns(for: action.repositoryName)
+        let workflowRuns = try await client.workflowRuns(for: action.repositoryFullName)
         // TODO: Make a faulting filter.
 
         let latestRun = workflowRuns.first { workflowRun in
@@ -83,15 +83,12 @@ class ApplicationModel: ObservableObject {
             return ActionStatus(action: action, workflowRun: latestRun)
         }
 
-        let workflowJobs = try await client.workflowJobs(for: action.repositoryName, workflowRun: latestRun)
-        print("workflowJobs = \(workflowJobs)")
-
+        let workflowJobs = try await client.workflowJobs(for: action.repositoryFullName, workflowRun: latestRun)
 
         // TODO: Can I do async map?
-
         var annotations: [GitHub.Annotation] = []
         for workflowJob in workflowJobs {
-            annotations.append(contentsOf: try await client.annotations(for: action.repositoryName,
+            annotations.append(contentsOf: try await client.annotations(for: action.repositoryFullName,
                                                                         workflowJob: workflowJob))
         }
 

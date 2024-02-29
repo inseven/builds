@@ -50,7 +50,8 @@ class AddActionModel: ObservableObject {
         else {
             return
         }
-        applicationModel.addAction(Action(repositoryName: repository.fullName,
+        applicationModel.addAction(Action(repositoryName: repository.name,
+                                          repositoryFullName: repository.fullName,
                                           workflowId: workflow.id,
                                           branch: branch.name))
     }
