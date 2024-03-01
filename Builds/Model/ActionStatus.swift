@@ -78,7 +78,7 @@ extension ActionStatus {
 
     var lastRun: String {
         guard let createdAt = workflowRun?.createdAt else {
-            return "Never"
+            return "Unknown"
         }
         let dateFormatter = RelativeDateTimeFormatter()
         return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
