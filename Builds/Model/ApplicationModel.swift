@@ -53,7 +53,7 @@ class ApplicationModel: ObservableObject {
     private let defaults: KeyedDefaults<Key>
     let client: GitHubClient
 
-    var cancellables = Set<AnyCancellable>()
+    @MainActor var cancellables = Set<AnyCancellable>()
 
     @MainActor @Published var cachedStatus: [Action: ActionStatus] = [:] {
         didSet {
@@ -96,27 +96,37 @@ class ApplicationModel: ObservableObject {
 
     @MainActor func start() {
 
+        // Update the state whenever a user changes the favorites.
         $actions
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self else {
-                    return
-                }
-                self.refresh()
+                self?.refresh()
             }
             .store(in: &cancellables)
 
+        // Ensure we attempt to update after signing in.
+        // This would be significnatly improved by changing the GitHub client authentication flow.
         client.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                guard let self else {
-                    return
-                }
-                // This is a fairly gnarly hack designed to ensure we requery after the user has signed in.
-                self.objectWillChange.send()
+                self?.objectWillChange.send()
             }
             .store(in: &cancellables)
 
+        // Check for updates every minute to ensure the app feels live and responsive.
+        // In the future, it would make sense to reduce this frequency if there are no active windows or if the app is
+        // running in the background.
+        Timer.publish(every: 60, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] date in
+                self?.refresh()
+            }
+            .store(in: &cancellables)
+
+    }
+
+    @MainActor func cancel() {
+        cancellables.removeAll()
     }
 
     // TODO: Move this into the client?
