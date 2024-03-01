@@ -24,12 +24,13 @@ import SwiftUI
 import Interact
 
 @MainActor
-class ApplicationModel: ObservableObject {
+class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     private enum Key: String {
         case items
         case status
         case lastUpdate
+        case authenticationToken
     }
 
     @MainActor @Published var actions: [Action] = [] {
@@ -53,6 +54,16 @@ class ApplicationModel: ObservableObject {
     @MainActor @Published var summary: SummaryState = .unknown
     @MainActor @Published var status: [ActionStatus] = []
 
+    @MainActor @Published var authenticationToken: GitHub.Authentication? {
+        didSet {
+            defaults.set(authenticationToken?.accessToken, forKey: .authenticationToken)
+        }
+    }
+
+    @MainActor var isAuthorized: Bool {
+        return authenticationToken != nil
+    }
+
     @MainActor @Published var cachedStatus: [Action: ActionStatus] = [:] {
         didSet {
             do {
@@ -74,18 +85,26 @@ class ApplicationModel: ObservableObject {
     @MainActor private let defaults: KeyedDefaults<Key>
     @MainActor private var cancellables = Set<AnyCancellable>()
 
-    init(authentication: Binding<GitHub.Authentication?>) {
-
+    override init() {
         self.defaults = KeyedDefaults()
         let configuration = Bundle.main.configuration()
         let api = GitHub(clientId: configuration.clientId,
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
-        self.client = GitHubClient(api: api, authentication: authentication)
+        self.client = GitHubClient(api: api)
 
-        actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
-        cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
-        lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
+        self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
+        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
+        self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
+        if let accessToken = defaults.string(forKey: .authenticationToken) {
+            self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
+        } else {
+            self.authenticationToken = nil
+        }
+
+        super.init()
+
+        self.client.authenticationProvider = self
     }
 
     @MainActor func start() {
@@ -95,15 +114,6 @@ class ApplicationModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.refresh()
-            }
-            .store(in: &cancellables)
-
-        // Ensure we attempt to update after signing in.
-        // This would be significnatly improved by changing the GitHub client authentication flow.
-        client.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.objectWillChange.send()
             }
             .store(in: &cancellables)
 
@@ -162,10 +172,8 @@ class ApplicationModel: ObservableObject {
         cancellables.removeAll()
     }
 
-    // TODO: Move this into the client?
     func update(action: Action) async throws -> ActionStatus {
         let workflowRuns = try await client.workflowRuns(for: action.repositoryFullName)
-        // TODO: Make a faulting filter.
 
         let latestRun = workflowRuns.first { workflowRun in
             if workflowRun.workflowId != action.workflowId {
@@ -182,8 +190,6 @@ class ApplicationModel: ObservableObject {
         }
 
         let workflowJobs = try await client.workflowJobs(for: action.repositoryFullName, workflowRun: latestRun)
-
-        // TODO: Can I do async map?
         var annotations: [GitHub.Annotation] = []
         for workflowJob in workflowJobs {
             annotations.append(contentsOf: try await client.annotations(for: action.repositoryFullName,

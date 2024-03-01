@@ -258,7 +258,7 @@ class GitHub {
     var _authentication: Authentication?  // Synchronized on syncQueue
 
     // TODO: Make this a method
-    var authorizationUrl: URL {
+    var authorizationURL: URL {
         return url(.authorize, parameters: [
             "client_id": clientId,
             "redirect_uri": redirectUri,
