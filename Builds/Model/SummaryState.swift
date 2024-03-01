@@ -20,51 +20,11 @@
 
 import SwiftUI
 
-import Diligence
-import Interact
+enum SummaryState {
 
-@main
-struct BuildsApp: App {
+    case unknown
+    case success
+    case failure
+    case inProgress
 
-    var applicationModel: ApplicationModel!
-
-    @AppStorage("authentication") var authentication: GitHub.Authentication?
-
-    @MainActor init() {
-        applicationModel = ApplicationModel(authentication: $authentication)
-        applicationModel.start()
-    }
-
-    var body: some Scene {
-
-        WindowGroup {
-            ContentView()
-                .onOpenURL { url in
-                    print(url)
-                    Task {
-                        await applicationModel.client.authenticate(with: url)
-                    }
-                }
-                .environmentObject(applicationModel)
-                .handlesExternalEvents(preferring: ["x-builds-auth://oauth"], allowing: [])
-        }
-        .defaultSize(CGSize(width: 800, height: 720))
-        .commands {
-            ToolbarCommands()
-        }
-
-#if os(macOS)
-
-        SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
-        }
-
-        About(Legal.contents)
-
-#endif
-
-    }
 }

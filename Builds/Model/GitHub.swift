@@ -27,10 +27,25 @@ enum GitHubError: Error {
 
 class GitHub {
 
-    // TODO: Order alphabetically
+    struct Authentication: RawRepresentable {
 
-    struct Authentication {
         let accessToken: String
+
+        init(accessToken: String) {
+            self.accessToken = accessToken
+        }
+
+        init?(rawValue: String) {
+            guard !rawValue.isEmpty else {
+                return nil
+            }
+            self.accessToken = rawValue
+        }
+
+        var rawValue: String {
+            return accessToken
+        }
+
     }
 
     private struct AccessToken: Codable {
