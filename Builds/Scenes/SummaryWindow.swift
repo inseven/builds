@@ -18,53 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if os(macOS)
+
 import SwiftUI
 
 import Diligence
 import Interact
 
-@main
-struct BuildsApp: App {
+struct SummaryWindow: Scene {
 
-    var applicationModel: ApplicationModel!
+    static let id = "summary"
 
-    @AppStorage("authentication") var authentication: GitHub.Authentication?
-
-    @MainActor init() {
-        applicationModel = ApplicationModel(authentication: $authentication)
-        applicationModel.start()
-    }
+    let applicationModel: ApplicationModel
 
     var body: some Scene {
-
-        WindowGroup {
-            ContentView()
-                .onOpenURL { url in
-                    print(url)
-                    Task {
-                        await applicationModel.client.authenticate(with: url)
-                    }
-                }
-                .environmentObject(applicationModel)
-                .handlesExternalEvents(preferring: ["x-builds-auth://oauth"], allowing: [])
+        Window("", id: Self.id) {
+            SummaryContentView(applicationModel: applicationModel)
         }
-        .defaultSize(CGSize(width: 800, height: 720))
-        .commands {
-            ToolbarCommands()
-        }
+        .windowResizability(.contentSize)
+    }
 
-#if os(macOS)
-
-        SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
-        }
-
-        About(Legal.contents)
+}
 
 #endif
-
-    }
-}

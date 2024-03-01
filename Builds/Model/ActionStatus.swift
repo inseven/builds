@@ -36,6 +36,15 @@ struct ActionStatus: Identifiable, Codable {
 
 }
 
+enum SummaryState {
+
+    case unknown
+    case success
+    case failure
+    case inProgress
+
+}
+
 extension ActionStatus {
 
     var name: String {
@@ -46,33 +55,48 @@ extension ActionStatus {
         return "\(name) (\(branch))"
     }
 
-    var statusColor: Color {
+    var state: SummaryState {
+
         guard let workflowRun = workflowRun else {
-            return .gray
+            return .unknown
         }
 
         switch workflowRun.status {
         case .queued:
-            return .yellow
+            return .inProgress
         case .waiting:
-            return .yellow
+            return .inProgress
         case .inProgress:
-            return .yellow
+            return .inProgress
         case .completed:
             break
         }
 
         guard let conclusion = workflowRun.conclusion else {
-            return .gray
+            return .unknown
         }
 
         switch conclusion {
         case .success:
+            return .success
+        case .failure:
+            return .failure
+        case .cancelled:
+            return .failure
+        }
+
+    }
+
+    var statusColor: Color {
+        switch self.state {
+        case .unknown:
+            return .gray
+        case .success:
             return .green
         case .failure:
             return .red
-        case .cancelled:
-            return .gray
+        case .inProgress:
+            return .yellow
         }
     }
 

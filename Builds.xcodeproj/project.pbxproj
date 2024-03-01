@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D8092F012B69A4B100FD21C8 /* AddActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092F002B69A4B100FD21C8 /* AddActionModel.swift */; };
+		D81251B22B917F07001F6E85 /* SummaryWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B12B917F07001F6E85 /* SummaryWindow.swift */; };
+		D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B32B9181E9001F6E85 /* SummaryContentView.swift */; };
 		D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DCE27F63B680091BAFD /* GitHub.swift */; };
 		D8355DD227F674F20091BAFD /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DD127F674F20091BAFD /* URL.swift */; };
 		D866F250280350BC00FC6EBB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* SettingsView.swift */; };
@@ -57,6 +59,8 @@
 /* Begin PBXFileReference section */
 		D8092EFF2B698E9F00FD21C8 /* Builds.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Builds.entitlements; sourceTree = "<group>"; };
 		D8092F002B69A4B100FD21C8 /* AddActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActionModel.swift; sourceTree = "<group>"; };
+		D81251B12B917F07001F6E85 /* SummaryWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryWindow.swift; sourceTree = "<group>"; };
+		D81251B32B9181E9001F6E85 /* SummaryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryContentView.swift; sourceTree = "<group>"; };
 		D8355DCE27F63B680091BAFD /* GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHub.swift; sourceTree = "<group>"; };
 		D8355DD127F674F20091BAFD /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -115,6 +119,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D81251B02B917EFC001F6E85 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				D81251B12B917F07001F6E85 /* SummaryWindow.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
 		D8355DD027F674EB0091BAFD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -151,13 +163,14 @@
 		D8F0CDFA27F7995700F4EC83 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */,
 				D8D413EC2804539C001BA6C0 /* AddActionView.swift */,
 				D8FEAE0D27F591AE00FDADFA /* ContentView.swift */,
 				D8F0CE0227F887BC00F4EC83 /* OrganizationsView.swift */,
 				D866F24F280350BC00FC6EBB /* SettingsView.swift */,
 				D8D413E828043FCD001BA6C0 /* SummaryCell.swift */,
+				D81251B32B9181E9001F6E85 /* SummaryContentView.swift */,
 				D8D413EA28044062001BA6C0 /* SummaryView.swift */,
-				D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -194,6 +207,7 @@
 				D87F23722B65FFFA0085DC12 /* Licenses */,
 				D8D413F1280454F0001BA6C0 /* Model */,
 				D8FEAE1127F591B200FDADFA /* Preview Content */,
+				D81251B02B917EFC001F6E85 /* Scenes */,
 				D8F0CDFA27F7995700F4EC83 /* Views */,
 			);
 			path = Builds;
@@ -373,12 +387,14 @@
 				D8EE7DD32B7F3A2900A3DCF0 /* AboutButton.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* ContentView.swift in Sources */,
 				D8F0CE0327F887BC00F4EC83 /* OrganizationsView.swift in Sources */,
+				D81251B22B917F07001F6E85 /* SummaryWindow.swift in Sources */,
 				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */,
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
 				D8D413ED2804539C001BA6C0 /* AddActionView.swift in Sources */,
 				D866F250280350BC00FC6EBB /* SettingsView.swift in Sources */,
+				D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */,
 				D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */,
 				D8092F012B69A4B100FD21C8 /* AddActionModel.swift in Sources */,
 				D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */,

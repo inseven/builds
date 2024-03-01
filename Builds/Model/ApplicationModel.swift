@@ -50,10 +50,8 @@ class ApplicationModel: ObservableObject {
         actions.removeAll { $0.id == action.id }
     }
 
-    private let defaults: KeyedDefaults<Key>
-    let client: GitHubClient
-
-    @MainActor var cancellables = Set<AnyCancellable>()
+    @MainActor @Published var summary: SummaryState = .unknown
+    @MainActor @Published var status: [ActionStatus] = []
 
     @MainActor @Published var cachedStatus: [Action: ActionStatus] = [:] {
         didSet {
@@ -71,27 +69,23 @@ class ApplicationModel: ObservableObject {
         }
     }
 
-    var status: [ActionStatus] {
-        return actions.map { action in
-            return cachedStatus[action] ?? ActionStatus(action: action, workflowRun: nil)
-        }
-        .sorted { $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending }
-    }
+    @MainActor let client: GitHubClient
+
+    @MainActor private let defaults: KeyedDefaults<Key>
+    @MainActor private var cancellables = Set<AnyCancellable>()
 
     init(authentication: Binding<GitHub.Authentication?>) {
 
         self.defaults = KeyedDefaults()
-
-        // TODO: Do this in start?
-        actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
-        cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
-        lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
-
         let configuration = Bundle.main.configuration()
         let api = GitHub(clientId: configuration.clientId,
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api, authentication: authentication)
+
+        actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
+        cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
+        lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
     }
 
     @MainActor func start() {
@@ -111,6 +105,45 @@ class ApplicationModel: ObservableObject {
             .sink { [weak self] _ in
                 self?.objectWillChange.send()
             }
+            .store(in: &cancellables)
+
+        // Generate the status array used to back the main window.
+        $actions
+            .combineLatest($cachedStatus)
+            .map { actions, cachedStatus in
+                return actions.map { action in
+                    return cachedStatus[action] ?? ActionStatus(action: action, workflowRun: nil)
+                }
+                .sorted {
+                    $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.status, on: self)
+            .store(in: &cancellables)
+
+        // Generate an over-arching build summary used to back insight windows and widgets.
+        $status
+            .map { (statuses) -> SummaryState in
+                guard statuses.count > 0 else {
+                    return .unknown
+                }
+                for status in statuses {
+                    switch status.state {
+                    case .unknown:
+                        return .unknown
+                    case .success:  // We require 100% successes for success.
+                        continue
+                    case .failure:  // We treat any failure as a global failure.
+                        return .failure
+                    case .inProgress:
+                        return .inProgress
+                    }
+                }
+                return .success
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.summary, on: self)
             .store(in: &cancellables)
 
         // Check for updates every minute to ensure the app feels live and responsive.
