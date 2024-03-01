@@ -30,7 +30,6 @@ struct BuildsApp: App {
 
     @MainActor init() {
         applicationModel = ApplicationModel()
-        applicationModel.start()
     }
 
     var body: some Scene {

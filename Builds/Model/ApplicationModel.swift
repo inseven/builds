@@ -105,9 +105,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         super.init()
 
         self.client.authenticationProvider = self
+
+        self.start()
     }
 
-    @MainActor func start() {
+    @MainActor private func start() {
 
         // Update the state whenever a user changes the favorites.
         $actions
@@ -166,10 +168,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             }
             .store(in: &cancellables)
 
-    }
-
-    @MainActor func cancel() {
-        cancellables.removeAll()
     }
 
     func update(action: Action) async throws -> ActionStatus {
