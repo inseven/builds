@@ -36,15 +36,6 @@ struct ActionStatus: Identifiable, Codable {
 
 }
 
-enum SummaryState {
-
-    case unknown
-    case success
-    case failure
-    case inProgress
-
-}
-
 extension ActionStatus {
 
     var name: String {
