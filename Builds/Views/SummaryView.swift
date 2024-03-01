@@ -60,6 +60,23 @@ struct SummaryView: View {
             }
             .padding()
         }
+        .safeAreaInset(edge: .bottom) {
+            VStack(spacing: 0) {
+                Divider()
+                HStack(spacing: 0) {
+                    if let lastUpdate = applicationModel.lastUpdate {
+                        Text("Last updated ")
+                        Text(lastUpdate, style: .relative)
+                        Text(" ago")
+                    } else {
+                        Text("Never updated")
+                    }
+                }
+                .padding(8)
+                .foregroundStyle(.secondary)
+                .font(.footnote)
+            }
+        }
     }
 
 }
