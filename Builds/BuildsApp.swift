@@ -41,14 +41,13 @@ extension GitHub.Authentication: RawRepresentable {
 @main
 struct BuildsApp: App {
 
-    let settings: Settings
     var applicationModel: ApplicationModel!
 
     @AppStorage("authentication") var authentication: GitHub.Authentication?
 
     @MainActor init() {
-        settings = Settings()
-        applicationModel = ApplicationModel(settings: settings, authentication: $authentication)
+        applicationModel = ApplicationModel(authentication: $authentication)
+        applicationModel.start()
     }
 
     var body: some Scene {

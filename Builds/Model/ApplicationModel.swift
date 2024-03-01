@@ -21,47 +21,102 @@
 import Combine
 import SwiftUI
 
+import Interact
+
 @MainActor
 class ApplicationModel: ObservableObject {
 
-    let settings: Settings
+    private enum Key: String {
+        case items
+        case status
+        case lastUpdate
+    }
+
+    @MainActor @Published var actions: [Action] = [] {
+        didSet {
+            do {
+                try defaults.set(codable: actions, forKey: .items)
+            } catch {
+                print("Failed to save state with error \(error).")
+            }
+        }
+    }
+
+    @MainActor func addAction(_ action: Action) {
+        actions.append(action)
+    }
+
+    @MainActor func removeAction(_ action: Action) {
+        actions.removeAll { $0.id == action.id }
+    }
+
+    private let defaults: KeyedDefaults<Key>
     let client: GitHubClient
 
-    var settingsSink: Cancellable?
-    var clientSink: Cancellable?
+    var cancellables = Set<AnyCancellable>()
 
-    // TODO: Annotate for main actor?
-    @Published var cachedStatus: [Action: ActionStatus] = [:]
+    @MainActor @Published var cachedStatus: [Action: ActionStatus] = [:] {
+        didSet {
+            do {
+                try defaults.set(codable: cachedStatus, forKey: .status)
+            } catch {
+                print("Failed to save status with error \(error).")
+            }
+        }
+    }
+
+    @MainActor @Published var lastUpdate: Date? {
+        didSet {
+            defaults.set(lastUpdate, forKey: .lastUpdate)
+        }
+    }
 
     var status: [ActionStatus] {
-        return settings.actions.map { action in
-            guard let status = cachedStatus[action] else {
-                return ActionStatus(action: action, workflowRun: nil)
-            }
-            return status
+        return actions.map { action in
+            return cachedStatus[action] ?? ActionStatus(action: action, workflowRun: nil)
         }
         .sorted { $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending }
     }
 
-    init(settings: Settings, authentication: Binding<GitHub.Authentication?>) {
-        self.settings = settings
+    init(authentication: Binding<GitHub.Authentication?>) {
+
+        self.defaults = KeyedDefaults()
+
+        // TODO: Do this in start?
+        actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
+        cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
+        lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
+
         let configuration = Bundle.main.configuration()
         let api = GitHub(clientId: configuration.clientId,
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api, authentication: authentication)
-        settingsSink = settings.objectWillChange.receive(on: DispatchQueue.main).sink(receiveValue: { [weak self] _ in
-            guard let self = self else {
-                return
+    }
+
+    @MainActor func start() {
+
+        $actions
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else {
+                    return
+                }
+                self.refresh()
             }
-            self.refresh()
-        })
-        clientSink = client.objectWillChange.sink(receiveValue: { [weak self] _ in
-            guard let self = self else {
-                return
+            .store(in: &cancellables)
+
+        client.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else {
+                    return
+                }
+                // This is a fairly gnarly hack designed to ensure we requery after the user has signed in.
+                self.objectWillChange.send()
             }
-            self.objectWillChange.send()
-        })
+            .store(in: &cancellables)
+
     }
 
     // TODO: Move this into the client?
@@ -95,17 +150,9 @@ class ApplicationModel: ObservableObject {
         return ActionStatus(action: action, workflowRun: latestRun, annotations: annotations)
     }
 
-    func addAction(_ action: Action) {
-        settings.addAction(action)
-    }
-
-    func removeAction(_ action: Action) {
-        settings.removeAction(action)
-    }
-
     func refresh() {
         dispatchPrecondition(condition: .onQueue(.main))
-        for action in settings.actions {
+        for action in actions {
             Task {
                 do {
                     let status = try await update(action: action)
@@ -116,6 +163,7 @@ class ApplicationModel: ObservableObject {
                 } catch {
                     print("Failed to update with error \(error).")
                 }
+                lastUpdate = Date()
             }
         }
     }
