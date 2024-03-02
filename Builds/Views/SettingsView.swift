@@ -41,10 +41,11 @@ struct SettingsView: View {
             Section {
 
                 Button {
-
+                    applicationModel.managePermissions()
                 } label: {
                     Text("Manage GitHub Permissions")
                 }
+                .disabled(!applicationModel.isAuthorized)
 
             }
 
@@ -52,10 +53,10 @@ struct SettingsView: View {
 
                 Button {
                     applicationModel.logOut()
-                    dismiss()
                 } label: {
                     Text("Log Out")
                 }
+                .disabled(!applicationModel.isAuthorized)
 
             }
 
