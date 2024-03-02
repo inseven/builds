@@ -20,29 +20,29 @@
 
 import SwiftUI
 
-// TODO: This must be run on a certain thread. Is there a way to annotate this?
-class GitHubClient: ObservableObject {
+protocol AuthenticationProvider: NSObject {
 
-    enum State {
-        case unauthorized
-        case authorized
+    @MainActor var authenticationToken: GitHub.Authentication? { get set }
+
+}
+
+class GitHubClient {
+
+    enum ClientError: Error {
+        case authenticationFailure
     }
 
     private let api: GitHub
-    private let authentication: Binding<GitHub.Authentication?>
+    weak var authenticationProvider: AuthenticationProvider?
 
-    @Published var state: State
-
-    init(api: GitHub, authentication: Binding<GitHub.Authentication?>) {
+    init(api: GitHub) {
         self.api = api
-        self.authentication = authentication
-        _state = Published(initialValue: authentication.wrappedValue != nil ? .authorized : .unauthorized)
     }
 
     private func getAuthentication() async throws -> GitHub.Authentication {
         return try await withCheckedThrowingContinuation { completion in
             DispatchQueue.main.async {
-                guard let authentication = self.authentication.wrappedValue else {
+                guard let authentication = self.authenticationProvider?.authenticationToken else {
                     completion.resume(throwing: GitHubError.unauthorized)
                     return
                 }
@@ -51,53 +51,41 @@ class GitHubClient: ObservableObject {
         }
     }
 
-    // TODO: Maybe make this a variable?
-    // TODO: Capitalisation
-    func authorizationUrl() -> URL {
-        return api.authorizationUrl
+    var authorizationURL: URL {
+        return api.authorizationURL
     }
 
     var permissionsURL: URL {
         return api.permissionsURL
     }
 
-    enum ClientError: Error {
-        case fuck
-    }
-
+    // TODO: Move this into the ApplicationModel.
     func authenticate(with url: URL) async -> Result<GitHub.Authentication, Error> {
-
         guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
               components.scheme == "x-builds-auth",
               components.host == "oauth",
               let code = components.queryItems?.first(where: { $0.name == "code" })?.value
         else {
-            return .failure(ClientError.fuck)
+            return .failure(ClientError.authenticationFailure)
         }
-
         return await authenticate(with: code)
     }
 
     func authenticate(with code: String) async -> Result<GitHub.Authentication, Error> {
         let result = await api.authenticate(with: code)
-        // TODO: Think of a better way to force us back to the correct thread.
-        DispatchQueue.main.sync {
+        await MainActor.run {
             switch result {
             case .success(let authentication):
-                self.authentication.wrappedValue = authentication
-                self.state = .authorized
+                self.authenticationProvider?.authenticationToken = authentication
             case .failure(_):
-                self.authentication.wrappedValue = nil
-                self.state = .unauthorized
+                self.authenticationProvider?.authenticationToken = nil
             }
         }
         return result
     }
 
-    // TODO: Ensure this runs on the correct thread?
-    func logOut() {
-        authentication.wrappedValue = nil
-        state = .unauthorized
+    @MainActor func logOut() {
+        self.authenticationProvider?.authenticationToken = nil
     }
 
     // TODO: Wrapper that detects authentication failure.
@@ -107,10 +95,7 @@ class GitHubClient: ObservableObject {
     }
 
     func repositories() async throws -> [GitHub.Repository] {
-        guard let accessToken = authentication.wrappedValue else {
-            throw GitHubError.unauthorized
-        }
-        return try await api.repositories(authentication: accessToken)
+        return try await api.repositories(authentication: try getAuthentication())
     }
 
     func workflowRuns(for repositoryName: String) async throws -> [GitHub.WorkflowRun] {
@@ -120,8 +105,6 @@ class GitHubClient: ObservableObject {
     func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {
         return try await api.branches(for: repository, authentication: try getAuthentication())
     }
-
-    // TODO: Fetch the workflow
 
     func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
         return try await api.workflows(for: repository, authentication: try getAuthentication())

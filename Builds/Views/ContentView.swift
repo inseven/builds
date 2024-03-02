@@ -42,22 +42,24 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                switch applicationModel.client.state {
-                case .authorized:
+                if applicationModel.isAuthorized {
                     SummaryView()
-                case .unauthorized:
-                    Button {
-                        openURL(applicationModel.client.authorizationUrl())
-                    } label: {
-                        Text("Authenticate")
+                } else {
+                    ContentUnavailableView {
+                        Label("Logged Out", systemImage: "lock")
+                    } description: {
+                        Text("Sign in to view your GitHub Actions.")
+                    } actions: {
+                        Button {
+                            openURL(applicationModel.client.authorizationURL)
+                        } label: {
+                            Text("Sign In")
+                        }
                     }
-                    .buttonStyle(.borderedProminent)
                 }
             }
             .navigationTitle("Builds")
-#if os(iOS)
-            .navigationBarTitleDisplayMode(.inline)
-#endif
+            .toolbarTitleDisplayMode(.inline)
             .toolbar {
 
 #if os(iOS)

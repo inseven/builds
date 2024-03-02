@@ -28,11 +28,8 @@ struct BuildsApp: App {
 
     var applicationModel: ApplicationModel!
 
-    @AppStorage("authentication") var authentication: GitHub.Authentication?
-
     @MainActor init() {
-        applicationModel = ApplicationModel(authentication: $authentication)
-        applicationModel.start()
+        applicationModel = ApplicationModel()
     }
 
     var body: some Scene {
