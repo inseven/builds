@@ -48,12 +48,12 @@ struct ContentView: View {
                     ContentUnavailableView {
                         Label("Logged Out", systemImage: "lock")
                     } description: {
-                        Text("Sign in to view your GitHub Actions.")
+                        Text("Log in to view your GitHub Actions.")
                     } actions: {
                         Button {
-                            applicationModel.authenticate()
+                            applicationModel.logIn()
                         } label: {
-                            Text("Sign In")
+                            Text("Log In")
                         }
                     }
                 }
@@ -106,7 +106,9 @@ struct ContentView: View {
 #endif
             case .settings:
                 NavigationView {
-                    SettingsView()
+#if os(iOS)
+                    PhoneSettingsView()
+#endif
                 }
             }
         }

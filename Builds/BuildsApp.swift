@@ -35,6 +35,7 @@ struct BuildsApp: App {
 
         MainWindow()
             .commands {
+                AccountCommands(applicationModel: applicationModel)
                 LifecycleCommands(applicationModel: applicationModel)
             }
             .environmentObject(applicationModel)
@@ -42,11 +43,6 @@ struct BuildsApp: App {
 #if os(macOS)
 
         SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
-        }
 
         About(Legal.contents)
 

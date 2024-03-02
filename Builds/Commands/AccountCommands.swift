@@ -20,23 +20,31 @@
 
 import SwiftUI
 
-import Interact
-
-struct LifecycleCommands: Commands {
+struct AccountCommands: Commands {
 
     @ObservedObject var applicationModel: ApplicationModel
 
     var body: some Commands {
-
-        CommandGroup(after: .newItem) {
-            Divider()
-            Button {
-                await applicationModel.refresh()
-            } label: {
-                Text("Refresh...")
+        CommandMenu("Account") {
+            if applicationModel.isAuthorized {
+                Button {
+                    applicationModel.managePermissions()
+                } label: {
+                    Text("Manage GitHub Permissions...")
+                }
+                Divider()
+                Button {
+                    applicationModel.logOut()
+                } label: {
+                    Text("Log Out...")
+                }
+            } else {
+                Button {
+                    applicationModel.logIn()
+                } label: {
+                    Text("Log In...")
+                }
             }
-            .keyboardShortcut("r")
-            .disabled(!applicationModel.isAuthorized)
         }
     }
 

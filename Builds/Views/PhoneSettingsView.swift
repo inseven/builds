@@ -23,7 +23,9 @@ import SwiftUI
 import Diligence
 import Interact
 
-struct SettingsView: View {
+#if os(iOS)
+
+struct PhoneSettingsView: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
 
@@ -32,11 +34,9 @@ struct SettingsView: View {
     var body: some View {
         Form {
 
-#if os(iOS)
             Section {
                 AboutButton(Legal.contents)
             }
-#endif
 
             Section {
 
@@ -63,18 +63,16 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         .navigationTitle("Settings")
-#if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
-#endif
         .toolbar {
-#if os(iOS)
             ToolbarItem(/* placement: .navigationBarTrailing */) {
                 Button("Done") {
                     dismiss()
                 }
             }
-#endif
         }
     }
 
 }
+
+#endif

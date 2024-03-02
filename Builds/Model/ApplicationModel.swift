@@ -182,7 +182,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     }
 
-    @MainActor func authenticate() {
+    @MainActor func logIn() {
         Application.open(client.authorizationURL)
     }
 
