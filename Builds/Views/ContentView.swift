@@ -80,14 +80,6 @@ struct ContentView: View {
                     }
                 }
 
-                ToolbarItem(placement: .primaryAction) {
-                    Button {
-                        applicationModel.refresh()
-                    } label: {
-                        Label("Refresh", systemImage: "arrow.clockwise")
-                    }
-                }
-
             }
             .onAppear {
                 applicationModel.refresh()
