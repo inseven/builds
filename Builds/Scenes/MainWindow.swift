@@ -23,32 +23,24 @@ import SwiftUI
 import Diligence
 import Interact
 
-@main
-struct BuildsApp: App {
+struct MainWindow: Scene {
 
-    var applicationModel: ApplicationModel!
+    static let id = "main"
 
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
+    @EnvironmentObject var applicationModel: ApplicationModel
+    @State var error: Error? = nil
 
     var body: some Scene {
-
-        MainWindow()
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
+        WindowGroup(id: Self.id) {
+            ContentView()
+                .handlesAuthentication()
+                .handlesExternalEvents(preferring: [], allowing: [.main])
         }
-
-        About(Legal.contents)
-
-#endif
-
+        .defaultSize(CGSize(width: 800, height: 720))
+        .commands {
+            ToolbarCommands()
+        }
+        .handlesExternalEvents(matching: [.main, .auth])
     }
+
 }

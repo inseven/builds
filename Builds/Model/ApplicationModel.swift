@@ -80,6 +80,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
+    // TODO: Make this private.
     @MainActor let client: GitHubClient
 
     @MainActor private let defaults: KeyedDefaults<Key>
@@ -168,6 +169,27 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             }
             .store(in: &cancellables)
 
+        // TODO: Inject the authentication token into updates by observing the token.
+
+    }
+
+    @MainActor func authenticate() {
+        Application.open(client.authorizationURL)
+    }
+
+    func authenticate(with url: URL) async throws {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              components.scheme == "x-builds-auth",
+              components.host == "oauth",
+              let code = components.queryItems?.first(where: { $0.name == "code" })?.value
+        else {
+            throw BuildsError.authenticationFailure
+        }
+        try await client.authenticate(with: code)
+    }
+
+    @MainActor func logOut() {
+        authenticationToken = nil
     }
 
     func update(action: Action) async throws -> ActionStatus {

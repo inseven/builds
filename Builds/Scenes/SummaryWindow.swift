@@ -32,7 +32,7 @@ struct SummaryWindow: Scene {
     let applicationModel: ApplicationModel
 
     var body: some Scene {
-        Window("", id: Self.id) {
+        Window("Summary", id: Self.id) {
             SummaryContentView(applicationModel: applicationModel)
         }
         .windowResizability(.contentSize)

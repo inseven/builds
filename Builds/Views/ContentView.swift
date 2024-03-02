@@ -51,7 +51,7 @@ struct ContentView: View {
                         Text("Sign in to view your GitHub Actions.")
                     } actions: {
                         Button {
-                            openURL(applicationModel.client.authorizationURL)
+                            applicationModel.authenticate()
                         } label: {
                             Text("Sign In")
                         }

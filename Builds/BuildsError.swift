@@ -18,37 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-import Diligence
-import Interact
-
-@main
-struct BuildsApp: App {
-
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
-
-    var body: some Scene {
-
-        MainWindow()
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
-        }
-
-        About(Legal.contents)
-
-#endif
-
-    }
+enum BuildsError: Error {
+    case authenticationFailure
 }
