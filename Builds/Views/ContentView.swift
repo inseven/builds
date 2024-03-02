@@ -62,6 +62,13 @@ struct ContentView: View {
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
 
+                if applicationModel.isUpdating {
+                    ToolbarItem(id: "status", placement: .navigation) {
+                        ProgressView()
+                            .controlSize(.small)
+                    }
+                }
+
 #if os(iOS)
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
@@ -81,8 +88,8 @@ struct ContentView: View {
                 }
 
             }
-            .onAppear {
-                applicationModel.refresh()
+            .task {
+                await applicationModel.refresh()
             }
 
         }
@@ -108,7 +115,9 @@ struct ContentView: View {
             case .inactive:
                 break
             case .active:
-                applicationModel.refresh()
+                Task {
+                    await applicationModel.refresh()
+                }
             @unknown default:
                 break
             }
