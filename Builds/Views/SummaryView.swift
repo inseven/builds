@@ -60,6 +60,9 @@ struct SummaryView: View {
             }
             .padding()
         }
+        .refreshable {
+            await applicationModel.refresh()
+        }
         .safeAreaInset(edge: .bottom) {
             // TODO: Extract this.
             VStack(spacing: 0) {
