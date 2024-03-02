@@ -30,7 +30,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         case items
         case status
         case lastUpdate
-        case authenticationToken
+        case accessToken
     }
 
     @MainActor @Published var actions: [Action] = [] {
@@ -56,7 +56,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor @Published var authenticationToken: GitHub.Authentication? {
         didSet {
-            defaults.set(authenticationToken?.accessToken, forKey: .authenticationToken)
+            do {
+                try keychain.set(authenticationToken?.accessToken, forKey: .accessToken)
+            } catch {
+                print("Failed to update keychain with error \(error).")
+            }
         }
     }
 
@@ -83,11 +87,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     // TODO: Make this private.
     @MainActor let client: GitHubClient
 
-    @MainActor private let defaults: KeyedDefaults<Key>
+    @MainActor private let defaults = KeyedDefaults<Key>()
+    @MainActor private let keychain = KeychainManager<Key>()
     @MainActor private var cancellables = Set<AnyCancellable>()
 
     override init() {
-        self.defaults = KeyedDefaults()
         let configuration = Bundle.main.configuration()
         let api = GitHub(clientId: configuration.clientId,
                          clientSecret: configuration.clientSecret,
@@ -97,7 +101,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
         self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
-        if let accessToken = defaults.string(forKey: .authenticationToken) {
+        if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
         } else {
             self.authenticationToken = nil
@@ -190,6 +194,10 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor func logOut() {
         authenticationToken = nil
+    }
+
+    @MainActor func managePermissions() {
+        Application.open(client.permissionsURL)
     }
 
     func update(action: Action) async throws -> ActionStatus {
