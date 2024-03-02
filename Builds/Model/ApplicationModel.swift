@@ -51,6 +51,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         actions.removeAll { $0.id == action.id }
     }
 
+    @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var summary: SummaryState = .unknown
     @MainActor @Published var status: [ActionStatus] = []
 
@@ -120,7 +121,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         $actions
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.refresh()
+                Task {
+                    await self?.refresh()
+                }
             }
             .store(in: &cancellables)
 
@@ -169,7 +172,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         Timer.publish(every: 60, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] date in
-                self?.refresh()
+                Task {
+                    await self?.refresh()
+                }
             }
             .store(in: &cancellables)
 
@@ -227,22 +232,22 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         return ActionStatus(action: action, workflowRun: latestRun, annotations: annotations)
     }
 
-    func refresh() {
+    func refresh() async {
         dispatchPrecondition(condition: .onQueue(.main))
-        for action in actions {
-            Task {
-                do {
-                    let status = try await update(action: action)
-                    print(status)
-                    DispatchQueue.main.async {
-                        self.cachedStatus[action] = status
-                    }
-                } catch {
-                    print("Failed to update with error \(error).")
-                }
-                lastUpdate = Date()
+        do {
+            self.isUpdating = true
+            let elements = try await actions.map { action in
+                return try await self.update(action: action)
             }
+            let cachedStatus = elements.reduce(into: [Action: ActionStatus]()) { partialResult, actionStatus in
+                partialResult[actionStatus.action] = actionStatus
+            }
+            self.cachedStatus = cachedStatus
+            self.lastUpdate = Date()
+        } catch {
+            print("Failed to update with erorr \(error).")
         }
+        self.isUpdating = false
     }
 
 }

@@ -20,38 +20,23 @@
 
 import SwiftUI
 
-import Diligence
+import Interact
 
-@main
-struct BuildsApp: App {
+struct LifecycleCommands: Commands {
 
-    var applicationModel: ApplicationModel!
+    @ObservedObject var applicationModel: ApplicationModel
 
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
-
-    var body: some Scene {
-
-        MainWindow()
-            .commands {
-                LifecycleCommands(applicationModel: applicationModel)
+    var body: some Commands {
+        CommandGroup(after: .newItem) {
+            Divider()
+            Button {
+                await applicationModel.refresh()
+            } label: {
+                Text("Refresh...")
             }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
+            .keyboardShortcut("r")
+            .disabled(!applicationModel.isAuthorized)
         }
-
-        About(Legal.contents)
-
-#endif
-
     }
-    
+
 }

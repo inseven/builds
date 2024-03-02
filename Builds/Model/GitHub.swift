@@ -286,7 +286,7 @@ class GitHub {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
-            print(String(data: data, encoding: .utf8))
+            print(String(data: data, encoding: .utf8) ?? "nil")
             throw error
         }
     }

@@ -61,10 +61,13 @@ struct SummaryView: View {
             .padding()
         }
         .safeAreaInset(edge: .bottom) {
+            // TODO: Extract this.
             VStack(spacing: 0) {
                 Divider()
                 HStack(spacing: 0) {
-                    if let lastUpdate = applicationModel.lastUpdate {
+                    if applicationModel.isUpdating {
+                        Text("Updating...")
+                    } else if let lastUpdate = applicationModel.lastUpdate {
                         Text("Last updated ")
                         Text(lastUpdate, style: .relative)
                         Text(" ago")
