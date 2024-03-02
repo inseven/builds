@@ -28,10 +28,6 @@ protocol AuthenticationProvider: NSObject {
 
 class GitHubClient {
 
-    enum ClientError: Error {
-        case authenticationFailure
-    }
-
     private let api: GitHub
     weak var authenticationProvider: AuthenticationProvider?
 
@@ -59,33 +55,17 @@ class GitHubClient {
         return api.permissionsURL
     }
 
-    // TODO: Move this into the ApplicationModel.
-    func authenticate(with url: URL) async -> Result<GitHub.Authentication, Error> {
-        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-              components.scheme == "x-builds-auth",
-              components.host == "oauth",
-              let code = components.queryItems?.first(where: { $0.name == "code" })?.value
-        else {
-            return .failure(ClientError.authenticationFailure)
-        }
-        return await authenticate(with: code)
-    }
-
-    func authenticate(with code: String) async -> Result<GitHub.Authentication, Error> {
+    func authenticate(with code: String) async throws {
         let result = await api.authenticate(with: code)
-        await MainActor.run {
+        try await MainActor.run {
             switch result {
             case .success(let authentication):
                 self.authenticationProvider?.authenticationToken = authentication
-            case .failure(_):
+            case .failure(let error):
                 self.authenticationProvider?.authenticationToken = nil
+                throw error
             }
         }
-        return result
-    }
-
-    @MainActor func logOut() {
-        self.authenticationProvider?.authenticationToken = nil
     }
 
     // TODO: Wrapper that detects authentication failure.

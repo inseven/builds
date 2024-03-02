@@ -22,6 +22,9 @@ import Foundation
 
 public extension URL {
 
+    static let auth = URL(string: "x-builds-auth://oauth")!
+    static let main = URL(string: "x-builds://main")!
+
     var components: URLComponents? {
         return URLComponents(string: absoluteString)
     }

@@ -24,6 +24,8 @@ struct SummaryContentView: View {
 
     @ObservedObject var applicationModel: ApplicationModel
 
+    @Environment(\.openURL) var openURL
+
     var color: Color {
         switch applicationModel.summary {
         case .unknown:
@@ -41,6 +43,10 @@ struct SummaryContentView: View {
         Rectangle()
             .fill(color)
             .frame(width: 140, height: 140)
+            .onTapGesture {
+                openURL(.main)
+            }
+            .navigationTitle("")
     }
 
 }

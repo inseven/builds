@@ -28,7 +28,6 @@ struct SettingsView: View {
     @EnvironmentObject var applicationModel: ApplicationModel
 
     @Environment(\.dismiss) var dismiss
-    @Environment(\.openURL) var openURL
 
     var body: some View {
         Form {
@@ -42,7 +41,7 @@ struct SettingsView: View {
             Section {
 
                 Button {
-                    openURL(applicationModel.client.permissionsURL)
+
                 } label: {
                     Text("Manage GitHub Permissions")
                 }
@@ -52,7 +51,7 @@ struct SettingsView: View {
             Section {
 
                 Button {
-                    applicationModel.client.logOut()
+                    applicationModel.logOut()
                     dismiss()
                 } label: {
                     Text("Log Out")

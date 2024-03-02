@@ -23,32 +23,41 @@ import SwiftUI
 import Diligence
 import Interact
 
-@main
-struct BuildsApp: App {
+struct HandlesAuthentication: ViewModifier {
 
-    var applicationModel: ApplicationModel!
+    @EnvironmentObject var applicationModel: ApplicationModel
+    @State var error: Error? = nil
 
-    @MainActor init() {
-        applicationModel = ApplicationModel()
+    func body(content: Content) -> some View {
+        return content
+            .onOpenURL { url in  // TODO: Make this a modifier.
+
+                // Ignore non-authentication URLs.
+                guard url.absoluteString.starts(with: URL.auth.absoluteString) else {
+                    return
+                }
+
+                // Authenticate.
+                Task {
+                    do {
+                        try await applicationModel.authenticate(with: url)
+                    } catch {
+                        DispatchQueue.main.async {
+                            self.error = error
+                        }
+                    }
+                }
+            }
+            .presents($error)
+            .handlesExternalEvents(preferring: [.auth], allowing: [])
     }
 
-    var body: some Scene {
+}
 
-        MainWindow()
-            .environmentObject(applicationModel)
+extension View {
 
-#if os(macOS)
-
-        SummaryWindow(applicationModel: applicationModel)
-
-        SwiftUI.Settings {
-            SettingsView()
-                .environmentObject(applicationModel)
-        }
-
-        About(Legal.contents)
-
-#endif
-
+    func handlesAuthentication() -> some View {
+        return modifier(HandlesAuthentication())
     }
+
 }
