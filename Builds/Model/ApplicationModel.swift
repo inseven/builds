@@ -153,6 +153,13 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
         // Update the state whenever a user changes the favorites.
         $actions
+            .combineLatest($authenticationToken)
+            .compactMap { (actions, token) -> [Action]? in
+                guard token != nil else {
+                    return nil
+                }
+                return actions
+            }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 Task {
@@ -219,6 +226,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor func logOut() {
         authenticationToken = nil
+        cachedStatus = [:]
     }
 
     @MainActor func managePermissions() {
