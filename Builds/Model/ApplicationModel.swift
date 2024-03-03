@@ -53,7 +53,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var summary: SummaryState = .unknown
-    @MainActor @Published var status: [ActionStatus] = []
+    @MainActor @Published var status: [WorkflowSummary] = []
 
     @MainActor @Published var authenticationToken: GitHub.Authentication? {
         didSet {
@@ -69,7 +69,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         return authenticationToken != nil
     }
 
-    @MainActor @Published var cachedStatus: [Action: ActionStatus] = [:] {
+    @MainActor @Published var cachedStatus: [Action: WorkflowSummary] = [:] {
         didSet {
             do {
                 try defaults.set(codable: cachedStatus, forKey: .status)
@@ -107,7 +107,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         self.client = GitHubClient(api: api)
 
         self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
-        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: ActionStatus]())) ?? [:]
+        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: WorkflowSummary]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
@@ -129,7 +129,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 let elements = try await self.actions.map { action in
                     return try await self.update(action: action)
                 }
-                let cachedStatus = elements.reduce(into: [Action: ActionStatus]()) { partialResult, actionStatus in
+                let cachedStatus = elements.reduce(into: [Action: WorkflowSummary]()) { partialResult, actionStatus in
                     partialResult[actionStatus.action] = actionStatus
                 }
 
@@ -173,7 +173,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .combineLatest($cachedStatus)
             .map { actions, cachedStatus in
                 return actions.map { action in
-                    return cachedStatus[action] ?? ActionStatus(action: action, workflowRun: nil)
+                    return cachedStatus[action] ?? WorkflowSummary(action: action, workflowRun: nil)
                 }
                 .sorted {
                     $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending
@@ -233,21 +233,21 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         Application.open(client.permissionsURL)
     }
 
-    func update(action: Action) async throws -> ActionStatus {
+    func update(action: Action) async throws -> WorkflowSummary {
         let workflowRuns = try await client.workflowRuns(for: action.repositoryFullName)
 
         let latestRun = workflowRuns.first { workflowRun in
             if workflowRun.workflowId != action.workflowId {
                 return false
             }
-            if let branch = action.branch {
-                return workflowRun.headBranch == branch
+            if workflowRun.headBranch != action.branch {
+                return false
             }
             return true
         }
 
         guard let latestRun else {
-            return ActionStatus(action: action, workflowRun: latestRun)
+            return WorkflowSummary(action: action, workflowRun: latestRun)
         }
 
         let workflowJobs = try await client.workflowJobs(for: action.repositoryFullName, workflowRun: latestRun)
@@ -257,7 +257,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                                                                         workflowJob: workflowJob))
         }
 
-        return ActionStatus(action: action, workflowRun: latestRun, annotations: annotations)
+        return WorkflowSummary(action: action, workflowRun: latestRun, annotations: annotations)
     }
 
     func refresh() async {

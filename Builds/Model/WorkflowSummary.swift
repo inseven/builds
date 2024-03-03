@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-struct ActionStatus: Identifiable, Codable {
+struct WorkflowSummary: Identifiable, Codable {
 
     var id: Action { action }
 
@@ -36,14 +36,10 @@ struct ActionStatus: Identifiable, Codable {
 
 }
 
-extension ActionStatus {
+extension WorkflowSummary {
 
-    var name: String {
-        let name = "\(workflowRun?.name ?? String(action.workflowId))"
-        guard let branch = action.branch else {
-            return name
-        }
-        return "\(name) (\(branch))"
+    var details: String {
+        return "\(workflowRun?.name ?? String(action.workflowId)) (\(action.branch))"
     }
 
     var state: SummaryState {

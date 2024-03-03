@@ -32,7 +32,7 @@ struct SummaryCell: View {
 
     @State var isPresented: Bool = false
 
-    let status: ActionStatus
+    let status: WorkflowSummary
 
     var body: some View {
         Grid(alignment: .leadingFirstTextBaseline) {
@@ -100,7 +100,7 @@ struct SummaryCell: View {
 
             }
             GridRow {
-                Text(status.name)
+                Text(status.details)
                     .font(Font.subheadline)
                     .opacity(0.6)
                 TimelineView(.periodic(from: Date(), by: 1)) { _ in
