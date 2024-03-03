@@ -92,8 +92,8 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     @MainActor private let defaults = KeyedDefaults<Key>()
     @MainActor private let keychain = KeychainManager<Key>()
     @MainActor private var cancellables = Set<AnyCancellable>()
-    @MainActor private var refreshScheduler: RefreshScheduler!
     private let modelContainer: ModelContainer
+    @MainActor private var refreshScheduler: RefreshScheduler!
 
     override init() {
         let configuration = Bundle.main.configuration()
@@ -102,25 +102,16 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api)
 
-        //        self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
-        self.actions = []
+        let storeURL = URL.documentsDirectory.appending(path: "database.sqlite")
+        let config = ModelConfiguration(url: storeURL)
+        self.modelContainer = try! ModelContainer(for: Action.self, configurations: config)
+        self.actions = (try? self.modelContainer.mainContext.fetch(FetchDescriptor<Action>())) ?? []
         self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action.ID: WorkflowSummary]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
         } else {
             self.authenticationToken = nil
-        }
-
-        let storeURL = URL.documentsDirectory.appending(path: "database.sqlite")
-        let config = ModelConfiguration(url: storeURL)
-        self.modelContainer = try! ModelContainer(for: Action.self, configurations: config)
-
-        do {
-            let data = try self.modelContainer.mainContext.fetch(FetchDescriptor<Action>())
-            self.actions = data
-        } catch {
-            fatalError("Fucked with error \(error).")
         }
 
         super.init()
