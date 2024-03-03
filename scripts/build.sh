@@ -73,6 +73,20 @@ if [ -f "$ENV_PATH" ] ; then
     source "$ENV_PATH"
 fi
 
+# Check for Apple Silicon hardware
+if sysctl -n hw.optional.arm64 > /dev/null 2>&1; then
+    echo "Hardware: Apple Silicon detected."
+    # Hardware check passed, now verify execution architecture
+    if [[ $(arch) != "arm64" ]]; then
+        echo "Error: Not running natively on Apple Silicon (likely under Rosetta)."
+        exit 1
+    else
+        echo "Success: Running natively on Apple Silicon."
+    fi
+else
+    echo "Hardware: Not Apple Silicon or unable to verify."
+fi
+
 cd "$ROOT_DIRECTORY"
 
 # Select the correct Xcode.
