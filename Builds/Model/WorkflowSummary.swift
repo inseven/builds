@@ -18,50 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-import SwiftData
+struct WorkflowSummary: Codable {
 
-@Model
-class Action: Identifiable, Hashable {
+    let workflowRun: GitHub.WorkflowRun
+    let annotations: [GitHub.Annotation]
 
-    private enum CodingKeys: CodingKey {
-        case repositoryFullName
-        case workflowId
-        case branch
-    }
-
-    static func == (lhs: Action, rhs: Action) -> Bool {
-        return (
-            lhs.id == rhs.id &&
-            lhs.repositoryFullName == rhs.repositoryFullName &&
-            lhs.workflowId == rhs.workflowId &&
-            lhs.branch == rhs.branch
-        )
-    }
-
-    var id: String {
-        return "\(repositoryFullName):\(workflowId)@\(branch)"
-    }
-
-    var repositoryName: String {
-        return String(repositoryFullName.split(separator: "/").last ?? "?")
-    }
-
-    let repositoryFullName: String
-    let workflowId: Int
-    let branch: String
-
-    init(repositoryFullName: String, workflowId: Int, branch: String) {
-        self.repositoryFullName = repositoryFullName
-        self.workflowId = workflowId
-        self.branch = branch
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(repositoryFullName)
-        hasher.combine(workflowId)
-        hasher.combine(branch)
+    init(workflowRun: GitHub.WorkflowRun, annotations: [GitHub.Annotation] = []) {
+        self.workflowRun = workflowRun
+        self.annotations = annotations
     }
 
 }

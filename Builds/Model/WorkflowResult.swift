@@ -20,35 +20,32 @@
 
 import SwiftUI
 
-struct ActionStatus: Identifiable, Codable {
+struct WorkflowResult: Identifiable {
 
-    var id: Action { action }
+    var id: String { action.id }
 
     let action: Action
-    let workflowRun: GitHub.WorkflowRun?
-    let annotations: [GitHub.Annotation]
+    let summary: WorkflowSummary?
 
-    init(action: Action, workflowRun: GitHub.WorkflowRun?, annotations: [GitHub.Annotation] = []) {
-        self.action = action
-        self.workflowRun = workflowRun
-        self.annotations = annotations
+    var repositoryName: String {
+        return action.repositoryName
+    }
+
+    var details: String {
+        return "\(summary?.workflowRun.name ?? String(action.workflowId)) (\(action.branch))"
+    }
+
+    var annotations: [GitHub.Annotation] {
+        return summary?.annotations ?? []
     }
 
 }
 
-extension ActionStatus {
-
-    var name: String {
-        let name = "\(workflowRun?.name ?? String(action.workflowId))"
-        guard let branch = action.branch else {
-            return name
-        }
-        return "\(name) (\(branch))"
-    }
+extension WorkflowResult {
 
     var state: SummaryState {
 
-        guard let workflowRun = workflowRun else {
+        guard let workflowRun = summary?.workflowRun else {
             return .unknown
         }
 
@@ -92,7 +89,7 @@ extension ActionStatus {
     }
 
     var lastRun: String {
-        guard let createdAt = workflowRun?.createdAt else {
+        guard let createdAt = summary?.workflowRun.createdAt else {
             return "Unknown"
         }
         let dateFormatter = RelativeDateTimeFormatter()
