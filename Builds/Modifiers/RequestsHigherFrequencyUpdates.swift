@@ -20,27 +20,23 @@
 
 import SwiftUI
 
-import Diligence
-import Interact
-
-struct MainWindow: Scene {
-
-    static let id = "main"
+struct RequestsHigherFrequencyUpdates: ViewModifier {
 
     @EnvironmentObject var applicationModel: ApplicationModel
-    @State var error: Error? = nil
 
-    var body: some Scene {
-        WindowGroup(id: Self.id) {
-            ContentView(applicationModel: applicationModel)
-                .handlesAuthentication()
-                .handlesExternalEvents(preferring: [], allowing: [.main])
-        }
-        .defaultSize(CGSize(width: 800, height: 720))
-        .commands {
-            ToolbarCommands()
-        }
-        .handlesExternalEvents(matching: [.main, .auth])
+    func body(content: Content) -> some View {
+        return content
+            .task {
+                await applicationModel.requestHigherFrequencyUpdates()
+            }
+    }
+
+}
+
+extension View {
+
+    func requestsHigherFrequencyUpdates() -> some View {
+        return modifier(RequestsHigherFrequencyUpdates())
     }
 
 }

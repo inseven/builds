@@ -29,10 +29,10 @@ struct SummaryWindow: Scene {
 
     static let id = "summary"
 
-    let applicationModel: ApplicationModel
+    @EnvironmentObject var applicationModel: ApplicationModel
 
     var body: some Scene {
-        Window("Summary", id: Self.id) {
+        WindowGroup("Summary", id: Self.id) {
             SummaryContentView(applicationModel: applicationModel)
         }
         .windowResizability(.contentSize)

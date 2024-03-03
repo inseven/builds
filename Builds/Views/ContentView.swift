@@ -32,12 +32,18 @@ struct ContentView: View {
         case settings
     }
 
+    @ObservedObject var applicationModel: ApplicationModel
+    @StateObject var sceneModel: SceneModel
     @State var sheet: SheetType?
 
     @Environment(\.openURL) var openURL
     @Environment(\.scenePhase) var scenePhase
 
-    @EnvironmentObject var applicationModel: ApplicationModel
+
+    init(applicationModel: ApplicationModel) {
+        self.applicationModel = applicationModel
+        _sceneModel = StateObject(wrappedValue: SceneModel(applicationModel: applicationModel))
+    }
 
     var body: some View {
         NavigationStack {
@@ -90,9 +96,6 @@ struct ContentView: View {
                 }
 
             }
-            .task {
-                await applicationModel.refresh()
-            }
 
         }
         .sheet(item: $sheet) { sheet in
@@ -112,6 +115,9 @@ struct ContentView: View {
                 }
             }
         }
+        .runs(sceneModel)
+        .requestsHigherFrequencyUpdates()
+        .focusedSceneObject(sceneModel)
         .onChange(of: scenePhase) { oldValue, newValue in
             switch newValue {
             case .background:
