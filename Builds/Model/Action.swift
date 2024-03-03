@@ -23,7 +23,6 @@ import Foundation
 class Action: Identifiable, Hashable, Codable {
 
     private enum CodingKeys: CodingKey {
-        case repositoryName
         case repositoryFullName
         case workflowId
         case branch
@@ -32,7 +31,6 @@ class Action: Identifiable, Hashable, Codable {
     static func == (lhs: Action, rhs: Action) -> Bool {
         return (
             lhs.id == rhs.id &&
-            lhs.repositoryName == rhs.repositoryName &&
             lhs.repositoryFullName == rhs.repositoryFullName &&
             lhs.workflowId == rhs.workflowId &&
             lhs.branch == rhs.branch
@@ -43,13 +41,15 @@ class Action: Identifiable, Hashable, Codable {
         return "\(repositoryFullName):\(workflowId)@\(branch)"
     }
 
-    let repositoryName: String
+    var repositoryName: String {
+        return String(repositoryFullName.split(separator: "/").first ?? "")
+    }
+
     let repositoryFullName: String
     let workflowId: Int
     let branch: String
 
-    init(repositoryName: String, repositoryFullName: String, workflowId: Int, branch: String) {
-        self.repositoryName = repositoryName
+    init(repositoryFullName: String, workflowId: Int, branch: String) {
         self.repositoryFullName = repositoryFullName
         self.workflowId = workflowId
         self.branch = branch
@@ -57,7 +57,6 @@ class Action: Identifiable, Hashable, Codable {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.repositoryName = try container.decode(String.self, forKey: .repositoryName)
         self.repositoryFullName = try container.decode(String.self, forKey: .repositoryFullName)
         self.workflowId = try container.decode(Int.self, forKey: .workflowId)
         self.branch = try container.decode(String.self, forKey: .branch)
@@ -65,15 +64,12 @@ class Action: Identifiable, Hashable, Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(repositoryName, forKey: .repositoryName)
         try container.encode(repositoryFullName, forKey: .repositoryFullName)
         try container.encode(workflowId, forKey: .workflowId)
         try container.encodeIfPresent(branch, forKey: .branch)
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(repositoryName)
         hasher.combine(repositoryFullName)
         hasher.combine(workflowId)
         hasher.combine(branch)
