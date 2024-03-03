@@ -85,12 +85,19 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
+    @MainActor @Published private var activeScenes = 0 {
+        didSet {
+            print("activeScenes = \(activeScenes)")
+        }
+    }
+
     // TODO: Make this private.
     @MainActor let client: GitHubClient
 
     @MainActor private let defaults = KeyedDefaults<Key>()
     @MainActor private let keychain = KeychainManager<Key>()
     @MainActor private var cancellables = Set<AnyCancellable>()
+    @MainActor private var refreshScheduler: RefreshScheduler!
 
     override init() {
         let configuration = Bundle.main.configuration()
@@ -112,10 +119,37 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
         self.client.authenticationProvider = self
 
+        refreshScheduler = RefreshScheduler { [weak self] in
+            guard let self else {
+                return nil
+            }
+            do {
+                print("Refreshing...")
+                self.isUpdating = true
+                let elements = try await self.actions.map { action in
+                    return try await self.update(action: action)
+                }
+                let cachedStatus = elements.reduce(into: [Action: ActionStatus]()) { partialResult, actionStatus in
+                    partialResult[actionStatus.action] = actionStatus
+                }
+
+                self.cachedStatus = cachedStatus
+                self.lastUpdate = Date()
+            } catch {
+                print("Failed to update with erorr \(error).")
+            }
+            self.isUpdating = false
+            print("Done")
+            return self.activeScenes > 0 ? .minutes(1.0) : .minutes(5.0)
+        }
+
         self.start()
     }
 
     @MainActor private func start() {
+
+        // Start the refresh scheduler.
+        refreshScheduler.start()
 
         // Update the state whenever a user changes the favorites.
         $actions
@@ -165,20 +199,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .receive(on: DispatchQueue.main)
             .assign(to: \.summary, on: self)
             .store(in: &cancellables)
-
-        // Check for updates every minute to ensure the app feels live and responsive.
-        // In the future, it would make sense to reduce this frequency if there are no active windows or if the app is
-        // running in the background.
-        Timer.publish(every: 60, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] date in
-                Task {
-                    await self?.refresh()
-                }
-            }
-            .store(in: &cancellables)
-
-        // TODO: Inject the authentication token into updates by observing the token.
 
     }
 
@@ -233,21 +253,22 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     }
 
     func refresh() async {
-        dispatchPrecondition(condition: .onQueue(.main))
-        do {
-            self.isUpdating = true
-            let elements = try await actions.map { action in
-                return try await self.update(action: action)
+        await refreshScheduler.run()
+    }
+
+    func requestHigherFrequencyUpdates() async {
+        if activeScenes < 1 {
+            Task {
+                await refreshScheduler.run()
             }
-            let cachedStatus = elements.reduce(into: [Action: ActionStatus]()) { partialResult, actionStatus in
-                partialResult[actionStatus.action] = actionStatus
-            }
-            self.cachedStatus = cachedStatus
-            self.lastUpdate = Date()
-        } catch {
-            print("Failed to update with erorr \(error).")
         }
-        self.isUpdating = false
+        activeScenes = activeScenes + 1
+        defer {
+            activeScenes = activeScenes - 1
+        }
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(60*60*24))
+        }
     }
 
 }

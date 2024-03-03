@@ -20,27 +20,20 @@
 
 import SwiftUI
 
-import Diligence
 import Interact
 
-struct MainWindow: Scene {
+class SceneModel: ObservableObject, Runnable {
 
-    static let id = "main"
+    let applicationModel: ApplicationModel
 
-    @EnvironmentObject var applicationModel: ApplicationModel
-    @State var error: Error? = nil
+    init(applicationModel: ApplicationModel) {
+        self.applicationModel = applicationModel
+    }
 
-    var body: some Scene {
-        WindowGroup(id: Self.id) {
-            ContentView(applicationModel: applicationModel)
-                .handlesAuthentication()
-                .handlesExternalEvents(preferring: [], allowing: [.main])
-        }
-        .defaultSize(CGSize(width: 800, height: 720))
-        .commands {
-            ToolbarCommands()
-        }
-        .handlesExternalEvents(matching: [.main, .auth])
+    @MainActor func start() {
+    }
+
+    @MainActor func stop() {
     }
 
 }

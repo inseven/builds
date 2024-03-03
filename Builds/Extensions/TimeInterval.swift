@@ -18,29 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-import Diligence
-import Interact
+extension TimeInterval {
 
-struct MainWindow: Scene {
-
-    static let id = "main"
-
-    @EnvironmentObject var applicationModel: ApplicationModel
-    @State var error: Error? = nil
-
-    var body: some Scene {
-        WindowGroup(id: Self.id) {
-            ContentView(applicationModel: applicationModel)
-                .handlesAuthentication()
-                .handlesExternalEvents(preferring: [], allowing: [.main])
-        }
-        .defaultSize(CGSize(width: 800, height: 720))
-        .commands {
-            ToolbarCommands()
-        }
-        .handlesExternalEvents(matching: [.main, .auth])
+    static func minutes(_ minutes: Double) -> TimeInterval {
+        return 60 * minutes
     }
 
 }

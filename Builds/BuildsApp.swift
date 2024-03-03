@@ -42,7 +42,8 @@ struct BuildsApp: App {
 
 #if os(macOS)
 
-        SummaryWindow(applicationModel: applicationModel)
+        SummaryWindow()
+            .environmentObject(applicationModel)
 
         About(Legal.contents)
 

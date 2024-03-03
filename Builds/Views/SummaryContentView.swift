@@ -47,6 +47,7 @@ struct SummaryContentView: View {
                 openURL(.main)
             }
             .navigationTitle("")
+            .requestsHigherFrequencyUpdates()
     }
 
 }
