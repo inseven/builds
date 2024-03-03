@@ -20,83 +20,14 @@
 
 import SwiftUI
 
-struct WorkflowSummary: Identifiable, Codable {
+struct WorkflowSummary: Codable {
 
-    var id: Action { action }
-
-    let action: Action
-    let workflowRun: GitHub.WorkflowRun?
+    let workflowRun: GitHub.WorkflowRun
     let annotations: [GitHub.Annotation]
 
-    init(action: Action, workflowRun: GitHub.WorkflowRun?, annotations: [GitHub.Annotation] = []) {
-        self.action = action
+    init(workflowRun: GitHub.WorkflowRun, annotations: [GitHub.Annotation] = []) {
         self.workflowRun = workflowRun
         self.annotations = annotations
-    }
-
-}
-
-extension WorkflowSummary {
-
-    var repositoryName: String {
-        return action.repositoryName
-    }
-
-    var details: String {
-        return "\(workflowRun?.name ?? String(action.workflowId)) (\(action.branch))"
-    }
-
-    var state: SummaryState {
-
-        guard let workflowRun = workflowRun else {
-            return .unknown
-        }
-
-        switch workflowRun.status {
-        case .queued:
-            return .inProgress
-        case .waiting:
-            return .inProgress
-        case .inProgress:
-            return .inProgress
-        case .completed:
-            break
-        }
-
-        guard let conclusion = workflowRun.conclusion else {
-            return .unknown
-        }
-
-        switch conclusion {
-        case .success:
-            return .success
-        case .failure:
-            return .failure
-        case .cancelled:
-            return .failure
-        }
-
-    }
-
-    var statusColor: Color {
-        switch self.state {
-        case .unknown:
-            return .gray
-        case .success:
-            return .green
-        case .failure:
-            return .red
-        case .inProgress:
-            return .yellow
-        }
-    }
-
-    var lastRun: String {
-        guard let createdAt = workflowRun?.createdAt else {
-            return "Unknown"
-        }
-        let dateFormatter = RelativeDateTimeFormatter()
-        return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
     }
 
 }

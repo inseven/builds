@@ -53,7 +53,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var summary: SummaryState = .unknown
-    @MainActor @Published var status: [WorkflowSummary] = []
+    @MainActor @Published var results: [WorkflowResult] = []
 
     @MainActor @Published var authenticationToken: GitHub.Authentication? {
         didSet {
@@ -126,11 +126,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             do {
                 print("Refreshing...")
                 self.isUpdating = true
-                let elements = try await self.actions.map { action in
+                let results = try await self.actions.map { action in
                     return try await self.update(action: action)
                 }
-                let cachedStatus = elements.reduce(into: [Action.ID: WorkflowSummary]()) { partialResult, actionStatus in
-                    partialResult[actionStatus.action.id] = actionStatus
+                let cachedStatus = results.reduce(into: [Action.ID: WorkflowSummary]()) { partialResult, workflowResult in
+                    partialResult[workflowResult.action.id] = workflowResult.summary
                 }
 
                 self.cachedStatus = cachedStatus
@@ -168,29 +168,29 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             }
             .store(in: &cancellables)
 
-        // Generate the status array used to back the main window.
+        // Generate the results array used to back the main window.
         $actions
             .combineLatest($cachedStatus)
             .map { actions, cachedStatus in
                 return actions.map { action in
-                    return cachedStatus[action.id] ?? WorkflowSummary(action: action, workflowRun: nil)
+                    return WorkflowResult(action: action, summary: cachedStatus[action.id])
                 }
                 .sorted {
                     $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending
                 }
             }
             .receive(on: DispatchQueue.main)
-            .assign(to: \.status, on: self)
+            .assign(to: \.results, on: self)
             .store(in: &cancellables)
 
         // Generate an over-arching build summary used to back insight windows and widgets.
-        $status
-            .map { (statuses) -> SummaryState in
-                guard statuses.count > 0 else {
+        $results
+            .map { (results) -> SummaryState in
+                guard results.count > 0 else {
                     return .unknown
                 }
-                for status in statuses {
-                    switch status.state {
+                for result in results {
+                    switch result.state {
                     case .unknown:
                         return .unknown
                     case .success:  // We require 100% successes for success.
@@ -233,7 +233,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         Application.open(client.permissionsURL)
     }
 
-    func update(action: Action) async throws -> WorkflowSummary {
+    func update(action: Action) async throws -> WorkflowResult {
         let workflowRuns = try await client.workflowRuns(for: action.repositoryFullName)
 
         let latestRun = workflowRuns.first { workflowRun in
@@ -247,7 +247,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         guard let latestRun else {
-            return WorkflowSummary(action: action, workflowRun: latestRun)
+            return WorkflowResult(action: action, summary: nil)
         }
 
         let workflowJobs = try await client.workflowJobs(for: action.repositoryFullName, workflowRun: latestRun)
@@ -257,7 +257,8 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                                                                         workflowJob: workflowJob))
         }
 
-        return WorkflowSummary(action: action, workflowRun: latestRun, annotations: annotations)
+        return WorkflowResult(action: action,
+                              summary: WorkflowSummary(workflowRun: latestRun, annotations: annotations))
     }
 
     func refresh() async {
