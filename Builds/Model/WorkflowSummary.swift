@@ -38,6 +38,10 @@ struct WorkflowSummary: Identifiable, Codable {
 
 extension WorkflowSummary {
 
+    var repositoryName: String {
+        return action.repositoryName
+    }
+
     var details: String {
         return "\(workflowRun?.name ?? String(action.workflowId)) (\(action.branch))"
     }

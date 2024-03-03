@@ -32,21 +32,21 @@ struct SummaryCell: View {
 
     @State var isPresented: Bool = false
 
-    let status: WorkflowSummary
+    let summary: WorkflowSummary
 
     var body: some View {
         Grid(alignment: .leadingFirstTextBaseline) {
             GridRow {
                 HStack {
-                    Text(status.action.repositoryName)
+                    Text(summary.repositoryName)
                         .font(Font.headline)
                     Spacer()
                 }
                 HStack {
-                    if status.annotations.count > 0 {
+                    if summary.annotations.count > 0 {
                         Button {
                             isPresented = true
-                            print("Annotations = \(status.annotations)")
+                            print("Annotations = \(summary.annotations)")
                         } label: {
                             Image(systemName: "text.alignleft")
                                 .contentShape(Rectangle())
@@ -54,7 +54,7 @@ struct SummaryCell: View {
                         .buttonStyle(.plain)
                         .popover(isPresented: $isPresented, arrowEdge: .bottom) {
                             VStack(alignment: .leading) {
-                                ForEach(status.annotations) { annotation in
+                                ForEach(summary.annotations) { annotation in
                                     HStack(alignment: .firstTextBaseline) {
                                         if annotation.annotation_level == "warning" {
                                             Image(systemName: "exclamationmark.triangle")
@@ -73,7 +73,7 @@ struct SummaryCell: View {
                             .foregroundColor(.primary)
                         }
                     }
-                    if let workflowRun = status.workflowRun {
+                    if let workflowRun = summary.workflowRun {
                         switch workflowRun.status {
                         case .queued:
                             Image(systemName: "clock.arrow.circlepath")
@@ -100,11 +100,11 @@ struct SummaryCell: View {
 
             }
             GridRow {
-                Text(status.details)
+                Text(summary.details)
                     .font(Font.subheadline)
                     .opacity(0.6)
                 TimelineView(.periodic(from: Date(), by: 1)) { _ in
-                    Text(status.lastRun)
+                    Text(summary.lastRun)
                         .font(Font.subheadline)
                         .opacity(0.6)
                 }
@@ -114,7 +114,7 @@ struct SummaryCell: View {
         .lineLimit(1)
         .frame(maxWidth: .infinity)
         .padding()
-        .background(status.statusColor)
+        .background(summary.statusColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .foregroundColor(.black)
     }

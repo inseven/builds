@@ -31,11 +31,11 @@ struct SummaryView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: layout) {
-                ForEach(applicationModel.status) { status in
-                    SummaryCell(status: status)
+                ForEach(applicationModel.status) { summary in
+                    SummaryCell(summary: summary)
                         .contextMenu {
                             Button {
-                                guard let workflowRun = status.workflowRun else {
+                                guard let workflowRun = summary.workflowRun else {
                                     return
                                 }
                                 openURL(workflowRun.htmlURL)
@@ -44,13 +44,13 @@ struct SummaryView: View {
                             }
                             Divider()
                             Button(role: .destructive) {
-                                applicationModel.removeAction(status.action)
+                                applicationModel.removeAction(summary.action)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
                         }
                         .onTapGesture {
-                            guard let workflowRun = status.workflowRun else {
+                            guard let workflowRun = summary.workflowRun else {
                                 return
                             }
                             openURL(workflowRun.htmlURL)
