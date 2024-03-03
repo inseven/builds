@@ -40,7 +40,7 @@ class Action: Identifiable, Hashable, Codable {
     }
 
     var id: String {
-        return "\(repositoryFullName)@\(branch)"
+        return "\(repositoryFullName):\(workflowId)@\(branch)"
     }
 
     let repositoryName: String
