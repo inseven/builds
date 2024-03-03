@@ -42,7 +42,7 @@ class Action: Identifiable, Hashable, Codable {
     }
 
     var repositoryName: String {
-        return String(repositoryFullName.split(separator: "/").first ?? "")
+        return String(repositoryFullName.split(separator: "/").last ?? "?")
     }
 
     let repositoryFullName: String

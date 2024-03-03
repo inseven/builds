@@ -69,7 +69,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         return authenticationToken != nil
     }
 
-    @MainActor @Published var cachedStatus: [Action: WorkflowSummary] = [:] {
+    @MainActor @Published var cachedStatus: [Action.ID: WorkflowSummary] = [:] {
         didSet {
             do {
                 try defaults.set(codable: cachedStatus, forKey: .status)
@@ -107,7 +107,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         self.client = GitHubClient(api: api)
 
         self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
-        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action: WorkflowSummary]())) ?? [:]
+        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action.ID: WorkflowSummary]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
@@ -129,8 +129,8 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 let elements = try await self.actions.map { action in
                     return try await self.update(action: action)
                 }
-                let cachedStatus = elements.reduce(into: [Action: WorkflowSummary]()) { partialResult, actionStatus in
-                    partialResult[actionStatus.action] = actionStatus
+                let cachedStatus = elements.reduce(into: [Action.ID: WorkflowSummary]()) { partialResult, actionStatus in
+                    partialResult[actionStatus.action.id] = actionStatus
                 }
 
                 self.cachedStatus = cachedStatus
@@ -173,7 +173,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .combineLatest($cachedStatus)
             .map { actions, cachedStatus in
                 return actions.map { action in
-                    return cachedStatus[action] ?? WorkflowSummary(action: action, workflowRun: nil)
+                    return cachedStatus[action.id] ?? WorkflowSummary(action: action, workflowRun: nil)
                 }
                 .sorted {
                     $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending
