@@ -68,15 +68,6 @@ struct ContentView: View {
             .toolbarTitleDisplayMode(.inline)
             .toolbar {
 
-#if os(macOS)
-                if applicationModel.isUpdating {
-                    ToolbarItem(id: "status", placement: .navigation) {
-                        ProgressView()
-                            .controlSize(.small)
-                    }
-                }
-#endif
-
 #if os(iOS)
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
