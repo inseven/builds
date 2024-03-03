@@ -20,7 +20,10 @@
 
 import Foundation
 
-class Action: Identifiable, Hashable, Codable {
+import SwiftData
+
+@Model
+class Action: Identifiable, Hashable {
 
     private enum CodingKeys: CodingKey {
         case repositoryFullName
@@ -53,20 +56,6 @@ class Action: Identifiable, Hashable, Codable {
         self.repositoryFullName = repositoryFullName
         self.workflowId = workflowId
         self.branch = branch
-    }
-
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.repositoryFullName = try container.decode(String.self, forKey: .repositoryFullName)
-        self.workflowId = try container.decode(Int.self, forKey: .workflowId)
-        self.branch = try container.decode(String.self, forKey: .branch)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(repositoryFullName, forKey: .repositoryFullName)
-        try container.encode(workflowId, forKey: .workflowId)
-        try container.encodeIfPresent(branch, forKey: .branch)
     }
 
     func hash(into hasher: inout Hasher) {

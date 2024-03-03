@@ -19,6 +19,7 @@
 // SOFTWARE.
 
 import Combine
+import SwiftData
 import SwiftUI
 
 import Interact
@@ -33,22 +34,16 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         case accessToken
     }
 
-    @MainActor @Published var actions: [Action] = [] {
-        didSet {
-            do {
-                try defaults.set(codable: actions, forKey: .items)
-            } catch {
-                print("Failed to save state with error \(error).")
-            }
-        }
-    }
+    @MainActor @Published var actions: [Action] = []
 
     @MainActor func addAction(_ action: Action) {
         actions.append(action)
+        modelContainer.mainContext.insert(action)
     }
 
     @MainActor func removeAction(_ action: Action) {
         actions.removeAll { $0.id == action.id }
+        modelContainer.mainContext.delete(action)
     }
 
     @MainActor @Published var isUpdating: Bool = false
@@ -98,6 +93,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     @MainActor private let keychain = KeychainManager<Key>()
     @MainActor private var cancellables = Set<AnyCancellable>()
     @MainActor private var refreshScheduler: RefreshScheduler!
+    private let modelContainer: ModelContainer
 
     override init() {
         let configuration = Bundle.main.configuration()
@@ -106,13 +102,25 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api)
 
-        self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
+        //        self.actions = (try? defaults.codable(forKey: .items, default: [Action]())) ?? []
+        self.actions = []
         self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action.ID: WorkflowSummary]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
         } else {
             self.authenticationToken = nil
+        }
+
+        let storeURL = URL.documentsDirectory.appending(path: "database.sqlite")
+        let config = ModelConfiguration(url: storeURL)
+        self.modelContainer = try! ModelContainer(for: Action.self, configurations: config)
+
+        do {
+            let data = try self.modelContainer.mainContext.fetch(FetchDescriptor<Action>())
+            self.actions = data
+        } catch {
+            fatalError("Fucked with error \(error).")
         }
 
         super.init()
