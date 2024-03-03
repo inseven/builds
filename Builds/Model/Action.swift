@@ -20,20 +20,40 @@
 
 import Foundation
 
-struct Action: Identifiable, Hashable, Codable {
+class Action: Identifiable, Hashable, Codable {
 
-    let id: UUID
+    static func == (lhs: Action, rhs: Action) -> Bool {
+        return (
+            lhs.id == rhs.id &&
+            lhs.repositoryName == rhs.repositoryName &&
+            lhs.repositoryFullName == rhs.repositoryFullName &&
+            lhs.workflowId == rhs.workflowId &&
+            lhs.branch == rhs.branch
+        )
+    }
+
+    var id: String {
+        return "\(repositoryFullName)@\(branch ?? "?")"
+    }
+
     let repositoryName: String
     let repositoryFullName: String
     let workflowId: Int
     let branch: String?
 
     init(repositoryName: String, repositoryFullName: String, workflowId: Int, branch: String?) {
-        self.id = UUID()
         self.repositoryName = repositoryName
         self.repositoryFullName = repositoryFullName
         self.workflowId = workflowId
         self.branch = branch
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+        hasher.combine(repositoryName)
+        hasher.combine(repositoryFullName)
+        hasher.combine(workflowId)
+        hasher.combine(branch)
     }
 
 }
