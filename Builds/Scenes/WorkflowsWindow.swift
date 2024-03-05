@@ -32,7 +32,7 @@ struct WorkflowsWindow: Scene {
         Window("Manage Favorites", id: Self.id) {
             WorkflowsContentView(applicationModel: applicationModel)
         }
-
+        .handlesExternalEvents(matching: [.workflows])
     }
 
 }

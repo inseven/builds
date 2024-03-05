@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D8092F012B69A4B100FD21C8 /* AddActionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8092F002B69A4B100FD21C8 /* AddActionModel.swift */; };
 		D81251B22B917F07001F6E85 /* SummaryWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B12B917F07001F6E85 /* SummaryWindow.swift */; };
 		D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B32B9181E9001F6E85 /* SummaryContentView.swift */; };
 		D81251B62B918472001F6E85 /* SummaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B52B918472001F6E85 /* SummaryState.swift */; };
@@ -29,7 +28,6 @@
 		D8CA0EF62B942BD900DAE758 /* WorkflowResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EF52B942BD900DAE758 /* WorkflowResult.swift */; };
 		D8D413E928043FCD001BA6C0 /* SummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413E828043FCD001BA6C0 /* SummaryCell.swift */; };
 		D8D413EB28044062001BA6C0 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* SummaryView.swift */; };
-		D8D413ED2804539C001BA6C0 /* AddActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EC2804539C001BA6C0 /* AddActionView.swift */; };
 		D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */; };
 		D8D413F328045535001BA6C0 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F228045535001BA6C0 /* Action.swift */; };
 		D8D413F528045577001BA6C0 /* WorkflowSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F428045577001BA6C0 /* WorkflowSummary.swift */; };
@@ -76,7 +74,6 @@
 
 /* Begin PBXFileReference section */
 		D8092EFF2B698E9F00FD21C8 /* Builds.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Builds.entitlements; sourceTree = "<group>"; };
-		D8092F002B69A4B100FD21C8 /* AddActionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActionModel.swift; sourceTree = "<group>"; };
 		D81251B12B917F07001F6E85 /* SummaryWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryWindow.swift; sourceTree = "<group>"; };
 		D81251B32B9181E9001F6E85 /* SummaryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryContentView.swift; sourceTree = "<group>"; };
 		D81251B52B918472001F6E85 /* SummaryState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryState.swift; sourceTree = "<group>"; };
@@ -99,7 +96,6 @@
 		D8CA0EF52B942BD900DAE758 /* WorkflowResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowResult.swift; sourceTree = "<group>"; };
 		D8D413E828043FCD001BA6C0 /* SummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCell.swift; sourceTree = "<group>"; };
 		D8D413EA28044062001BA6C0 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
-		D8D413EC2804539C001BA6C0 /* AddActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddActionView.swift; sourceTree = "<group>"; };
 		D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationModel.swift; sourceTree = "<group>"; };
 		D8D413F228045535001BA6C0 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		D8D413F428045577001BA6C0 /* WorkflowSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowSummary.swift; sourceTree = "<group>"; };
@@ -207,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				D8D413F228045535001BA6C0 /* Action.swift */,
-				D8092F002B69A4B100FD21C8 /* AddActionModel.swift */,
 				D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */,
 				D8DA9D8C2B97013D00C17DBC /* ConcreteWorkflowDetails.swift */,
 				D8D413F8280479B7001BA6C0 /* Configuration.swift */,
@@ -229,7 +224,6 @@
 			isa = PBXGroup;
 			children = (
 				D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */,
-				D8D413EC2804539C001BA6C0 /* AddActionView.swift */,
 				D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */,
 				D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */,
 				D8D413E828043FCD001BA6C0 /* SummaryCell.swift */,
@@ -472,12 +466,10 @@
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
 				D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */,
-				D8D413ED2804539C001BA6C0 /* AddActionView.swift in Sources */,
 				D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */,
 				D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */,
 				D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */,
 				D8CA0EF22B94110A00DAE758 /* TimeInterval.swift in Sources */,
-				D8092F012B69A4B100FD21C8 /* AddActionModel.swift in Sources */,
 				D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */,
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,

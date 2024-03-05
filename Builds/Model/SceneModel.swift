@@ -24,6 +24,18 @@ import Interact
 
 class SceneModel: ObservableObject, Runnable {
 
+    enum SheetType: Identifiable {
+
+        var id: Self {
+            return self
+        }
+
+        case add
+        case settings
+    }
+
+    @Published var sheet: SheetType?
+
     let applicationModel: ApplicationModel
 
     init(applicationModel: ApplicationModel) {
@@ -34,6 +46,18 @@ class SceneModel: ObservableObject, Runnable {
     }
 
     @MainActor func stop() {
+    }
+
+    @MainActor func showSettings() {
+        sheet = .settings
+    }
+
+    @MainActor func manageWorkflows() {
+#if os(iOS)
+        sheet = .add
+#else
+        Application.open(.workflows)
+#endif
     }
 
 }

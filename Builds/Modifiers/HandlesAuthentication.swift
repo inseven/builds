@@ -30,7 +30,7 @@ struct HandlesAuthentication: ViewModifier {
 
     func body(content: Content) -> some View {
         return content
-            .onOpenURL { url in  // TODO: Make this a modifier.
+            .onOpenURL { url in
 
                 // Ignore non-authentication URLs.
                 guard url.absoluteString.starts(with: URL.auth.absoluteString) else {
