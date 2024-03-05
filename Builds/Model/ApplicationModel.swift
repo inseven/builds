@@ -138,7 +138,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                     return try await self.update(id: id)
                 }
                 let cachedStatus = results.reduce(into: [WorkflowInstance.ID: WorkflowSummary]()) { partialResult, workflowResult in
-                    partialResult[workflowResult.id] = workflowResult.summary
+                    partialResult[workflowResult.id] = workflowResult.result
                 }
 
                 self.cachedStatus = cachedStatus
@@ -181,7 +181,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .combineLatest($cachedStatus)
             .map { actions, cachedStatus in
                 return actions.map { id in
-                    return WorkflowInstance(id: id, summary: cachedStatus[id])
+                    return WorkflowInstance(id: id, result: cachedStatus[id])
                 }
                 .sorted {
                     $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
@@ -281,7 +281,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         guard let latestRun else {
-            return WorkflowInstance(id: id, summary: nil)
+            return WorkflowInstance(id: id)
         }
 
         let workflowJobs = try await client.workflowJobs(for: id.repositoryFullName, workflowRun: latestRun)
@@ -292,9 +292,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         return WorkflowInstance(id: id,
-                                summary: WorkflowSummary(workflowRun: latestRun, annotations: annotations))
+                                result: WorkflowSummary(workflowRun: latestRun, annotations: annotations))
     }
-
+    
     func refresh() async {
         await refreshScheduler.run()
     }

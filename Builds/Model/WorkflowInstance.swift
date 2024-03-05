@@ -45,11 +45,11 @@ struct WorkflowInstance: Identifiable {
     }
 
     let id: ID
-    let summary: WorkflowSummary?
+    let result: WorkflowSummary?
 
-    init(id: ID, summary: WorkflowSummary?) {
+    init(id: ID, result: WorkflowSummary? = nil) {
         self.id = id
-        self.summary = summary
+        self.result = result
     }
 
     var repositoryName: String {
@@ -57,11 +57,11 @@ struct WorkflowInstance: Identifiable {
     }
 
     var details: String {
-        return "\(summary?.workflowRun.name ?? String(id.workflowId)) (\(id.branch))"
+        return "\(result?.workflowRun.name ?? String(id.workflowId)) (\(id.branch))"
     }
 
     var annotations: [GitHub.Annotation] {
-        return summary?.annotations ?? []
+        return result?.annotations ?? []
     }
 
 }
@@ -70,7 +70,7 @@ extension WorkflowInstance {
 
     var state: SummaryState {
 
-        guard let workflowRun = summary?.workflowRun else {
+        guard let workflowRun = result?.workflowRun else {
             return .unknown
         }
 
@@ -114,7 +114,7 @@ extension WorkflowInstance {
     }
 
     var lastRun: String {
-        guard let createdAt = summary?.workflowRun.createdAt else {
+        guard let createdAt = result?.workflowRun.createdAt else {
             return "Unknown"
         }
         let dateFormatter = RelativeDateTimeFormatter()

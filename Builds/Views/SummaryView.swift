@@ -35,7 +35,7 @@ struct SummaryView: View {
                     SummaryCell(result: result)
                         .contextMenu {
                             Button {
-                                guard let workflowRun = result.summary?.workflowRun else {
+                                guard let workflowRun = result.result?.workflowRun else {
                                     return
                                 }
                                 openURL(workflowRun.htmlURL)
@@ -50,7 +50,7 @@ struct SummaryView: View {
                             }
                         }
                         .onTapGesture {
-                            guard let workflowRun = result.summary?.workflowRun else {
+                            guard let workflowRun = result.result?.workflowRun else {
                                 return
                             }
                             openURL(workflowRun.htmlURL)
