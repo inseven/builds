@@ -19,7 +19,6 @@
 // SOFTWARE.
 
 import Combine
-import SwiftData
 import SwiftUI
 
 import Interact
@@ -32,18 +31,34 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         case status
         case lastUpdate
         case accessToken
+        case favorites
     }
 
-    @MainActor @Published var actions: [Action] = []
+    @MainActor @Published var actions: [Action] = [] {
+        didSet {
+            do {
+                let data = try JSONEncoder().encode(actions)
+                let store = NSUbiquitousKeyValueStore.default
+                guard store.data(forKey: Key.favorites.rawValue) != data else {
+                    return
+                }
+                store.set(data, forKey: Key.favorites.rawValue)
+                store.synchronize()
+            } catch {
+                print("Failed to save actions with error \(error).")
+            }
+        }
+    }
 
     @MainActor func addAction(_ action: Action) {
+        guard !actions.contains(action) else {
+            return
+        }
         actions.append(action)
-        modelContainer.mainContext.insert(action)
     }
 
     @MainActor func removeAction(_ action: Action) {
         actions.removeAll { $0.id == action.id }
-        modelContainer.mainContext.delete(action)
     }
 
     @MainActor @Published var isUpdating: Bool = false
@@ -92,7 +107,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     @MainActor private let defaults = KeyedDefaults<Key>()
     @MainActor private let keychain = KeychainManager<Key>()
     @MainActor private var cancellables = Set<AnyCancellable>()
-    private let modelContainer: ModelContainer
     @MainActor private var refreshScheduler: RefreshScheduler!
 
     override init() {
@@ -101,11 +115,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api)
-
-        let storeURL = URL.documentsDirectory.appending(path: "database.sqlite")
-        let config = ModelConfiguration(url: storeURL)
-        self.modelContainer = try! ModelContainer(for: Action.self, configurations: config)
-        self.actions = (try? self.modelContainer.mainContext.fetch(FetchDescriptor<Action>())) ?? []
         self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action.ID: WorkflowSummary]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
@@ -135,7 +144,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 self.cachedStatus = cachedStatus
                 self.lastUpdate = Date()
             } catch {
-                print("Failed to update with erorr \(error).")
+                print("Failed to update with error \(error).")
             }
             self.isUpdating = false
             print("Done")
@@ -206,10 +215,36 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .assign(to: \.summary, on: self)
             .store(in: &cancellables)
 
+        NotificationCenter.default
+            .publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)
+            .prepend(.init(name: NSUbiquitousKeyValueStore.didChangeExternallyNotification))
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.sync()
+                }
+            }
+            .store(in: &cancellables)
+
     }
 
     @MainActor func logIn() {
         Application.open(client.authorizationURL)
+    }
+
+    @MainActor func sync() {
+        do {
+            NSUbiquitousKeyValueStore.default.synchronize()
+            guard let data = NSUbiquitousKeyValueStore.default.data(forKey: Key.favorites.rawValue) else {
+                return
+            }
+            let actions = try JSONDecoder().decode([Action].self, from: data)
+            guard self.actions != actions else {
+                return
+            }
+            self.actions = actions
+        } catch {
+            print("Failed to update actions with error \(error).")
+        }
     }
 
     func authenticate(with url: URL) async throws {
