@@ -20,12 +20,12 @@
 
 import SwiftUI
 
-struct WorkflowSummary: Codable {
+struct WorkflowResult: Codable {
 
     let workflowRun: GitHub.WorkflowRun
     let annotations: [GitHub.Annotation]
 
-    init(workflowRun: GitHub.WorkflowRun, annotations: [GitHub.Annotation] = []) {
+    init(workflowRun: GitHub.WorkflowRun, annotations: [GitHub.Annotation]) {
         self.workflowRun = workflowRun
         self.annotations = annotations
     }

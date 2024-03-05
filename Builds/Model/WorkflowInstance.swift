@@ -45,9 +45,9 @@ struct WorkflowInstance: Identifiable {
     }
 
     let id: ID
-    let result: WorkflowSummary?
+    let result: WorkflowResult?
 
-    init(id: ID, result: WorkflowSummary? = nil) {
+    init(id: ID, result: WorkflowResult? = nil) {
         self.id = id
         self.result = result
     }

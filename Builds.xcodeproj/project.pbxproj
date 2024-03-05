@@ -30,7 +30,7 @@
 		D8D413EB28044062001BA6C0 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* SummaryView.swift */; };
 		D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */; };
 		D8D413F328045535001BA6C0 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F228045535001BA6C0 /* Action.swift */; };
-		D8D413F528045577001BA6C0 /* WorkflowSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F428045577001BA6C0 /* WorkflowSummary.swift */; };
+		D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F428045577001BA6C0 /* WorkflowResult.swift */; };
 		D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F8280479B7001BA6C0 /* Configuration.swift */; };
 		D8D413FB28047AEE001BA6C0 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D413FA28047AEE001BA6C0 /* configuration.json */; };
 		D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413FC28047B85001BA6C0 /* Bundle.swift */; };
@@ -98,7 +98,7 @@
 		D8D413EA28044062001BA6C0 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
 		D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationModel.swift; sourceTree = "<group>"; };
 		D8D413F228045535001BA6C0 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
-		D8D413F428045577001BA6C0 /* WorkflowSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowSummary.swift; sourceTree = "<group>"; };
+		D8D413F428045577001BA6C0 /* WorkflowResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowResult.swift; sourceTree = "<group>"; };
 		D8D413F8280479B7001BA6C0 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		D8D413FA28047AEE001BA6C0 /* configuration.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
 		D8D413FC28047B85001BA6C0 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
@@ -214,8 +214,8 @@
 				D8CA0EED2B93E5A600DAE758 /* SceneModel.swift */,
 				D81251B52B918472001F6E85 /* SummaryState.swift */,
 				D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */,
+				D8D413F428045577001BA6C0 /* WorkflowResult.swift */,
 				D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */,
-				D8D413F428045577001BA6C0 /* WorkflowSummary.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -455,7 +455,7 @@
 				D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */,
 				D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */,
 				D8DA9D872B97007200C17DBC /* WorkflowsPicker.swift in Sources */,
-				D8D413F528045577001BA6C0 /* WorkflowSummary.swift in Sources */,
+				D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */,
 				D81251B62B918472001F6E85 /* SummaryState.swift in Sources */,
 				D8EE7DD32B7F3A2900A3DCF0 /* AboutButton.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */,

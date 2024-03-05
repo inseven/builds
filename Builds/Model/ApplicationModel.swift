@@ -79,7 +79,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         return authenticationToken != nil
     }
 
-    @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowSummary] = [:] {
+    @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
         didSet {
             do {
                 try defaults.set(codable: cachedStatus, forKey: .status)
@@ -115,7 +115,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api)
-        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [WorkflowInstance.ID: WorkflowSummary]())) ?? [:]
+        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [WorkflowInstance.ID: WorkflowResult]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
@@ -137,7 +137,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 let results = try await self.favorites.map { id in
                     return try await self.update(id: id)
                 }
-                let cachedStatus = results.reduce(into: [WorkflowInstance.ID: WorkflowSummary]()) { partialResult, workflowResult in
+                let cachedStatus = results.reduce(into: [WorkflowInstance.ID: WorkflowResult]()) { partialResult, workflowResult in
                     partialResult[workflowResult.id] = workflowResult.result
                 }
 
@@ -292,9 +292,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         return WorkflowInstance(id: id,
-                                result: WorkflowSummary(workflowRun: latestRun, annotations: annotations))
+                                result: WorkflowResult(workflowRun: latestRun, annotations: annotations))
     }
-    
+
     func refresh() async {
         await refreshScheduler.run()
     }
