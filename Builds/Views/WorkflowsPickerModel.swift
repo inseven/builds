@@ -68,9 +68,9 @@ class WorkflowPickerModel: ObservableObject, Runnable {
               let branch = branch else {
             return
         }
-        let action = WorkflowInstance.Identifier(repositoryFullName: repositoryDetails.repository.fullName,
-                                                 workflowId: workflow.id,
-                                                 branch: branch.name)
+        let action = WorkflowInstance.ID(repositoryFullName: repositoryDetails.repository.fullName,
+                                         workflowId: workflow.id,
+                                         branch: branch.name)
         applicationModel.addAction(action)
     }
 
