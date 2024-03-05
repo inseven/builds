@@ -108,6 +108,7 @@ class GitHub {
             case owner = "owner"
             case url = "url"
             case defaultBranch = "default_branch"
+            case archived = "archived"
         }
 
         static func == (lhs: Repository, rhs: Repository) -> Bool {
@@ -121,6 +122,7 @@ class GitHub {
         let owner: User
         let url: URL
         let defaultBranch: String
+        let archived: Bool
 
     }
 

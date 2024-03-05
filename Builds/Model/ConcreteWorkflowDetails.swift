@@ -18,41 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
-import SwiftUI
+import Foundation
 
-import Diligence
+struct ConcreteWorkflowDetails: Identifiable {
 
-@main
-struct BuildsApp: App {
-
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
+    var id: String {
+        return "\(name)@\(branch)"
     }
 
-    var body: some Scene {
+    let name: String
+    let branch: String
 
-        MainWindow()
-            .commands {
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-            }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        SummaryWindow()
-            .environmentObject(applicationModel)
-
-        About(Legal.contents)
-
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
-
-#endif
-
-    }
-    
 }

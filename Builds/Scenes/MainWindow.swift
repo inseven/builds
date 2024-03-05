@@ -32,7 +32,7 @@ struct MainWindow: Scene {
 
     var body: some Scene {
         WindowGroup(id: Self.id) {
-            ContentView(applicationModel: applicationModel)
+            MainContentView(applicationModel: applicationModel)
                 .handlesAuthentication()
                 .handlesExternalEvents(preferring: [], allowing: [.main])
         }

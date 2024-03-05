@@ -18,41 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
-import SwiftUI
+import Foundation
 
-import Diligence
+struct RepositoryDetails: Identifiable {
 
-@main
-struct BuildsApp: App {
-
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
+    var id: Int {
+        repository.id
     }
 
-    var body: some Scene {
+    let repository: GitHub.Repository
+    let workflows: [GitHub.Workflow]
+    let branches: [GitHub.Branch]
 
-        MainWindow()
-            .commands {
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-            }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        SummaryWindow()
-            .environmentObject(applicationModel)
-
-        About(Legal.contents)
-
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
-
-#endif
-
-    }
-    
 }
