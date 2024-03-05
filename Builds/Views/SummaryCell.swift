@@ -32,7 +32,7 @@ struct SummaryCell: View {
 
     @State var isPresented: Bool = false
 
-    let result: WorkflowResult
+    let result: WorkflowInstance
 
     var body: some View {
         Grid(alignment: .leadingFirstTextBaseline) {

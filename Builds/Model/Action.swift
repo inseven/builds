@@ -19,31 +19,3 @@
 // SOFTWARE.
 
 import Foundation
-
-struct Action: Identifiable, Hashable, Codable {
-
-    private enum CodingKeys: CodingKey {
-        case repositoryFullName
-        case workflowId
-        case branch
-    }
-
-    var id: String {
-        return "\(repositoryFullName):\(workflowId)@\(branch)"
-    }
-
-    var repositoryName: String {
-        return String(repositoryFullName.split(separator: "/").last ?? "?")
-    }
-
-    let repositoryFullName: String
-    let workflowId: Int
-    let branch: String
-
-    init(repositoryFullName: String, workflowId: Int, branch: String) {
-        self.repositoryFullName = repositoryFullName
-        self.workflowId = workflowId
-        self.branch = branch
-    }
-
-}

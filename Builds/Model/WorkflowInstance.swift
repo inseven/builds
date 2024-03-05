@@ -20,19 +20,41 @@
 
 import SwiftUI
 
-struct WorkflowResult: Identifiable {
+struct WorkflowInstance: Identifiable {
 
-    var id: String { action.id }
+    struct Identifier: Identifiable, Hashable, Codable {
 
-    let action: Action
+        var id: Self {
+            return self
+        }
+
+        var repositoryName: String {
+            return String(repositoryFullName.split(separator: "/").last ?? "?")
+        }
+
+        let repositoryFullName: String
+        let workflowId: Int
+        let branch: String
+
+        init(repositoryFullName: String, workflowId: Int, branch: String) {
+            self.repositoryFullName = repositoryFullName
+            self.workflowId = workflowId
+            self.branch = branch
+        }
+
+    }
+
+    var id: Identifier { identifier.id }
+
+    let identifier: Identifier
     let summary: WorkflowSummary?
 
     var repositoryName: String {
-        return action.repositoryName
+        return identifier.repositoryName
     }
 
     var details: String {
-        return "\(summary?.workflowRun.name ?? String(action.workflowId)) (\(action.branch))"
+        return "\(summary?.workflowRun.name ?? String(identifier.workflowId)) (\(identifier.branch))"
     }
 
     var annotations: [GitHub.Annotation] {
@@ -41,7 +63,7 @@ struct WorkflowResult: Identifiable {
 
 }
 
-extension WorkflowResult {
+extension WorkflowInstance {
 
     var state: SummaryState {
 
