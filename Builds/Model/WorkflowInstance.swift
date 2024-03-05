@@ -44,17 +44,20 @@ struct WorkflowInstance: Identifiable {
 
     }
 
-    var id: Identifier { identifier.id }
-
-    let identifier: Identifier
+    let id: Identifier
     let summary: WorkflowSummary?
 
+    init(id: Identifier, summary: WorkflowSummary?) {
+        self.id = id
+        self.summary = summary
+    }
+
     var repositoryName: String {
-        return identifier.repositoryName
+        return id.repositoryName
     }
 
     var details: String {
-        return "\(summary?.workflowRun.name ?? String(identifier.workflowId)) (\(identifier.branch))"
+        return "\(summary?.workflowRun.name ?? String(id.workflowId)) (\(id.branch))"
     }
 
     var annotations: [GitHub.Annotation] {

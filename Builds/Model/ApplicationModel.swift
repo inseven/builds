@@ -138,7 +138,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                     return try await self.update(identifier: identifier)
                 }
                 let cachedStatus = results.reduce(into: [WorkflowInstance.Identifier: WorkflowSummary]()) { partialResult, workflowResult in
-                    partialResult[workflowResult.identifier] = workflowResult.summary
+                    partialResult[workflowResult.id] = workflowResult.summary
                 }
 
                 self.cachedStatus = cachedStatus
@@ -180,11 +180,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         $favorites
             .combineLatest($cachedStatus)
             .map { actions, cachedStatus in
-                return actions.map { identifier in
-                    return WorkflowInstance(identifier: identifier, summary: cachedStatus[identifier])
+                return actions.map { id in
+                    return WorkflowInstance(id: id, summary: cachedStatus[id])
                 }
                 .sorted {
-                    $0.identifier.repositoryName.localizedStandardCompare($1.identifier.repositoryName) == .orderedAscending
+                    $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
                 }
             }
             .receive(on: DispatchQueue.main)
@@ -281,7 +281,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         guard let latestRun else {
-            return WorkflowInstance(identifier: identifier, summary: nil)
+            return WorkflowInstance(id: identifier, summary: nil)
         }
 
         let workflowJobs = try await client.workflowJobs(for: identifier.repositoryFullName, workflowRun: latestRun)
@@ -291,7 +291,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                                                                         workflowJob: workflowJob))
         }
 
-        return WorkflowInstance(identifier: identifier,
+        return WorkflowInstance(id: identifier,
                                 summary: WorkflowSummary(workflowRun: latestRun, annotations: annotations))
     }
 
