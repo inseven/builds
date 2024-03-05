@@ -22,7 +22,7 @@ import SwiftUI
 
 struct WorkflowInstance: Identifiable {
 
-    struct ID: Identifiable, Hashable, Codable {
+    struct ID: Hashable, Codable {
 
         var id: Self {
             return self
