@@ -46,7 +46,7 @@ struct SummaryView: View {
                             Button(role: .destructive) {
                                 applicationModel.removeAction(result.action)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Label("Remove Favorite", systemImage: "trash")
                             }
                         }
                         .onTapGesture {

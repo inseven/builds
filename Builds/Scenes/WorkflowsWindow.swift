@@ -18,41 +18,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
 import SwiftUI
-
-import Diligence
-
-@main
-struct BuildsApp: App {
-
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
-
-    var body: some Scene {
-
-        MainWindow()
-            .commands {
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-            }
-            .environmentObject(applicationModel)
 
 #if os(macOS)
 
-        SummaryWindow()
-            .environmentObject(applicationModel)
+struct WorkflowsWindow: Scene {
 
-        About(Legal.contents)
+    @EnvironmentObject var applicationModel: ApplicationModel
 
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
+    static let id = "workflows"
 
-#endif
+    var body: some Scene {
+        Window("Manage Favorites", id: Self.id) {
+            WorkflowsContentView(applicationModel: applicationModel)
+        }
 
     }
-    
+
 }
+
+#endif
