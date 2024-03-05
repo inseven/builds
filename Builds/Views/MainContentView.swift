@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainContentView: View {
 
     enum SheetType: Identifiable {
 
@@ -37,6 +37,7 @@ struct ContentView: View {
     @State var sheet: SheetType?
 
     @Environment(\.openURL) var openURL
+    @Environment(\.openWindow) var openWindow
     @Environment(\.scenePhase) var scenePhase
 
 
@@ -80,7 +81,11 @@ struct ContentView: View {
 
                 ToolbarItem(placement: .primaryAction) {
                     Button {
+#if os(iOS)
                         sheet = .add
+#else
+                        openWindow(id: WorkflowsWindow.id)
+#endif
                     } label: {
                         Image(systemName: "plus")
                     }
