@@ -22,24 +22,12 @@ import SwiftUI
 
 struct MainContentView: View {
 
-    enum SheetType: Identifiable {
-
-        var id: Self {
-            return self
-        }
-
-        case add
-        case settings
-    }
-
     @ObservedObject var applicationModel: ApplicationModel
     @StateObject var sceneModel: SceneModel
-    @State var sheet: SheetType?
 
     @Environment(\.openURL) var openURL
     @Environment(\.openWindow) var openWindow
     @Environment(\.scenePhase) var scenePhase
-
 
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
@@ -50,10 +38,24 @@ struct MainContentView: View {
         NavigationStack {
             VStack {
                 if applicationModel.isAuthorized {
-                    SummaryView()
+                    if applicationModel.actions.count > 0 {
+                        SummaryView()
+                    } else {
+                        ContentUnavailableView {
+                            Text("No Workflows")
+                        } description: {
+                            Text("Add workflow to view their statuses.")
+                        } actions: {
+                            Button {
+                                sceneModel.manageWorkflows()
+                            } label: {
+                                Text("Add Workflows")
+                            }
+                        }
+                    }
                 } else {
                     ContentUnavailableView {
-                        Label("Logged Out", systemImage: "lock")
+                        Text("Logged Out")
                     } description: {
                         Text("Log in to view your GitHub Actions.")
                     } actions: {
@@ -67,25 +69,21 @@ struct MainContentView: View {
             }
             .navigationTitle("Builds")
             .toolbarTitleDisplayMode(.inline)
-            .toolbar {
+            .toolbar(id: "main") {
 
 #if os(iOS)
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(id: "settings", placement: .topBarLeading) {
                     Button {
-                        sheet = .settings
+                        sceneModel.showSettings()
                     } label: {
                         Image(systemName: "gear")
                     }
                 }
 #endif
 
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(id: "workflows", placement: .primaryAction) {
                     Button {
-#if os(iOS)
-                        sheet = .add
-#else
-                        openWindow(id: WorkflowsWindow.id)
-#endif
+                        sceneModel.manageWorkflows()
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -94,11 +92,11 @@ struct MainContentView: View {
             }
 
         }
-        .sheet(item: $sheet) { sheet in
+        .sheet(item: $sceneModel.sheet) { sheet in
             switch sheet {
             case .add:
                 NavigationStack {
-                    AddActionView(applicationModel: applicationModel)
+                    WorkflowsContentView(applicationModel: applicationModel)
                 }
 #if os(macOS)
                 .frame(minWidth: 300, minHeight: 300)
