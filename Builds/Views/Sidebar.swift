@@ -20,45 +20,38 @@
 
 import SwiftUI
 
-import Interact
+struct Sidebar: View {
 
-class SceneModel: ObservableObject, Runnable {
+    @ObservedObject var applicationModel: ApplicationModel
+    @ObservedObject var sceneModel: SceneModel
 
-    enum SheetType: Identifiable {
-
-        var id: Self {
-            return self
+    var body: some View {
+        List(selection: $sceneModel.section) {
+            Section {
+                let identifier = SectionIdentifier.all
+                NavigationLink(value: identifier) {
+                    Text(identifier.title)
+                        .tag(identifier)
+                }
+            }
+            if applicationModel.organizations.count > 0 {
+                Section {
+                    ForEach(applicationModel.organizations, id: \.self) { organization in
+                        let identifier = SectionIdentifier.organization(organization)
+                        NavigationLink(value: identifier) {
+                            Text(identifier.title)
+                                .tag(identifier)
+                        }
+                    }
+                } header: {
+                    Text("Organizations")
+                }
+            }
         }
-
-        case add
-        case settings
-    }
-
-    @Published var section: SectionIdentifier? = .all
-    @Published var sheet: SheetType?
-
-    let applicationModel: ApplicationModel
-
-    init(applicationModel: ApplicationModel) {
-        self.applicationModel = applicationModel
-    }
-
-    @MainActor func start() {
-    }
-
-    @MainActor func stop() {
-    }
-
-    @MainActor func showSettings() {
-        sheet = .settings
-    }
-
-    @MainActor func manageWorkflows() {
-#if os(iOS)
-        sheet = .add
-#else
-        Application.open(.manageWorkflows)
-#endif
+        .navigationTitle("Builds")
+        .refreshable {
+            await applicationModel.refresh()
+        }
     }
 
 }

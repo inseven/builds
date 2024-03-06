@@ -18,52 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-struct StatusModifier<Label: View>: ViewModifier {
+enum SectionIdentifier: Identifiable, Hashable {
 
-    var label: Label
-
-    init(@ViewBuilder label: () -> Label) {
-        self.label = label()
+    var id: String {
+        switch self {
+        case .all:
+            return "all"
+        case .organization(let organization):
+            return "organization-\(organization)"
+        }
     }
 
-    func body(content: Content) -> some View {
-#if os(macOS)
-        content
-            .safeAreaInset(edge: .bottom) {
-                VStack(spacing: 0) {
-                    Divider()
-                    HStack(spacing: 0) {
-                        label
-                    }
-                    .padding(8)
-                }
-                .frame(maxWidth: .infinity)
-                .foregroundStyle(.secondary)
-                .font(.footnote)
-                .background(.ultraThickMaterial)
-            }
-#else
-        content
-            .toolbar {
-                ToolbarItem(placement: .status) {
-                    HStack(spacing: 0) {
-                        label
-                    }
-                    .font(.footnote)
-                }
-            }
-
-#endif
+    var title: String {
+        switch self {
+        case .all:
+            return "All Workflows"
+        case .organization(let organization):
+            return organization
+        }
     }
 
-}
-
-extension View {
-
-    func status<Label: View>(@ViewBuilder label: () -> Label) -> some View {
-        return modifier(StatusModifier(label: label))
-    }
+    case all
+    case organization(String)
 
 }

@@ -38,6 +38,7 @@ struct MainWindow: Scene {
         }
         .defaultSize(CGSize(width: 800, height: 720))
         .commands {
+            SidebarCommands()
             ToolbarCommands()
         }
         .handlesExternalEvents(matching: [.main, .auth])

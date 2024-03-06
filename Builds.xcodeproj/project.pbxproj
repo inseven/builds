@@ -20,7 +20,9 @@
 		D87F23762B66006F0085DC12 /* builds-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23752B66006F0085DC12 /* builds-license */; };
 		D883F1B52B97EC9E00B00F1C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */; };
 		D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B62B97FD6F00B00F1C /* Dismissable.swift */; };
-		D8B1FF602B96C47800687F40 /* StatusModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1FF5F2B96C47800687F40 /* StatusModifier.swift */; };
+		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
+		D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */; };
+		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
 		D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */; };
 		D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */; };
 		D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EED2B93E5A600DAE758 /* SceneModel.swift */; };
@@ -89,8 +91,10 @@
 		D87F23752B66006F0085DC12 /* builds-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "builds-license"; sourceTree = "<group>"; };
 		D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D883F1B62B97FD6F00B00F1C /* Dismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissable.swift; sourceTree = "<group>"; };
+		D883F1B82B98019400B00F1C /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIdentifier.swift; sourceTree = "<group>"; };
+		D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsSection.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		D8B1FF5F2B96C47800687F40 /* StatusModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusModifier.swift; sourceTree = "<group>"; };
 		D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleCommands.swift; sourceTree = "<group>"; };
 		D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCommands.swift; sourceTree = "<group>"; };
 		D8CA0EED2B93E5A600DAE758 /* SceneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneModel.swift; sourceTree = "<group>"; };
@@ -171,7 +175,6 @@
 				D883F1B62B97FD6F00B00F1C /* Dismissable.swift */,
 				D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */,
 				D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */,
-				D8B1FF5F2B96C47800687F40 /* StatusModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -217,6 +220,7 @@
 				D8CA0EEF2B940BBB00DAE758 /* RefreshScheduler.swift */,
 				D8DA9D8A2B97011800C17DBC /* RepositoryDetails.swift */,
 				D8CA0EED2B93E5A600DAE758 /* SceneModel.swift */,
+				D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */,
 				D81251B52B918472001F6E85 /* SummaryState.swift */,
 				D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */,
 				D8D413F428045577001BA6C0 /* WorkflowResult.swift */,
@@ -231,11 +235,13 @@
 				D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */,
 				D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */,
 				D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */,
+				D883F1B82B98019400B00F1C /* Sidebar.swift */,
 				D81251B32B9181E9001F6E85 /* SummaryContentView.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */,
 				D8DA9D862B97007200C17DBC /* WorkflowsPicker.swift */,
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
+				D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */,
 				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
 			);
 			path = Views;
@@ -470,6 +476,7 @@
 				D81251B22B917F07001F6E85 /* SummaryWindow.swift in Sources */,
 				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */,
+				D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */,
 				D8DA9D852B97004900C17DBC /* WorkflowsWindow.swift in Sources */,
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
@@ -482,9 +489,10 @@
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,
 				D8DA9D892B97009900C17DBC /* WorkflowsPickerModel.swift in Sources */,
-				D8B1FF602B96C47800687F40 /* StatusModifier.swift in Sources */,
+				D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */,
 				D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */,
 				D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */,
+				D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */,
 				D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */,
 				D81251B82B929935001F6E85 /* BuildsError.swift in Sources */,
 			);

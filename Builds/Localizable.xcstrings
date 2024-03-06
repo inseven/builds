@@ -4,9 +4,6 @@
     "" : {
 
     },
-    " ago" : {
-
-    },
     "%@ (%@)" : {
       "localizations" : {
         "en" : {
@@ -48,13 +45,13 @@
     "Add..." : {
 
     },
+    "All Workflows" : {
+
+    },
     "Builds" : {
 
     },
     "Done" : {
-
-    },
-    "Last updated " : {
 
     },
     "Log In" : {
@@ -84,13 +81,13 @@
     "Manage Workflows" : {
 
     },
-    "Never updated" : {
-
-    },
     "No Workflows" : {
 
     },
     "Open" : {
+
+    },
+    "Organizations" : {
 
     },
     "Refresh..." : {
@@ -112,9 +109,6 @@
 
     },
     "Unknown Job" : {
-
-    },
-    "Updating..." : {
 
     }
   },
