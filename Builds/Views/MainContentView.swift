@@ -39,7 +39,7 @@ struct MainContentView: View {
             VStack {
                 if applicationModel.isAuthorized {
                     if applicationModel.results.count > 0 {
-                        SummaryView()
+                        WorkflowsView()
                     } else {
                         ContentUnavailableView {
                             Text("No Workflows")

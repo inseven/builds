@@ -28,25 +28,25 @@ extension GitHub.Annotation: Identifiable {
 
 }
 
-struct SummaryCell: View {
+struct WorkflowInstanceCell: View {
 
     @State var isPresented: Bool = false
 
-    let result: WorkflowInstance
+    let instance: WorkflowInstance
 
     var body: some View {
         Grid(alignment: .leadingFirstTextBaseline) {
             GridRow {
                 HStack {
-                    Text(result.repositoryName)
+                    Text(instance.repositoryName)
                         .font(Font.headline)
                     Spacer()
                 }
                 HStack {
-                    if result.annotations.count > 0 {
+                    if instance.annotations.count > 0 {
                         Button {
                             isPresented = true
-                            print("Annotations = \(result.annotations)")
+                            print("Annotations = \(instance.annotations)")
                         } label: {
                             Image(systemName: "text.alignleft")
                                 .contentShape(Rectangle())
@@ -54,7 +54,7 @@ struct SummaryCell: View {
                         .buttonStyle(.plain)
                         .popover(isPresented: $isPresented, arrowEdge: .bottom) {
                             VStack(alignment: .leading) {
-                                ForEach(result.annotations) { annotation in
+                                ForEach(instance.annotations) { annotation in
                                     HStack(alignment: .firstTextBaseline) {
                                         if annotation.annotation_level == "warning" {
                                             Image(systemName: "exclamationmark.triangle")
@@ -73,7 +73,7 @@ struct SummaryCell: View {
                             .foregroundColor(.primary)
                         }
                     }
-                    if let workflowRun = result.result?.workflowRun {
+                    if let workflowRun = instance.result?.workflowRun {
                         switch workflowRun.status {
                         case .queued:
                             Image(systemName: "clock.arrow.circlepath")
@@ -100,11 +100,11 @@ struct SummaryCell: View {
 
             }
             GridRow {
-                Text(result.details)
+                Text(instance.details)
                     .font(Font.subheadline)
                     .opacity(0.6)
                 TimelineView(.periodic(from: Date(), by: 1)) { _ in
-                    Text(result.lastRun)
+                    Text(instance.lastRun)
                         .font(Font.subheadline)
                         .opacity(0.6)
                 }
@@ -114,7 +114,7 @@ struct SummaryCell: View {
         .lineLimit(1)
         .frame(maxWidth: .infinity)
         .padding()
-        .background(result.statusColor)
+        .background(instance.statusColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .foregroundColor(.black)
     }

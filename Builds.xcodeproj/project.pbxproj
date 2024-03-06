@@ -26,8 +26,8 @@
 		D8CA0EF22B94110A00DAE758 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EF12B94110A00DAE758 /* TimeInterval.swift */; };
 		D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */; };
 		D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */; };
-		D8D413E928043FCD001BA6C0 /* SummaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413E828043FCD001BA6C0 /* SummaryCell.swift */; };
-		D8D413EB28044062001BA6C0 /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* SummaryView.swift */; };
+		D8D413E928043FCD001BA6C0 /* WorkflowInstanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */; };
+		D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* WorkflowsView.swift */; };
 		D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */; };
 		D8D413F328045535001BA6C0 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F228045535001BA6C0 /* Action.swift */; };
 		D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F428045577001BA6C0 /* WorkflowResult.swift */; };
@@ -94,8 +94,8 @@
 		D8CA0EF12B94110A00DAE758 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsHigherFrequencyUpdates.swift; sourceTree = "<group>"; };
 		D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInstance.swift; sourceTree = "<group>"; };
-		D8D413E828043FCD001BA6C0 /* SummaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCell.swift; sourceTree = "<group>"; };
-		D8D413EA28044062001BA6C0 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInstanceCell.swift; sourceTree = "<group>"; };
+		D8D413EA28044062001BA6C0 /* WorkflowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsView.swift; sourceTree = "<group>"; };
 		D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationModel.swift; sourceTree = "<group>"; };
 		D8D413F228045535001BA6C0 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
 		D8D413F428045577001BA6C0 /* WorkflowResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowResult.swift; sourceTree = "<group>"; };
@@ -226,12 +226,12 @@
 				D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */,
 				D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */,
 				D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */,
-				D8D413E828043FCD001BA6C0 /* SummaryCell.swift */,
 				D81251B32B9181E9001F6E85 /* SummaryContentView.swift */,
-				D8D413EA28044062001BA6C0 /* SummaryView.swift */,
+				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */,
 				D8DA9D862B97007200C17DBC /* WorkflowsPicker.swift */,
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
+				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -450,8 +450,8 @@
 				D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
 				D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */,
-				D8D413EB28044062001BA6C0 /* SummaryView.swift in Sources */,
-				D8D413E928043FCD001BA6C0 /* SummaryCell.swift in Sources */,
+				D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */,
+				D8D413E928043FCD001BA6C0 /* WorkflowInstanceCell.swift in Sources */,
 				D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */,
 				D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */,
 				D8DA9D872B97007200C17DBC /* WorkflowsPicker.swift in Sources */,

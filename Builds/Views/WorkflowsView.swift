@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-struct SummaryView: View {
+struct WorkflowsView: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
 
@@ -31,11 +31,11 @@ struct SummaryView: View {
     var body: some View {
         ScrollView {
             LazyVGrid(columns: layout) {
-                ForEach(applicationModel.results) { result in
-                    SummaryCell(result: result)
+                ForEach(applicationModel.results) { instance in
+                    WorkflowInstanceCell(instance: instance)
                         .contextMenu {
                             Button {
-                                guard let workflowRun = result.result?.workflowRun else {
+                                guard let workflowRun = instance.result?.workflowRun else {
                                     return
                                 }
                                 openURL(workflowRun.htmlURL)
@@ -44,13 +44,13 @@ struct SummaryView: View {
                             }
                             Divider()
                             Button(role: .destructive) {
-                                applicationModel.removeFavorite(result.id)
+                                applicationModel.removeFavorite(instance.id)
                             } label: {
                                 Label("Remove Favorite", systemImage: "trash")
                             }
                         }
                         .onTapGesture {
-                            guard let workflowRun = result.result?.workflowRun else {
+                            guard let workflowRun = instance.result?.workflowRun else {
                                 return
                             }
                             openURL(workflowRun.htmlURL)
@@ -73,8 +73,8 @@ struct SummaryView: View {
             } else {
                 Text("Never updated")
             }
-
         }
+        .navigationSubtitle("\(applicationModel.results.count) Workflows")
     }
 
 }
