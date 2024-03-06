@@ -71,7 +71,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
         let action = WorkflowInstance.ID(repositoryFullName: repositoryDetails.repository.fullName,
                                          workflowId: workflow.id,
                                          branch: branch.name)
-        applicationModel.addAction(action)
+        applicationModel.addFavorite(action)
     }
 
 }

@@ -45,20 +45,20 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 store.set(data, forKey: Key.favorites.rawValue)
                 store.synchronize()
             } catch {
-                print("Failed to save actions with error \(error).")
+                print("Failed to save favorites with error \(error).")
             }
         }
     }
 
-    @MainActor func addAction(_ action: WorkflowInstance.ID) {
-        guard !favorites.contains(action) else {
+    @MainActor func addFavorite(_ id: WorkflowInstance.ID) {
+        guard !favorites.contains(id) else {
             return
         }
-        favorites.append(action)
+        favorites.append(id)
     }
 
-    @MainActor func removeAction(_ action: WorkflowInstance.ID) {
-        favorites.removeAll { $0.id == action.id }
+    @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
+        favorites.removeAll { $0 == id }
     }
 
     @MainActor @Published var isUpdating: Bool = false
@@ -162,11 +162,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         // Update the state whenever a user changes the favorites.
         $favorites
             .combineLatest($authenticationToken)
-            .compactMap { (actions, token) -> [WorkflowInstance.ID]? in
+            .compactMap { (favorites, token) -> [WorkflowInstance.ID]? in
                 guard token != nil else {
                     return nil
                 }
-                return actions
+                return favorites
             }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -179,8 +179,8 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         // Generate the results array used to back the main window.
         $favorites
             .combineLatest($cachedStatus)
-            .map { actions, cachedStatus in
-                return actions.map { id in
+            .map { favorites, cachedStatus in
+                return favorites.map { id in
                     return WorkflowInstance(id: id, result: cachedStatus[id])
                 }
                 .sorted {
@@ -237,13 +237,13 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             guard let data = NSUbiquitousKeyValueStore.default.data(forKey: Key.favorites.rawValue) else {
                 return
             }
-            let actions = try JSONDecoder().decode([WorkflowInstance.ID].self, from: data)
-            guard self.favorites != actions else {
+            let favorites = try JSONDecoder().decode([WorkflowInstance.ID].self, from: data)
+            guard self.favorites != favorites else {
                 return
             }
-            self.favorites = actions
+            self.favorites = favorites
         } catch {
-            print("Failed to update actions with error \(error).")
+            print("Failed to update favorites with error \(error).")
         }
     }
 

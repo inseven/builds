@@ -42,9 +42,9 @@ struct WorkflowPicker: View {
                 return applicationModel.favorites.contains(action)
             }, set: { isOn in
                 if isOn {
-                    applicationModel.addAction(action)
+                    applicationModel.addFavorite(action)
                 } else {
-                    applicationModel.removeAction(action)
+                    applicationModel.removeFavorite(action)
                 }
             }))
         }

@@ -44,7 +44,7 @@ struct SummaryView: View {
                             }
                             Divider()
                             Button(role: .destructive) {
-                                applicationModel.removeAction(result.id)
+                                applicationModel.removeFavorite(result.id)
                             } label: {
                                 Label("Remove Favorite", systemImage: "trash")
                             }
