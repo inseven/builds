@@ -38,7 +38,7 @@ struct MainContentView: View {
         NavigationStack {
             VStack {
                 if applicationModel.isAuthorized {
-                    if applicationModel.actions.count > 0 {
+                    if applicationModel.results.count > 0 {
                         SummaryView()
                     } else {
                         ContentUnavailableView {

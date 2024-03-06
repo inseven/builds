@@ -32,7 +32,7 @@ struct SummaryCell: View {
 
     @State var isPresented: Bool = false
 
-    let result: WorkflowResult
+    let result: WorkflowInstance
 
     var body: some View {
         Grid(alignment: .leadingFirstTextBaseline) {
@@ -73,7 +73,7 @@ struct SummaryCell: View {
                             .foregroundColor(.primary)
                         }
                     }
-                    if let workflowRun = result.summary?.workflowRun {
+                    if let workflowRun = result.result?.workflowRun {
                         switch workflowRun.status {
                         case .queued:
                             Image(systemName: "clock.arrow.circlepath")

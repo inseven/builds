@@ -34,10 +34,10 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         case favorites
     }
 
-    @MainActor @Published var actions: [Action] = [] {
+    @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
         didSet {
             do {
-                let data = try JSONEncoder().encode(actions)
+                let data = try JSONEncoder().encode(favorites)
                 let store = NSUbiquitousKeyValueStore.default
                 guard store.data(forKey: Key.favorites.rawValue) != data else {
                     return
@@ -45,25 +45,25 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 store.set(data, forKey: Key.favorites.rawValue)
                 store.synchronize()
             } catch {
-                print("Failed to save actions with error \(error).")
+                print("Failed to save favorites with error \(error).")
             }
         }
     }
 
-    @MainActor func addAction(_ action: Action) {
-        guard !actions.contains(action) else {
+    @MainActor func addFavorite(_ id: WorkflowInstance.ID) {
+        guard !favorites.contains(id) else {
             return
         }
-        actions.append(action)
+        favorites.append(id)
     }
 
-    @MainActor func removeAction(_ action: Action) {
-        actions.removeAll { $0.id == action.id }
+    @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
+        favorites.removeAll { $0 == id }
     }
 
     @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var summary: SummaryState = .unknown
-    @MainActor @Published var results: [WorkflowResult] = []
+    @MainActor @Published var results: [WorkflowInstance] = []
 
     @MainActor @Published var authenticationToken: GitHub.Authentication? {
         didSet {
@@ -79,7 +79,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         return authenticationToken != nil
     }
 
-    @MainActor @Published var cachedStatus: [Action.ID: WorkflowSummary] = [:] {
+    @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
         didSet {
             do {
                 try defaults.set(codable: cachedStatus, forKey: .status)
@@ -115,7 +115,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api)
-        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [Action.ID: WorkflowSummary]())) ?? [:]
+        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [WorkflowInstance.ID: WorkflowResult]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
@@ -134,11 +134,11 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             do {
                 print("Refreshing...")
                 self.isUpdating = true
-                let results = try await self.actions.map { action in
-                    return try await self.update(action: action)
+                let results = try await self.favorites.map { id in
+                    return try await self.update(id: id)
                 }
-                let cachedStatus = results.reduce(into: [Action.ID: WorkflowSummary]()) { partialResult, workflowResult in
-                    partialResult[workflowResult.action.id] = workflowResult.summary
+                let cachedStatus = results.reduce(into: [WorkflowInstance.ID: WorkflowResult]()) { partialResult, workflowResult in
+                    partialResult[workflowResult.id] = workflowResult.result
                 }
 
                 self.cachedStatus = cachedStatus
@@ -160,13 +160,13 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         refreshScheduler.start()
 
         // Update the state whenever a user changes the favorites.
-        $actions
+        $favorites
             .combineLatest($authenticationToken)
-            .compactMap { (actions, token) -> [Action]? in
+            .compactMap { (favorites, token) -> [WorkflowInstance.ID]? in
                 guard token != nil else {
                     return nil
                 }
-                return actions
+                return favorites
             }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -177,14 +177,14 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .store(in: &cancellables)
 
         // Generate the results array used to back the main window.
-        $actions
+        $favorites
             .combineLatest($cachedStatus)
-            .map { actions, cachedStatus in
-                return actions.map { action in
-                    return WorkflowResult(action: action, summary: cachedStatus[action.id])
+            .map { favorites, cachedStatus in
+                return favorites.map { id in
+                    return WorkflowInstance(id: id, result: cachedStatus[id])
                 }
                 .sorted {
-                    $0.action.repositoryName.localizedStandardCompare($1.action.repositoryName) == .orderedAscending
+                    $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
                 }
             }
             .receive(on: DispatchQueue.main)
@@ -237,13 +237,13 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             guard let data = NSUbiquitousKeyValueStore.default.data(forKey: Key.favorites.rawValue) else {
                 return
             }
-            let actions = try JSONDecoder().decode([Action].self, from: data)
-            guard self.actions != actions else {
+            let favorites = try JSONDecoder().decode([WorkflowInstance.ID].self, from: data)
+            guard self.favorites != favorites else {
                 return
             }
-            self.actions = actions
+            self.favorites = favorites
         } catch {
-            print("Failed to update actions with error \(error).")
+            print("Failed to update favorites with error \(error).")
         }
     }
 
@@ -267,32 +267,32 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         Application.open(client.permissionsURL)
     }
 
-    func update(action: Action) async throws -> WorkflowResult {
-        let workflowRuns = try await client.workflowRuns(for: action.repositoryFullName)
+    func update(id: WorkflowInstance.ID) async throws -> WorkflowInstance {
+        let workflowRuns = try await client.workflowRuns(for: id.repositoryFullName)
 
         let latestRun = workflowRuns.first { workflowRun in
-            if workflowRun.workflowId != action.workflowId {
+            if workflowRun.workflowId != id.workflowId {
                 return false
             }
-            if workflowRun.headBranch != action.branch {
+            if workflowRun.headBranch != id.branch {
                 return false
             }
             return true
         }
 
         guard let latestRun else {
-            return WorkflowResult(action: action, summary: nil)
+            return WorkflowInstance(id: id)
         }
 
-        let workflowJobs = try await client.workflowJobs(for: action.repositoryFullName, workflowRun: latestRun)
+        let workflowJobs = try await client.workflowJobs(for: id.repositoryFullName, workflowRun: latestRun)
         var annotations: [GitHub.Annotation] = []
         for workflowJob in workflowJobs {
-            annotations.append(contentsOf: try await client.annotations(for: action.repositoryFullName,
+            annotations.append(contentsOf: try await client.annotations(for: id.repositoryFullName,
                                                                         workflowJob: workflowJob))
         }
 
-        return WorkflowResult(action: action,
-                              summary: WorkflowSummary(workflowRun: latestRun, annotations: annotations))
+        return WorkflowInstance(id: id,
+                                result: WorkflowResult(workflowRun: latestRun, annotations: annotations))
     }
 
     func refresh() async {

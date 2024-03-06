@@ -20,80 +20,14 @@
 
 import SwiftUI
 
-struct WorkflowResult: Identifiable {
+struct WorkflowResult: Codable {
 
-    var id: String { action.id }
+    let workflowRun: GitHub.WorkflowRun
+    let annotations: [GitHub.Annotation]
 
-    let action: Action
-    let summary: WorkflowSummary?
-
-    var repositoryName: String {
-        return action.repositoryName
-    }
-
-    var details: String {
-        return "\(summary?.workflowRun.name ?? String(action.workflowId)) (\(action.branch))"
-    }
-
-    var annotations: [GitHub.Annotation] {
-        return summary?.annotations ?? []
-    }
-
-}
-
-extension WorkflowResult {
-
-    var state: SummaryState {
-
-        guard let workflowRun = summary?.workflowRun else {
-            return .unknown
-        }
-
-        switch workflowRun.status {
-        case .queued:
-            return .inProgress
-        case .waiting:
-            return .inProgress
-        case .inProgress:
-            return .inProgress
-        case .completed:
-            break
-        }
-
-        guard let conclusion = workflowRun.conclusion else {
-            return .unknown
-        }
-
-        switch conclusion {
-        case .success:
-            return .success
-        case .failure:
-            return .failure
-        case .cancelled:
-            return .failure
-        }
-
-    }
-
-    var statusColor: Color {
-        switch self.state {
-        case .unknown:
-            return .gray
-        case .success:
-            return .green
-        case .failure:
-            return .red
-        case .inProgress:
-            return .yellow
-        }
-    }
-
-    var lastRun: String {
-        guard let createdAt = summary?.workflowRun.createdAt else {
-            return "Unknown"
-        }
-        let dateFormatter = RelativeDateTimeFormatter()
-        return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
+    init(workflowRun: GitHub.WorkflowRun, annotations: [GitHub.Annotation]) {
+        self.workflowRun = workflowRun
+        self.annotations = annotations
     }
 
 }

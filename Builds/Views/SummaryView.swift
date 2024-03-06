@@ -35,7 +35,7 @@ struct SummaryView: View {
                     SummaryCell(result: result)
                         .contextMenu {
                             Button {
-                                guard let workflowRun = result.summary?.workflowRun else {
+                                guard let workflowRun = result.result?.workflowRun else {
                                     return
                                 }
                                 openURL(workflowRun.htmlURL)
@@ -44,13 +44,13 @@ struct SummaryView: View {
                             }
                             Divider()
                             Button(role: .destructive) {
-                                applicationModel.removeAction(result.action)
+                                applicationModel.removeFavorite(result.id)
                             } label: {
                                 Label("Remove Favorite", systemImage: "trash")
                             }
                         }
                         .onTapGesture {
-                            guard let workflowRun = result.summary?.workflowRun else {
+                            guard let workflowRun = result.result?.workflowRun else {
                                 return
                             }
                             openURL(workflowRun.htmlURL)
