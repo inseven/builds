@@ -44,7 +44,7 @@ struct MainContentView: View {
                         ContentUnavailableView {
                             Text("No Workflows")
                         } description: {
-                            Text("Add workflow to view their statuses.")
+                            Text("Select workflows to view their statuses.")
                         } actions: {
                             Button {
                                 sceneModel.manageWorkflows()

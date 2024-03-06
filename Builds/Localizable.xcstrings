@@ -45,9 +45,6 @@
     "Account" : {
 
     },
-    "Add workflow to view their statuses." : {
-
-    },
     "Add..." : {
 
     },
@@ -103,6 +100,9 @@
 
     },
     "Select workflows to display" : {
+
+    },
+    "Select workflows to view their statuses." : {
 
     },
     "Settings" : {
