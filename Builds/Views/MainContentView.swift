@@ -87,6 +87,7 @@ struct MainContentView: View {
                     } label: {
                         Label("Manage Workflows", systemImage: "checklist")
                     }
+                    .help("Select workflows to display")
                 }
 
             }
