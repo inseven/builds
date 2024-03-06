@@ -24,7 +24,7 @@ public extension URL {
 
     static let auth = URL(string: "x-builds-auth://oauth")!
     static let main = URL(string: "x-builds://main")!
-    static let workflows = URL(string: "x-builds://workflows")!
+    static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
 
     var components: URLComponents? {
         return URLComponents(string: absoluteString)

@@ -55,7 +55,7 @@ struct WorkflowsContentView: View {
                 ProgressView()
             }
         }
-        .navigationTitle("Manage Favorites")
+        .navigationTitle("Manage Workflows")
         .toolbarTitleDisplayMode(.inline)
         .runs(workflowsModel)
         .presents($workflowsModel.error)

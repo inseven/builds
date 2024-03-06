@@ -29,10 +29,10 @@ struct WorkflowsWindow: Scene {
     static let id = "workflows"
 
     var body: some Scene {
-        Window("Manage Favorites", id: Self.id) {
+        Window("Manage Workflows", id: Self.id) {
             WorkflowsContentView(applicationModel: applicationModel)
         }
-        .handlesExternalEvents(matching: [.workflows])
+        .handlesExternalEvents(matching: [.manageWorkflows])
     }
 
 }

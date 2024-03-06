@@ -1,0 +1,122 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    " ago" : {
+
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "%lld Workflows" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Workflow"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld Workflows"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "About %@..." : {
+
+    },
+    "Account" : {
+
+    },
+    "Add..." : {
+
+    },
+    "Builds" : {
+
+    },
+    "Done" : {
+
+    },
+    "Last updated " : {
+
+    },
+    "Log In" : {
+
+    },
+    "Log in to view your GitHub Actions workflows." : {
+
+    },
+    "Log In..." : {
+
+    },
+    "Log Out" : {
+
+    },
+    "Log Out..." : {
+
+    },
+    "Logged Out" : {
+
+    },
+    "Manage GitHub Permissions" : {
+
+    },
+    "Manage GitHub Permissions..." : {
+
+    },
+    "Manage Workflows" : {
+
+    },
+    "Never updated" : {
+
+    },
+    "No Workflows" : {
+
+    },
+    "Open" : {
+
+    },
+    "Refresh..." : {
+
+    },
+    "Remove Workflow" : {
+
+    },
+    "Select workflows to display" : {
+
+    },
+    "Select workflows to view their statuses." : {
+
+    },
+    "Settings" : {
+
+    },
+    "Summary" : {
+
+    },
+    "Unknown Job" : {
+
+    },
+    "Updating..." : {
+
+    }
+  },
+  "version" : "1.0"
+}

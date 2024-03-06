@@ -39,17 +39,17 @@ struct MainContentView: View {
             VStack {
                 if applicationModel.isAuthorized {
                     if applicationModel.results.count > 0 {
-                        SummaryView()
+                        WorkflowsView()
                     } else {
                         ContentUnavailableView {
                             Text("No Workflows")
                         } description: {
-                            Text("Add workflow to view their statuses.")
+                            Text("Select workflows to view their statuses.")
                         } actions: {
                             Button {
                                 sceneModel.manageWorkflows()
                             } label: {
-                                Text("Add Workflows")
+                                Text("Manage Workflows")
                             }
                         }
                     }
@@ -57,7 +57,7 @@ struct MainContentView: View {
                     ContentUnavailableView {
                         Text("Logged Out")
                     } description: {
-                        Text("Log in to view your GitHub Actions.")
+                        Text("Log in to view your GitHub Actions workflows.")
                     } actions: {
                         Button {
                             applicationModel.logIn()
@@ -85,8 +85,9 @@ struct MainContentView: View {
                     Button {
                         sceneModel.manageWorkflows()
                     } label: {
-                        Image(systemName: "plus")
+                        Label("Manage Workflows", systemImage: "checklist")
                     }
+                    .help("Select workflows to display")
                 }
 
             }

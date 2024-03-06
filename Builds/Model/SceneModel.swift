@@ -56,7 +56,7 @@ class SceneModel: ObservableObject, Runnable {
 #if os(iOS)
         sheet = .add
 #else
-        Application.open(.workflows)
+        Application.open(.manageWorkflows)
 #endif
     }
 
