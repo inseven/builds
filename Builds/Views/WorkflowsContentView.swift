@@ -59,17 +59,7 @@ struct WorkflowsContentView: View {
         }
         .navigationTitle("Manage Workflows")
         .toolbarTitleDisplayMode(.inline)
-#if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Done")
-                }
-            }
-        }
-#endif
+        .dismissable()
         .runs(workflowsModel)
         .presents($workflowsModel.error)
     }

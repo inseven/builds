@@ -19,6 +19,7 @@
 		D87F23742B6600150085DC12 /* material-icons-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23732B6600150085DC12 /* material-icons-license */; };
 		D87F23762B66006F0085DC12 /* builds-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23752B66006F0085DC12 /* builds-license */; };
 		D883F1B52B97EC9E00B00F1C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */; };
+		D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B62B97FD6F00B00F1C /* Dismissable.swift */; };
 		D8B1FF602B96C47800687F40 /* StatusModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1FF5F2B96C47800687F40 /* StatusModifier.swift */; };
 		D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */; };
 		D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */; };
@@ -87,6 +88,7 @@
 		D87F23732B6600150085DC12 /* material-icons-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "material-icons-license"; sourceTree = "<group>"; };
 		D87F23752B66006F0085DC12 /* builds-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "builds-license"; sourceTree = "<group>"; };
 		D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		D883F1B62B97FD6F00B00F1C /* Dismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissable.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8B1FF5F2B96C47800687F40 /* StatusModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusModifier.swift; sourceTree = "<group>"; };
 		D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleCommands.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 		D81251BB2B92A38C001F6E85 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
+				D883F1B62B97FD6F00B00F1C /* Dismissable.swift */,
 				D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */,
 				D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */,
 				D8B1FF5F2B96C47800687F40 /* StatusModifier.swift */,
@@ -457,6 +460,7 @@
 				D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */,
 				D8D413E928043FCD001BA6C0 /* WorkflowInstanceCell.swift in Sources */,
 				D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */,
+				D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */,
 				D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */,
 				D8DA9D872B97007200C17DBC /* WorkflowsPicker.swift in Sources */,
 				D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */,
