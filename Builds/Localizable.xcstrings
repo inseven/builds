@@ -17,6 +17,28 @@
         }
       }
     },
+    "%lld Workflows" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Workflow"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld Workflows"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "About %@..." : {
 
     },
@@ -84,6 +106,9 @@
 
     },
     "Settings" : {
+
+    },
+    "Summary" : {
 
     },
     "Unknown Job" : {
