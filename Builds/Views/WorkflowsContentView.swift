@@ -57,6 +57,7 @@ struct WorkflowsContentView: View {
         }
         .navigationTitle("Manage Workflows")
         .toolbarTitleDisplayMode(.inline)
+        .dismissable()
         .runs(workflowsModel)
         .presents($workflowsModel.error)
     }

@@ -20,53 +20,33 @@
 
 import SwiftUI
 
-import Diligence
-import Interact
-
-#if os(iOS)
-
-struct PhoneSettingsView: View {
-
-    @EnvironmentObject var applicationModel: ApplicationModel
+struct Dismissable: ViewModifier {
 
     @Environment(\.dismiss) var dismiss
 
-    var body: some View {
-        Form {
-
-            Section {
-                AboutButton(Legal.contents)
-            }
-
-            Section {
-
-                Button {
-                    applicationModel.managePermissions()
-                } label: {
-                    Text("Manage GitHub Permissions")
+    func body(content: Content) -> some View {
+#if os(iOS)
+        return content
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Done")
+                    }
                 }
-                .disabled(!applicationModel.isAuthorized)
-
             }
-
-            Section {
-
-                Button {
-                    applicationModel.logOut()
-                } label: {
-                    Text("Log Out")
-                }
-                .disabled(!applicationModel.isAuthorized)
-
-            }
-
-        }
-        .formStyle(.grouped)
-        .navigationTitle("Settings")
-        .navigationBarTitleDisplayMode(.inline)
-        .dismissable()
+#else
+        return content
+#endif
     }
 
 }
 
-#endif
+extension View {
+
+    func dismissable() -> some View {
+        return modifier(Dismissable())
+    }
+
+}
