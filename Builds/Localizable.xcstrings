@@ -48,9 +48,6 @@
     "Add workflow to view their statuses." : {
 
     },
-    "Add Workflows" : {
-
-    },
     "Add..." : {
 
     },
@@ -81,13 +78,13 @@
     "Logged Out" : {
 
     },
-    "Manage Favorites" : {
-
-    },
     "Manage GitHub Permissions" : {
 
     },
     "Manage GitHub Permissions..." : {
+
+    },
+    "Manage Workflows" : {
 
     },
     "Never updated" : {
@@ -102,7 +99,7 @@
     "Refresh..." : {
 
     },
-    "Remove Favorite" : {
+    "Remove Workflow" : {
 
     },
     "Settings" : {

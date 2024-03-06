@@ -49,7 +49,7 @@ struct MainContentView: View {
                             Button {
                                 sceneModel.manageWorkflows()
                             } label: {
-                                Text("Add Workflows")
+                                Text("Manage Workflows")
                             }
                         }
                     }
@@ -85,7 +85,7 @@ struct MainContentView: View {
                     Button {
                         sceneModel.manageWorkflows()
                     } label: {
-                        Image(systemName: "plus")
+                        Label("Manage Workflows", systemImage: "checklist")
                     }
                 }
 

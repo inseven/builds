@@ -46,7 +46,7 @@ struct WorkflowsView: View {
                             Button(role: .destructive) {
                                 applicationModel.removeFavorite(instance.id)
                             } label: {
-                                Label("Remove Favorite", systemImage: "trash")
+                                Label("Remove Workflow", systemImage: "trash")
                             }
                         }
                         .onTapGesture {
