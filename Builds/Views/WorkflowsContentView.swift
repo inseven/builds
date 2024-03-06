@@ -22,6 +22,8 @@ import SwiftUI
 
 struct WorkflowsContentView: View {
 
+    @Environment(\.dismiss) var dismiss
+
     @ObservedObject var applicationModel: ApplicationModel
 
     @StateObject var workflowsModel: WorkflowsModel
@@ -57,6 +59,17 @@ struct WorkflowsContentView: View {
         }
         .navigationTitle("Manage Workflows")
         .toolbarTitleDisplayMode(.inline)
+#if os(iOS)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Done")
+                }
+            }
+        }
+#endif
         .runs(workflowsModel)
         .presents($workflowsModel.error)
     }

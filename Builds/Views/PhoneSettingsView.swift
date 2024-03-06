@@ -65,9 +65,11 @@ struct PhoneSettingsView: View {
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(/* placement: .navigationBarTrailing */) {
-                Button("Done") {
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
                     dismiss()
+                } label: {
+                    Text("Done")
                 }
             }
         }
