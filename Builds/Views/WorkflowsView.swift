@@ -46,7 +46,7 @@ struct WorkflowsView: View {
                                 }
                                 openURL(workflowRun.htmlURL)
                             } label: {
-                                Text("Open")
+                                Label("Open", systemImage: "safari")
                             }
                             Divider()
                             Button(role: .destructive) {
@@ -66,13 +66,12 @@ struct WorkflowsView: View {
             }
             .padding()
         }
+#if os(macOS)
+        .navigationSubtitle("\(workflows.count) Workflows")
+#endif
         .refreshable {
             await applicationModel.refresh()
         }
-#if os(macOS)
-        .navigationSubtitle("\(applicationModel.results.count) Workflows")
-#endif
-        .frame(minWidth: 300, minHeight: 300)
     }
 
 }

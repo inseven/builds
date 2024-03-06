@@ -4,9 +4,6 @@
     "" : {
 
     },
-    " ago" : {
-
-    },
     "%@ (%@)" : {
       "localizations" : {
         "en" : {
@@ -57,9 +54,6 @@
     "Done" : {
 
     },
-    "Last updated " : {
-
-    },
     "Log In" : {
 
     },
@@ -87,9 +81,6 @@
     "Manage Workflows" : {
 
     },
-    "Never updated" : {
-
-    },
     "No Workflows" : {
 
     },
@@ -105,6 +96,9 @@
     "Remove Workflow" : {
 
     },
+    "Select workflows to display" : {
+
+    },
     "Select workflows to view their statuses." : {
 
     },
@@ -115,9 +109,6 @@
 
     },
     "Unknown Job" : {
-
-    },
-    "Updating..." : {
 
     }
   },

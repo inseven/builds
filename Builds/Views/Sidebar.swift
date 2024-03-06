@@ -34,41 +34,21 @@ struct Sidebar: View {
                         .tag(identifier)
                 }
             }
-            Section {
-                ForEach(applicationModel.organizations, id: \.self) { organization in
-                    let identifier = SectionIdentifier.organization(organization)
-                    NavigationLink(value: identifier) {
-                        Text(identifier.title)
-                            .tag(identifier)
+            if applicationModel.organizations.count > 0 {
+                Section {
+                    ForEach(applicationModel.organizations, id: \.self) { organization in
+                        let identifier = SectionIdentifier.organization(organization)
+                        NavigationLink(value: identifier) {
+                            Text(identifier.title)
+                                .tag(identifier)
+                        }
                     }
+                } header: {
+                    Text("Organizations")
                 }
-            } header: {
-                Text("Organizations")
             }
         }
         .navigationTitle("Builds")
-        .toolbar {
-#if os(iOS)
-            ToolbarItem(id: "settings", placement: .topBarLeading) {
-                Button {
-                    sceneModel.showSettings()
-                } label: {
-                    Image(systemName: "gear")
-                }
-            }
-#endif
-        }
-        .status {
-            if applicationModel.isUpdating {
-                Text("Updating...")
-            } else if let lastUpdate = applicationModel.lastUpdate {
-                Text("Last updated ")
-                Text(lastUpdate, style: .relative)
-                Text(" ago")
-            } else {
-                Text("Never updated")
-            }
-        }
         .refreshable {
             await applicationModel.refresh()
         }

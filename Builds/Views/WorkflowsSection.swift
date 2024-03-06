@@ -70,18 +70,6 @@ struct WorkflowsSection: View {
         }
         .navigationTitle(section.title)
         .toolbarTitleDisplayMode(.inline)
-//        .toolbar(id: "main") {
-//
-//            ToolbarItem(id: "workflows", placement: .primaryAction) {
-//                Button {
-//                    sceneModel.manageWorkflows()
-//                } label: {
-//                    Label("Manage Workflows", systemImage: "checklist")
-//                }
-//                .help("Select workflows to display")
-//            }
-//
-//        }
     }
 
 }

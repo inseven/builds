@@ -37,9 +37,35 @@ struct MainContentView: View {
     var body: some View {
         NavigationSplitView {
             Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
+#if os(iOS)
+                .toolbar {
+                    ToolbarItem(id: "settings", placement: .topBarLeading) {
+                        Button {
+                            sceneModel.showSettings()
+                        } label: {
+                            Image(systemName: "gear")
+                        }
+                    }
+                }
+#endif
         } detail: {
-            if let section = sceneModel.section {
-                WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
+            VStack {
+                if let section = sceneModel.section {
+                    WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
+                }
+            }
+            .toolbarTitleDisplayMode(.inline)
+            .navigationTitle(sceneModel.section?.title ?? "")
+            .toolbar() {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        sceneModel.manageWorkflows()
+                    } label: {
+                        Label("Manage Workflows", systemImage: "checklist")
+                    }
+                    .help("Select workflows to display")
+                }
+
             }
         }
         .sheet(item: $sceneModel.sheet) { sheet in
