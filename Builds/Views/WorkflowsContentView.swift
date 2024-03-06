@@ -22,8 +22,6 @@ import SwiftUI
 
 struct WorkflowsContentView: View {
 
-    @Environment(\.dismiss) var dismiss
-
     @ObservedObject var applicationModel: ApplicationModel
 
     @StateObject var workflowsModel: WorkflowsModel
