@@ -57,7 +57,7 @@ struct MainContentView: View {
                     ContentUnavailableView {
                         Text("Logged Out")
                     } description: {
-                        Text("Log in to view your GitHub Actions.")
+                        Text("Log in to view your GitHub Actions workflows.")
                     } actions: {
                         Button {
                             applicationModel.logIn()
