@@ -35,63 +35,12 @@ struct MainContentView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                if applicationModel.isAuthorized {
-                    if applicationModel.results.count > 0 {
-                        WorkflowsView()
-                    } else {
-                        ContentUnavailableView {
-                            Text("No Workflows")
-                        } description: {
-                            Text("Select workflows to view their statuses.")
-                        } actions: {
-                            Button {
-                                sceneModel.manageWorkflows()
-                            } label: {
-                                Text("Manage Workflows")
-                            }
-                        }
-                    }
-                } else {
-                    ContentUnavailableView {
-                        Text("Logged Out")
-                    } description: {
-                        Text("Log in to view your GitHub Actions workflows.")
-                    } actions: {
-                        Button {
-                            applicationModel.logIn()
-                        } label: {
-                            Text("Log In")
-                        }
-                    }
-                }
+        NavigationSplitView {
+            Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
+        } detail: {
+            if let section = sceneModel.section {
+                WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
             }
-            .navigationTitle("Builds")
-            .toolbarTitleDisplayMode(.inline)
-            .toolbar(id: "main") {
-
-#if os(iOS)
-                ToolbarItem(id: "settings", placement: .topBarLeading) {
-                    Button {
-                        sceneModel.showSettings()
-                    } label: {
-                        Image(systemName: "gear")
-                    }
-                }
-#endif
-
-                ToolbarItem(id: "workflows", placement: .primaryAction) {
-                    Button {
-                        sceneModel.manageWorkflows()
-                    } label: {
-                        Label("Manage Workflows", systemImage: "checklist")
-                    }
-                    .help("Select workflows to display")
-                }
-
-            }
-
         }
         .sheet(item: $sceneModel.sheet) { sheet in
             switch sheet {

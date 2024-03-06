@@ -48,6 +48,9 @@
     "Add..." : {
 
     },
+    "All Workflows" : {
+
+    },
     "Builds" : {
 
     },
@@ -93,13 +96,13 @@
     "Open" : {
 
     },
+    "Organizations" : {
+
+    },
     "Refresh..." : {
 
     },
     "Remove Workflow" : {
-
-    },
-    "Select workflows to display" : {
 
     },
     "Select workflows to view their statuses." : {

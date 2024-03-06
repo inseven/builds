@@ -18,47 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-import Interact
+enum SectionIdentifier: Identifiable, Hashable {
 
-class SceneModel: ObservableObject, Runnable {
-
-    enum SheetType: Identifiable {
-
-        var id: Self {
-            return self
+    var id: String {
+        switch self {
+        case .all:
+            return "all"
+        case .organization(let organization):
+            return "organization-\(organization)"
         }
-
-        case add
-        case settings
     }
 
-    @Published var section: SectionIdentifier? = .all
-    @Published var sheet: SheetType?
-
-    let applicationModel: ApplicationModel
-
-    init(applicationModel: ApplicationModel) {
-        self.applicationModel = applicationModel
+    var title: String {
+        switch self {
+        case .all:
+            return "All Workflows"
+        case .organization(let organization):
+            return organization
+        }
     }
 
-    @MainActor func start() {
-    }
-
-    @MainActor func stop() {
-    }
-
-    @MainActor func showSettings() {
-        sheet = .settings
-    }
-
-    @MainActor func manageWorkflows() {
-#if os(iOS)
-        sheet = .add
-#else
-        Application.open(.manageWorkflows)
-#endif
-    }
+    case all
+    case organization(String)
 
 }

@@ -26,12 +26,18 @@ struct WorkflowsView: View {
 
     @Environment(\.openURL) var openURL
 
+    let workflows: [WorkflowInstance]
+
     private var layout = [GridItem(.adaptive(minimum: 300))]
+
+    init(workflows: [WorkflowInstance]) {
+        self.workflows = workflows
+    }
 
     var body: some View {
         ScrollView {
             LazyVGrid(columns: layout) {
-                ForEach(applicationModel.results) { instance in
+                ForEach(workflows) { instance in
                     WorkflowInstanceCell(instance: instance)
                         .contextMenu {
                             Button {
@@ -62,17 +68,6 @@ struct WorkflowsView: View {
         }
         .refreshable {
             await applicationModel.refresh()
-        }
-        .status {
-            if applicationModel.isUpdating {
-                Text("Updating...")
-            } else if let lastUpdate = applicationModel.lastUpdate {
-                Text("Last updated ")
-                Text(lastUpdate, style: .relative)
-                Text(" ago")
-            } else {
-                Text("Never updated")
-            }
         }
 #if os(macOS)
         .navigationSubtitle("\(applicationModel.results.count) Workflows")

@@ -28,6 +28,10 @@ struct WorkflowInstance: Identifiable {
             return self
         }
 
+        var organization: String {
+            return String(repositoryFullName.split(separator: "/").first ?? "?")
+        }
+
         var repositoryName: String {
             return String(repositoryFullName.split(separator: "/").last ?? "?")
         }

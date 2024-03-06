@@ -50,17 +50,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
-    @MainActor func addFavorite(_ id: WorkflowInstance.ID) {
-        guard !favorites.contains(id) else {
-            return
-        }
-        favorites.append(id)
-    }
-
-    @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
-        favorites.removeAll { $0 == id }
-    }
-
+    @MainActor @Published var organizations: [String] = []
     @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var summary: SummaryState = .unknown
     @MainActor @Published var results: [WorkflowInstance] = []
@@ -191,6 +181,17 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             .assign(to: \.results, on: self)
             .store(in: &cancellables)
 
+        // Generate the organizations.
+        $favorites
+            .map { favorites in
+                return favorites.reduce(into: Set<String>()) { partialResult, id in
+                    partialResult.insert(id.organization)
+                }.sorted()
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.organizations, on: self)
+            .store(in: &cancellables)
+
         // Generate an over-arching build summary used to back insight windows and widgets.
         $results
             .map { (results) -> SummaryState in
@@ -225,6 +226,17 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             }
             .store(in: &cancellables)
 
+    }
+
+    @MainActor func addFavorite(_ id: WorkflowInstance.ID) {
+        guard !favorites.contains(id) else {
+            return
+        }
+        favorites.append(id)
+    }
+
+    @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
+        favorites.removeAll { $0 == id }
     }
 
     @MainActor func logIn() {
