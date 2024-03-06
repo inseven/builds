@@ -34,17 +34,17 @@ struct WorkflowPicker: View {
     var body: some View {
         ForEach(workflowPickerModel.repositoryDetails.workflows) { workflow in
 
-            let action = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
+            let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
                                              workflowId: workflow.id,
                                              branch: workflowPickerModel.repositoryDetails.repository.defaultBranch)
 
             Toggle("\(workflow.name) (\(workflowPickerModel.repositoryDetails.repository.defaultBranch))", isOn: Binding(get: {
-                return applicationModel.favorites.contains(action)
+                return applicationModel.favorites.contains(id)
             }, set: { isOn in
                 if isOn {
-                    applicationModel.addFavorite(action)
+                    applicationModel.addFavorite(id)
                 } else {
-                    applicationModel.removeFavorite(action)
+                    applicationModel.removeFavorite(id)
                 }
             }))
         }
