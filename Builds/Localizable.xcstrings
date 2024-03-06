@@ -1,0 +1,97 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    " ago" : {
+
+    },
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "About %@..." : {
+
+    },
+    "Account" : {
+
+    },
+    "Add workflow to view their statuses." : {
+
+    },
+    "Add Workflows" : {
+
+    },
+    "Add..." : {
+
+    },
+    "Builds" : {
+
+    },
+    "Done" : {
+
+    },
+    "Last updated " : {
+
+    },
+    "Log In" : {
+
+    },
+    "Log in to view your GitHub Actions." : {
+
+    },
+    "Log In..." : {
+
+    },
+    "Log Out" : {
+
+    },
+    "Log Out..." : {
+
+    },
+    "Logged Out" : {
+
+    },
+    "Manage Favorites" : {
+
+    },
+    "Manage GitHub Permissions" : {
+
+    },
+    "Manage GitHub Permissions..." : {
+
+    },
+    "Never updated" : {
+
+    },
+    "No Workflows" : {
+
+    },
+    "Open" : {
+
+    },
+    "Refresh..." : {
+
+    },
+    "Remove Favorite" : {
+
+    },
+    "Settings" : {
+
+    },
+    "Unknown Job" : {
+
+    },
+    "Updating..." : {
+
+    }
+  },
+  "version" : "1.0"
+}

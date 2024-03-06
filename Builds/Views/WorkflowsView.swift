@@ -74,7 +74,9 @@ struct WorkflowsView: View {
                 Text("Never updated")
             }
         }
+#if os(macOS)
         .navigationSubtitle("\(applicationModel.results.count) Workflows")
+#endif
     }
 
 }
