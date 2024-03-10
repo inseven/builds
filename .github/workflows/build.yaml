@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  macos-build:
+  build:
 
     runs-on: inseven-macos-14
 
