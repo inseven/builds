@@ -18,15 +18,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-struct ConcreteWorkflowDetails: Identifiable {
+struct BranchPickerSheet: View {
 
-    var id: String {
-        return "\(name)@\(branch)"
+    @Environment(\.dismiss) var dismiss
+
+    @ObservedObject var workflowPickerModel: WorkflowPickerModel
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                ForEach(workflowPickerModel.extraBranches, id: \.self) { branch in
+                    Button {
+                        workflowPickerModel.branches.append(branch)
+                        dismiss()
+                    } label: {
+                        Text(branch)
+                    }
+                }
+            }
+            .formStyle(.grouped)
+            .navigationTitle("Add Branch")
+            .toolbarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
+            }
+        }
+        .presentationDetents([.medium, .large])
     }
-
-    let name: String
-    let branch: String
 
 }

@@ -31,22 +31,68 @@ struct WorkflowPicker: View {
                                                                              repositoryDetails: repositoryDetails))
     }
 
+    func binding(for workflow: WorkflowPickerModel.WorkflowDetails) -> Binding<Bool> {
+        let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
+                                     workflowId: workflow.workflowId,
+                                     branch: workflow.branch)
+        return Binding {
+            return applicationModel.favorites.contains(id)
+        } set: { isOn in
+            if isOn {
+                applicationModel.addFavorite(id)
+            } else {
+                applicationModel.removeFavorite(id)
+            }
+        }
+    }
+
     var body: some View {
-        ForEach(workflowPickerModel.repositoryDetails.workflows) { workflow in
-
-            let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
-                                             workflowId: workflow.id,
-                                             branch: workflowPickerModel.repositoryDetails.repository.defaultBranch)
-
-            Toggle("\(workflow.name) (\(workflowPickerModel.repositoryDetails.repository.defaultBranch))", isOn: Binding(get: {
-                return applicationModel.favorites.contains(id)
-            }, set: { isOn in
-                if isOn {
-                    applicationModel.addFavorite(id)
-                } else {
-                    applicationModel.removeFavorite(id)
+        Section {
+            ForEach(workflowPickerModel.actions) { workflow in
+                Toggle(isOn: binding(for: workflow)) {
+                    VStack(alignment: .leading) {
+                        Text(workflow.workflowName)
+                        Text(workflow.branch)
+                            .foregroundStyle(.secondary)
+                    }
                 }
-            }))
+            }
+        } header: {
+            Text(workflowPickerModel.repositoryDetails.repository.fullName)
+                .textCase(.none)
+        } footer: {
+#if os(macOS)
+            HStack {
+                Spacer()
+                Menu {
+                    ForEach(workflowPickerModel.extraBranches, id: \.self) { branch in
+                        Button {
+                            workflowPickerModel.add = branch
+                        } label: {
+                            Text(branch)
+                        }
+                    }
+                } label: {
+                    Text("Add Branch...")
+                }
+                .fixedSize(horizontal: true, vertical: false)
+                .disabled(workflowPickerModel.extraBranches.count < 1)
+            }
+#else
+            Button {
+                workflowPickerModel.sheet = .add
+            } label: {
+                Text("Add Branch...")
+            }
+            .disabled(workflowPickerModel.extraBranches.count < 1)
+#endif
+        }
+        .sheet(item: $workflowPickerModel.sheet) { sheet in
+            switch sheet {
+            case .add:
+                BranchPickerSheet(workflowPickerModel: workflowPickerModel)
+            }
+
         }
         .runs(workflowPickerModel)
     }
