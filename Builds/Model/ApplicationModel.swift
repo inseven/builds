@@ -273,6 +273,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     @MainActor func logOut() {
         authenticationToken = nil
         cachedStatus = [:]
+        favorites = []
     }
 
     @MainActor func managePermissions() {
