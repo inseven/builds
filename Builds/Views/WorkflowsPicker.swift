@@ -31,7 +31,7 @@ struct WorkflowPicker: View {
                                                                              repositoryDetails: repositoryDetails))
     }
 
-    func binding(for workflow: WorkflowPickerModel.ConcreteWorkflowDetails) -> Binding<Bool> {
+    func binding(for workflow: WorkflowPickerModel.WorkflowDetails) -> Binding<Bool> {
         let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
                                      workflowId: workflow.workflowId,
                                      branch: workflow.branch)

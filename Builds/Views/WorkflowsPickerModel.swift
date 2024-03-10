@@ -25,7 +25,7 @@ import Interact
 
 class WorkflowPickerModel: ObservableObject, Runnable {
 
-    struct ConcreteWorkflowDetails: Identifiable {
+    struct WorkflowDetails: Identifiable {
 
         var id: String {
             return "\(workflowId)@\(branch)"
@@ -47,7 +47,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
 
     @Published var workflows: [GitHub.Workflow]
     @Published var branch: GitHub.Branch?
-    @MainActor @Published var actions: [ConcreteWorkflowDetails] = []
+    @MainActor @Published var actions: [WorkflowDetails] = []
     @MainActor @Published var branches: [String] = []
     @MainActor @Published var extraBranches: [String] = []
     @MainActor @Published var add: String? = nil
@@ -93,7 +93,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
                 return branches.map { branch in
                     return self.workflows
                         .map { workflow in
-                            return ConcreteWorkflowDetails(workflowId: workflow.id,
+                            return WorkflowDetails(workflowId: workflow.id,
                                                            workflowName: workflow.name,
                                                            branch: branch)
                         }
