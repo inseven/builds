@@ -31,57 +31,68 @@ struct WorkflowPicker: View {
                                                                              repositoryDetails: repositoryDetails))
     }
 
+    func binding(for workflow: WorkflowPickerModel.ConcreteWorkflowDetails) -> Binding<Bool> {
+        let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
+                                     workflowId: workflow.workflowId,
+                                     branch: workflow.branch)
+        return Binding {
+            return applicationModel.favorites.contains(id)
+        } set: { isOn in
+            if isOn {
+                applicationModel.addFavorite(id)
+            } else {
+                applicationModel.removeFavorite(id)
+            }
+        }
+    }
+
     var body: some View {
         Section {
             ForEach(workflowPickerModel.actions) { workflow in
-                let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
-                                             workflowId: workflow.workflowId,
-                                             branch: workflow.branch)
-                Toggle("\(workflow.workflowName) (\(workflow.branch))", isOn: Binding(get: {
-                    return applicationModel.favorites.contains(id)
-                }, set: { isOn in
-                    if isOn {
-                        applicationModel.addFavorite(id)
-                    } else {
-                        applicationModel.removeFavorite(id)
+                Toggle(isOn: binding(for: workflow)) {
+                    VStack(alignment: .leading) {
+                        Text(workflow.workflowName)
+                        Text(workflow.branch)
+                            .foregroundStyle(.secondary)
                     }
-                }))
+                }
             }
-//            if workflowPickerModel.extraBranches.count > 0 {
-//                Picker("Add Branch", selection: $workflowPickerModel.add) {
-//                    ForEach(workflowPickerModel.extraBranches, id: \.self) { branch in
-//                        Text(branch)
-//                            .tag(branch as String?)
-//                    }
-//                }
-//            }
         } header: {
-            Text(workflowPickerModel.repositoryDetails.repository.name)
             Text(workflowPickerModel.repositoryDetails.repository.fullName)
+                .textCase(.none)
         } footer: {
+#if os(macOS)
+            HStack {
+                Spacer()
+                Menu {
+                    ForEach(workflowPickerModel.extraBranches, id: \.self) { branch in
+                        Button {
+                            workflowPickerModel.add = branch
+                        } label: {
+                            Text(branch)
+                        }
+                    }
+                } label: {
+                    Text("Add Branch...")
+                }
+                .fixedSize(horizontal: true, vertical: false)
+                .disabled(workflowPickerModel.extraBranches.count < 1)
+            }
+#else
             Button {
                 workflowPickerModel.sheet = .add
             } label: {
                 Text("Add Branch...")
             }
             .disabled(workflowPickerModel.extraBranches.count < 1)
+#endif
         }
         .sheet(item: $workflowPickerModel.sheet) { sheet in
             switch sheet {
             case .add:
-                NavigationStack {
-                    // TODO: Cancel button.
-                    Form {
-                        ForEach(workflowPickerModel.extraBranches, id: \.self) { branch in
-                            Text(branch)
-                                .onTapGesture {
-                                    workflowPickerModel.add = branch
-                                }
-                        }
-                    }
-                    .navigationTitle("Add Branch")
-                }
+                BranchPickerSheet(workflowPickerModel: workflowPickerModel)
             }
+
         }
         .runs(workflowPickerModel)
     }
