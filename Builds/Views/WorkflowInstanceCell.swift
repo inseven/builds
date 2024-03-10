@@ -50,7 +50,6 @@ struct WorkflowInstanceCell: View {
                     if instance.annotations.count > 0 {
                         Button {
                             isPresented = true
-                            print("Annotations = \(instance.annotations)")
                         } label: {
                             Image(systemName: "text.alignleft")
                                 .contentShape(Rectangle())

@@ -25,52 +25,68 @@ import Interact
 
 class WorkflowsModel: ObservableObject, Runnable {
 
+    @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var repositories: [RepositoryDetails]?
     @MainActor @Published var error: Error?
 
-    let applicationModel: ApplicationModel
+    private let applicationModel: ApplicationModel
+    private var refreshScheduler: RefreshScheduler!
 
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
+        self.refreshScheduler = RefreshScheduler { [weak self] in
+            guard let self else {
+                return nil
+            }
+            await self.updateRepositories()
+            return nil
+        }
     }
 
     @MainActor func start() {
-        updateRepositories()
+        refreshScheduler.start()
     }
 
     @MainActor func stop() {
-
+        refreshScheduler.cancel()
     }
 
-    func updateRepositories() {
+    private func updateRepositories() async {
         let client = applicationModel.client
-        Task {
-            do {
-                let repositories = try await client
-                    .repositories()
-                    .compactMap { repository -> RepositoryDetails? in
-                        guard !repository.archived else {
-                            return nil
-                        }
-                        let workflows = try await client.workflows(for: repository)
-                        guard workflows.count > 0 else {
-                            return nil
-                        }
-                        let branches = try await client.branches(for: repository)
-                        return RepositoryDetails(repository: repository,
-                                                 workflows: workflows,
-                                                 branches: branches)
+        await MainActor.run {
+            self.isUpdating = true
+        }
+        do {
+            let repositories = try await client
+                .repositories()
+                .compactMap { repository -> RepositoryDetails? in
+                    guard !repository.archived else {
+                        return nil
                     }
-                    .sorted { $0.repository.fullName.localizedStandardCompare($1.repository.fullName) == .orderedAscending }
-                await MainActor.run {
-                    self.repositories = repositories
+                    let workflows = try await client.workflows(for: repository)
+                    guard workflows.count > 0 else {
+                        return nil
+                    }
+                    let branches = try await client.branches(for: repository)
+                    return RepositoryDetails(repository: repository,
+                                             workflows: workflows,
+                                             branches: branches)
                 }
-            } catch {
-                await MainActor.run {
-                    self.error = error
-                }
+                .sorted { $0.repository.fullName.localizedStandardCompare($1.repository.fullName) == .orderedAscending }
+            await MainActor.run {
+                self.repositories = repositories
+                self.isUpdating = false
+            }
+        } catch {
+            await MainActor.run {
+                self.error = error
+                self.isUpdating = false
             }
         }
+    }
+
+    @MainActor func refresh() async {
+        await refreshScheduler.run()
     }
 
 }

@@ -20,7 +20,13 @@
 
 import SwiftUI
 
+import Interact
+
 struct WorkflowsContentView: View {
+
+#if os(macOS)
+    @Environment(\.controlActiveState) var controlActiveState
+#endif
 
     @ObservedObject var applicationModel: ApplicationModel
 
@@ -41,14 +47,51 @@ struct WorkflowsContentView: View {
                 }
                 .formStyle(.grouped)
             } else {
+#if os(macOS)
+                ContentUnavailableView {
+                    Text("Loading...")
+                }
+#else
                 ProgressView()
+#endif
             }
         }
         .navigationTitle("Manage Workflows")
         .toolbarTitleDisplayMode(.inline)
+#if os(macOS)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    await workflowsModel.refresh()
+                } label: {
+                    if workflowsModel.isUpdating {
+                        ProgressView()
+                            .controlSize(.small)
+                    } else {
+                        Label("Refresh", systemImage: "arrow.clockwise")
+                    }
+                }
+                .disabled(workflowsModel.repositories == nil)
+            }
+        }
+#else
+        .refreshable {
+            await workflowsModel.refresh()
+        }
+#endif
         .dismissable()
+        .interactiveDismissDisabled()
         .runs(workflowsModel)
         .presents($workflowsModel.error)
+#if os(macOS)
+        .onChange(of: controlActiveState) { oldValue, newValue in
+            if newValue == .key {
+                Task {
+                    await workflowsModel.refresh()
+                }
+            }
+        }
+#endif
     }
 
 }
