@@ -52,6 +52,12 @@ struct MainContentView: View {
             VStack {
                 if let section = sceneModel.section {
                     WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
+                } else {
+                    ContentUnavailableView {
+                        Label("Nothing Selected", systemImage: "sidebar.leading")
+                    } description: {
+                        Text("Select a section from the sidebar to view workflows.")
+                    }
                 }
             }
             .toolbarTitleDisplayMode(.inline)

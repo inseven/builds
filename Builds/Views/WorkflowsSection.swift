@@ -43,9 +43,9 @@ struct WorkflowsSection: View {
                     WorkflowsView(workflows: workflows)
                 } else {
                     ContentUnavailableView {
-                        Text("No Workflows")
+                        Label("No Workflows", systemImage: "checklist.unchecked")
                     } description: {
-                        Text("Select workflows to view their statuses.")
+                        Text("Add workflows to view their statuses.")
                     } actions: {
                         Button {
                             sceneModel.manageWorkflows()
