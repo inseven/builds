@@ -24,6 +24,10 @@ import Interact
 
 struct WorkflowsContentView: View {
 
+#if os(macOS)
+    @Environment(\.controlActiveState) var controlActiveState
+#endif
+
     @ObservedObject var applicationModel: ApplicationModel
 
     @StateObject var workflowsModel: WorkflowsModel
@@ -79,6 +83,15 @@ struct WorkflowsContentView: View {
         .interactiveDismissDisabled()
         .runs(workflowsModel)
         .presents($workflowsModel.error)
+#if os(macOS)
+        .onChange(of: controlActiveState) { oldValue, newValue in
+            if newValue == .key {
+                Task {
+                    await workflowsModel.refresh()
+                }
+            }
+        }
+#endif
     }
 
 }

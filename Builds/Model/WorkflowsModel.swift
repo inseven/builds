@@ -44,7 +44,6 @@ class WorkflowsModel: ObservableObject, Runnable {
     }
 
     @MainActor func start() {
-//        updateRepositories()
         refreshScheduler.start()
     }
 
