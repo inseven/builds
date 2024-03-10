@@ -53,16 +53,6 @@ struct WorkflowsView: View {
                             }
                             .disabled(instance.result?.workflowRun == nil)
                             Divider()
-                            Button {
-                                guard let workflowRun = instance.result?.workflowRun else {
-                                    return
-                                }
-                                await applicationModel.fetch(workflowRun.rerunURL)
-                            } label: {
-                                Text("Re-run all jobs")
-                            }
-                            .disabled(instance.result?.workflowRun == nil)
-                            Divider()
                             Button(role: .destructive) {
                                 applicationModel.removeFavorite(instance.id)
                             } label: {

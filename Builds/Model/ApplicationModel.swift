@@ -314,14 +314,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         await refreshScheduler.run()
     }
 
-    func fetch(_ url: URL) async{
-        do {
-            try await client.fetch(url)
-        } catch {
-            print("FAILED TO CALL URL WITH ERROR \(error)")
-        }
-    }
-
     func requestHigherFrequencyUpdates() async {
         if activeScenes < 1 {
             Task {
