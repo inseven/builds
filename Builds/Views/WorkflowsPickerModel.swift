@@ -25,53 +25,111 @@ import Interact
 
 class WorkflowPickerModel: ObservableObject, Runnable {
 
-    @Published var workflow: GitHub.Workflow?
+    struct ConcreteWorkflowDetails: Identifiable {
+
+        var id: String {
+            return "\(workflowId)@\(branch)"
+        }
+
+        let workflowId: Int
+        let workflowName: String
+        let branch: String
+    }
+
+    enum SheetType: Identifiable {
+
+        var id: Self {
+            return self
+        }
+
+        case add
+    }
+
+    @Published var workflows: [GitHub.Workflow]
     @Published var branch: GitHub.Branch?
     @MainActor @Published var actions: [ConcreteWorkflowDetails] = []
+    @MainActor @Published var branches: [String] = []
+    @MainActor @Published var extraBranches: [String] = []
+    @MainActor @Published var add: String? = nil
+    @MainActor @Published var sheet: SheetType?
 
     private let applicationModel: ApplicationModel
     let repositoryDetails: RepositoryDetails
     private var cancellables = Set<AnyCancellable>()
 
-    init(applicationModel: ApplicationModel, repositoryDetails: RepositoryDetails) {
+    @MainActor init(applicationModel: ApplicationModel, repositoryDetails: RepositoryDetails) {
         self.applicationModel = applicationModel
         self.repositoryDetails = repositoryDetails
-        self.workflow = repositoryDetails.workflows.first
+        self.workflows = repositoryDetails.workflows
         self.branch = repositoryDetails.branches.first { repositoryDetails.repository.defaultBranch == $0.name }
+        self.branches = [repositoryDetails.repository.defaultBranch]
     }
 
     @MainActor func start() {
+
+        // Ensure we show branches for all workflows that have been saved.
         applicationModel
             .$favorites
-            .map { actions in
-                return actions
-                    .filter { action in
-                        return action.repositoryFullName == self.repositoryDetails.repository.fullName
+            .map { favorites in
+                return favorites.filter { favorite in
+                    favorite.repositoryFullName == self.repositoryDetails.repository.fullName
+                }.reduce(into: Set<String>()) { partialResult, id in
+                    partialResult.insert(id.branch)
+                }
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { branches in
+                for branch in branches {
+                    if !self.branches.contains(branch) {
+                        self.branches.append(branch)
                     }
-                    .map { action in
-                        let workflow = self.repositoryDetails.workflows.first(where: { $0.id == action.workflowId })
-                        return ConcreteWorkflowDetails(name: workflow?.name ?? String(action.workflowId),
-                                                       branch: action.branch)
-                    }
+                }
+            }
+            .store(in: &cancellables)
+
+        // Generate the matrix of workflows and branches.
+        $branches
+            .map { branches in
+                return branches.map { branch in
+                    return self.workflows
+                        .map { workflow in
+                            return ConcreteWorkflowDetails(workflowId: workflow.id,
+                                                           workflowName: workflow.name,
+                                                           branch: branch)
+                        }
+                }
+                .reduce([], +)
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.actions, on: self)
             .store(in: &cancellables)
+
+        // Generate the list of extra branches.
+        $branches
+            .map { branches in
+                return Set(self.repositoryDetails.branches.map { $0.name })
+                    .subtracting(branches)
+                    .sorted()
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.extraBranches, on: self)
+            .store(in: &cancellables)
+
+        // Watch for new branches.
+        $add
+            .compactMap { branch in
+                return branch
+            }
+            .receive(on: DispatchQueue.main)
+            .sink { branch in
+                self.branches.append(branch)
+            }
+            .store(in: &cancellables)
+
     }
 
     @MainActor func stop() {
         cancellables.removeAll()
-    }
-
-    @MainActor func add() {
-        guard let workflow = workflow,
-              let branch = branch else {
-            return
-        }
-        let action = WorkflowInstance.ID(repositoryFullName: repositoryDetails.repository.fullName,
-                                         workflowId: workflow.id,
-                                         branch: branch.name)
-        applicationModel.addFavorite(action)
     }
 
 }

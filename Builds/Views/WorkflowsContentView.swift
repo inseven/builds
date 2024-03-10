@@ -36,18 +36,7 @@ struct WorkflowsContentView: View {
             if let repositories = workflowsModel.repositories {
                 Form {
                     ForEach(repositories) { repository in
-                        Section {
-                            WorkflowPicker(applicationModel: applicationModel, repositoryDetails: repository)
-                        } header: {
-                            Text(repository.repository.fullName)
-                        } footer: {
-                            Button {
-
-                            } label: {
-                                Text("Add...")
-                            }
-                        }
-
+                        WorkflowPicker(applicationModel: applicationModel, repositoryDetails: repository)
                     }
                 }
                 .formStyle(.grouped)
