@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Combine
 import SwiftUI
 
 import Interact
@@ -37,16 +38,31 @@ class SceneModel: ObservableObject, Runnable {
     @Published var section: SectionIdentifier? = .all
     @Published var sheet: SheetType?
 
-    let applicationModel: ApplicationModel
+    private let applicationModel: ApplicationModel
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
     }
 
     @MainActor func start() {
+        applicationModel
+            .$organizations
+            .receive(on: DispatchQueue.main)
+            .sink { organizations in
+                guard let section = self.section,
+                      case SectionIdentifier.organization(let organization) = section,
+                      !organizations.contains(organization) else {
+                    return
+                }
+                self.section = nil
+            }
+            .store(in: &cancellables)
     }
 
     @MainActor func stop() {
+        cancellables.removeAll()
     }
 
     @MainActor func showSettings() {

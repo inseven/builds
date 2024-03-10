@@ -48,6 +48,9 @@
     "Add Branch..." : {
 
     },
+    "Add workflows to view their statuses." : {
+
+    },
     "All Workflows" : {
 
     },
@@ -90,6 +93,9 @@
     "No Workflows" : {
 
     },
+    "Nothing Selected" : {
+
+    },
     "Open" : {
 
     },
@@ -102,10 +108,10 @@
     "Remove Workflow" : {
 
     },
-    "Select workflows to display" : {
+    "Select a section from the sidebar to view workflows." : {
 
     },
-    "Select workflows to view their statuses." : {
+    "Select workflows to display" : {
 
     },
     "Settings" : {
