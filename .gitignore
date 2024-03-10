@@ -1,2 +1,6 @@
-configuration.json
+.jekyll-cache
+_site
 configuration-legacy.json
+configuration.json
+
+/docs/release-notes
