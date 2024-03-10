@@ -286,13 +286,6 @@ class GitHub {
         self.redirectUri = redirectUri
     }
 
-    func fetch(_ url: URL, authentication: Authentication) async throws {
-        var request = URLRequest(url: url)
-        request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
-        request.setValue("token \(authentication.accessToken)", forHTTPHeaderField: "Authorization")
-        _ = try await URLSession.shared.data(for: request)
-    }
-
     private func fetch<T: Decodable>(_ url: URL, authentication: Authentication) async throws -> T {
         var request = URLRequest(url: url)
         request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
