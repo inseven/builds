@@ -60,61 +60,25 @@ struct WorkflowInstance: Identifiable {
         return id.repositoryName
     }
 
+    var workflowName: String {
+        return result?.workflowRun.name ?? String(id.workflowId)
+    }
+
     var details: String {
-        return "\(result?.workflowRun.name ?? String(id.workflowId)) (\(id.branch))"
+        return "\(workflowName) (\(id.branch))"
     }
 
     var annotations: [GitHub.Annotation] {
         return result?.annotations ?? []
     }
 
-}
-
-extension WorkflowInstance {
-
     var state: SummaryState {
-
-        guard let workflowRun = result?.workflowRun else {
-            return .unknown
-        }
-
-        switch workflowRun.status {
-        case .queued:
-            return .inProgress
-        case .waiting:
-            return .inProgress
-        case .inProgress:
-            return .inProgress
-        case .completed:
-            break
-        }
-
-        guard let conclusion = workflowRun.conclusion else {
-            return .unknown
-        }
-
-        switch conclusion {
-        case .success:
-            return .success
-        case .failure:
-            return .failure
-        case .cancelled:
-            return .failure
-        }
-
+        return SummaryState(status: result?.workflowRun.status,
+                            conclusion: result?.workflowRun.conclusion)
     }
 
     var statusColor: Color {
-        switch self.state {
-        case .unknown:
-            return .gray
-        case .success:
-            return .green
-        case .failure:
-            return .red
-        case .inProgress:
-            return .yellow
-        }
+        return state.color
     }
 
     var lastRun: String {
