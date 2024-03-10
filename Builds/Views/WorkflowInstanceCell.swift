@@ -120,7 +120,9 @@ struct WorkflowInstanceCell: View {
         .padding()
         .background(instance.statusColor)
         .clipShape(RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
+#if os(iOS)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
+#endif
         .foregroundColor(.black)
     }
 
