@@ -50,15 +50,9 @@ class GitHub {
 
     private struct AccessToken: Codable {
 
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case scope = "scope"
-            case tokenType = "token_type"
-        }
-
-        let accessToken: String
+        let access_token: String
         let scope: String
-        let tokenType: String
+        let token_type: String
     }
 
     struct Workflow: Codable, Identifiable, Equatable, Hashable {
@@ -68,103 +62,74 @@ class GitHub {
         }
 
         let id: Int
-        let node_id: String
+
         let name: String
+        let node_id: String
         let path: String
         let state: String
     }
 
     struct Workflows: Codable {
 
-        enum CodingKeys: String, CodingKey {
-            case totalCount = "total_count"
-            case workflows = "workflows"
-        }
-
-        let totalCount: Int
+        let total_count: Int
         let workflows: [Workflow]
     }
 
     struct Repositories: Codable {
 
-        enum CodingKeys: String, CodingKey {
-            case totalCount = "total_count"
-            case incompleteResults = "incomplete_results"
-            case items = "items"
-        }
-
-        let totalCount: Int
-        let incompleteResults: Bool
+        let incomplete_results: Bool
         let items: [Repository]
+        let total_count: Int
     }
 
     struct Repository: Codable, Identifiable, Equatable, Hashable {
-
-        enum CodingKeys: String, CodingKey {
-            case id = "id"
-            case nodeId = "node_id"
-            case name = "name"
-            case fullName = "full_name"
-            case owner = "owner"
-            case url = "url"
-            case defaultBranch = "default_branch"
-            case archived = "archived"
-        }
 
         static func == (lhs: Repository, rhs: Repository) -> Bool {
             return lhs.id == rhs.id
         }
         
         let id: Int
-        let nodeId: String
+
+        let archived: Bool
+        let default_branch: String
+        let full_name: String
         let name: String
-        let fullName: String
+        let node_id: String
         let owner: User
         let url: URL
-        let defaultBranch: String
-        let archived: Bool
-
     }
 
     struct WorkflowRuns: Codable {
 
-        enum CodingKeys: String, CodingKey {
-            case totalCount = "total_count"
-            case workflowRuns = "workflow_runs"
-        }
-
-        let totalCount: Int
-        let workflowRuns: [WorkflowRun]
+        let total_count: Int
+        let workflow_runs: [WorkflowRun]
     }
 
     struct WorkflowJobs: Codable {
 
-        let total_count: Int
         let jobs: [WorkflowJob]
+        let total_count: Int
 
     }
 
     struct WorkflowJob: Codable, Hashable {
 
         let id: Int
-        let run_id: Int
-        let name: String
-        let status: Status
+
         let conclusion: Conclusion?
         let html_url: URL
-
+        let name: String
+        let run_id: Int
+        let status: Status
     }
 
     struct Branch: Codable, Identifiable, Hashable {
 
-        enum CodingKeys: String, CodingKey {
-            case name = "name"
+        var id: String {
+            return name
         }
 
-        var id: String { return name }
-
         let name: String
-
     }
 
     enum Status: String, Codable {
@@ -182,52 +147,32 @@ class GitHub {
 
     struct WorkflowRun: Codable, Identifiable {
 
-        enum CodingKeys: String, CodingKey {
-            case id = "id"
-            case name = "name"
-            case nodeId = "node_id"
-            case checkSuiteId = "check_suite_id"
-            case checkSuiteNodeId = "check_suite_node_id"
-            case headBranch = "head_branch"
-            case headSha = "head_sha"
-            case runNumber = "run_number"
-            case event = "event"
-            case status = "status"
-            case conclusion = "conclusion"
-            case workflowId = "workflow_id"
-            case url = "url"
-            case htmlURL = "html_url"
-            case runAttempt = "run_attempt"
-            case rerunURL = "rerun_url"
-            case createdAt = "created_at"
-            case updatedAt = "updated_at"
-        }
-
         let id: Int
-        let name: String
-        let nodeId: String
-        let checkSuiteId: Int
-        let checkSuiteNodeId: String
-        let headBranch: String
-        let headSha: String
-        let runNumber: Int
-        let event: String
-        let status: Status
-        let conclusion: Conclusion?
-        let workflowId: Int
-        let url: URL
-        let htmlURL: URL
-        let runAttempt: Int
-        let rerunURL: URL
 
-        let createdAt: Date
-        let updatedAt: Date
+        let check_suite_id: Int
+        let check_suite_node_id: String
+        let conclusion: Conclusion?
+        let created_at: Date
+        let event: String
+        let head_branch: String
+        let head_sha: String
+        let html_url: URL
+        let name: String
+        let node_id: String
+        let rerun_url: URL
+        let run_attempt: Int
+        let run_number: Int
+        let status: Status
+        let updated_at: Date
+        let url: URL
+        let workflow_id: Int
     }
 
     struct Organization: Codable, Identifiable {
 
-        let login: String
         let id: Int
+
+        let login: String
     }
 
     struct User: Codable, Hashable {
@@ -240,16 +185,14 @@ class GitHub {
 
     struct Annotation: Codable, Hashable {
 
-        let path: String
-        let start_line: Int
-        let end_line: Int
-        let start_column: Int?
-        let end_column: Int?
-
         let annotation_level: String
-        let title: String
+        let end_column: Int?
+        let end_line: Int
         let message: String
-
+        let path: String
+        let start_column: Int?
+        let start_line: Int
+        let title: String
     }
 
     // TODO: Paged fetch
@@ -265,9 +208,7 @@ class GitHub {
     let redirectUri: String
 
     let syncQueue = DispatchQueue(label: "GitHub.syncQueue")
-    var _authentication: Authentication?  // Synchronized on syncQueue
 
-    // TODO: Make this a method
     var authorizationURL: URL {
         return url(.authorize, parameters: [
             "client_id": clientId,
@@ -320,7 +261,7 @@ class GitHub {
         // TODO: Assemble the path?
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs")!
         let response: WorkflowRuns = try await fetch(url, authentication: authentication)
-        return response.workflowRuns
+        return response.workflow_runs
     }
 
     // TODO: Paged fetch
@@ -339,14 +280,14 @@ class GitHub {
 
     // TODO: Owner and repo as parameters.
     func branches(for repository: Repository, authentication: Authentication) async throws -> [Branch] {
-        let url = URL(string: "https://api.github.com/repos/\(repository.fullName)/branches")!
+        let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/branches")!
         let response: [Branch] = try await fetch(url, authentication: authentication)
         return response
     }
 
     // TODO: Use repositoryname
     func workflows(for repository: Repository, authentication: Authentication) async throws -> [Workflow] {
-        let url = URL(string: "https://api.github.com/repos/\(repository.fullName)/actions/workflows")!
+        let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/actions/workflows")!
         let response: Workflows = try await fetch(url, authentication: authentication)
         return response.workflows
     }
@@ -387,10 +328,7 @@ class GitHub {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             let accessToken = try decoder.decode(AccessToken.self, from: data)
-            syncQueue.async {
-                self._authentication = Authentication(accessToken: accessToken.accessToken)
-            }
-            return .success(Authentication(accessToken: accessToken.accessToken))
+            return .success(Authentication(accessToken: accessToken.access_token))
         } catch {
             return .failure(error)
         }
