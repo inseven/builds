@@ -23,11 +23,12 @@ import SwiftUI
 struct MainContentView: View {
 
     @ObservedObject var applicationModel: ApplicationModel
-    @StateObject var sceneModel: SceneModel
 
     @Environment(\.openURL) var openURL
     @Environment(\.openWindow) var openWindow
     @Environment(\.scenePhase) var scenePhase
+
+    @StateObject var sceneModel: SceneModel
 
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
@@ -93,6 +94,7 @@ struct MainContentView: View {
         }
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
+        .environmentObject(sceneModel)
         .focusedSceneObject(sceneModel)
         .onChange(of: scenePhase) { oldValue, newValue in
             switch newValue {
