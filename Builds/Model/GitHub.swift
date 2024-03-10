@@ -148,6 +148,10 @@ class GitHub {
 
         let id: Int
         let run_id: Int
+        let name: String
+        let status: Status
+        let conclusion: Conclusion?
+        let html_url: URL
 
     }
 
@@ -163,20 +167,20 @@ class GitHub {
 
     }
 
+    enum Status: String, Codable {
+        case queued = "queued"
+        case waiting = "waiting"
+        case inProgress = "in_progress"
+        case completed = "completed"
+    }
+
+    enum Conclusion: String, Codable {
+        case success
+        case cancelled
+        case failure
+    }
+
     struct WorkflowRun: Codable, Identifiable {
-
-        enum Conclusion: String, Codable {
-            case success
-            case cancelled
-            case failure
-        }
-
-        enum Status: String, Codable {
-            case queued = "queued"
-            case waiting = "waiting"
-            case inProgress = "in_progress"
-            case completed = "completed"
-        }
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
@@ -193,6 +197,8 @@ class GitHub {
             case workflowId = "workflow_id"
             case url = "url"
             case htmlURL = "html_url"
+            case runAttempt = "run_attempt"
+            case rerunURL = "rerun_url"
             case createdAt = "created_at"
             case updatedAt = "updated_at"
         }
@@ -211,6 +217,8 @@ class GitHub {
         let workflowId: Int
         let url: URL
         let htmlURL: URL
+        let runAttempt: Int
+        let rerunURL: URL
 
         let createdAt: Date
         let updatedAt: Date

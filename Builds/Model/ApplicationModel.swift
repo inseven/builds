@@ -305,7 +305,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         return WorkflowInstance(id: id,
-                                result: WorkflowResult(workflowRun: latestRun, annotations: annotations))
+                                result: WorkflowResult(workflowRun: latestRun,
+                                                       jobs: workflowJobs,
+                                                       annotations: annotations))
     }
 
     func refresh() async {
