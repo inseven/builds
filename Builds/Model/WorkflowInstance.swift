@@ -82,7 +82,7 @@ struct WorkflowInstance: Identifiable {
     }
 
     var lastRun: String {
-        guard let createdAt = result?.workflowRun.createdAt else {
+        guard let createdAt = result?.workflowRun.created_at else {
             return "Unknown"
         }
         let dateFormatter = RelativeDateTimeFormatter()

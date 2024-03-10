@@ -44,7 +44,7 @@ struct WorkflowsView: View {
                                 guard let workflowRun = instance.result?.workflowRun else {
                                     return
                                 }
-                                openURL(workflowRun.htmlURL)
+                                openURL(workflowRun.html_url)
                             } label: {
                                 Label("Open", systemImage: "safari")
                             }
@@ -59,7 +59,7 @@ struct WorkflowsView: View {
                             guard let workflowRun = instance.result?.workflowRun else {
                                 return
                             }
-                            openURL(workflowRun.htmlURL)
+                            openURL(workflowRun.html_url)
                         }
 
                 }
