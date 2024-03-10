@@ -30,6 +30,10 @@ extension GitHub.Annotation: Identifiable {
 
 struct WorkflowInstanceCell: View {
 
+    struct LayoutMetrics {
+        static let cornerRadius = 12.0
+    }
+
     @State var isPresented: Bool = false
 
     let instance: WorkflowInstance
@@ -115,7 +119,10 @@ struct WorkflowInstanceCell: View {
         .frame(maxWidth: .infinity)
         .padding()
         .background(instance.statusColor)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
+#if os(iOS)
+        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
+#endif
         .foregroundColor(.black)
     }
 
