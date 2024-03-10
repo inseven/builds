@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "#%lld" : {
+
+    },
     "%@ (%@)" : {
       "localizations" : {
         "en" : {
@@ -54,13 +57,31 @@
     "All Workflows" : {
 
     },
+    "Annotations" : {
+
+    },
+    "Attempt" : {
+
+    },
+    "Branch" : {
+
+    },
     "Builds" : {
 
     },
     "Cancel" : {
 
     },
+    "Created" : {
+
+    },
+    "Details" : {
+
+    },
     "Done" : {
+
+    },
+    "Jobs" : {
 
     },
     "Log In" : {
@@ -90,6 +111,9 @@
     "Manage Workflows" : {
 
     },
+    "No Workflow Selected" : {
+
+    },
     "No Workflows" : {
 
     },
@@ -102,13 +126,25 @@
     "Organizations" : {
 
     },
+    "Re-run all jobs" : {
+
+    },
+    "Refresh" : {
+
+    },
     "Refresh..." : {
 
     },
     "Remove Workflow" : {
 
     },
+    "Repository" : {
+
+    },
     "Select a section from the sidebar to view workflows." : {
+
+    },
+    "Select a workflow to view its details." : {
 
     },
     "Select workflows to display" : {
@@ -120,7 +156,16 @@
     "Summary" : {
 
     },
+    "Toggle Inspector" : {
+
+    },
     "Unknown Job" : {
+
+    },
+    "Updated" : {
+
+    },
+    "Workflow" : {
 
     }
   },

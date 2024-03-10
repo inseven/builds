@@ -46,7 +46,18 @@ struct WorkflowsContentView: View {
         }
         .navigationTitle("Manage Workflows")
         .toolbarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    workflowsModel.refresh()
+                } label: {
+                    Label("Refresh", systemImage: "arrow.clockwise")
+                }
+                .disabled(workflowsModel.repositories == nil)
+            }
+        }
         .dismissable()
+        .interactiveDismissDisabled()
         .runs(workflowsModel)
         .presents($workflowsModel.error)
     }

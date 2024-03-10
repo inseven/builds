@@ -104,4 +104,9 @@ class GitHubClient {
                                          authentication: try getAuthentication())
     }
 
+    func fetch(_ url: URL) async throws {
+        let authentication = try await getAuthentication()
+        try await api.fetch(url, authentication: authentication)
+    }
+
 }

@@ -37,6 +37,8 @@ class SceneModel: ObservableObject, Runnable {
 
     @Published var section: SectionIdentifier? = .all
     @Published var sheet: SheetType?
+    @Published var showInspector: Bool = true
+    @Published var selection: WorkflowInstance? = nil
 
     private let applicationModel: ApplicationModel
 
@@ -75,6 +77,10 @@ class SceneModel: ObservableObject, Runnable {
 #else
         Application.open(.manageWorkflows)
 #endif
+    }
+
+    @MainActor func toggleInspector() {
+        showInspector = !showInspector
     }
 
 }

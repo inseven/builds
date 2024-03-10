@@ -305,11 +305,21 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         return WorkflowInstance(id: id,
-                                result: WorkflowResult(workflowRun: latestRun, annotations: annotations))
+                                result: WorkflowResult(workflowRun: latestRun,
+                                                       jobs: workflowJobs,
+                                                       annotations: annotations))
     }
 
     func refresh() async {
         await refreshScheduler.run()
+    }
+
+    func fetch(_ url: URL) async{
+        do {
+            try await client.fetch(url)
+        } catch {
+            print("FAILED TO CALL URL WITH ERROR \(error)")
+        }
     }
 
     func requestHigherFrequencyUpdates() async {

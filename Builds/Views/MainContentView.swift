@@ -23,11 +23,12 @@ import SwiftUI
 struct MainContentView: View {
 
     @ObservedObject var applicationModel: ApplicationModel
-    @StateObject var sceneModel: SceneModel
 
     @Environment(\.openURL) var openURL
     @Environment(\.openWindow) var openWindow
     @Environment(\.scenePhase) var scenePhase
+
+    @StateObject var sceneModel: SceneModel
 
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
@@ -62,6 +63,28 @@ struct MainContentView: View {
             }
             .toolbarTitleDisplayMode(.inline)
             .navigationTitle(sceneModel.section?.title ?? "")
+            .inspector(isPresented: $sceneModel.showInspector) {
+                VStack(alignment: .leading) {
+                    if let workflowInstance = sceneModel.selection {
+                        WorkflowInspector(workflowInstance: workflowInstance)
+                    } else {
+                        ContentUnavailableView {
+                            Label("No Workflow Selected", systemImage: "rectangle.dashed")
+                        } description: {
+                            Text("Select a workflow to view its details.")
+                        }
+                    }
+                }
+                .toolbar {
+                    ToolbarItem {
+                        Button {
+                            sceneModel.toggleInspector()
+                        } label: {
+                            Label("Toggle Inspector", systemImage: "sidebar.trailing")
+                        }
+                    }
+                }
+            }
             .toolbar() {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
@@ -71,7 +94,6 @@ struct MainContentView: View {
                     }
                     .help("Select workflows to display")
                 }
-
             }
         }
         .sheet(item: $sceneModel.sheet) { sheet in
@@ -93,6 +115,7 @@ struct MainContentView: View {
         }
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
+        .environmentObject(sceneModel)
         .focusedSceneObject(sceneModel)
         .onChange(of: scenePhase) { oldValue, newValue in
             switch newValue {

@@ -20,9 +20,12 @@
 
 import SwiftUI
 
+import Interact
+
 struct WorkflowsView: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
+    @EnvironmentObject var sceneModel: SceneModel
 
     @Environment(\.openURL) var openURL
 
@@ -48,6 +51,17 @@ struct WorkflowsView: View {
                             } label: {
                                 Label("Open", systemImage: "safari")
                             }
+                            .disabled(instance.result?.workflowRun == nil)
+                            Divider()
+                            Button {
+                                guard let workflowRun = instance.result?.workflowRun else {
+                                    return
+                                }
+                                await applicationModel.fetch(workflowRun.rerunURL)
+                            } label: {
+                                Text("Re-run all jobs")
+                            }
+                            .disabled(instance.result?.workflowRun == nil)
                             Divider()
                             Button(role: .destructive) {
                                 applicationModel.removeFavorite(instance.id)
@@ -56,12 +70,14 @@ struct WorkflowsView: View {
                             }
                         }
                         .onTapGesture {
+                            sceneModel.selection = instance
+                        }
+                        .simultaneousGesture(TapGesture(count: 2).onEnded {
                             guard let workflowRun = instance.result?.workflowRun else {
                                 return
                             }
                             openURL(workflowRun.htmlURL)
-                        }
-
+                        })
                 }
             }
             .padding()

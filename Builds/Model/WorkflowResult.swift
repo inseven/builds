@@ -23,10 +23,12 @@ import SwiftUI
 struct WorkflowResult: Codable {
 
     let workflowRun: GitHub.WorkflowRun
+    let jobs: [GitHub.WorkflowJob]
     let annotations: [GitHub.Annotation]
 
-    init(workflowRun: GitHub.WorkflowRun, annotations: [GitHub.Annotation]) {
+    init(workflowRun: GitHub.WorkflowRun, jobs: [GitHub.WorkflowJob], annotations: [GitHub.Annotation]) {
         self.workflowRun = workflowRun
+        self.jobs = jobs
         self.annotations = annotations
     }
 

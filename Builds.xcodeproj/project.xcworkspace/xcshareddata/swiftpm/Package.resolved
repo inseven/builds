@@ -1,4 +1,5 @@
 {
+  "originHash" : "842903b81a03f968d4276712e696073c0479ee1d1d4b0571803c32545179433f",
   "pins" : [
     {
       "identity" : "licensable",
@@ -10,5 +11,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

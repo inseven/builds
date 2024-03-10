@@ -42,7 +42,7 @@ class WorkflowsModel: ObservableObject, Runnable {
 
     }
 
-    func updateRepositories() {
+    private func updateRepositories() {
         let client = applicationModel.client
         Task {
             do {
@@ -71,6 +71,11 @@ class WorkflowsModel: ObservableObject, Runnable {
                 }
             }
         }
+    }
+
+    @MainActor func refresh() {
+        repositories = nil
+        updateRepositories()
     }
 
 }

@@ -148,6 +148,10 @@ class GitHub {
 
         let id: Int
         let run_id: Int
+        let name: String
+        let status: Status
+        let conclusion: Conclusion?
+        let html_url: URL
 
     }
 
@@ -163,20 +167,20 @@ class GitHub {
 
     }
 
+    enum Status: String, Codable {
+        case queued = "queued"
+        case waiting = "waiting"
+        case inProgress = "in_progress"
+        case completed = "completed"
+    }
+
+    enum Conclusion: String, Codable {
+        case success
+        case cancelled
+        case failure
+    }
+
     struct WorkflowRun: Codable, Identifiable {
-
-        enum Conclusion: String, Codable {
-            case success
-            case cancelled
-            case failure
-        }
-
-        enum Status: String, Codable {
-            case queued = "queued"
-            case waiting = "waiting"
-            case inProgress = "in_progress"
-            case completed = "completed"
-        }
 
         enum CodingKeys: String, CodingKey {
             case id = "id"
@@ -193,6 +197,8 @@ class GitHub {
             case workflowId = "workflow_id"
             case url = "url"
             case htmlURL = "html_url"
+            case runAttempt = "run_attempt"
+            case rerunURL = "rerun_url"
             case createdAt = "created_at"
             case updatedAt = "updated_at"
         }
@@ -211,6 +217,8 @@ class GitHub {
         let workflowId: Int
         let url: URL
         let htmlURL: URL
+        let runAttempt: Int
+        let rerunURL: URL
 
         let createdAt: Date
         let updatedAt: Date
@@ -276,6 +284,13 @@ class GitHub {
         self.clientId = clientId
         self.clientSecret = clientSecret
         self.redirectUri = redirectUri
+    }
+
+    func fetch(_ url: URL, authentication: Authentication) async throws {
+        var request = URLRequest(url: url)
+        request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
+        request.setValue("token \(authentication.accessToken)", forHTTPHeaderField: "Authorization")
+        _ = try await URLSession.shared.data(for: request)
     }
 
     private func fetch<T: Decodable>(_ url: URL, authentication: Authentication) async throws -> T {
