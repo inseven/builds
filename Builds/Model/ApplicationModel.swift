@@ -284,10 +284,10 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         let workflowRuns = try await client.workflowRuns(for: id.repositoryFullName)
 
         let latestRun = workflowRuns.first { workflowRun in
-            if workflowRun.workflowId != id.workflowId {
+            if workflowRun.workflow_id != id.workflowId {
                 return false
             }
-            if workflowRun.headBranch != id.branch {
+            if workflowRun.head_branch != id.branch {
                 return false
             }
             return true

@@ -65,17 +65,17 @@ struct WorkflowInspector: View {
             if let result = workflowInstance.result {
                 Section {
                     LabeledContent {
-                        Text(format(date: result.workflowRun.createdAt))
+                        Text(format(date: result.workflowRun.created_at))
                     } label: {
                         Text("Created")
                     }
                     LabeledContent {
-                        Text(format(date: result.workflowRun.updatedAt))
+                        Text(format(date: result.workflowRun.updated_at))
                     } label: {
                         Text("Updated")
                     }
                     LabeledContent {
-                        let runAttempt = result.workflowRun.runAttempt
+                        let runAttempt = result.workflowRun.run_attempt
                         Text("#\(runAttempt)")
                     } label: {
                         Text("Attempt")

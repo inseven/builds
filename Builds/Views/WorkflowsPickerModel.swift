@@ -61,8 +61,8 @@ class WorkflowPickerModel: ObservableObject, Runnable {
         self.applicationModel = applicationModel
         self.repositoryDetails = repositoryDetails
         self.workflows = repositoryDetails.workflows
-        self.branch = repositoryDetails.branches.first { repositoryDetails.repository.defaultBranch == $0.name }
-        self.branches = [repositoryDetails.repository.defaultBranch]
+        self.branch = repositoryDetails.branches.first { repositoryDetails.repository.default_branch == $0.name }
+        self.branches = [repositoryDetails.repository.default_branch]
     }
 
     @MainActor func start() {
@@ -72,7 +72,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
             .$favorites
             .map { favorites in
                 return favorites.filter { favorite in
-                    favorite.repositoryFullName == self.repositoryDetails.repository.fullName
+                    favorite.repositoryFullName == self.repositoryDetails.repository.full_name
                 }.reduce(into: Set<String>()) { partialResult, id in
                     partialResult.insert(id.branch)
                 }
