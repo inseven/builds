@@ -48,6 +48,7 @@ struct WorkflowsView: View {
                             } label: {
                                 Label("Open", systemImage: "safari")
                             }
+                            .disabled(instance.result?.workflowRun == nil)
                             Divider()
                             Button(role: .destructive) {
                                 applicationModel.removeFavorite(instance.id)

@@ -112,7 +112,7 @@ class GitHub {
 
     }
 
-    struct WorkflowJob: Codable, Hashable {
+    struct WorkflowJob: Codable, Hashable, Identifiable {
 
         let id: Int
 
@@ -183,9 +183,14 @@ class GitHub {
         let avatar_url: URL
     }
 
+    enum Level: String, Codable {
+        case failure
+        case warning
+    }
+
     struct Annotation: Codable, Hashable {
 
-        let annotation_level: String
+        let annotation_level: Level
         let end_column: Int?
         let end_line: Int
         let message: String

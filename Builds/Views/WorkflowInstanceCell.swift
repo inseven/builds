@@ -34,8 +34,6 @@ struct WorkflowInstanceCell: View {
         static let cornerRadius = 12.0
     }
 
-    @State var isPresented: Bool = false
-
     let instance: WorkflowInstance
 
     var body: some View {
@@ -48,54 +46,40 @@ struct WorkflowInstanceCell: View {
                 }
                 HStack {
                     if instance.annotations.count > 0 {
-                        Button {
-                            isPresented = true
+                        DetailsPopover {
+                            if let result = instance.result {
+                                AnnotationList(result: result)
+                            }
                         } label: {
                             Image(systemName: "text.alignleft")
-                                .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-                            VStack(alignment: .leading) {
-                                ForEach(instance.annotations) { annotation in
-                                    HStack(alignment: .firstTextBaseline) {
-                                        if annotation.annotation_level == "warning" {
-                                            Image(systemName: "exclamationmark.triangle")
-                                        }
-                                        VStack(alignment: .leading) {
-                                            Text("Unknown Job")
-                                                .fontWeight(.bold)
-                                            Text(annotation.message)
-                                                .lineLimit(10)
-                                        }
-                                    }
-                                }
-                            }
-                            .padding()
-                            .frame(maxWidth: 300)
-                            .foregroundColor(.primary)
                         }
                     }
-                    if let workflowRun = instance.result?.workflowRun {
-                        switch workflowRun.status {
-                        case .queued:
-                            Image(systemName: "clock.arrow.circlepath")
-                        case .waiting:
-                            Image(systemName: "clock")
-                        case .inProgress:
-                            ProgressView()
-                                .controlSize(.small)
-                                .padding(.leading, 4)
-                        case .completed:
-                            switch workflowRun.conclusion {
-                            case .success:
-                                Image(systemName: "checkmark")
-                            case .failure:
-                                Image(systemName: "xmark")
-                            case .cancelled:
-                                Image(systemName: "exclamationmark.octagon")
-                            case .none:
-                                Image(systemName: "questionmark")
+                    DetailsPopover {
+                        if let jobs = instance.result?.jobs {
+                            WorkflowJobList(jobs: jobs)
+                        }
+                    } label: {
+                        if let workflowRun = instance.result?.workflowRun {
+                            switch workflowRun.status {
+                            case .queued:
+                                Image(systemName: "clock.arrow.circlepath")
+                            case .waiting:
+                                Image(systemName: "clock")
+                            case .inProgress:
+                                ProgressView()
+                                    .controlSize(.small)
+                                    .padding(.leading, 4)
+                            case .completed:
+                                switch workflowRun.conclusion {
+                                case .success:
+                                    Image(systemName: "checkmark")
+                                case .failure:
+                                    Image(systemName: "xmark")
+                                case .cancelled:
+                                    Image(systemName: "exclamationmark.octagon")
+                                case .none:
+                                    Image(systemName: "questionmark")
+                                }
                             }
                         }
                     }
