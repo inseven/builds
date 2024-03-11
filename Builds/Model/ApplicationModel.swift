@@ -298,10 +298,14 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         let workflowJobs = try await client.workflowJobs(for: id.repositoryFullName, workflowRun: latestRun)
-        var annotations: [GitHub.Annotation] = []
+        var annotations: [WorkflowResult.Annotation] = []
         for workflowJob in workflowJobs {
-            annotations.append(contentsOf: try await client.annotations(for: id.repositoryFullName,
-                                                                        workflowJob: workflowJob))
+            let results = try await client
+                .annotations(for: id.repositoryFullName, workflowJob: workflowJob)
+                .map {
+                    return WorkflowResult.Annotation(jobId: workflowJob.id, annotation: $0)
+                }
+            annotations.append(contentsOf: results)
         }
 
         return WorkflowInstance(id: id,

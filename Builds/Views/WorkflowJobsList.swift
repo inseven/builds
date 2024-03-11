@@ -20,32 +20,29 @@
 
 import SwiftUI
 
-struct WorkflowResult: Codable {
+struct WorkflowJobList: View {
 
-    struct Annotation: Codable, Identifiable {
-        var id: GitHub.Annotation.ID {
-            return annotation.id
-        }
-        let jobId: GitHub.WorkflowJob.ID
-        let annotation: GitHub.Annotation
-    }
+    @Environment(\.openURL) private var openURL
 
-    let workflowRun: GitHub.WorkflowRun
     let jobs: [GitHub.WorkflowJob]
-    let annotations: [Annotation]
 
-    init(workflowRun: GitHub.WorkflowRun,
-         jobs: [GitHub.WorkflowJob],
-         annotations: [Annotation]) {
-        self.workflowRun = workflowRun
-        self.jobs = jobs
-        self.annotations = annotations
+    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
+        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
     }
 
-    func job(for annotation: Annotation) -> GitHub.WorkflowJob? {
-        return jobs.first {
-            return $0.id == annotation.jobId
+    var body: some View {
+        ForEach(jobs) { job in
+            Button {
+                openURL(job.html_url)
+            } label: {
+                HStack {
+                    Image(systemName: "circle.fill")
+                        .renderingMode(.template)
+                        .foregroundStyle(color(for: job))
+                    Text(job.name)
+                }
+            }
+            .buttonStyle(.plain)
         }
     }
-
 }

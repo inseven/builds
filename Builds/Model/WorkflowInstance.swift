@@ -68,7 +68,7 @@ struct WorkflowInstance: Identifiable {
         return "\(workflowName) (\(id.branch))"
     }
 
-    var annotations: [GitHub.Annotation] {
+    var annotations: [WorkflowResult.Annotation] {
         return result?.annotations ?? []
     }
 
