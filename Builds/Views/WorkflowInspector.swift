@@ -20,14 +20,6 @@
 
 import SwiftUI
 
-extension GitHub.WorkflowJob: Identifiable {
-
-    var color: Color {
-        return SummaryState(status: status, conclusion: conclusion).color
-    }
-
-}
-
 struct WorkflowInspector: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
@@ -84,42 +76,16 @@ struct WorkflowInspector: View {
                     Text("Details")
                 }
                 Section {
-                    ForEach(result.jobs) { job in
-                        Button {
-                            openURL(job.html_url)
-                        } label: {
-                            HStack {
-                                Image(systemName: "circle.fill")
-                                    .renderingMode(.template)
-                                    .foregroundStyle(job.color)
-                                Text(job.name)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                    }
+                    WorkflowJobList(jobs: result.jobs)
                 } header: {
                     Text("Jobs")
                 }
-            }
-            if !workflowInstance.annotations.isEmpty {
-                Section {
-                    ForEach(workflowInstance.annotations) { annotation in
-                        HStack(alignment: .firstTextBaseline) {
-                            if annotation.annotation_level == "warning" {
-                                Image(systemName: "exclamationmark.triangle")
-                            }
-                            VStack(alignment: .leading) {
-                                Text("Unknown Job")
-                                    .fontWeight(.bold)
-                                Text(annotation.message)
-                                    .lineLimit(10)
-                                    .monospaced()
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
+                if !result.annotations.isEmpty {
+                    Section {
+                        AnnotationList(result: result)
+                    } header: {
+                        Text("Annotations")
                     }
-                } header: {
-                    Text("Annotations")
                 }
             }
         }

@@ -24,6 +24,9 @@
 		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
 		D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */; };
 		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
+		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
+		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
+		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
 		D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */; };
 		D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */; };
 		D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */; };
@@ -97,6 +100,9 @@
 		D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIdentifier.swift; sourceTree = "<group>"; };
 		D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsSection.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
+		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
+		D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJobsList.swift; sourceTree = "<group>"; };
 		D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchPickerSheet.swift; sourceTree = "<group>"; };
 		D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleCommands.swift; sourceTree = "<group>"; };
 		D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCommands.swift; sourceTree = "<group>"; };
@@ -234,7 +240,9 @@
 			isa = PBXGroup;
 			children = (
 				D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */,
+				D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */,
 				D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */,
+				D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */,
 				D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */,
 				D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
@@ -246,6 +254,7 @@
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
 				D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */,
 				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
+				D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -466,6 +475,7 @@
 				D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
 				D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */,
+				D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */,
 				D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */,
 				D8D413E928043FCD001BA6C0 /* WorkflowInstanceCell.swift in Sources */,
 				D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */,
@@ -484,6 +494,7 @@
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
 				D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */,
+				D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */,
 				D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */,
 				D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */,
 				D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */,
@@ -499,6 +510,7 @@
 				D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */,
 				D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */,
 				D81251B82B929935001F6E85 /* BuildsError.swift in Sources */,
+				D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
