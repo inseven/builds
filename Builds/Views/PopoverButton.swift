@@ -21,45 +21,53 @@
 import SwiftUI
 
 fileprivate struct LayoutMetrics {
-    static let verticalListRowInsets = 8.0
+    static let cornerRadius = 4.0
+    static let padding = 2.0
+    static let backgroundPadding = 4.0
 }
 
-struct DetailsPopover<Content: View, Label: View>: View {
 
-    let content: Content
+struct PopoverButton<Label: View>: View {
+
+    @State var isActive: Bool = false
+
+    let isShowingPopover: Bool
+    let action: () -> Void
     let label: Label
 
-    @State var isPresented: Bool = false
-
-    init(@ViewBuilder content: () -> Content, @ViewBuilder label: () -> Label) {
-        self.content = content()
+    init(isShowingPopover: Bool, action: @escaping () -> Void, @ViewBuilder label: () -> Label) {
+        self.isShowingPopover = isShowingPopover
+        self.action = action
         self.label = label()
     }
 
+    func background() -> some View {
+        if isActive || isShowingPopover {
+            Color
+                .black
+                .opacity(0.1)
+                .cornerRadius(LayoutMetrics.cornerRadius)
+        } else {
+            Color
+                .clear
+                .cornerRadius(LayoutMetrics.cornerRadius)
+        }
+    }
+
     var body: some View {
-        PopoverButton(isShowingPopover: isPresented) {
-            isPresented = true
-        } label: {
-            label
-                .contentShape(Rectangle())
-        }
-        .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-            List {
-                content
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(.init(top: LayoutMetrics.verticalListRowInsets,
-                                         leading: 0,
-                                         bottom: LayoutMetrics.verticalListRowInsets,
-                                         trailing: 0))
+        label
+            .padding(LayoutMetrics.padding + LayoutMetrics.backgroundPadding)
+            .background(background())
+            .onHover { hovering in
+                isActive = hovering
             }
-            .foregroundColor(.primary)
-            .scrollContentBackground(.hidden)
-        }
-#if os(macOS)
-        .disabled(Content.self == EmptyView.self)
-#else
-        .disabled(true)
-#endif
+            .onTapGesture {
+                guard !isShowingPopover else {
+                    return
+                }
+                action()
+            }
+            .padding(-1 * LayoutMetrics.backgroundPadding)
     }
 
 }

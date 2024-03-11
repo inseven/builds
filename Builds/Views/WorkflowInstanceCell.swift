@@ -81,8 +81,11 @@ struct WorkflowInstanceCell: View {
                                     Image(systemName: "questionmark")
                                 }
                             }
+                        } else {
+                            Image(systemName: "questionmark")
                         }
                     }
+                    .disabled(instance.result == nil)
                 }
 
             }

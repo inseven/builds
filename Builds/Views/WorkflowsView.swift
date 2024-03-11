@@ -72,6 +72,7 @@ struct WorkflowsView: View {
             }
             .padding()
         }
+        .frame(minWidth: 300)
 #if os(macOS)
         .navigationSubtitle("\(workflows.count) Workflows")
 #endif
