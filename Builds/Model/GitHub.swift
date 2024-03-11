@@ -143,6 +143,7 @@ class GitHub {
         case success
         case cancelled
         case failure
+        case skipped
     }
 
     struct WorkflowRun: Codable, Identifiable {

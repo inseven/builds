@@ -204,6 +204,8 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                         return .unknown
                     case .success:  // We require 100% successes for success.
                         continue
+                    case .skipped:  // Skipped builds don't represent failure.
+                        continue
                     case .failure:  // We treat any failure as a global failure.
                         return .failure
                     case .inProgress:
