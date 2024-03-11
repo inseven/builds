@@ -28,7 +28,8 @@ struct PopoverButtonStyle: ButtonStyle {
 
     struct LayoutMetrics {
         static let cornerRadius = 6.0
-        static let padding = 6.0
+        static let padding = 2.0
+        static let backgroundPadding = -4.0
     }
 
     @Environment(\.isEnabled) private var isEnabled
@@ -52,8 +53,9 @@ struct PopoverButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .padding(LayoutMetrics.cornerRadius)
-            .background(background())
+            .padding(LayoutMetrics.padding)
+            .background(background()
+                .padding(LayoutMetrics.backgroundPadding))
             .onHover { hovering in
                 isActive = hovering
             }
