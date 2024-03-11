@@ -32,6 +32,7 @@ struct WorkflowInstanceCell: View {
 
     struct LayoutMetrics {
         static let cornerRadius = 12.0
+        static let popoverButtonSpacing = 10.0
     }
 
     let instance: WorkflowInstance
@@ -44,7 +45,7 @@ struct WorkflowInstanceCell: View {
                         .font(Font.headline)
                     Spacer()
                 }
-                HStack {
+                HStack(spacing: LayoutMetrics.popoverButtonSpacing) {
                     if instance.annotations.count > 0 {
                         DetailsPopover {
                             if let result = instance.result {
