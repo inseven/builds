@@ -48,6 +48,7 @@ struct Sidebar: View {
                 }
             }
         }
+        .frame(minWidth: 200)
         .navigationTitle("Builds")
         .refreshable {
             await applicationModel.refresh()
