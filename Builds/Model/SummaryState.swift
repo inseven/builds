@@ -26,6 +26,7 @@ enum SummaryState {
     case success
     case failure
     case inProgress
+    case skipped
 
     init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
         guard let status else {
@@ -62,6 +63,9 @@ enum SummaryState {
         case .cancelled:
             self = .failure
             return
+        case .skipped:
+            self = .skipped
+            return
         }
 
     }
@@ -76,6 +80,8 @@ enum SummaryState {
             return .red
         case .inProgress:
             return .yellow
+        case .skipped:
+            return .gray
         }
     }
 
