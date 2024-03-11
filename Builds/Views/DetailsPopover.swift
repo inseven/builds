@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-fileprivate struct DetailsPopoverLayoutMetrics {
+fileprivate struct LayoutMetrics {
     static let verticalListRowInsets = 8.0
 }
 
@@ -37,20 +37,19 @@ struct DetailsPopover<Content: View, Label: View>: View {
     }
 
     var body: some View {
-        Button {
+        PopoverButton(isShowingPopover: isPresented) {
             isPresented = true
         } label: {
             label
                 .contentShape(Rectangle())
         }
-        .buttonStyle(.popover(isShowingPopover: isPresented))
         .popover(isPresented: $isPresented, arrowEdge: .bottom) {
             List {
                 content
                     .listRowSeparator(.hidden)
-                    .listRowInsets(.init(top: DetailsPopoverLayoutMetrics.verticalListRowInsets,
+                    .listRowInsets(.init(top: LayoutMetrics.verticalListRowInsets,
                                          leading: 0,
-                                         bottom: DetailsPopoverLayoutMetrics.verticalListRowInsets,
+                                         bottom: LayoutMetrics.verticalListRowInsets,
                                          trailing: 0))
             }
             .foregroundColor(.primary)

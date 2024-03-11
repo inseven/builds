@@ -20,23 +20,26 @@
 
 import SwiftUI
 
-fileprivate struct DetailsPopoverLayoutMetrics {
-    static let verticalListRowInsets = 8.0
+fileprivate struct LayoutMetrics {
+    static let cornerRadius = 4.0
+    static let padding = 2.0
+    static let backgroundPadding = 4.0
 }
 
-struct PopoverButtonStyle: ButtonStyle {
 
-    struct LayoutMetrics {
-        static let cornerRadius = 6.0
-        static let padding = 2.0
-        static let backgroundPadding = -4.0
-    }
-
-    @Environment(\.isEnabled) private var isEnabled
+struct PopoverButton<Label: View>: View {
 
     @State var isActive: Bool = false
 
     let isShowingPopover: Bool
+    let action: () -> Void
+    let label: Label
+
+    init(isShowingPopover: Bool, action: @escaping () -> Void, @ViewBuilder label: () -> Label) {
+        self.isShowingPopover = isShowingPopover
+        self.action = action
+        self.label = label()
+    }
 
     func background() -> some View {
         if isActive || isShowingPopover {
@@ -51,22 +54,20 @@ struct PopoverButtonStyle: ButtonStyle {
         }
     }
 
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration.label
-            .padding(LayoutMetrics.padding)
-            .background(background()
-                .padding(LayoutMetrics.backgroundPadding))
+    var body: some View {
+        label
+            .padding(LayoutMetrics.padding + LayoutMetrics.backgroundPadding)
+            .background(background())
             .onHover { hovering in
                 isActive = hovering
             }
-    }
-
-}
-
-extension ButtonStyle where Self == PopoverButtonStyle {
-
-    static func popover(isShowingPopover: Bool) -> PopoverButtonStyle {
-        return PopoverButtonStyle(isShowingPopover: isShowingPopover)
+            .onTapGesture {
+                guard !isShowingPopover else {
+                    return
+                }
+                action()
+            }
+            .padding(-1 * LayoutMetrics.backgroundPadding)
     }
 
 }
