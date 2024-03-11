@@ -34,9 +34,6 @@ struct WorkflowInstanceCell: View {
         static let cornerRadius = 12.0
     }
 
-    @State var isSHowingWorkflowAnnotations: Bool = false
-    @State var isShowingWorkflowJobs: Bool = false
-
     let instance: WorkflowInstance
 
     var body: some View {
