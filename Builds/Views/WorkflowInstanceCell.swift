@@ -78,6 +78,8 @@ struct WorkflowInstanceCell: View {
                                     Image(systemName: "xmark")
                                 case .cancelled:
                                     Image(systemName: "exclamationmark.octagon")
+                                case .skipped:
+                                    Image(systemName: "slash.circle")
                                 case .none:
                                     Image(systemName: "questionmark")
                                 }

@@ -27,16 +27,7 @@ struct SummaryContentView: View {
     @Environment(\.openURL) var openURL
 
     var color: Color {
-        switch applicationModel.summary {
-        case .unknown:
-            return .gray
-        case .success:
-            return .green
-        case .failure:
-            return .red
-        case .inProgress:
-            return .yellow
-        }
+        return applicationModel.summary.color
     }
 
     var body: some View {
