@@ -24,43 +24,47 @@ fileprivate struct DetailsPopoverLayoutMetrics {
     static let verticalListRowInsets = 8.0
 }
 
-struct DetailsPopover<Content: View, Label: View>: View {
+struct PopoverButtonStyle: ButtonStyle {
 
-    let content: Content
-    let label: Label
-
-    @State var isPresented: Bool = false
-
-    init(@ViewBuilder content: () -> Content, @ViewBuilder label: () -> Label) {
-        self.content = content()
-        self.label = label()
+    struct LayoutMetrics {
+        static let cornerRadius = 6.0
+        static let padding = 6.0
     }
 
-    var body: some View {
-        Button {
-            isPresented = true
-        } label: {
-            label
-                .contentShape(Rectangle())
+    @Environment(\.isEnabled) private var isEnabled
+
+    @State var isActive: Bool = false
+
+    let isShowingPopover: Bool
+
+    func background() -> some View {
+        if isActive || isShowingPopover {
+            Color
+                .black
+                .opacity(0.1)
+                .cornerRadius(LayoutMetrics.cornerRadius)
+        } else {
+            Color
+                .clear
+                .cornerRadius(LayoutMetrics.cornerRadius)
         }
-        .buttonStyle(.popover(isShowingPopover: isPresented))
-        .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-            List {
-                content
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(.init(top: DetailsPopoverLayoutMetrics.verticalListRowInsets,
-                                         leading: 0,
-                                         bottom: DetailsPopoverLayoutMetrics.verticalListRowInsets,
-                                         trailing: 0))
+    }
+
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .padding(LayoutMetrics.cornerRadius)
+            .background(background())
+            .onHover { hovering in
+                isActive = hovering
             }
-            .foregroundColor(.primary)
-            .scrollContentBackground(.hidden)
-        }
-#if os(macOS)
-        .disabled(Content.self == EmptyView.self)
-#else
-        .disabled(true)
-#endif
+    }
+
+}
+
+extension ButtonStyle where Self == PopoverButtonStyle {
+
+    static func popover(isShowingPopover: Bool) -> PopoverButtonStyle {
+        return PopoverButtonStyle(isShowingPopover: isShowingPopover)
     }
 
 }
