@@ -69,7 +69,7 @@ struct PhoneSettingsView: View {
             Section {
 
                 Button {
-                    sceneModel.logOut()
+                    await sceneModel.logOut()
                 } label: {
                     Text("Sign Out")
                 }

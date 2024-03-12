@@ -92,6 +92,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     }
 
     // TODO: Make this private.
+    // TODO: This should be optional; there's no point it existing if we don't have an auth code.
     @MainActor let client: GitHubClient
 
     @MainActor private let defaults = KeyedDefaults<Key>()
@@ -272,7 +273,12 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         try await client.authenticate(with: code)
     }
 
-    @MainActor func logOut() {
+    @MainActor func logOut() async {
+        do {
+            try await client.deleteGrant()
+        } catch {
+            print("Failed to delete client grant with error \(error).")
+        }
         authenticationToken = nil
         cachedStatus = [:]
         favorites = []
