@@ -38,14 +38,14 @@ struct AccountCommands: Commands {
                 Button {
                     sceneModel?.logOut()
                 } label: {
-                    Text("Log Out...")
+                    Text("Sign Out...")
                 }
                 .disabled(sceneModel == nil)
             } else {
                 Button {
                     sceneModel?.logIn()
                 } label: {
-                    Text("Log In with GitHub...")
+                    Text("Sign In with GitHub...")
                 }
                 .disabled(sceneModel == nil)
             }
