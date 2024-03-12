@@ -27,9 +27,22 @@ import Interact
 
 struct PhoneSettingsView: View {
 
+    enum SheetType: Identifiable {
+
+        var id: Self {
+            return self
+        }
+
+        case managePermissions
+
+    }
+
     @EnvironmentObject var applicationModel: ApplicationModel
+    @EnvironmentObject var sceneModel: SceneModel
 
     @Environment(\.dismiss) var dismiss
+
+    @State var sheet: SheetType? = nil
 
     var body: some View {
         Form {
@@ -41,7 +54,11 @@ struct PhoneSettingsView: View {
             Section {
 
                 Button {
+#if os(macOS)
                     applicationModel.managePermissions()
+#else
+                    sheet = .managePermissions
+#endif
                 } label: {
                     Text("Manage GitHub Permissions")
                 }
@@ -52,7 +69,7 @@ struct PhoneSettingsView: View {
             Section {
 
                 Button {
-                    applicationModel.logOut()
+                    sceneModel.logOut()
                 } label: {
                     Text("Log Out")
                 }
@@ -64,6 +81,13 @@ struct PhoneSettingsView: View {
         .formStyle(.grouped)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .managePermissions:
+                SafariWebView(url: applicationModel.client.permissionsURL)
+                    .ignoresSafeArea()
+            }
+        }
         .dismissable()
     }
 

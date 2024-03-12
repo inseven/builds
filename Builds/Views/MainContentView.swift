@@ -71,8 +71,8 @@ struct MainContentView: View {
                         Label("Manage Workflows", systemImage: "checklist")
                     }
                     .help("Select workflows to display")
+                    .disabled(!applicationModel.isAuthorized)
                 }
-
             }
         }
         .sheet(item: $sceneModel.sheet) { sheet in
@@ -88,8 +88,14 @@ struct MainContentView: View {
                 NavigationView {
 #if os(iOS)
                     PhoneSettingsView()
+                        .environmentObject(sceneModel)
 #endif
                 }
+            case .logIn:
+#if os(iOS)
+                SafariWebView(url: applicationModel.client.authorizationURL)
+                    .ignoresSafeArea()
+#endif
             }
         }
         .runs(sceneModel)

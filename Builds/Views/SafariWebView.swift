@@ -18,38 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if os(iOS)
+
 import SwiftUI
+import SafariServices
 
-struct AccountCommands: Commands {
+struct SafariWebView: UIViewControllerRepresentable {
+    let url: URL
 
-    @ObservedObject var applicationModel: ApplicationModel
-
-    @FocusedObject var sceneModel: SceneModel?
-
-    var body: some Commands {
-        CommandMenu("Account") {
-            if applicationModel.isAuthorized {
-                Button {
-                    applicationModel.managePermissions()
-                } label: {
-                    Text("Manage GitHub Permissions...")
-                }
-                Divider()
-                Button {
-                    sceneModel?.logOut()
-                } label: {
-                    Text("Log Out...")
-                }
-                .disabled(sceneModel == nil)
-            } else {
-                Button {
-                    sceneModel?.logIn()
-                } label: {
-                    Text("Log In with GitHub...")
-                }
-                .disabled(sceneModel == nil)
-            }
-        }
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        return SFSafariViewController(url: url)
     }
 
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {
+
+    }
 }
+
+#endif
