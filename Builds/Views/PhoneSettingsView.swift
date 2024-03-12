@@ -71,7 +71,7 @@ struct PhoneSettingsView: View {
                 Button {
                     sceneModel.logOut()
                 } label: {
-                    Text("Log Out")
+                    Text("Sign Out")
                 }
                 .disabled(!applicationModel.isAuthorized)
 
