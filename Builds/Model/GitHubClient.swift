@@ -82,8 +82,10 @@ class GitHubClient {
         return try await api.repositories(authentication: try getAuthentication())
     }
 
-    func workflowRuns(for repositoryName: String) async throws -> [GitHub.WorkflowRun] {
-        return try await api.workflowRuns(for: repositoryName, authentication: try getAuthentication())
+    func workflowRuns(for repositoryName: String, seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [GitHub.WorkflowRun] {
+        return try await api.workflowRuns(for: repositoryName,
+                                          authentication: try getAuthentication(),
+                                          seekingWorkflowIds: seekingWorkflowIds)
     }
 
     func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {

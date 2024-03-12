@@ -148,6 +148,10 @@ class GitHub {
 
     struct WorkflowRun: Codable, Identifiable {
 
+        struct Repository: Codable {
+            let full_name: String
+        }
+
         let id: Int
 
         let check_suite_id: Int
@@ -160,6 +164,7 @@ class GitHub {
         let html_url: URL
         let name: String
         let node_id: String
+        let repository: Repository
         let rerun_url: URL
         let run_attempt: Int
         let run_number: Int
@@ -234,6 +239,7 @@ class GitHub {
     }
 
     private func fetch<T: Decodable>(_ url: URL, authentication: Authentication) async throws -> T {
+        print(url.absoluteString)
         var request = URLRequest(url: url)
         request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
         request.setValue("token \(authentication.accessToken)", forHTTPHeaderField: "Authorization")
@@ -248,6 +254,7 @@ class GitHub {
         }
     }
 
+    // TODO: This could be nice to be an async sequence.
     private func fetch<T: Decodable>(_ url: URL,
                                      authentication: Authentication,
                                      page: Int,
@@ -262,12 +269,51 @@ class GitHub {
         return response
     }
 
-    // TODO: Remove the 'for'
-    func workflowRuns(for repositoryName: String, authentication: Authentication) async throws -> [WorkflowRun] {
-        // TODO: Assemble the path?
+    func workflowRuns(for repositoryName: String, page: Int?, perPage: Int?, authentication: Authentication) async throws -> [WorkflowRun] {
+        var queryItems: [URLQueryItem] = []
+        if let page {
+            queryItems.append(URLQueryItem(name: "page", value: String(page)))
+        }
+        if let perPage {
+            queryItems.append(URLQueryItem(name: "per_page", value: String(perPage)))
+        }
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs")!
+            .settingQueryItems(queryItems)!
         let response: WorkflowRuns = try await fetch(url, authentication: authentication)
         return response.workflow_runs
+    }
+
+    // TODO: Remove the 'for'
+    // TODO: I can optionally limit this by branch.
+    // TODO: Move this out.
+    // TODO: Maximimum age / count?
+    func workflowRuns(for repositoryName: String,
+                      authentication: Authentication,
+                      seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [WorkflowRun] {
+
+        var workflowIds = Set<WorkflowInstance.ID>()
+        let seekingWorkflowIds = Set(seekingWorkflowIds)
+        var results = [WorkflowRun]()
+        for page in 1..<1000 {
+            let workflowRuns = try await self.workflowRuns(for: repositoryName,
+                                                           page: page,
+                                                           perPage: 100,
+                                                           authentication: authentication)
+            let responseWorkflowIds = await workflowRuns.map { workflowRun in
+                return WorkflowInstance.ID(repositoryFullName: repositoryName,
+                                           workflowId: workflowRun.workflow_id,
+                                           branch: workflowRun.head_branch)
+            }
+            workflowIds.formUnion(responseWorkflowIds)
+            results.append(contentsOf: workflowRuns)
+            if workflowRuns.isEmpty {
+                break
+            }
+            if workflowIds.intersection(seekingWorkflowIds).count == seekingWorkflowIds.count {
+                break
+            }
+        }
+        return results
     }
 
     // TODO: Paged fetch
@@ -294,6 +340,7 @@ class GitHub {
     // TODO: Use repositoryname
     func workflows(for repository: Repository, authentication: Authentication) async throws -> [Workflow] {
         let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/actions/workflows")!
+
         let response: Workflows = try await fetch(url, authentication: authentication)
         return response.workflows
     }
