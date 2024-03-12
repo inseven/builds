@@ -57,22 +57,25 @@
     "Builds" : {
 
     },
+    "Builds uses your GitHub account to retrieve information about your GitHub Actions workflow statuses." : {
+
+    },
     "Cancel" : {
 
     },
     "Done" : {
 
     },
+    "GitHub" : {
+
+    },
     "Loading..." : {
 
     },
-    "Log In" : {
+    "Log In with GitHub" : {
 
     },
-    "Log in to view your GitHub Actions workflows." : {
-
-    },
-    "Log In..." : {
+    "Log In with GitHub..." : {
 
     },
     "Log Out" : {

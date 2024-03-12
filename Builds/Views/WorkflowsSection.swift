@@ -58,12 +58,12 @@ struct WorkflowsSection: View {
                 ContentUnavailableView {
                     Text("Logged Out")
                 } description: {
-                    Text("Log in to view your GitHub Actions workflows.")
+                    Text("Builds uses your GitHub account to retrieve information about your GitHub Actions workflow statuses.")
                 } actions: {
                     Button {
-                        applicationModel.logIn()
+                        sceneModel.logIn()
                     } label: {
-                        Text("Log In")
+                        Text("Log In with GitHub")
                     }
                 }
             }
