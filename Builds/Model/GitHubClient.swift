@@ -68,6 +68,10 @@ class GitHubClient {
         }
     }
 
+    func deleteGrant() async throws {
+        try await api.deleteGrant(authentication: try getAuthentication())
+    }
+
     // TODO: Wrapper that detects authentication failure.
 
     func organizations() async throws -> [GitHub.Organization] {

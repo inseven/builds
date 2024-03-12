@@ -340,6 +340,35 @@ class GitHub {
         }
     }
 
+    func deleteGrant(authentication: Authentication) async throws {
+        // This end-point is a little unnusual:
+        // https://docs.github.com/en/rest/apps/oauth-applications?apiVersion=2022-11-28#delete-an-app-authorization
+        // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#using-basic-authentication
+
+        let url = URL(string: "https://api.github.com/applications/\(clientId)/grant")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+
+        request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
+
+        guard let basicAuthentication = [clientId, clientSecret]
+            .joined(separator: ":")
+            .data(using: .utf8)?
+            .base64EncodedString() else {
+            throw BuildsError.authenticationFailure
+        }
+        request.setValue("Basic \(basicAuthentication)", forHTTPHeaderField: "Authorization")
+
+        let encoder = JSONEncoder()
+        request.httpBody = try encoder.encode([
+            "access_token": authentication.accessToken,
+        ])
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        print(data)
+        print(String(data: data, encoding: .utf8) ?? "nil")
+    }
+
     private func url(_ path: Path, parameters: [String: String] = [:]) -> URL? {
         var components = URLComponents()
         components.scheme = "https"

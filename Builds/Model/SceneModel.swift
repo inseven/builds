@@ -81,8 +81,8 @@ class SceneModel: ObservableObject, Runnable {
 #endif
     }
 
-    @MainActor func logOut() {
-        applicationModel.logOut()
+    @MainActor func logOut() async {
+        await applicationModel.logOut()
         sheet = nil
         section = .all
     }
