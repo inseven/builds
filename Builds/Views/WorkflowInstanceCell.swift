@@ -33,6 +33,8 @@ struct WorkflowInstanceCell: View {
     struct LayoutMetrics {
         static let cornerRadius = 12.0
         static let popoverButtonSpacing = 10.0
+        static let annotationListRowInsets = EdgeInsets(vertical: 8.0)
+        static let worfklowJobListRowInsets = EdgeInsets(horizontal: -4.0, vertical: 2.0)
     }
 
     let instance: WorkflowInstance
@@ -47,7 +49,7 @@ struct WorkflowInstanceCell: View {
                 }
                 HStack(spacing: LayoutMetrics.popoverButtonSpacing) {
                     if instance.annotations.count > 0 {
-                        DetailsPopover {
+                        DetailsPopover(listRowInsets: LayoutMetrics.annotationListRowInsets) {
                             if let result = instance.result {
                                 AnnotationList(result: result)
                             }
@@ -55,9 +57,10 @@ struct WorkflowInstanceCell: View {
                             Image(systemName: "text.alignleft")
                         }
                     }
-                    DetailsPopover {
+                    DetailsPopover(listRowInsets: LayoutMetrics.worfklowJobListRowInsets) {
                         if let jobs = instance.result?.jobs {
                             WorkflowJobList(jobs: jobs)
+                                .buttonStyle(.toolbar)
                         }
                     } label: {
                         if let workflowRun = instance.result?.workflowRun {
