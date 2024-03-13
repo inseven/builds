@@ -254,7 +254,6 @@ class GitHub {
         }
     }
 
-    // TODO: This could be nice to be an async sequence.
     private func fetch<T: Decodable>(_ url: URL,
                                      authentication: Authentication,
                                      page: Int,
@@ -269,7 +268,7 @@ class GitHub {
         return response
     }
 
-    func workflowRuns(for repositoryName: String, page: Int?, perPage: Int?, authentication: Authentication) async throws -> [WorkflowRun] {
+    func workflowRuns(repositoryName: String, page: Int?, perPage: Int?, authentication: Authentication) async throws -> [WorkflowRun] {
         var queryItems: [URLQueryItem] = []
         if let page {
             queryItems.append(URLQueryItem(name: "page", value: String(page)))
@@ -307,7 +306,6 @@ class GitHub {
     // TODO: Use repositoryname
     func workflows(for repository: Repository, authentication: Authentication) async throws -> [Workflow] {
         let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/actions/workflows")!
-
         let response: Workflows = try await fetch(url, authentication: authentication)
         return response.workflows
     }

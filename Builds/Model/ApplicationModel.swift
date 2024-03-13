@@ -238,6 +238,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
         favorites.removeAll { $0 == id }
+        cachedStatus.removeValue(forKey: id)
     }
 
     @MainActor func logIn() {

@@ -82,17 +82,14 @@ class GitHubClient {
         return try await api.repositories(authentication: try getAuthentication())
     }
 
-    // TODO: Remove the 'for'
-    // TODO: I can optionally limit this by branch.
-    // TODO: Maximimum age / count?
     func workflowRuns(repositoryName: String,
                       seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [GitHub.WorkflowRun] {
 
         var workflowIds = Set<WorkflowInstance.ID>()
         let seekingWorkflowIds = Set(seekingWorkflowIds)
         var results = [GitHub.WorkflowRun]()
-        for page in 1..<1000 {
-            let workflowRuns = try await api.workflowRuns(for: repositoryName,
+        for page in 1..<10 {
+            let workflowRuns = try await api.workflowRuns(repositoryName: repositoryName,
                                                           page: page,
                                                           perPage: 100,
                                                           authentication: try getAuthentication())
