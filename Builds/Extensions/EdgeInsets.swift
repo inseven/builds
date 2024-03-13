@@ -20,28 +20,22 @@
 
 import SwiftUI
 
-struct WorkflowJobList: View {
+extension EdgeInsets {
 
-    @Environment(\.openURL) private var openURL
-
-    let jobs: [GitHub.WorkflowJob]
-
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
+    init(top: CGFloat = 0.0, leading: CGFloat = 0.0, bottom: CGFloat = 0.0, trailing: CGFloat = 0.0) {
+        self.init()
+        self.top = top
+        self.leading = leading
+        self.bottom = bottom
+        self.trailing = trailing
     }
 
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                openURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                }
-            }
-        }
+    init(horizontal: CGFloat = 0.0, vertical: CGFloat = 0.0) {
+        self.init()
+        self.top = vertical
+        self.leading = horizontal
+        self.bottom = vertical
+        self.trailing = horizontal
     }
+
 }

@@ -20,28 +20,46 @@
 
 import SwiftUI
 
-struct WorkflowJobList: View {
+struct ToolbarButtonStyle: ButtonStyle {
 
-    @Environment(\.openURL) private var openURL
-
-    let jobs: [GitHub.WorkflowJob]
-
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
+    struct LayoutMetrics {
+        static let padding = 8.0
+        static let cornerRadius = 8.0
     }
 
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                openURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                }
-            }
+    @State var isActive: Bool = false
+
+    func background() -> some View {
+        if isActive {
+            Color
+                .black
+                .opacity(0.1)
+                .cornerRadius(LayoutMetrics.cornerRadius)
+        } else {
+            Color
+                .clear
+                .cornerRadius(LayoutMetrics.cornerRadius)
         }
     }
+
+    func makeBody(configuration: ButtonStyleConfiguration) -> some View {
+        HStack {
+            configuration.label
+            Spacer()
+        }
+        .padding(LayoutMetrics.padding)
+        .background(background())
+        .onHover { hovering in
+            isActive = hovering
+        }
+    }
+
+}
+
+extension ButtonStyle where Self == ToolbarButtonStyle {
+
+    static var toolbar: ToolbarButtonStyle {
+        return ToolbarButtonStyle()
+    }
+
 }

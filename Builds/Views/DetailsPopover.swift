@@ -20,18 +20,16 @@
 
 import SwiftUI
 
-fileprivate struct LayoutMetrics {
-    static let verticalListRowInsets = 8.0
-}
-
 struct DetailsPopover<Content: View, Label: View>: View {
 
+    let listRowInsets: EdgeInsets?
     let content: Content
     let label: Label
 
     @State var isPresented: Bool = false
 
-    init(@ViewBuilder content: () -> Content, @ViewBuilder label: () -> Label) {
+    init(listRowInsets: EdgeInsets? = nil, @ViewBuilder content: () -> Content, @ViewBuilder label: () -> Label) {
+        self.listRowInsets = listRowInsets
         self.content = content()
         self.label = label()
     }
@@ -47,10 +45,7 @@ struct DetailsPopover<Content: View, Label: View>: View {
             List {
                 content
                     .listRowSeparator(.hidden)
-                    .listRowInsets(.init(top: LayoutMetrics.verticalListRowInsets,
-                                         leading: 0,
-                                         bottom: LayoutMetrics.verticalListRowInsets,
-                                         trailing: 0))
+                    .listRowInsets(listRowInsets)
             }
             .foregroundColor(.primary)
             .scrollContentBackground(.hidden)
