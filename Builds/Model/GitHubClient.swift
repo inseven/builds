@@ -82,8 +82,97 @@ class GitHubClient {
         return try await api.repositories(authentication: try getAuthentication())
     }
 
-    func workflowRuns(for repositoryName: String) async throws -> [GitHub.WorkflowRun] {
-        return try await api.workflowRuns(for: repositoryName, authentication: try getAuthentication())
+    func workflowRuns(repositoryName: String,
+                      seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [GitHub.WorkflowRun] {
+
+        var workflowIds = Set<WorkflowInstance.ID>()
+        let seekingWorkflowIds = Set(seekingWorkflowIds)
+        var results = [GitHub.WorkflowRun]()
+        for page in 1..<10 {
+            let workflowRuns = try await api.workflowRuns(repositoryName: repositoryName,
+                                                          page: page,
+                                                          perPage: 100,
+                                                          authentication: try getAuthentication())
+            let responseWorkflowIds = await workflowRuns.map { workflowRun in
+                return WorkflowInstance.ID(repositoryFullName: repositoryName,
+                                           workflowId: workflowRun.workflow_id,
+                                           branch: workflowRun.head_branch)
+            }
+            workflowIds.formUnion(responseWorkflowIds)
+            results.append(contentsOf: workflowRuns)
+            if workflowRuns.isEmpty {
+                break
+            }
+            if workflowIds.intersection(seekingWorkflowIds).count == seekingWorkflowIds.count {
+                break
+            }
+        }
+        return results
+    }
+
+    // Top level call that triggers fetching all workflow results.
+    func update(favorites: [WorkflowInstance.ID],
+                        callback: @escaping (WorkflowInstance) -> Void) async throws {
+        let repositories = favorites
+            .reduce(into: [String: [WorkflowInstance.ID]]()) { partialResult, id in
+                var ids = partialResult[id.repositoryFullName] ?? []
+                ids.append(id)
+                partialResult[id.id.repositoryFullName] = ids
+            }
+        try await repositories.forEach { repository, ids in
+            try await self.fetchDetails(repository: repository, ids: ids, callback: callback)
+        }
+    }
+
+    // Fetch the workflow details from a single repository.
+    private func fetchDetails(repository: String,
+                              ids: [WorkflowInstance.ID],
+                              callback: @escaping (WorkflowInstance) -> Void) async throws {
+
+        // Search for workflow runs for each of our requested ids.
+        let ids = Set(ids)
+        let workflowRuns = try await self
+            .workflowRuns(repositoryName: repository, seekingWorkflowIds: ids)
+            .reduce(into: [WorkflowInstance.ID: GitHub.WorkflowRun]()) { partialResult, workflowRun in
+                let id = WorkflowInstance.ID(repositoryFullName: workflowRun.repository.full_name,
+                                             workflowId: workflowRun.workflow_id,
+                                             branch: workflowRun.head_branch)
+                guard partialResult[id] == nil else {
+                    return
+                }
+                guard ids.contains(id) else {
+                    return
+                }
+                partialResult[id] = workflowRun
+            }
+
+        // Flesh out the build details for each.
+        try await workflowRuns.forEach { id, workflowRun in
+            try await self.fetchDetails(id: id, workflowRun: workflowRun, callback: callback)
+        }
+    }
+
+    // Fetch the details for individual workflows.
+    private func fetchDetails(id: WorkflowInstance.ID,
+                              workflowRun: GitHub.WorkflowRun,
+                              callback: @escaping (WorkflowInstance) -> Void) async throws {
+        let workflowJobs = try await self.workflowJobs(for: id.repositoryFullName, workflowRun: workflowRun)
+        var annotations: [WorkflowResult.Annotation] = []
+        for workflowJob in workflowJobs {
+            let results = try await self
+                .annotations(for: id.repositoryFullName, workflowJob: workflowJob)
+                .map {
+                    return WorkflowResult.Annotation(jobId: workflowJob.id, annotation: $0)
+                }
+            annotations.append(contentsOf: results)
+        }
+        let workflowInstance = WorkflowInstance(id: id,
+                                                result: WorkflowResult(workflowRun: workflowRun,
+                                                                       jobs: workflowJobs,
+                                                                       annotations: annotations))
+        await MainActor.run {
+            callback(workflowInstance)
+        }
     }
 
     func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {

@@ -148,6 +148,10 @@ class GitHub {
 
     struct WorkflowRun: Codable, Identifiable {
 
+        struct Repository: Codable {
+            let full_name: String
+        }
+
         let id: Int
 
         let check_suite_id: Int
@@ -160,6 +164,7 @@ class GitHub {
         let html_url: URL
         let name: String
         let node_id: String
+        let repository: Repository
         let rerun_url: URL
         let run_attempt: Int
         let run_number: Int
@@ -234,6 +239,7 @@ class GitHub {
     }
 
     private func fetch<T: Decodable>(_ url: URL, authentication: Authentication) async throws -> T {
+        print(url.absoluteString)
         var request = URLRequest(url: url)
         request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
         request.setValue("token \(authentication.accessToken)", forHTTPHeaderField: "Authorization")
@@ -262,10 +268,16 @@ class GitHub {
         return response
     }
 
-    // TODO: Remove the 'for'
-    func workflowRuns(for repositoryName: String, authentication: Authentication) async throws -> [WorkflowRun] {
-        // TODO: Assemble the path?
+    func workflowRuns(repositoryName: String, page: Int?, perPage: Int?, authentication: Authentication) async throws -> [WorkflowRun] {
+        var queryItems: [URLQueryItem] = []
+        if let page {
+            queryItems.append(URLQueryItem(name: "page", value: String(page)))
+        }
+        if let perPage {
+            queryItems.append(URLQueryItem(name: "per_page", value: String(perPage)))
+        }
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs")!
+            .settingQueryItems(queryItems)!
         let response: WorkflowRuns = try await fetch(url, authentication: authentication)
         return response.workflow_runs
     }
