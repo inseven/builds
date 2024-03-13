@@ -234,6 +234,20 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             return
         }
         favorites.append(id)
+
+        // Fetch the workflow details on demand.
+        Task {
+            do {
+                try await client.update(favorites: [id]) { [weak self] workflowInstance in
+                    guard let self else {
+                        return
+                    }
+                    self.cachedStatus[workflowInstance.id] = workflowInstance.result
+                }
+            } catch {
+                print("Failed fetch workflow results on demand with error \(error).")
+            }
+        }
     }
 
     @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
