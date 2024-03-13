@@ -125,7 +125,12 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             do {
                 print("Refreshing...")
                 self.isUpdating = true
-                try await self.update(favorites: self.favorites)
+                try await self.client.update(favorites: self.favorites) { [weak self] workflowInstance in
+                    guard let self else {
+                        return
+                    }
+                    self.cachedStatus[workflowInstance.id] = workflowInstance.result
+                }
                 self.lastUpdate = Date()
             } catch {
                 print("Failed to update with error \(error).")
@@ -136,66 +141,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
 
         self.start()
-    }
-
-    // TODO: Extract this into an updater.
-
-    // Top level call that triggers fetching all workflow results.
-    private func update(favorites: [WorkflowInstance.ID]) async throws {
-        let repositories = favorites
-            .reduce(into: [String: [WorkflowInstance.ID]]()) { partialResult, id in
-                var ids = partialResult[id.repositoryFullName] ?? []
-                ids.append(id)
-                partialResult[id.id.repositoryFullName] = ids
-            }
-        try await repositories.forEach { repository, ids in
-            try await self.fetchDetails(repository: repository, ids: ids)
-        }
-    }
-
-    // Fetch the workflow details from a single repository.
-    private func fetchDetails(repository: String, ids: [WorkflowInstance.ID]) async throws {
-
-        // Search for workflow runs for each of our requested ids.
-        let ids = Set(ids)
-        let workflowRuns = try await self.client
-            .workflowRuns(for: repository, seekingWorkflowIds: ids)
-            .reduce(into: [WorkflowInstance.ID: GitHub.WorkflowRun]()) { partialResult, workflowRun in
-                let id = WorkflowInstance.ID(repositoryFullName: workflowRun.repository.full_name,
-                                             workflowId: workflowRun.workflow_id,
-                                             branch: workflowRun.head_branch)
-                guard partialResult[id] == nil else {
-                    return
-                }
-                guard ids.contains(id) else {
-                    return
-                }
-                partialResult[id] = workflowRun
-            }
-
-        // Flesh out the build details for each.
-        try await workflowRuns.forEach { id, workflowRun in
-            try await self.fetchDetails(id: id, workflowRun: workflowRun)
-        }
-    }
-
-    // Fetch the details for individual workflows.
-    private func fetchDetails(id: WorkflowInstance.ID, workflowRun: GitHub.WorkflowRun) async throws {
-        let workflowJobs = try await self.client.workflowJobs(for: id.repositoryFullName, workflowRun: workflowRun)
-        var annotations: [WorkflowResult.Annotation] = []
-        for workflowJob in workflowJobs {
-            let results = try await self.client
-                .annotations(for: id.repositoryFullName, workflowJob: workflowJob)
-                .map {
-                    return WorkflowResult.Annotation(jobId: workflowJob.id, annotation: $0)
-                }
-            annotations.append(contentsOf: results)
-        }
-        await MainActor.run {
-            cachedStatus[id] = WorkflowResult(workflowRun: workflowRun,
-                                              jobs: workflowJobs,
-                                              annotations: annotations)
-        }
     }
 
     @MainActor private func start() {

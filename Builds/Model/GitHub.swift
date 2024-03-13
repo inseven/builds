@@ -283,39 +283,6 @@ class GitHub {
         return response.workflow_runs
     }
 
-    // TODO: Remove the 'for'
-    // TODO: I can optionally limit this by branch.
-    // TODO: Move this out.
-    // TODO: Maximimum age / count?
-    func workflowRuns(for repositoryName: String,
-                      authentication: Authentication,
-                      seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [WorkflowRun] {
-
-        var workflowIds = Set<WorkflowInstance.ID>()
-        let seekingWorkflowIds = Set(seekingWorkflowIds)
-        var results = [WorkflowRun]()
-        for page in 1..<1000 {
-            let workflowRuns = try await self.workflowRuns(for: repositoryName,
-                                                           page: page,
-                                                           perPage: 100,
-                                                           authentication: authentication)
-            let responseWorkflowIds = await workflowRuns.map { workflowRun in
-                return WorkflowInstance.ID(repositoryFullName: repositoryName,
-                                           workflowId: workflowRun.workflow_id,
-                                           branch: workflowRun.head_branch)
-            }
-            workflowIds.formUnion(responseWorkflowIds)
-            results.append(contentsOf: workflowRuns)
-            if workflowRuns.isEmpty {
-                break
-            }
-            if workflowIds.intersection(seekingWorkflowIds).count == seekingWorkflowIds.count {
-                break
-            }
-        }
-        return results
-    }
-
     // TODO: Paged fetch
     func repositories(authentication: Authentication) async throws -> [Repository] {
         var repositories: [Repository] = []
