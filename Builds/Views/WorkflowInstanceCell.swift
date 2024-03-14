@@ -30,14 +30,30 @@ extension GitHub.Annotation: Identifiable {
 
 struct WorkflowInstanceCell: View {
 
+    @Environment(\.isSelected) var isSelected
+    @Environment(\.highlightState) var highlightState
+
     struct LayoutMetrics {
         static let cornerRadius = 12.0
         static let popoverButtonSpacing = 10.0
         static let annotationListRowInsets = EdgeInsets(vertical: 8.0)
         static let worfklowJobListRowInsets = EdgeInsets(horizontal: -4.0, vertical: 2.0)
+        static let selectionThickness = 4.0
     }
 
     let instance: WorkflowInstance
+
+    var showsHighlight: Bool {
+        return isSelected || highlightState == .forSelection
+    }
+
+    var background: Color {
+        if showsHighlight {
+            return Color.accentColor
+        } else {
+            return Color.clear
+        }
+    }
 
     var body: some View {
         Grid(alignment: .leadingFirstTextBaseline) {
@@ -116,6 +132,10 @@ struct WorkflowInstanceCell: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
 #endif
         .foregroundColor(.black)
+        .padding(LayoutMetrics.selectionThickness)
+        .background(background
+            .cornerRadius(LayoutMetrics.cornerRadius + (LayoutMetrics.selectionThickness / 2.0)))
+        .padding(-LayoutMetrics.selectionThickness)
     }
 
 }

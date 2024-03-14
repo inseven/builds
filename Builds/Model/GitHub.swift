@@ -146,9 +146,9 @@ class GitHub {
         case skipped
     }
 
-    struct WorkflowRun: Codable, Identifiable {
+    struct WorkflowRun: Codable, Identifiable, Hashable {
 
-        struct Repository: Codable {
+        struct Repository: Codable, Hashable {
             let full_name: String
         }
 
@@ -377,7 +377,7 @@ class GitHub {
         ])
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(data)
+        print(response)
         print(String(data: data, encoding: .utf8) ?? "nil")
     }
 

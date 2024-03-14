@@ -22,6 +22,7 @@ import Foundation
 
 import Diligence
 import Interact
+import SelectableCollectionView
 
 public struct Legal {
 
@@ -40,7 +41,8 @@ public struct Legal {
             Credit("Sarah Barbour")
         }
     } licenses: {
-        .interact
+        (.interact)
+        (.selectableCollectionView)
         License("Builds", author: "Jason Morley", filename: "builds-license")
         License("Material Icons", author: "Google", filename: "material-icons-license")
         License("SwiftDraw", author: "Simon Whitty", filename: "swiftdraw-license")

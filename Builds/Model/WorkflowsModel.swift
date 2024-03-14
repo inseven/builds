@@ -59,7 +59,7 @@ class WorkflowsModel: ObservableObject, Runnable {
         do {
             let repositories = try await client
                 .repositories()
-                .compactMap { repository -> RepositoryDetails? in
+                .asyncCompactMap { repository -> RepositoryDetails? in
                     guard !repository.archived else {
                         return nil
                     }

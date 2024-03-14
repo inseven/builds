@@ -13,8 +13,10 @@
 		D81251B82B929935001F6E85 /* BuildsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B72B929935001F6E85 /* BuildsError.swift */; };
 		D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B92B929B27001F6E85 /* MainWindow.swift */; };
 		D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */; };
+		D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */ = {isa = PBXBuildFile; productRef = D826A57C2BA23228006D25FF /* SelectableCollectionView */; };
 		D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DCE27F63B680091BAFD /* GitHub.swift */; };
 		D8355DD227F674F20091BAFD /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DD127F674F20091BAFD /* URL.swift */; };
+		D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83929DA2BA367DD0022B4A3 /* Collection.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
 		D87390EE2BA1301400EFC8B8 /* ToolbarButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* ToolbarButtonStyle.swift */; };
@@ -97,6 +99,7 @@
 		D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlesAuthentication.swift; sourceTree = "<group>"; };
 		D8355DCE27F63B680091BAFD /* GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHub.swift; sourceTree = "<group>"; };
 		D8355DD127F674F20091BAFD /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		D83929DA2BA367DD0022B4A3 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
 		D87390ED2BA1301400EFC8B8 /* ToolbarButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtonStyle.swift; sourceTree = "<group>"; };
@@ -161,6 +164,7 @@
 				D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */,
 				D8DDD5F12B65F910003FAB23 /* Interact in Frameworks */,
 				D8DDD5F42B65FB11003FAB23 /* Diligence in Frameworks */,
+				D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				D8D413FC28047B85001BA6C0 /* Bundle.swift */,
+				D83929DA2BA367DD0022B4A3 /* Collection.swift */,
 				D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */,
 				D8CA0EF12B94110A00DAE758 /* TimeInterval.swift */,
 				D8355DD127F674F20091BAFD /* URL.swift */,
@@ -390,6 +395,7 @@
 				D8DDD5F02B65F910003FAB23 /* Interact */,
 				D8DDD5F32B65FB11003FAB23 /* Diligence */,
 				D887C5D52BA0B48000E46174 /* SwiftDraw */,
+				D826A57C2BA23228006D25FF /* SelectableCollectionView */,
 			);
 			productName = Status;
 			productReference = D8FEAE0827F591AE00FDADFA /* Builds.app */;
@@ -439,7 +445,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					D8FEAE0727F591AE00FDADFA = {
 						CreatedOnToolsVersion = 13.3;
@@ -467,6 +473,7 @@
 				D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */,
 				D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "diligence" */,
 				D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */,
+				D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "SelectableCollectionView" */,
 			);
 			productRefGroup = D8FEAE0927F591AE00FDADFA /* Products */;
 			projectDirPath = "";
@@ -555,6 +562,7 @@
 				D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */,
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,
+				D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */,
 				D8DA9D892B97009900C17DBC /* WorkflowsPickerModel.swift in Sources */,
 				D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */,
 				D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */,
@@ -603,6 +611,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -665,6 +674,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -926,6 +936,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "SelectableCollectionView" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SelectableCollectionView;
+		};
 		D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = interact;
@@ -948,6 +962,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D826A57C2BA23228006D25FF /* SelectableCollectionView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SelectableCollectionView;
+		};
 		D887C5D52BA0B48000E46174 /* SwiftDraw */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */;

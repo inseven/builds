@@ -18,34 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-struct WorkflowResult: Codable, Hashable {
+extension Collection where Element: Identifiable {
 
-    struct Annotation: Codable, Identifiable, Hashable {
-        var id: GitHub.Annotation.ID {
-            return annotation.id
+    func filter(selection: any Collection<Element.ID>) -> [Element] {
+        var results = [Element]()
+        let selection = Set(selection)
+        for element in self {
+            guard selection.contains(element.id) else {
+                continue
+            }
+            results.append(element)
         }
-        let jobId: GitHub.WorkflowJob.ID
-        let annotation: GitHub.Annotation
-    }
-
-    let workflowRun: GitHub.WorkflowRun
-    let jobs: [GitHub.WorkflowJob]
-    let annotations: [Annotation]
-
-    init(workflowRun: GitHub.WorkflowRun,
-         jobs: [GitHub.WorkflowJob],
-         annotations: [Annotation]) {
-        self.workflowRun = workflowRun
-        self.jobs = jobs
-        self.annotations = annotations
-    }
-
-    func job(for annotation: Annotation) -> GitHub.WorkflowJob? {
-        return jobs.first {
-            return $0.id == annotation.jobId
-        }
+        return results
     }
 
 }

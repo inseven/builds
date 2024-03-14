@@ -119,7 +119,7 @@ class GitHubClient {
                 ids.append(id)
                 partialResult[id.id.repositoryFullName] = ids
             }
-        try await repositories.forEach { repository, ids in
+        try await repositories.asyncForEach { repository, ids in
             try await self.fetchDetails(repository: repository, ids: ids, callback: callback)
         }
     }
@@ -147,7 +147,7 @@ class GitHubClient {
             }
 
         // Flesh out the build details for each.
-        try await workflowRuns.forEach { id, workflowRun in
+        try await workflowRuns.asyncForEach { id, workflowRun in
             try await self.fetchDetails(id: id, workflowRun: workflowRun, callback: callback)
         }
     }
