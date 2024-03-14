@@ -76,7 +76,7 @@ struct WorkflowInstanceCell: View {
                     DetailsPopover(listRowInsets: LayoutMetrics.worfklowJobListRowInsets) {
                         if let jobs = instance.result?.jobs {
                             WorkflowJobList(jobs: jobs)
-                                .buttonStyle(.toolbar)
+                                .buttonStyle(.menu)
                         }
                     } label: {
                         if let workflowRun = instance.result?.workflowRun {

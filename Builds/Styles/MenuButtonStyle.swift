@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-struct ToolbarButtonStyle: ButtonStyle {
+struct MenuButtonStyle: ButtonStyle {
 
     struct LayoutMetrics {
         static let padding = 8.0
@@ -32,8 +32,7 @@ struct ToolbarButtonStyle: ButtonStyle {
     func background() -> some View {
         if isActive {
             Color
-                .black
-                .opacity(0.1)
+                .accentColor
                 .cornerRadius(LayoutMetrics.cornerRadius)
         } else {
             Color
@@ -42,11 +41,20 @@ struct ToolbarButtonStyle: ButtonStyle {
         }
     }
 
+    var foregroundColor: Color {
+        if isActive {
+            return Color.white
+        } else {
+            return Color.primary
+        }
+    }
+
     func makeBody(configuration: ButtonStyleConfiguration) -> some View {
         HStack {
             configuration.label
             Spacer()
         }
+        .foregroundStyle(foregroundColor)
         .padding(LayoutMetrics.padding)
         .background(background())
         .onHover { hovering in
@@ -56,10 +64,10 @@ struct ToolbarButtonStyle: ButtonStyle {
 
 }
 
-extension ButtonStyle where Self == ToolbarButtonStyle {
+extension ButtonStyle where Self == MenuButtonStyle {
 
-    static var toolbar: ToolbarButtonStyle {
-        return ToolbarButtonStyle()
+    static var menu: MenuButtonStyle {
+        return MenuButtonStyle()
     }
 
 }

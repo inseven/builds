@@ -19,7 +19,7 @@
 		D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83929DA2BA367DD0022B4A3 /* Collection.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
-		D87390EE2BA1301400EFC8B8 /* ToolbarButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* ToolbarButtonStyle.swift */; };
+		D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */; };
 		D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */; };
 		D87F23742B6600150085DC12 /* material-icons-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23732B6600150085DC12 /* material-icons-license */; };
 		D87F23762B66006F0085DC12 /* builds-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23752B66006F0085DC12 /* builds-license */; };
@@ -102,7 +102,7 @@
 		D83929DA2BA367DD0022B4A3 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
-		D87390ED2BA1301400EFC8B8 /* ToolbarButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarButtonStyle.swift; sourceTree = "<group>"; };
+		D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonStyle.swift; sourceTree = "<group>"; };
 		D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		D87F23732B6600150085DC12 /* material-icons-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "material-icons-license"; sourceTree = "<group>"; };
 		D87F23752B66006F0085DC12 /* builds-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "builds-license"; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 		D87390EC2BA12FD200EFC8B8 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
-				D87390ED2BA1301400EFC8B8 /* ToolbarButtonStyle.swift */,
+				D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */,
 			);
 			path = Styles;
 			sourceTree = "<group>";
@@ -526,7 +526,7 @@
 				D8355DD227F674F20091BAFD /* URL.swift in Sources */,
 				D8CA0EF02B940BBB00DAE758 /* RefreshScheduler.swift in Sources */,
 				D8D413F328045535001BA6C0 /* Action.swift in Sources */,
-				D87390EE2BA1301400EFC8B8 /* ToolbarButtonStyle.swift in Sources */,
+				D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */,
 				D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
 				D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */,
