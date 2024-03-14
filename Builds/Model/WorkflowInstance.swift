@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-struct WorkflowInstance: Identifiable {
+struct WorkflowInstance: Identifiable, Hashable {
 
     struct ID: Hashable, Codable {
 
