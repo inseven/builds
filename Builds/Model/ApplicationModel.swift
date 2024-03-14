@@ -92,6 +92,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     }
 
     // TODO: Make this private.
+    // TODO: This should be optional; there's no point it existing if we don't have an auth code.
     @MainActor let client: GitHubClient
 
     @MainActor private let defaults = KeyedDefaults<Key>()
@@ -124,14 +125,12 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             do {
                 print("Refreshing...")
                 self.isUpdating = true
-                let results = try await self.favorites.map { id in
-                    return try await self.update(id: id)
+                try await self.client.update(favorites: self.favorites) { [weak self] workflowInstance in
+                    guard let self else {
+                        return
+                    }
+                    self.cachedStatus[workflowInstance.id] = workflowInstance.result
                 }
-                let cachedStatus = results.reduce(into: [WorkflowInstance.ID: WorkflowResult]()) { partialResult, workflowResult in
-                    partialResult[workflowResult.id] = workflowResult.result
-                }
-
-                self.cachedStatus = cachedStatus
                 self.lastUpdate = Date()
             } catch {
                 print("Failed to update with error \(error).")
@@ -235,10 +234,25 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             return
         }
         favorites.append(id)
+
+        // Fetch the workflow details on demand.
+        Task {
+            do {
+                try await client.update(favorites: [id]) { [weak self] workflowInstance in
+                    guard let self else {
+                        return
+                    }
+                    self.cachedStatus[workflowInstance.id] = workflowInstance.result
+                }
+            } catch {
+                print("Failed fetch workflow results on demand with error \(error).")
+            }
+        }
     }
 
     @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
         favorites.removeAll { $0 == id }
+        cachedStatus.removeValue(forKey: id)
     }
 
     @MainActor func logIn() {
@@ -272,7 +286,12 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         try await client.authenticate(with: code)
     }
 
-    @MainActor func logOut() {
+    @MainActor func logOut() async {
+        do {
+            try await client.deleteGrant()
+        } catch {
+            print("Failed to delete client grant with error \(error).")
+        }
         authenticationToken = nil
         cachedStatus = [:]
         favorites = []
@@ -280,40 +299,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     @MainActor func managePermissions() {
         Application.open(client.permissionsURL)
-    }
-
-    func update(id: WorkflowInstance.ID) async throws -> WorkflowInstance {
-        let workflowRuns = try await client.workflowRuns(for: id.repositoryFullName)
-
-        let latestRun = workflowRuns.first { workflowRun in
-            if workflowRun.workflow_id != id.workflowId {
-                return false
-            }
-            if workflowRun.head_branch != id.branch {
-                return false
-            }
-            return true
-        }
-
-        guard let latestRun else {
-            return WorkflowInstance(id: id)
-        }
-
-        let workflowJobs = try await client.workflowJobs(for: id.repositoryFullName, workflowRun: latestRun)
-        var annotations: [WorkflowResult.Annotation] = []
-        for workflowJob in workflowJobs {
-            let results = try await client
-                .annotations(for: id.repositoryFullName, workflowJob: workflowJob)
-                .map {
-                    return WorkflowResult.Annotation(jobId: workflowJob.id, annotation: $0)
-                }
-            annotations.append(contentsOf: results)
-        }
-
-        return WorkflowInstance(id: id,
-                                result: WorkflowResult(workflowRun: latestRun,
-                                                       jobs: workflowJobs,
-                                                       annotations: annotations))
     }
 
     func refresh() async {

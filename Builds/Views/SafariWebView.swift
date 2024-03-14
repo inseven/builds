@@ -18,30 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if os(iOS)
+
 import SwiftUI
+import SafariServices
 
-struct WorkflowJobList: View {
+struct SafariWebView: UIViewControllerRepresentable {
+    let url: URL
 
-    @Environment(\.openURL) private var openURL
-
-    let jobs: [GitHub.WorkflowJob]
-
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        return SFSafariViewController(url: url)
     }
 
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                openURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                }
-            }
-        }
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {
+
     }
 }
+
+#endif

@@ -22,6 +22,14 @@ import SwiftUI
 
 struct WorkflowsSection: View {
 
+    struct LayoutMetrics {
+#if os(macOS)
+        static let symbolSize = 46.0  // 41.0 matches SF Symbols but feels too small.
+#else
+        static let symbolSize = 54.5
+#endif
+    }
+
     @ObservedObject var applicationModel: ApplicationModel
     @ObservedObject var sceneModel: SceneModel
 
@@ -56,20 +64,56 @@ struct WorkflowsSection: View {
                 }
             } else {
                 ContentUnavailableView {
-                    Text("Logged Out")
+                    Label {
+                        Text("Sign In")
+                    } icon: {
+                        SVGImage(url: Bundle.main.url(forResource: "github-mark", withExtension: "svg")!)
+                            .frame(width: LayoutMetrics.symbolSize, height: LayoutMetrics.symbolSize)
+                    }
                 } description: {
-                    Text("Log in to view your GitHub Actions workflows.")
+                    Text("Builds uses your GitHub account to retrieve information about your GitHub Actions workflow statuses.")
                 } actions: {
                     Button {
-                        applicationModel.logIn()
+                        sceneModel.logIn()
                     } label: {
-                        Text("Log In")
+                        Text("Sign In with GitHub")
                     }
                 }
             }
         }
         .navigationTitle(section.title)
         .toolbarTitleDisplayMode(.inline)
+        .inspector(isPresented: $sceneModel.showInspector) {
+            VStack(alignment: .leading) {
+                if sceneModel.selection.count > 1 {
+                    ContentUnavailableView {
+                        Label("Multiple Workflows Selected", systemImage: "rectangle.on.rectangle")
+                    } description: {
+                        Text("Select a workflow to view its details.")
+                    }
+                } else {
+                    if let id = sceneModel.selection.first,
+                       let workflowInstance = applicationModel.results.first(where: { $0.id == id }) {
+                        WorkflowInspector(workflowInstance: workflowInstance)
+                    } else {
+                        ContentUnavailableView {
+                            Label("No Workflow Selected", systemImage: "rectangle.dashed")
+                        } description: {
+                            Text("Select a workflow to view its details.")
+                        }
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        sceneModel.toggleInspector()
+                    } label: {
+                        Label("Toggle Inspector", systemImage: "sidebar.trailing")
+                    }
+                }
+            }
+        }
     }
 
 }

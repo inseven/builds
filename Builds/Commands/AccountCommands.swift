@@ -24,6 +24,8 @@ struct AccountCommands: Commands {
 
     @ObservedObject var applicationModel: ApplicationModel
 
+    @FocusedObject var sceneModel: SceneModel?
+
     var body: some Commands {
         CommandMenu("Account") {
             if applicationModel.isAuthorized {
@@ -34,16 +36,18 @@ struct AccountCommands: Commands {
                 }
                 Divider()
                 Button {
-                    applicationModel.logOut()
+                    await sceneModel?.logOut()
                 } label: {
-                    Text("Log Out...")
+                    Text("Sign Out...")
                 }
+                .disabled(sceneModel == nil)
             } else {
                 Button {
-                    applicationModel.logIn()
+                    sceneModel?.logIn()
                 } label: {
-                    Text("Log In...")
+                    Text("Sign In with GitHub...")
                 }
+                .disabled(sceneModel == nil)
             }
         }
     }

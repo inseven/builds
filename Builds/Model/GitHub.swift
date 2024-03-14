@@ -146,7 +146,11 @@ class GitHub {
         case skipped
     }
 
-    struct WorkflowRun: Codable, Identifiable {
+    struct WorkflowRun: Codable, Identifiable, Hashable {
+
+        struct Repository: Codable, Hashable {
+            let full_name: String
+        }
 
         let id: Int
 
@@ -160,6 +164,7 @@ class GitHub {
         let html_url: URL
         let name: String
         let node_id: String
+        let repository: Repository
         let rerun_url: URL
         let run_attempt: Int
         let run_number: Int
@@ -234,6 +239,7 @@ class GitHub {
     }
 
     private func fetch<T: Decodable>(_ url: URL, authentication: Authentication) async throws -> T {
+        print(url.absoluteString)
         var request = URLRequest(url: url)
         request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
         request.setValue("token \(authentication.accessToken)", forHTTPHeaderField: "Authorization")
@@ -262,10 +268,16 @@ class GitHub {
         return response
     }
 
-    // TODO: Remove the 'for'
-    func workflowRuns(for repositoryName: String, authentication: Authentication) async throws -> [WorkflowRun] {
-        // TODO: Assemble the path?
+    func workflowRuns(repositoryName: String, page: Int?, perPage: Int?, authentication: Authentication) async throws -> [WorkflowRun] {
+        var queryItems: [URLQueryItem] = []
+        if let page {
+            queryItems.append(URLQueryItem(name: "page", value: String(page)))
+        }
+        if let perPage {
+            queryItems.append(URLQueryItem(name: "per_page", value: String(perPage)))
+        }
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs")!
+            .settingQueryItems(queryItems)!
         let response: WorkflowRuns = try await fetch(url, authentication: authentication)
         return response.workflow_runs
     }
@@ -338,6 +350,35 @@ class GitHub {
         } catch {
             return .failure(error)
         }
+    }
+
+    func deleteGrant(authentication: Authentication) async throws {
+        // This end-point is a little unnusual:
+        // https://docs.github.com/en/rest/apps/oauth-applications?apiVersion=2022-11-28#delete-an-app-authorization
+        // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#using-basic-authentication
+
+        let url = URL(string: "https://api.github.com/applications/\(clientId)/grant")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+
+        request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
+
+        guard let basicAuthentication = [clientId, clientSecret]
+            .joined(separator: ":")
+            .data(using: .utf8)?
+            .base64EncodedString() else {
+            throw BuildsError.authenticationFailure
+        }
+        request.setValue("Basic \(basicAuthentication)", forHTTPHeaderField: "Authorization")
+
+        let encoder = JSONEncoder()
+        request.httpBody = try encoder.encode([
+            "access_token": authentication.accessToken,
+        ])
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        print(response)
+        print(String(data: data, encoding: .utf8) ?? "nil")
     }
 
     private func url(_ path: Path, parameters: [String: String] = [:]) -> URL? {

@@ -48,8 +48,10 @@ struct BuildsApp: App {
 
         About(Legal.contents)
 
+#if DEBUG
         WorkflowsWindow()
             .environmentObject(applicationModel)
+#endif
 
 #endif
 

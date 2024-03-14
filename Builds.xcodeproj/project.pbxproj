@@ -13,11 +13,15 @@
 		D81251B82B929935001F6E85 /* BuildsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B72B929935001F6E85 /* BuildsError.swift */; };
 		D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B92B929B27001F6E85 /* MainWindow.swift */; };
 		D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */; };
+		D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */ = {isa = PBXBuildFile; productRef = D826A57C2BA23228006D25FF /* SelectableCollectionView */; };
 		D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DCE27F63B680091BAFD /* GitHub.swift */; };
 		D8355DD227F674F20091BAFD /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DD127F674F20091BAFD /* URL.swift */; };
+		D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83929DA2BA367DD0022B4A3 /* Collection.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
 		D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */; };
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
+		D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */; };
+		D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */; };
 		D87F23742B6600150085DC12 /* material-icons-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23732B6600150085DC12 /* material-icons-license */; };
 		D87F23762B66006F0085DC12 /* builds-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23752B66006F0085DC12 /* builds-license */; };
 		D883F1B52B97EC9E00B00F1C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */; };
@@ -25,6 +29,11 @@
 		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
 		D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */; };
 		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
+		D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */; };
+		D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */ = {isa = PBXBuildFile; fileRef = D887C5CF2BA0B33800E46174 /* github-mark.svg */; };
+		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
+		D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5D72BA0B49600E46174 /* SVGImage.swift */; };
+		D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */ = {isa = PBXBuildFile; fileRef = D887C5D92BA0B60400E46174 /* swiftdraw-license */; };
 		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
@@ -91,9 +100,12 @@
 		D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlesAuthentication.swift; sourceTree = "<group>"; };
 		D8355DCE27F63B680091BAFD /* GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHub.swift; sourceTree = "<group>"; };
 		D8355DD127F674F20091BAFD /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		D83929DA2BA367DD0022B4A3 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
 		D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInspector.swift; sourceTree = "<group>"; };
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
+		D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonStyle.swift; sourceTree = "<group>"; };
+		D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		D87F23732B6600150085DC12 /* material-icons-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "material-icons-license"; sourceTree = "<group>"; };
 		D87F23752B66006F0085DC12 /* builds-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "builds-license"; sourceTree = "<group>"; };
 		D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -101,6 +113,10 @@
 		D883F1B82B98019400B00F1C /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionIdentifier.swift; sourceTree = "<group>"; };
 		D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsSection.swift; sourceTree = "<group>"; };
+		D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebView.swift; sourceTree = "<group>"; };
+		D887C5CF2BA0B33800E46174 /* github-mark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "github-mark.svg"; sourceTree = "<group>"; };
+		D887C5D72BA0B49600E46174 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
+		D887C5D92BA0B60400E46174 /* swiftdraw-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "swiftdraw-license"; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
@@ -147,8 +163,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */,
 				D8DDD5F12B65F910003FAB23 /* Interact in Frameworks */,
 				D8DDD5F42B65FB11003FAB23 /* Diligence in Frameworks */,
+				D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,10 +211,20 @@
 			isa = PBXGroup;
 			children = (
 				D8D413FC28047B85001BA6C0 /* Bundle.swift */,
+				D83929DA2BA367DD0022B4A3 /* Collection.swift */,
+				D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */,
 				D8CA0EF12B94110A00DAE758 /* TimeInterval.swift */,
 				D8355DD127F674F20091BAFD /* URL.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D87390EC2BA12FD200EFC8B8 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */,
+			);
+			path = Styles;
 			sourceTree = "<group>";
 		};
 		D87F23722B65FFFA0085DC12 /* Licenses */ = {
@@ -204,8 +232,24 @@
 			children = (
 				D87F23732B6600150085DC12 /* material-icons-license */,
 				D87F23752B66006F0085DC12 /* builds-license */,
+				D887C5D92BA0B60400E46174 /* swiftdraw-license */,
 			);
 			path = Licenses;
+			sourceTree = "<group>";
+		};
+		D887C5CE2BA0B32100E46174 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D887C5CF2BA0B33800E46174 /* github-mark.svg */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D887C5D12BA0B3E600E46174 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D8CA0EE82B93D6F200DAE758 /* Commands */ = {
@@ -248,9 +292,11 @@
 				D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */,
 				D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */,
 				D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */,
+				D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
 				D81251B32B9181E9001F6E85 /* SummaryContentView.swift */,
 				D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */,
+				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */,
 				D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */,
@@ -270,6 +316,7 @@
 				D8FEAE1B27F591B200FDADFA /* BuildsTests */,
 				D8FEAE2527F591B200FDADFA /* BuildsUITests */,
 				D8FEAE0927F591AE00FDADFA /* Products */,
+				D887C5D12BA0B3E600E46174 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -298,7 +345,9 @@
 				D8D413F1280454F0001BA6C0 /* Model */,
 				D81251BB2B92A38C001F6E85 /* Modifiers */,
 				D8FEAE1127F591B200FDADFA /* Preview Content */,
+				D887C5CE2BA0B32100E46174 /* Resources */,
 				D81251B02B917EFC001F6E85 /* Scenes */,
+				D87390EC2BA12FD200EFC8B8 /* Styles */,
 				D8F0CDFA27F7995700F4EC83 /* Views */,
 			);
 			path = Builds;
@@ -348,6 +397,8 @@
 			packageProductDependencies = (
 				D8DDD5F02B65F910003FAB23 /* Interact */,
 				D8DDD5F32B65FB11003FAB23 /* Diligence */,
+				D887C5D52BA0B48000E46174 /* SwiftDraw */,
+				D826A57C2BA23228006D25FF /* SelectableCollectionView */,
 			);
 			productName = Status;
 			productReference = D8FEAE0827F591AE00FDADFA /* Builds.app */;
@@ -397,7 +448,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					D8FEAE0727F591AE00FDADFA = {
 						CreatedOnToolsVersion = 13.3;
@@ -424,6 +475,8 @@
 			packageReferences = (
 				D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */,
 				D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "diligence" */,
+				D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */,
+				D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "SelectableCollectionView" */,
 			);
 			productRefGroup = D8FEAE0927F591AE00FDADFA /* Products */;
 			projectDirPath = "";
@@ -445,8 +498,10 @@
 				D8D413FB28047AEE001BA6C0 /* configuration.json in Resources */,
 				D883F1B52B97EC9E00B00F1C /* Localizable.xcstrings in Resources */,
 				D87F23762B66006F0085DC12 /* builds-license in Resources */,
+				D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */,
 				D87F23742B6600150085DC12 /* material-icons-license in Resources */,
 				D8FEAE1027F591B200FDADFA /* Assets.xcassets in Resources */,
+				D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +529,7 @@
 				D8355DD227F674F20091BAFD /* URL.swift in Sources */,
 				D8CA0EF02B940BBB00DAE758 /* RefreshScheduler.swift in Sources */,
 				D8D413F328045535001BA6C0 /* Action.swift in Sources */,
+				D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */,
 				D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */,
 				D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
@@ -497,7 +553,9 @@
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
 				D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */,
+				D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */,
 				D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */,
+				D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */,
 				D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */,
 				D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */,
 				D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */,
@@ -505,8 +563,10 @@
 				D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */,
 				D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */,
 				D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */,
+				D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */,
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,
+				D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */,
 				D8DA9D892B97009900C17DBC /* WorkflowsPickerModel.swift in Sources */,
 				D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */,
 				D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */,
@@ -555,6 +615,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -617,6 +678,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -878,6 +940,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "SelectableCollectionView" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = SelectableCollectionView;
+		};
 		D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = interact;
@@ -888,7 +954,27 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swhitty/SwiftDraw.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.16.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		D826A57C2BA23228006D25FF /* SelectableCollectionView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SelectableCollectionView;
+		};
+		D887C5D52BA0B48000E46174 /* SwiftDraw */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */;
+			productName = SwiftDraw;
+		};
 		D8DDD5F02B65F910003FAB23 /* Interact */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Interact;

@@ -33,12 +33,13 @@ class SceneModel: ObservableObject, Runnable {
 
         case add
         case settings
+        case logIn
     }
 
     @Published var section: SectionIdentifier? = .all
-    @Published var sheet: SheetType?
+    @MainActor @Published var sheet: SheetType?
     @Published var showInspector: Bool = true
-    @Published var selection: WorkflowInstance? = nil
+    @Published var selection = Set<WorkflowInstance.ID>()
 
     private let applicationModel: ApplicationModel
 
@@ -52,7 +53,10 @@ class SceneModel: ObservableObject, Runnable {
         applicationModel
             .$organizations
             .receive(on: DispatchQueue.main)
-            .sink { organizations in
+            .sink { [weak self] organizations in
+                guard let self else {
+                    return
+                }
                 guard let section = self.section,
                       case SectionIdentifier.organization(let organization) = section,
                       !organizations.contains(organization) else {
@@ -69,6 +73,20 @@ class SceneModel: ObservableObject, Runnable {
 
     @MainActor func showSettings() {
         sheet = .settings
+    }
+
+    @MainActor func logIn() {
+#if os(macOS)
+        applicationModel.logIn()
+#else
+        sheet = .logIn
+#endif
+    }
+
+    @MainActor func logOut() async {
+        await applicationModel.logOut()
+        sheet = nil
+        section = .all
     }
 
     @MainActor func manageWorkflows() {

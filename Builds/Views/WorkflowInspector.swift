@@ -77,6 +77,7 @@ struct WorkflowInspector: View {
                 }
                 Section {
                     WorkflowJobList(jobs: result.jobs)
+                        .buttonStyle(.plain)
                 } header: {
                     Text("Jobs")
                 }

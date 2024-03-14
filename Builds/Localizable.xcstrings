@@ -69,6 +69,9 @@
     "Builds" : {
 
     },
+    "Builds uses your GitHub account to retrieve information about your GitHub Actions workflow statuses." : {
+
+    },
     "Cancel" : {
 
     },
@@ -81,28 +84,13 @@
     "Done" : {
 
     },
+    "GitHub" : {
+
+    },
     "Jobs" : {
 
     },
     "Loading..." : {
-
-    },
-    "Log In" : {
-
-    },
-    "Log in to view your GitHub Actions workflows." : {
-
-    },
-    "Log In..." : {
-
-    },
-    "Log Out" : {
-
-    },
-    "Log Out..." : {
-
-    },
-    "Logged Out" : {
 
     },
     "Manage GitHub Permissions" : {
@@ -112,6 +100,9 @@
 
     },
     "Manage Workflows" : {
+
+    },
+    "Multiple Workflows Selected" : {
 
     },
     "No Workflow Selected" : {
@@ -135,8 +126,33 @@
     "Refresh..." : {
 
     },
-    "Remove Workflow" : {
-
+    "Remove %lld Workflows" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Remove Workflow"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "Remove %lld Workflows"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Remove Workflow"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Repository" : {
 
@@ -151,6 +167,21 @@
 
     },
     "Settings" : {
+
+    },
+    "Sign In" : {
+
+    },
+    "Sign In with GitHub" : {
+
+    },
+    "Sign In with GitHub..." : {
+
+    },
+    "Sign Out" : {
+
+    },
+    "Sign Out..." : {
 
     },
     "Summary" : {

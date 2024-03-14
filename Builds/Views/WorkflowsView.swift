@@ -21,8 +21,17 @@
 import SwiftUI
 
 import Interact
+import SelectableCollectionView
 
 struct WorkflowsView: View {
+
+    struct LayoutMetrics {
+#if os(macOS)
+        static let interItemSpacing: CGFloat? = 10.0
+#else
+        static let interItemSpacing: CGFloat? = nil
+#endif
+    }
 
     @EnvironmentObject var applicationModel: ApplicationModel
     @EnvironmentObject var sceneModel: SceneModel
@@ -31,48 +40,46 @@ struct WorkflowsView: View {
 
     let workflows: [WorkflowInstance]
 
-    private var layout = [GridItem(.adaptive(minimum: 300))]
+    private var columns = [GridItem(.adaptive(minimum: 300))]
 
     init(workflows: [WorkflowInstance]) {
         self.workflows = workflows
     }
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: layout) {
-                ForEach(workflows) { instance in
-                    WorkflowInstanceCell(instance: instance)
-                        .contextMenu {
-                            Button {
-                                guard let workflowRun = instance.result?.workflowRun else {
-                                    return
-                                }
-                                openURL(workflowRun.html_url)
-                            } label: {
-                                Label("Open", systemImage: "safari")
-                            }
-                            .disabled(instance.result?.workflowRun == nil)
-                            Divider()
-                            Button(role: .destructive) {
-                                applicationModel.removeFavorite(instance.id)
-                            } label: {
-                                Label("Remove Workflow", systemImage: "trash")
-                            }
-                        }
-                        .onTapGesture {
-                            sceneModel.selection = instance
-                        }
-                        .simultaneousGesture(TapGesture(count: 2).onEnded {
-                            guard let workflowRun = instance.result?.workflowRun else {
-                                return
-                            }
-                            openURL(workflowRun.html_url)
-                        })
+        SelectableCollectionView(workflows, selection: $sceneModel.selection,
+                                 columns: columns,
+                                 spacing: LayoutMetrics.interItemSpacing) { workflowInstance in
+            WorkflowInstanceCell(instance: workflowInstance)
+        } contextMenu: { selection in
+
+            let workflowInstances = workflows.filter(selection: selection)
+            let results = workflowInstances.compactMap { $0.result }
+
+            MenuItem("Open", systemImage: "safari") {
+                for result in results {
+                    openURL(result.workflowRun.html_url)
                 }
             }
-            .padding()
+            .disabled(results.isEmpty)
+
+            Divider()
+
+            MenuItem("Remove \(workflowInstances.count) Workflows", systemImage: "trash", role: .destructive) {
+                for workflowInstance in workflowInstances {
+                    applicationModel.removeFavorite(workflowInstance.id)
+                }
+            }
+            .disabled(workflowInstances.isEmpty)
+
+        } primaryAction: { selection in
+            let workflowInstances = workflows.filter(selection: selection)
+            for result in workflowInstances.compactMap({ $0.result }) {
+                openURL(result.workflowRun.html_url)
+            }
         }
         .frame(minWidth: 300)
+
 #if os(macOS)
         .navigationSubtitle("\(workflows.count) Workflows")
 #endif

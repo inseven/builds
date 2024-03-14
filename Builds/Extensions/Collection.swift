@@ -18,30 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-struct WorkflowJobList: View {
+extension Collection where Element: Identifiable {
 
-    @Environment(\.openURL) private var openURL
-
-    let jobs: [GitHub.WorkflowJob]
-
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
-    }
-
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                openURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                }
+    func filter(selection: any Collection<Element.ID>) -> [Element] {
+        var results = [Element]()
+        let selection = Set(selection)
+        for element in self {
+            guard selection.contains(element.id) else {
+                continue
             }
+            results.append(element)
         }
+        return results
     }
+
 }

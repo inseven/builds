@@ -20,9 +20,9 @@
 
 import SwiftUI
 
-struct WorkflowResult: Codable {
+struct WorkflowResult: Codable, Hashable {
 
-    struct Annotation: Codable, Identifiable {
+    struct Annotation: Codable, Identifiable, Hashable {
         var id: GitHub.Annotation.ID {
             return annotation.id
         }

@@ -22,14 +22,15 @@ import Foundation
 
 import Diligence
 import Interact
+import SelectableCollectionView
 
 public struct Legal {
 
     public static let contents = Contents(repository: "inseven/builds",
                                           copyright: "Copyright © 2021-2024 Jason Morley") {
         let subject = "Builds Support (\(Bundle.main.version ?? "Unknown Version"))"
-        Diligence.Action("GitHub", url: URL(string: "https://github.com/inseven/builds")!)
-        Diligence.Action("Support", url: URL(address: "support@jbmorley.co.uk", subject: subject)!)
+        Action("GitHub", url: URL(string: "https://github.com/inseven/builds")!)
+        Action("Support", url: URL(address: "support@jbmorley.co.uk", subject: subject)!)
     } acknowledgements: {
         Acknowledgements("Developers") {
             Credit("Jason Morley", url: URL(string: "https://jbmorley.co.uk"))
@@ -40,9 +41,11 @@ public struct Legal {
             Credit("Sarah Barbour")
         }
     } licenses: {
-        .interact
+        (.interact)
+        (.selectableCollectionView)
         License("Builds", author: "Jason Morley", filename: "builds-license")
         License("Material Icons", author: "Google", filename: "material-icons-license")
+        License("SwiftDraw", author: "Simon Whitty", filename: "swiftdraw-license")
     }
 
 }

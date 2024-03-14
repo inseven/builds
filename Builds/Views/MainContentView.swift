@@ -53,6 +53,7 @@ struct MainContentView: View {
             VStack {
                 if let section = sceneModel.section {
                     WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
+                        .id(section)
                 } else {
                     ContentUnavailableView {
                         Label("Nothing Selected", systemImage: "sidebar.leading")
@@ -63,28 +64,6 @@ struct MainContentView: View {
             }
             .toolbarTitleDisplayMode(.inline)
             .navigationTitle(sceneModel.section?.title ?? "")
-            .inspector(isPresented: $sceneModel.showInspector) {
-                VStack(alignment: .leading) {
-                    if let workflowInstance = sceneModel.selection {
-                        WorkflowInspector(workflowInstance: workflowInstance)
-                    } else {
-                        ContentUnavailableView {
-                            Label("No Workflow Selected", systemImage: "rectangle.dashed")
-                        } description: {
-                            Text("Select a workflow to view its details.")
-                        }
-                    }
-                }
-                .toolbar {
-                    ToolbarItem {
-                        Button {
-                            sceneModel.toggleInspector()
-                        } label: {
-                            Label("Toggle Inspector", systemImage: "sidebar.trailing")
-                        }
-                    }
-                }
-            }
             .toolbar() {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
@@ -93,6 +72,7 @@ struct MainContentView: View {
                         Label("Manage Workflows", systemImage: "checklist")
                     }
                     .help("Select workflows to display")
+                    .disabled(!applicationModel.isAuthorized)
                 }
             }
         }
@@ -109,8 +89,14 @@ struct MainContentView: View {
                 NavigationView {
 #if os(iOS)
                     PhoneSettingsView()
+                        .environmentObject(sceneModel)
 #endif
                 }
+            case .logIn:
+#if os(iOS)
+                SafariWebView(url: applicationModel.client.authorizationURL)
+                    .ignoresSafeArea()
+#endif
             }
         }
         .runs(sceneModel)
