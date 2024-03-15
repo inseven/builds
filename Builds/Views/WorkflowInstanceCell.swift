@@ -38,7 +38,8 @@ struct WorkflowInstanceCell: View {
         static let popoverButtonSpacing = 10.0
         static let annotationListRowInsets = EdgeInsets(vertical: 8.0)
         static let worfklowJobListRowInsets = EdgeInsets(horizontal: -4.0, vertical: 2.0)
-        static let selectionThickness = 4.0
+        static let selectionLineWidth = 3.0
+        static let selectionPadding = 2.5
     }
 
     let instance: WorkflowInstance
@@ -132,10 +133,10 @@ struct WorkflowInstanceCell: View {
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
 #endif
         .foregroundColor(.black)
-        .padding(LayoutMetrics.selectionThickness)
-        .background(background
-            .cornerRadius(LayoutMetrics.cornerRadius + (LayoutMetrics.selectionThickness / 2.0)))
-        .padding(-LayoutMetrics.selectionThickness)
+        .padding(LayoutMetrics.selectionPadding)
+        .overlay(RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius + LayoutMetrics.selectionPadding)
+            .stroke(background, lineWidth: LayoutMetrics.selectionLineWidth))
+        .padding(-LayoutMetrics.selectionPadding)
     }
 
 }
