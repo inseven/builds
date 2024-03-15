@@ -73,10 +73,15 @@ struct WorkflowsView: View {
             .disabled(workflowInstances.isEmpty)
 
         } primaryAction: { selection in
+#if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
             for result in workflowInstances.compactMap({ $0.result }) {
                 openURL(result.workflowRun.html_url)
             }
+#else
+            sceneModel.selection = Set(selection)
+            sceneModel.showInspector = true
+#endif
         }
         .frame(minWidth: 300)
 

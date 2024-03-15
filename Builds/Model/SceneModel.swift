@@ -72,6 +72,7 @@ class SceneModel: ObservableObject, Runnable {
     }
 
     @MainActor func showSettings() {
+        showInspector = false
         sheet = .settings
     }
 
@@ -91,6 +92,7 @@ class SceneModel: ObservableObject, Runnable {
 
     @MainActor func manageWorkflows() {
 #if os(iOS)
+        showInspector = false
         sheet = .add
 #else
         Application.open(.manageWorkflows)
