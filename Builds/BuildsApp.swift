@@ -43,15 +43,16 @@ struct BuildsApp: App {
 
 #if os(macOS)
 
+#if DEBUG
         SummaryWindow()
             .environmentObject(applicationModel)
+#endif
 
         About(Legal.contents)
 
-#if DEBUG
+
         WorkflowsWindow()
             .environmentObject(applicationModel)
-#endif
 
 #endif
 
