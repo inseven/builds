@@ -41,13 +41,13 @@ source "${SCRIPTS_DIRECTORY}/environment.sh"
 
 # Process the command line arguments.
 POSITIONAL=()
-WATCH=false
+SERVE=false
 while [[ $# -gt 0 ]]
 do
     key="$1"
     case $key in
-        -w|--watch)
-        WATCH=true
+        -s|--serve)
+        SERVE=true
         shift
         ;;
         *)
@@ -69,7 +69,7 @@ bundle install
 
 # Build the website.
 cd "${WEBSITE_DIRECTORY}"
-if $WATCH ; then
+if $SERVE ; then
     bundle exec jekyll serve --watch
 else
     bundle exec jekyll build
