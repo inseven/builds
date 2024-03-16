@@ -346,16 +346,16 @@
 		D8FEAE0A27F591AE00FDADFA /* Builds */ = {
 			isa = PBXGroup;
 			children = (
-				D8FEAE0F27F591B200FDADFA /* Assets.xcassets */,
 				D89177172BA543D80080B20C /* builds-resources */,
 				D8092EFF2B698E9F00FD21C8 /* Builds.entitlements */,
+				D89E58172B65D2AA0027EB4E /* Info.plist */,
 				D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */,
 				D81251B72B929935001F6E85 /* BuildsError.swift */,
+				D8FEAE0F27F591B200FDADFA /* Assets.xcassets */,
+				D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */,
 				D8CA0EE82B93D6F200DAE758 /* Commands */,
 				D8355DD027F674EB0091BAFD /* Extensions */,
-				D89E58172B65D2AA0027EB4E /* Info.plist */,
 				D87F23722B65FFFA0085DC12 /* Licenses */,
-				D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */,
 				D8D413F1280454F0001BA6C0 /* Model */,
 				D81251BB2B92A38C001F6E85 /* Modifiers */,
 				D8FEAE1127F591B200FDADFA /* Preview Content */,

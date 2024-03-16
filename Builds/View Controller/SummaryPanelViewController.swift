@@ -27,11 +27,11 @@ class SummaryPanelViewController: NSViewController {
 
     private let applicationModel: ApplicationModel
     private let scene: SCNScene
-    private let greenCat: SCNNode
-    private let purpleCat: SCNNode
-    private let tealCat: SCNNode
-    private let whiteCat: SCNNode
-    private let orangeCat: SCNNode
+    private let green: SCNNode
+    private let red: SCNNode
+    private let silver: SCNNode
+    private let whilte: SCNNode
+    private let yellow: SCNNode
 
     private var selection: SCNNode? = nil
 
@@ -40,16 +40,16 @@ class SummaryPanelViewController: NSViewController {
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
 
-        scene = SCNScene(named: "builds-resources/Cats.scn")!
+        scene = SCNScene(named: "builds-resources/Hypercasual.scn")!
         scene.background.contents = NSColor.clear
 
-        greenCat = scene.rootNode.childNode(withName: "green", recursively: true)!
-        purpleCat = scene.rootNode.childNode(withName: "purple", recursively: true)!
-        tealCat = scene.rootNode.childNode(withName: "teal", recursively: true)!
-        whiteCat = scene.rootNode.childNode(withName: "white", recursively: true)!
-        orangeCat = scene.rootNode.childNode(withName: "orange", recursively: true)!
+        green = scene.rootNode.childNode(withName: "green", recursively: true)!
+        red = scene.rootNode.childNode(withName: "red", recursively: true)!
+        silver = scene.rootNode.childNode(withName: "silver", recursively: true)!
+        whilte = scene.rootNode.childNode(withName: "white", recursively: true)!
+        yellow = scene.rootNode.childNode(withName: "yellow", recursively: true)!
 
-        selection = whiteCat
+        selection = whilte
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -90,15 +90,15 @@ class SummaryPanelViewController: NSViewController {
                 let newSelection: SCNNode
                 switch summaryState {
                 case .unknown:
-                    newSelection = whiteCat
+                    newSelection = silver
                 case .success:
-                    newSelection = greenCat
+                    newSelection = green
                 case .failure:
-                    newSelection = purpleCat
+                    newSelection = red
                 case .inProgress:
-                    newSelection = orangeCat
+                    newSelection = yellow
                 case .skipped:
-                    newSelection = whiteCat
+                    newSelection = whilte
                 }
                 guard newSelection != selection else {
                     return
