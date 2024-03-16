@@ -22,6 +22,7 @@ jobs:
       with:
         submodules: recursive
         fetch-depth: 0
+        token: ${{ secrets._GITHUB_ACCESS_TOKEN }}
 
     - name: Install dependencies
       run: scripts/install-dependencies.sh
