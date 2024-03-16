@@ -22,7 +22,7 @@ jobs:
       with:
         submodules: recursive
         fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN}}
+        token: ${{ secrets._GITHUB_ACCESS_TOKEN}}
 
     - name: Install dependencies
       run: scripts/install-dependencies.sh
@@ -40,7 +40,7 @@ jobs:
 
         APP_CONFIGURATION: ${{ secrets.APP_CONFIGURATION }}
 
-        GITHUB_TOKEN: ${{ secrets._GITHUB_ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         RELEASE: ${{ github.ref == 'refs/heads/main' }}
 
