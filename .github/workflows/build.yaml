@@ -40,7 +40,7 @@ jobs:
 
         APP_CONFIGURATION: ${{ secrets.APP_CONFIGURATION }}
 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets._GITHUB_ACCESS_TOKEN }}
 
         RELEASE: ${{ github.ref == 'refs/heads/main' }}
 
