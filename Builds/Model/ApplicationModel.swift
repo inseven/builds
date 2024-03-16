@@ -320,4 +320,15 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
+#if os(macOS)
+    @MainActor func createSummaryPanel() {
+        let summaryPanel = SummaryPanel(applicationModel: self)
+        if let screen = NSScreen.main {
+            let x = (screen.frame.size.width - summaryPanel.frame.size.width) / 2
+            summaryPanel.setFrame(CGRectMake(x, 140, 300.0, 300.0), display: true)
+        }
+        summaryPanel.orderFrontRegardless()
+    }
+#endif
+
 }

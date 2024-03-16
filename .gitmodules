@@ -13,3 +13,6 @@
 [submodule "SelectableCollectionView"]
 	path = SelectableCollectionView
 	url = git@github.com:jbmorley/SelectableCollectionView.git
+[submodule "builds-resources"]
+	path = builds-resources
+	url = git@github.com:inseven/builds-resources.git

@@ -38,20 +38,26 @@ struct BuildsApp: App {
             .commands {
                 AccountCommands(applicationModel: applicationModel)
                 LifecycleCommands(applicationModel: applicationModel)
+#if os(macOS)
+                CommandGroup(after: .windowList) {
+                    Divider()
+                    Button {
+                        applicationModel.createSummaryPanel()
+                    } label: {
+                        Text("Summary")
+                    }
+                }
+#endif
             }
             .environmentObject(applicationModel)
 
 #if os(macOS)
 
-        SummaryWindow()
-            .environmentObject(applicationModel)
-
         About(Legal.contents)
 
-#if DEBUG
+
         WorkflowsWindow()
             .environmentObject(applicationModel)
-#endif
 
 #endif
 

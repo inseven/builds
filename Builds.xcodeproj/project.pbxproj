@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D81251B22B917F07001F6E85 /* SummaryWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B12B917F07001F6E85 /* SummaryWindow.swift */; };
-		D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B32B9181E9001F6E85 /* SummaryContentView.swift */; };
 		D81251B62B918472001F6E85 /* SummaryState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B52B918472001F6E85 /* SummaryState.swift */; };
 		D81251B82B929935001F6E85 /* BuildsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B72B929935001F6E85 /* BuildsError.swift */; };
 		D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B92B929B27001F6E85 /* MainWindow.swift */; };
@@ -34,6 +32,9 @@
 		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
 		D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5D72BA0B49600E46174 /* SVGImage.swift */; };
 		D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */ = {isa = PBXBuildFile; fileRef = D887C5D92BA0B60400E46174 /* swiftdraw-license */; };
+		D89177182BA543D80080B20C /* builds-resources in Resources */ = {isa = PBXBuildFile; fileRef = D89177172BA543D80080B20C /* builds-resources */; };
+		D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */; };
+		D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771D2BA5457E0080B20C /* SummaryPanel.swift */; };
 		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
@@ -92,8 +93,6 @@
 
 /* Begin PBXFileReference section */
 		D8092EFF2B698E9F00FD21C8 /* Builds.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Builds.entitlements; sourceTree = "<group>"; };
-		D81251B12B917F07001F6E85 /* SummaryWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryWindow.swift; sourceTree = "<group>"; };
-		D81251B32B9181E9001F6E85 /* SummaryContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryContentView.swift; sourceTree = "<group>"; };
 		D81251B52B918472001F6E85 /* SummaryState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryState.swift; sourceTree = "<group>"; };
 		D81251B72B929935001F6E85 /* BuildsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildsError.swift; sourceTree = "<group>"; };
 		D81251B92B929B27001F6E85 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
@@ -117,6 +116,9 @@
 		D887C5CF2BA0B33800E46174 /* github-mark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "github-mark.svg"; sourceTree = "<group>"; };
 		D887C5D72BA0B49600E46174 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
 		D887C5D92BA0B60400E46174 /* swiftdraw-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "swiftdraw-license"; sourceTree = "<group>"; };
+		D89177172BA543D80080B20C /* builds-resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "builds-resources"; sourceTree = SOURCE_ROOT; };
+		D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanelViewController.swift; sourceTree = "<group>"; };
+		D891771D2BA5457E0080B20C /* SummaryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanel.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
@@ -190,7 +192,6 @@
 		D81251B02B917EFC001F6E85 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				D81251B12B917F07001F6E85 /* SummaryWindow.swift */,
 				D81251B92B929B27001F6E85 /* MainWindow.swift */,
 				D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */,
 			);
@@ -252,6 +253,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D89177192BA544FC0080B20C /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */,
+			);
+			path = "View Controller";
+			sourceTree = "<group>";
+		};
+		D891771C2BA545710080B20C /* Windows */ = {
+			isa = PBXGroup;
+			children = (
+				D891771D2BA5457E0080B20C /* SummaryPanel.swift */,
+			);
+			path = Windows;
+			sourceTree = "<group>";
+		};
 		D8CA0EE82B93D6F200DAE758 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
@@ -294,7 +311,6 @@
 				D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */,
 				D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
-				D81251B32B9181E9001F6E85 /* SummaryContentView.swift */,
 				D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */,
 				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
@@ -333,22 +349,25 @@
 		D8FEAE0A27F591AE00FDADFA /* Builds */ = {
 			isa = PBXGroup;
 			children = (
-				D8FEAE0F27F591B200FDADFA /* Assets.xcassets */,
+				D89177172BA543D80080B20C /* builds-resources */,
 				D8092EFF2B698E9F00FD21C8 /* Builds.entitlements */,
+				D89E58172B65D2AA0027EB4E /* Info.plist */,
 				D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */,
 				D81251B72B929935001F6E85 /* BuildsError.swift */,
+				D8FEAE0F27F591B200FDADFA /* Assets.xcassets */,
+				D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */,
 				D8CA0EE82B93D6F200DAE758 /* Commands */,
 				D8355DD027F674EB0091BAFD /* Extensions */,
-				D89E58172B65D2AA0027EB4E /* Info.plist */,
 				D87F23722B65FFFA0085DC12 /* Licenses */,
-				D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */,
 				D8D413F1280454F0001BA6C0 /* Model */,
 				D81251BB2B92A38C001F6E85 /* Modifiers */,
 				D8FEAE1127F591B200FDADFA /* Preview Content */,
 				D887C5CE2BA0B32100E46174 /* Resources */,
 				D81251B02B917EFC001F6E85 /* Scenes */,
 				D87390EC2BA12FD200EFC8B8 /* Styles */,
+				D89177192BA544FC0080B20C /* View Controller */,
 				D8F0CDFA27F7995700F4EC83 /* Views */,
+				D891771C2BA545710080B20C /* Windows */,
 			);
 			path = Builds;
 			sourceTree = "<group>";
@@ -500,6 +519,7 @@
 				D87F23762B66006F0085DC12 /* builds-license in Resources */,
 				D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */,
 				D87F23742B6600150085DC12 /* material-icons-license in Resources */,
+				D89177182BA543D80080B20C /* builds-resources in Resources */,
 				D8FEAE1027F591B200FDADFA /* Assets.xcassets in Resources */,
 				D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */,
 			);
@@ -545,7 +565,6 @@
 				D81251B62B918472001F6E85 /* SummaryState.swift in Sources */,
 				D8EE7DD32B7F3A2900A3DCF0 /* AboutButton.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */,
-				D81251B22B917F07001F6E85 /* SummaryWindow.swift in Sources */,
 				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */,
 				D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */,
@@ -557,7 +576,6 @@
 				D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */,
 				D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */,
 				D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */,
-				D81251B42B9181E9001F6E85 /* SummaryContentView.swift in Sources */,
 				D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */,
 				D8CA0EF22B94110A00DAE758 /* TimeInterval.swift in Sources */,
 				D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */,
@@ -572,7 +590,9 @@
 				D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */,
 				D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */,
 				D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */,
+				D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */,
 				D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */,
+				D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */,
 				D81251B82B929935001F6E85 /* BuildsError.swift in Sources */,
 				D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */,
 			);
@@ -740,7 +760,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Builds/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "Builds/Preview\\ Content";
 				DEVELOPMENT_TEAM = QS82QFHKWB;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -778,7 +798,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "3rd Party Mac Developer Application";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Builds/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "Builds/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = QS82QFHKWB;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = QS82QFHKWB;

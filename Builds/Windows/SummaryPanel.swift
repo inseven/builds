@@ -18,27 +18,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+#if os(macOS)
 
-struct SummaryContentView: View {
+import AppKit
 
-    @ObservedObject var applicationModel: ApplicationModel
+import Interact
 
-    @Environment(\.openURL) var openURL
+class SummaryPanel: NSPanel {
 
-    var color: Color {
-        return applicationModel.summary.color
-    }
-
-    var body: some View {
-        Rectangle()
-            .fill(color)
-            .frame(width: 140, height: 140)
-            .onTapGesture {
-                openURL(.main)
-            }
-            .navigationTitle("")
-            .requestsHigherFrequencyUpdates()
+    convenience init(applicationModel: ApplicationModel) {
+        self.init(contentViewController: SummaryPanelViewController(applicationModel: applicationModel))
+        backgroundColor = .clear
+        hasShadow = false
+        level = .floating
+        hidesOnDeactivate = false
+        isFloatingPanel = true
+        styleMask = [.borderless, .hudWindow, .nonactivatingPanel]
+        collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
     }
 
 }
+
+#endif

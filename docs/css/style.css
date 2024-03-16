@@ -69,6 +69,10 @@ ul.navigation > li {
     text-align: center;
 }
 
+.showcase {
+    text-align: center;
+}
+
 .content {
     max-width: var(--content-width);
     margin: auto;
