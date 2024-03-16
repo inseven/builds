@@ -13,6 +13,7 @@ layout: showcase
 # Builds
 
 <p class="tagline">GitHub Actions Status Board</p>
+<p>Mac, iPhone and iPad</p>
 
 <picture class="hero">
     <source srcset="/images/screenshot-default-dark@2x.png" media="(prefers-color-scheme: dark)">
