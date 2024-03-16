@@ -39,6 +39,24 @@ RELEASE_NOTES_PATH="${RELEASE_NOTES_DIRECTORY}/index.markdown"
 
 source "${SCRIPTS_DIRECTORY}/environment.sh"
 
+# Process the command line arguments.
+POSITIONAL=()
+WATCH=false
+while [[ $# -gt 0 ]]
+do
+    key="$1"
+    case $key in
+        -w|--watch)
+        WATCH=true
+        shift
+        ;;
+        *)
+        POSITIONAL+=("$1")
+        shift
+        ;;
+    esac
+done
+
 "$SCRIPTS_DIRECTORY/update-release-notes.sh"
 
 # Install the Jekyll dependencies.
@@ -51,4 +69,8 @@ bundle install
 
 # Build the website.
 cd "${WEBSITE_DIRECTORY}"
-bundle exec jekyll build
+if $WATCH ; then
+    bundle exec jekyll serve --watch
+else
+    bundle exec jekyll build
+fi
