@@ -320,6 +320,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
+#if os(macOS)
     @MainActor func createSummaryPanel() {
         let summaryPanel = SummaryPanel(applicationModel: self)
         if let screen = NSScreen.main {
@@ -328,5 +329,6 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
         summaryPanel.orderFrontRegardless()
     }
+#endif
 
 }
