@@ -1,5 +1,6 @@
 ---
 title: About
+layout: showcase
 ---
 
 <p class="header">
@@ -17,3 +18,5 @@ title: About
     <source srcset="/images/screenshot-default-dark@2x.png" media="(prefers-color-scheme: dark)">
     <img class="hero" src="/images/screenshot-default@2x.png" width="1367" />
 </picture>
+
+Builds is currently in private beta. Please send me an [email](mailto:support@jbmorley.co.uk?subject=Builds%20Beta) if you'd like an invite.
