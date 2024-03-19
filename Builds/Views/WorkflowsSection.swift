@@ -49,7 +49,7 @@ struct WorkflowsSection: View {
             if applicationModel.isAuthorized {
                 if applicationModel.results.count > 0 {
                     WorkflowsView(workflows: workflows)
-                        .inspector(isPresented: $sceneModel.showInspector) {
+                        .inspector(isPresented: $sceneModel.isShowingInspector) {
                             VStack(alignment: .leading) {
                                 if sceneModel.selection.count > 1 {
                                     ContentUnavailableView {
@@ -71,7 +71,7 @@ struct WorkflowsSection: View {
                                     }
                                 }
                             }
-                            .presentationDetents([.height(200), .large])
+                            .presentationDetents([.large])
                             .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
                             .toolbar {
                                 ToolbarItem {

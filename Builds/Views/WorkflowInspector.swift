@@ -23,6 +23,7 @@ import SwiftUI
 struct WorkflowInspector: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
+    @EnvironmentObject var sceneModel: SceneModel
 
     @Environment(\.openURL) var openURL
 

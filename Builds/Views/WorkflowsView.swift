@@ -26,11 +26,7 @@ import SelectableCollectionView
 struct WorkflowsView: View {
 
     struct LayoutMetrics {
-#if os(macOS)
         static let interItemSpacing: CGFloat? = 10.0
-#else
-        static let interItemSpacing: CGFloat? = nil
-#endif
     }
 
     @EnvironmentObject var applicationModel: ApplicationModel
@@ -51,6 +47,9 @@ struct WorkflowsView: View {
                                  columns: columns,
                                  spacing: LayoutMetrics.interItemSpacing) { workflowInstance in
             WorkflowInstanceCell(instance: workflowInstance)
+            #if os(iOS)
+                .environment(\.isSelected, sceneModel.selection.contains(workflowInstance.id))
+            #endif
         } contextMenu: { selection in
 
             let workflowInstances = workflows.filter(selection: selection)
@@ -80,7 +79,7 @@ struct WorkflowsView: View {
             }
 #else
             sceneModel.selection = Set(selection)
-            sceneModel.showInspector = true
+            sceneModel.isShowingInspector = true
 #endif
         }
         .frame(minWidth: 300)
