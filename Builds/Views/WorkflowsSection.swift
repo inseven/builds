@@ -73,13 +73,14 @@ struct WorkflowsSection: View {
                             }
                             .presentationDetents([.large])
                             .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
-                            .toolbar {
-                                ToolbarItem {
+                            .toolbar(id: "inspector") {
+                                ToolbarItem(id: "inspector") {
                                     Button {
                                         sceneModel.toggleInspector()
                                     } label: {
                                         Label("Toggle Inspector", systemImage: "sidebar.trailing")
                                     }
+                                    .help("Hide or show the Inspector")
                                 }
                             }
                         }

@@ -38,8 +38,8 @@ struct MainContentView: View {
     var body: some View {
         NavigationSplitView {
             Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
-#if os(iOS)
                 .toolbar {
+#if os(iOS)
                     ToolbarItem(id: "settings", placement: .topBarLeading) {
                         Button {
                             sceneModel.showSettings()
@@ -47,8 +47,8 @@ struct MainContentView: View {
                             Image(systemName: "gear")
                         }
                     }
-                }
 #endif
+                }
         } detail: {
             VStack {
                 if let section = sceneModel.section {
@@ -64,8 +64,8 @@ struct MainContentView: View {
             }
             .toolbarTitleDisplayMode(.inline)
             .navigationTitle(sceneModel.section?.title ?? "")
-            .toolbar() {
-                ToolbarItem(placement: .primaryAction) {
+            .toolbar(id: "main") {
+                ToolbarItem(id: "manage-workflows", placement: .primaryAction) {
                     Button {
                         sceneModel.manageWorkflows()
                     } label: {
