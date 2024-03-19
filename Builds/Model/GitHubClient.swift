@@ -93,7 +93,7 @@ class GitHubClient {
                                                           page: page,
                                                           perPage: 100,
                                                           authentication: try getAuthentication())
-            let responseWorkflowIds = await workflowRuns.map { workflowRun in
+            let responseWorkflowIds = workflowRuns.map { workflowRun in
                 return WorkflowInstance.ID(repositoryFullName: repositoryName,
                                            workflowId: workflowRun.workflow_id,
                                            branch: workflowRun.head_branch)

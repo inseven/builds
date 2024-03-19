@@ -26,18 +26,13 @@ import SelectableCollectionView
 struct WorkflowsView: View {
 
     struct LayoutMetrics {
-#if os(macOS)
         static let interItemSpacing: CGFloat? = 10.0
-#else
-        static let interItemSpacing: CGFloat? = nil
-#endif
     }
 
     @EnvironmentObject var applicationModel: ApplicationModel
+    @EnvironmentObject var sceneModel: SceneModel
 
     @Environment(\.openURL) var openURL
-
-    @State var selection = Set<WorkflowInstance.ID>()
 
     let workflows: [WorkflowInstance]
 
@@ -48,10 +43,13 @@ struct WorkflowsView: View {
     }
 
     var body: some View {
-        SelectableCollectionView(workflows, selection: $selection,
+        SelectableCollectionView(workflows, selection: $sceneModel.selection,
                                  columns: columns,
                                  spacing: LayoutMetrics.interItemSpacing) { workflowInstance in
             WorkflowInstanceCell(instance: workflowInstance)
+            #if os(iOS)
+                .environment(\.isSelected, sceneModel.selection.contains(workflowInstance.id))
+            #endif
         } contextMenu: { selection in
 
             let workflowInstances = workflows.filter(selection: selection)
@@ -74,10 +72,15 @@ struct WorkflowsView: View {
             .disabled(workflowInstances.isEmpty)
 
         } primaryAction: { selection in
+#if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
             for result in workflowInstances.compactMap({ $0.result }) {
                 openURL(result.workflowRun.html_url)
             }
+#else
+            sceneModel.selection = Set(selection)
+            sceneModel.isShowingInspector = true
+#endif
         }
         .frame(minWidth: 300)
 

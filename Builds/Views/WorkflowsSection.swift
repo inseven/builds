@@ -49,6 +49,40 @@ struct WorkflowsSection: View {
             if applicationModel.isAuthorized {
                 if applicationModel.results.count > 0 {
                     WorkflowsView(workflows: workflows)
+                        .inspector(isPresented: $sceneModel.isShowingInspector) {
+                            VStack(alignment: .leading) {
+                                if sceneModel.selection.count > 1 {
+                                    ContentUnavailableView {
+                                        Label("Multiple Workflows Selected", systemImage: "rectangle.on.rectangle")
+                                    } description: {
+                                        Text("Select a workflow to view its details.")
+                                    }
+                                } else {
+                                    if let id = sceneModel.selection.first,
+                                       let workflowInstance = applicationModel.results.first(where: { $0.id == id }) {
+                                        WorkflowInspector(workflowInstance: workflowInstance)
+                                            .navigationTitle(workflowInstance.id.repositoryName)
+                                    } else {
+                                        ContentUnavailableView {
+                                            Label("No Workflow Selected", systemImage: "rectangle.dashed")
+                                        } description: {
+                                            Text("Select a workflow to view its details.")
+                                        }
+                                    }
+                                }
+                            }
+                            .presentationDetents([.large])
+                            .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
+                            .toolbar {
+                                ToolbarItem {
+                                    Button {
+                                        sceneModel.toggleInspector()
+                                    } label: {
+                                        Label("Toggle Inspector", systemImage: "sidebar.trailing")
+                                    }
+                                }
+                            }
+                        }
                 } else {
                     ContentUnavailableView {
                         Label("No Workflows", systemImage: "checklist.unchecked")

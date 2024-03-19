@@ -39,6 +39,16 @@ class SceneModel: ObservableObject, Runnable {
     @Published var section: SectionIdentifier? = .all
     @MainActor @Published var sheet: SheetType?
 
+    @MainActor @Published var isShowingInspector: Bool = false {
+        didSet {
+            if !isShowingInspector {
+                selection = []
+            }
+        }
+    }
+    
+    @Published var selection = Set<WorkflowInstance.ID>()
+
     private let applicationModel: ApplicationModel
 
     private var cancellables = Set<AnyCancellable>()
@@ -70,8 +80,27 @@ class SceneModel: ObservableObject, Runnable {
     }
 
     @MainActor func showSettings() {
+        isShowingInspector = false
         sheet = .settings
     }
+
+    @MainActor func showInspector() {
+        isShowingInspector = true
+    }
+
+    @MainActor func hideInspector() {
+        selection = []
+        isShowingInspector = false
+    }
+
+    @MainActor func toggleInspector() {
+        if isShowingInspector {
+            hideInspector()
+        } else {
+            showInspector()
+        }
+    }
+
 
     @MainActor func logIn() {
 #if os(macOS)
@@ -89,6 +118,7 @@ class SceneModel: ObservableObject, Runnable {
 
     @MainActor func manageWorkflows() {
 #if os(iOS)
+        isShowingInspector = false
         sheet = .add
 #else
         Application.open(.manageWorkflows)

@@ -16,6 +16,7 @@
 		D8355DD227F674F20091BAFD /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8355DD127F674F20091BAFD /* URL.swift */; };
 		D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83929DA2BA367DD0022B4A3 /* Collection.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
+		D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */; };
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
 		D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */; };
 		D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */; };
@@ -100,6 +101,7 @@
 		D8355DD127F674F20091BAFD /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		D83929DA2BA367DD0022B4A3 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
+		D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInspector.swift; sourceTree = "<group>"; };
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
 		D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonStyle.swift; sourceTree = "<group>"; };
 		D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */,
 				D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
+				D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */,
 				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */,
@@ -548,6 +551,7 @@
 				D8D413F328045535001BA6C0 /* Action.swift in Sources */,
 				D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */,
 				D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */,
+				D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
 				D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */,
 				D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */,
