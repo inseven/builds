@@ -39,6 +39,9 @@
         }
       }
     },
+    "%lld Workflows Selected" : {
+
+    },
     "About %@..." : {
 
     },
@@ -87,6 +90,12 @@
     "GitHub" : {
 
     },
+    "Hide Inspector" : {
+
+    },
+    "Inspectors" : {
+
+    },
     "Jobs" : {
 
     },
@@ -100,9 +109,6 @@
 
     },
     "Manage Workflows" : {
-
-    },
-    "Multiple Workflows Selected" : {
 
     },
     "No Workflow Selected" : {
@@ -167,6 +173,9 @@
 
     },
     "Settings" : {
+
+    },
+    "Show Inspector" : {
 
     },
     "Sign In" : {

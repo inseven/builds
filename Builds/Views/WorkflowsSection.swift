@@ -53,7 +53,7 @@ struct WorkflowsSection: View {
                             VStack(alignment: .leading) {
                                 if sceneModel.selection.count > 1 {
                                     ContentUnavailableView {
-                                        Label("Multiple Workflows Selected", systemImage: "rectangle.on.rectangle")
+                                        Label("\(sceneModel.selection.count) Workflows Selected", systemImage: "rectangle.on.rectangle")
                                     } description: {
                                         Text("Select a workflow to view its details.")
                                     }

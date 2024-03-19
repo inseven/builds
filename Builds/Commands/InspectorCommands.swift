@@ -18,50 +18,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
 import SwiftUI
 
-import Diligence
+struct InspectorCommands: Commands {
 
-@main
-struct BuildsApp: App {
+    @FocusedObject var sceneModel: SceneModel?
 
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
-
-    var body: some Scene {
-
-        MainWindow()
-            .commands {
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-                InspectorCommands()
-#if os(macOS)
-                CommandGroup(after: .windowList) {
-                    Divider()
-                    Button {
-                        applicationModel.createSummaryPanel()
-                    } label: {
-                        Text("Summary")
+    var body: some Commands {
+        CommandGroup(before: .toolbar) {
+            Menu {
+                Button {
+                    sceneModel?.toggleInspector()
+                } label: {
+                    if sceneModel?.isShowingInspector ?? false {
+                        Text("Hide Inspector")
+                    } else {
+                        Text("Show Inspector")
                     }
                 }
-#endif
+                .keyboardShortcut("i", modifiers: .command)
+                .disabled(sceneModel == nil)
+            } label: {
+                Text("Inspectors")
             }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        About(Legal.contents)
-
-
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
-
-#endif
-
+        }
     }
-    
+
 }
