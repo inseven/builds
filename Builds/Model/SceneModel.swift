@@ -42,7 +42,9 @@ class SceneModel: ObservableObject, Runnable {
     @MainActor @Published var isShowingInspector: Bool = false {
         didSet {
             if !isShowingInspector {
+#if os(iOS)
                 selection = []
+#endif
             }
         }
     }
@@ -89,7 +91,9 @@ class SceneModel: ObservableObject, Runnable {
     }
 
     @MainActor func hideInspector() {
+#if os(iOS)
         selection = []
+#endif
         isShowingInspector = false
     }
 
