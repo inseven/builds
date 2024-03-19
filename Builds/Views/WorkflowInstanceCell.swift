@@ -87,9 +87,7 @@ struct WorkflowInstanceCell: View {
                             case .waiting:
                                 Image(systemName: "clock")
                             case .inProgress:
-                                ProgressView()
-                                    .controlSize(.small)
-                                    .padding(.leading, 4)
+                                ProgressSpinner()
                             case .completed:
                                 switch workflowRun.conclusion {
                                 case .success:
