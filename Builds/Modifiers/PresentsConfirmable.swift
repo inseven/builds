@@ -20,36 +20,43 @@
 
 import SwiftUI
 
-struct AccountCommands: Commands {
+// TODO: TYPE THIS?
 
-    @ObservedObject var applicationModel: ApplicationModel
+// TODO: TYPE ERASURE FOR ANY CONFIRMABLE
 
-    @FocusedObject var sceneModel: SceneModel?
+struct PresentsConfirmable: ViewModifier {
 
-    var body: some Commands {
-        CommandMenu("Account") {
-            if applicationModel.isAuthorized {
-                Button {
-                    applicationModel.managePermissions()
-                } label: {
-                    Text("Manage GitHub Permissions...")
+    @Binding var confirmation: Confirmable?
+
+    init(_ confirmation: Binding<Confirmable?>) {
+        _confirmation = confirmation
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .confirmationDialog(confirmation?.title ?? "Confirm",
+                                isPresented: $confirmation.bool(),
+                                titleVisibility: .visible) {
+                ForEach(confirmation?.actions ?? []) { action in
+                    Button(role: action.role) {
+                        action.perform()
+                    } label: {
+                        Text(action.title)
+                    }
                 }
-                Divider()
-                Button {
-                    await sceneModel?.signOut()
-                } label: {
-                    Text("Sign Out...")
+            } message: {
+                if let message = confirmation?.message {
+                    Text(message)
                 }
-                .disabled(sceneModel == nil)
-            } else {
-                Button {
-                    sceneModel?.logIn()
-                } label: {
-                    Text("Sign In with GitHub...")
-                }
-                .disabled(sceneModel == nil)
             }
-        }
+    }
+
+}
+
+extension View {
+
+    func presents(confirmable: Binding<Confirmable?>) -> some View {
+        modifier(PresentsConfirmable(confirmable))
     }
 
 }

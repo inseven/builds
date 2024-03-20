@@ -36,7 +36,7 @@ class SceneModel: ObservableObject, Runnable {
         case logIn
     }
 
-    @Published var section: SectionIdentifier? = .all
+    @MainActor @Published var section: SectionIdentifier? = .all
     @MainActor @Published var sheet: SheetType?
 
     @MainActor @Published var isShowingInspector: Bool = false {
@@ -49,7 +49,9 @@ class SceneModel: ObservableObject, Runnable {
         }
     }
     
-    @Published var selection = Set<WorkflowInstance.ID>()
+    @MainActor @Published var selection = Set<WorkflowInstance.ID>()
+
+    @MainActor @Published var confirmation: Confirmable?
 
     private let applicationModel: ApplicationModel
 
@@ -114,10 +116,22 @@ class SceneModel: ObservableObject, Runnable {
 #endif
     }
 
-    @MainActor func logOut() async {
-        await applicationModel.logOut()
-        sheet = nil
-        section = .all
+    @MainActor func signOut() async {
+        confirmation = Confirmation(
+            "Sign Out",
+            message: "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud.",
+            actions: [
+                ConfirmableAction("Sign Out", role: .destructive) {
+                    await self.applicationModel.signOut(preserveFavorites: false)
+                    self.sheet = nil
+                    self.section = .all
+                },
+                ConfirmableAction("Sign Out and Keep Favorites") {
+                    await self.applicationModel.signOut(preserveFavorites: true)
+                    self.sheet = nil
+                    self.section = .all
+                },
+            ])
     }
 
     @MainActor func manageWorkflows() {

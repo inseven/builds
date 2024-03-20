@@ -20,36 +20,10 @@
 
 import SwiftUI
 
-struct AccountCommands: Commands {
+protocol Confirmable {
 
-    @ObservedObject var applicationModel: ApplicationModel
-
-    @FocusedObject var sceneModel: SceneModel?
-
-    var body: some Commands {
-        CommandMenu("Account") {
-            if applicationModel.isAuthorized {
-                Button {
-                    applicationModel.managePermissions()
-                } label: {
-                    Text("Manage GitHub Permissions...")
-                }
-                Divider()
-                Button {
-                    await sceneModel?.signOut()
-                } label: {
-                    Text("Sign Out...")
-                }
-                .disabled(sceneModel == nil)
-            } else {
-                Button {
-                    sceneModel?.logIn()
-                } label: {
-                    Text("Sign In with GitHub...")
-                }
-                .disabled(sceneModel == nil)
-            }
-        }
-    }
+    var title: LocalizedStringKey { get }
+    var message: LocalizedStringKey? { get }
+    var actions: [ConfirmableAction] { get }
 
 }

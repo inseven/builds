@@ -20,34 +20,26 @@
 
 import SwiftUI
 
-struct AccountCommands: Commands {
+struct ConfirmableAction: Identifiable {
 
-    @ObservedObject var applicationModel: ApplicationModel
+    let id = UUID()
 
-    @FocusedObject var sceneModel: SceneModel?
+    let title: LocalizedStringKey
+    let role: ButtonRole?
+    let perform: () -> Void
 
-    var body: some Commands {
-        CommandMenu("Account") {
-            if applicationModel.isAuthorized {
-                Button {
-                    applicationModel.managePermissions()
-                } label: {
-                    Text("Manage GitHub Permissions...")
-                }
-                Divider()
-                Button {
-                    await sceneModel?.signOut()
-                } label: {
-                    Text("Sign Out...")
-                }
-                .disabled(sceneModel == nil)
-            } else {
-                Button {
-                    sceneModel?.logIn()
-                } label: {
-                    Text("Sign In with GitHub...")
-                }
-                .disabled(sceneModel == nil)
+    init(_ title: LocalizedStringKey, role: ButtonRole? = nil, perform: @escaping () -> Void) {
+        self.title = title
+        self.role = role
+        self.perform = perform
+    }
+
+    init(_ title: LocalizedStringKey, role: ButtonRole? = nil, perform: @escaping () async -> Void) {
+        self.title = title
+        self.role = role
+        self.perform = {
+            Task {
+                await perform()
             }
         }
     }

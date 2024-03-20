@@ -69,7 +69,7 @@ struct PhoneSettingsView: View {
             Section {
 
                 Button {
-                    await sceneModel.logOut()
+                    await sceneModel.signOut()
                 } label: {
                     Text("Sign Out")
                 }
@@ -81,6 +81,7 @@ struct PhoneSettingsView: View {
         .formStyle(.grouped)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .presents(confirmable: $sceneModel.confirmation)
         .sheet(item: $sheet) { sheet in
             switch sheet {
             case .managePermissions:

@@ -78,6 +78,9 @@
     "Cancel" : {
 
     },
+    "Confirm" : {
+
+    },
     "Created" : {
 
     },
@@ -193,7 +196,13 @@
     "Sign Out" : {
 
     },
+    "Sign Out and Keep Favorites" : {
+
+    },
     "Sign Out..." : {
+
+    },
+    "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud." : {
 
     },
     "Summary" : {
