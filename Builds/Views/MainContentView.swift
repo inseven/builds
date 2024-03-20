@@ -24,9 +24,10 @@ struct MainContentView: View {
 
     @ObservedObject var applicationModel: ApplicationModel
 
-    @Environment(\.openURL) var openURL
-    @Environment(\.openWindow) var openWindow
-    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.openURL) private var openURL
+    @Environment(\.openWindow) private var openWindow
 
     @StateObject var sceneModel: SceneModel
 
@@ -73,6 +74,18 @@ struct MainContentView: View {
                     }
                     .help("Select workflows to display")
                     .disabled(!applicationModel.isAuthorized)
+                }
+
+                // Only show the inspector toolbar button in larger size classes.
+                if horizontalSizeClass != .compact {
+                    ToolbarItem(id: "inspector", placement: .primaryAction) {
+                        Button {
+                            sceneModel.toggleInspector()
+                        } label: {
+                            Label("Toggle Inspector", systemImage: "sidebar.trailing")
+                        }
+                        .help("Hide or show the Inspector")
+                    }
                 }
             }
         }
