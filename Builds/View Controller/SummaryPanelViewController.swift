@@ -40,7 +40,7 @@ class SummaryPanelViewController: NSViewController {
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
 
-        scene = SCNScene(named: "builds-resources/Hypercasual.scn")!
+        scene = SCNScene(named: "Scenes/Hypercasual.scn")!
         scene.background.contents = NSColor.clear
 
         green = scene.rootNode.childNode(withName: "green", recursively: true)!
