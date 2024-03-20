@@ -32,6 +32,7 @@ struct WorkflowInstanceCell: View {
 
     @Environment(\.isSelected) var isSelected
     @Environment(\.highlightState) var highlightState
+    @Environment(\.selectionColor) var selectionColor
 
     struct LayoutMetrics {
         static let cornerRadius = 12.0
@@ -50,7 +51,7 @@ struct WorkflowInstanceCell: View {
 
     var background: Color {
         if showsHighlight {
-            return Color.accentColor
+            return selectionColor
         } else {
             return Color.clear
         }
