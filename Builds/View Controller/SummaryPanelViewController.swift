@@ -74,7 +74,15 @@ class SummaryPanelViewController: NSViewController {
 
         view.pointOfView = cameraNode
 
+        let menu = NSMenu()
+        menu.addItem(NSMenuItem(title: "Close", action: #selector(close), keyEquivalent: ""))
+        view.menu = menu
+
         self.view.addSubview(view)
+    }
+
+    @objc func close() {
+        view.window?.close()
     }
 
     override func viewWillAppear() {
