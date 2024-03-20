@@ -61,7 +61,6 @@ struct WorkflowsSection: View {
                                     if let id = sceneModel.selection.first,
                                        let workflowInstance = applicationModel.results.first(where: { $0.id == id }) {
                                         WorkflowInspector(workflowInstance: workflowInstance)
-                                            .navigationTitle(workflowInstance.id.repositoryName)
                                     } else {
                                         ContentUnavailableView {
                                             Label("No Workflow Selected", systemImage: "rectangle.dashed")
@@ -73,16 +72,6 @@ struct WorkflowsSection: View {
                             }
                             .presentationDetents([.large])
                             .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
-                            .toolbar(id: "inspector") {
-                                ToolbarItem(id: "inspector") {
-                                    Button {
-                                        sceneModel.toggleInspector()
-                                    } label: {
-                                        Label("Toggle Inspector", systemImage: "sidebar.trailing")
-                                    }
-                                    .help("Hide or show the Inspector")
-                                }
-                            }
                         }
                 } else {
                     ContentUnavailableView {

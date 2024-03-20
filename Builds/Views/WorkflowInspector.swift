@@ -25,7 +25,8 @@ struct WorkflowInspector: View {
     @EnvironmentObject var applicationModel: ApplicationModel
     @EnvironmentObject var sceneModel: SceneModel
 
-    @Environment(\.openURL) var openURL
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.openURL) private var openURL
 
     let workflowInstance: WorkflowInstance
 
@@ -92,6 +93,25 @@ struct WorkflowInspector: View {
             }
         }
         .formStyle(.grouped)
+        .safeAreaInset(edge: .top) {
+            if horizontalSizeClass == .compact {
+                HStack {
+                    Spacer()
+                    Button {
+                        sceneModel.isShowingInspector = false
+                    } label: {
+                        Image(systemName: "xmark")
+                            .renderingMode(.template)
+                            .foregroundColor(.secondary)
+                            .padding(8.0)
+                            .fontWeight(.bold)
+                            .background(.ultraThickMaterial)
+                            .clipShape(Circle())
+                    }
+                    .padding()
+                }
+            }
+        }
     }
 
 }
