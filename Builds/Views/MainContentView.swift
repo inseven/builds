@@ -76,6 +76,7 @@ struct MainContentView: View {
                 }
             }
         }
+        .presents(confirmable: $sceneModel.confirmation)
         .sheet(item: $sceneModel.sheet) { sheet in
             switch sheet {
             case .add:

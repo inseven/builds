@@ -286,7 +286,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         try await client.authenticate(with: code)
     }
 
-    @MainActor func logOut() async {
+    @MainActor func signOut(preserveFavorites: Bool) async {
         do {
             try await client.deleteGrant()
         } catch {
@@ -294,7 +294,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
         authenticationToken = nil
         cachedStatus = [:]
-        favorites = []
+        if !preserveFavorites {
+            favorites = []
+        }
     }
 
     @MainActor func managePermissions() {
