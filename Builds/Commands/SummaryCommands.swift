@@ -18,43 +18,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
 import SwiftUI
 
-import Diligence
+struct SummaryCommands: Commands {
 
-@main
-struct BuildsApp: App {
+    @ObservedObject var applicationModel: ApplicationModel
 
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
-
-    var body: some Scene {
-
-        MainWindow()
-            .commands {
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-                InspectorCommands()
-#if DEBUG
-                SummaryCommands(applicationModel: applicationModel)
-#endif
+    var body: some Commands {
+        #if os(macOS)
+        CommandGroup(after: .windowList) {
+            Divider()
+            Button {
+                applicationModel.createSummaryPanel()
+            } label: {
+                Text("Summary")
             }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        About(Legal.contents)
-
-
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
-
-#endif
-
+        }
+        #endif
     }
-    
+
 }
