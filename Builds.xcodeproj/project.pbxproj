@@ -38,6 +38,7 @@
 		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
 		D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5D72BA0B49600E46174 /* SVGImage.swift */; };
 		D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */ = {isa = PBXBuildFile; fileRef = D887C5D92BA0B60400E46174 /* swiftdraw-license */; };
+		D889F49C2BAE58EF004CFC50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */; };
 		D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */; };
 		D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771D2BA5457E0080B20C /* SummaryPanel.swift */; };
 		D8A269B12BAA3B6800A0E19A /* ProgressSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */; };
@@ -129,6 +130,7 @@
 		D887C5CF2BA0B33800E46174 /* github-mark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "github-mark.svg"; sourceTree = "<group>"; };
 		D887C5D72BA0B49600E46174 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
 		D887C5D92BA0B60400E46174 /* swiftdraw-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "swiftdraw-license"; sourceTree = "<group>"; };
+		D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanelViewController.swift; sourceTree = "<group>"; };
 		D891771D2BA5457E0080B20C /* SummaryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanel.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */,
 				D81251B72B929935001F6E85 /* BuildsError.swift */,
 				D8FEAE0F27F591B200FDADFA /* Assets.xcassets */,
+				D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */,
 				D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */,
 				D8CA0EE82B93D6F200DAE758 /* Commands */,
 				D8355DD027F674EB0091BAFD /* Extensions */,
@@ -542,6 +545,7 @@
 				D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */,
 				D87F23742B6600150085DC12 /* material-icons-license in Resources */,
 				D8FEAE1027F591B200FDADFA /* Assets.xcassets in Resources */,
+				D889F49C2BAE58EF004CFC50 /* PrivacyInfo.xcprivacy in Resources */,
 				D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
