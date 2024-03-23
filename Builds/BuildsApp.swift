@@ -39,7 +39,7 @@ struct BuildsApp: App {
                 AccountCommands(applicationModel: applicationModel)
                 LifecycleCommands(applicationModel: applicationModel)
                 InspectorCommands()
-#if os(macOS)
+#if DEBUG && os(macOS)
                 CommandGroup(after: .windowList) {
                     Divider()
                     Button {
