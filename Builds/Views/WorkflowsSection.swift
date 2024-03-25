@@ -73,6 +73,28 @@ struct WorkflowsSection: View {
                             .presentationDetents([.large])
                             .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
                         }
+#if os(macOS)
+                        .safeAreaInset(edge: .bottom) {
+                            VStack(spacing: 0) {
+                                Divider()
+                                HStack {
+                                    if applicationModel.isUpdating {
+                                        Text("Updating...")
+                                    } else if let lastError = applicationModel.lastError {
+                                        Label(lastError.localizedDescription, systemImage: "exclamationmark.triangle")
+                                            .symbolRenderingMode(.multicolor)
+                                    } else if let lastUpdate = applicationModel.lastUpdate {
+                                        Text(lastUpdate, style: .time)
+                                    } else {
+                                        Text("Never Updated")
+                                    }
+                                }
+                                .padding()
+                            }
+                            .foregroundStyle(.secondary)
+                            .background(.thinMaterial)
+                        }
+#endif
                 } else {
                     ContentUnavailableView {
                         Label("No Workflows", systemImage: "checklist.unchecked")
