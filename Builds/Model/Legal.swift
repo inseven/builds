@@ -36,8 +36,10 @@ public struct Legal {
             Credit("Jason Morley", url: URL(string: "https://jbmorley.co.uk"))
         }
         Acknowledgements("Thanks") {
+            Credit("Blake Merryman")
             Credit("Lukas Fittl")
             Credit("Mike Rhodes")
+            Credit("Pavlos Vinieratos")
             Credit("Sarah Barbour")
         }
     } licenses: {
