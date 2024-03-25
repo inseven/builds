@@ -85,11 +85,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
-    @MainActor @Published private var activeScenes = 0 {
-        didSet {
-            print("activeScenes = \(activeScenes)")
-        }
-    }
+    @MainActor @Published var lastError: Error? = nil
+
+    @MainActor @Published private var activeScenes = 0
 
     // TODO: Make this private.
     // TODO: This should be optional; there's no point it existing if we don't have an auth code.
@@ -125,6 +123,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
             do {
                 print("Refreshing...")
                 self.isUpdating = true
+                self.lastError = nil
                 try await self.client.update(favorites: self.favorites) { [weak self] workflowInstance in
                     guard let self else {
                         return
@@ -133,6 +132,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                 }
                 self.lastUpdate = Date()
             } catch {
+                self.lastError = error
                 print("Failed to update with error \(error).")
             }
             self.isUpdating = false

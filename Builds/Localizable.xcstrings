@@ -117,6 +117,9 @@
     "Manage Workflows" : {
 
     },
+    "Never Updated" : {
+
+    },
     "No Workflow Selected" : {
 
     },
@@ -212,6 +215,9 @@
 
     },
     "Updated" : {
+
+    },
+    "Updating..." : {
 
     },
     "Workflow" : {

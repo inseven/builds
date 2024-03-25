@@ -243,7 +243,8 @@ class GitHub {
         var request = URLRequest(url: url)
         request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
         request.setValue("token \(authentication.accessToken)", forHTTPHeaderField: "Authorization")
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try response.checkHTTPStatusCode()
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         do {
@@ -268,7 +269,10 @@ class GitHub {
         return response
     }
 
-    func workflowRuns(repositoryName: String, page: Int?, perPage: Int?, authentication: Authentication) async throws -> [WorkflowRun] {
+    func workflowRuns(repositoryName: String,
+                      page: Int?,
+                      perPage: Int?,
+                      authentication: Authentication) async throws -> [WorkflowRun] {
         var queryItems: [URLQueryItem] = []
         if let page {
             queryItems.append(URLQueryItem(name: "page", value: String(page)))
@@ -342,7 +346,8 @@ class GitHub {
             }
             var request = URLRequest(url: url)
             request.setValue("application/json", forHTTPHeaderField: "Accept")
-            let (data, _) = try await URLSession.shared.data(for: request)
+            let (data, response) = try await URLSession.shared.data(for: request)
+            try response.checkHTTPStatusCode()
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
             let accessToken = try decoder.decode(AccessToken.self, from: data)
@@ -376,9 +381,8 @@ class GitHub {
             "access_token": authentication.accessToken,
         ])
 
-        let (data, response) = try await URLSession.shared.data(for: request)
-        print(response)
-        print(String(data: data, encoding: .utf8) ?? "nil")
+        let (_, response) = try await URLSession.shared.data(for: request)
+        try response.checkHTTPStatusCode()
     }
 
     private func url(_ path: Path, parameters: [String: String] = [:]) -> URL? {
