@@ -53,6 +53,8 @@ class SceneModel: ObservableObject, Runnable {
 
     @MainActor @Published var confirmation: Confirmable?
 
+    @MainActor @Published var previewURL: URL?
+
     private let applicationModel: ApplicationModel
 
     private var cancellables = Set<AnyCancellable>()
@@ -116,7 +118,7 @@ class SceneModel: ObservableObject, Runnable {
 #endif
     }
 
-    @MainActor func signOut() async {
+    @MainActor func signOut() {
         confirmation = Confirmation(
             "Sign Out",
             message: "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud.",
@@ -140,6 +142,14 @@ class SceneModel: ObservableObject, Runnable {
         sheet = .add
 #else
         Application.open(.manageWorkflows)
+#endif
+    }
+
+    @MainActor func openURL(_ url: URL) {
+#if os(iOS)
+        previewURL = url
+#else
+        Application.open(url)
 #endif
     }
 

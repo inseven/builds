@@ -26,7 +26,6 @@ struct WorkflowInspector: View {
     @EnvironmentObject var sceneModel: SceneModel
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    @Environment(\.openURL) private var openURL
 
     let workflowInstance: WorkflowInstance
 
@@ -44,7 +43,7 @@ struct WorkflowInspector: View {
                     guard let url = workflowInstance.repositoryURL else {
                         return
                     }
-                    openURL(url)
+                    sceneModel.openURL(url)
                 } label: {
                     LabeledContent {
                         Text(workflowInstance.id.repositoryFullName)
@@ -68,7 +67,7 @@ struct WorkflowInspector: View {
                         guard let url = workflowInstance.commitURL else {
                             return
                         }
-                        openURL(url)
+                        sceneModel.openURL(url)
                     } label: {
                         LabeledContent {
                             Text(result.workflowRun.head_sha.prefix(7))
@@ -136,6 +135,9 @@ struct WorkflowInspector: View {
                 }
             }
         }
+        #if os(iOS)
+        .showsURL($sceneModel.previewURL, isActive: horizontalSizeClass == .compact)
+        #endif
     }
 
 }

@@ -20,43 +20,40 @@
 
 import SwiftUI
 
-// TODO: TYPE THIS?
-
-// TODO: TYPE ERASURE FOR ANY CONFIRMABLE
-
 struct PresentsConfirmable: ViewModifier {
 
-    @Binding var confirmation: Confirmable?
-
-    init(_ confirmation: Binding<Confirmable?>) {
-        _confirmation = confirmation
-    }
+    @Binding var confirmable: Confirmable?
+    var isActive: Bool
 
     func body(content: Content) -> some View {
-        content
-            .confirmationDialog(confirmation?.title ?? "Confirm",
-                                isPresented: $confirmation.bool(),
-                                titleVisibility: .visible) {
-                ForEach(confirmation?.actions ?? []) { action in
-                    Button(role: action.role) {
-                        action.perform()
-                    } label: {
-                        Text(action.title)
+        if isActive {
+            content
+                .confirmationDialog(confirmable?.title ?? "Confirm",
+                                    isPresented: $confirmable.bool(),
+                                    titleVisibility: .visible) {
+                    ForEach(confirmable?.actions ?? []) { action in
+                        Button(role: action.role) {
+                            action.perform()
+                        } label: {
+                            Text(action.title)
+                        }
+                    }
+                } message: {
+                    if let message = confirmable?.message {
+                        Text(message)
                     }
                 }
-            } message: {
-                if let message = confirmation?.message {
-                    Text(message)
-                }
-            }
+        } else {
+            content
+        }
     }
 
 }
 
 extension View {
 
-    func presents(confirmable: Binding<Confirmable?>) -> some View {
-        modifier(PresentsConfirmable(confirmable))
+    func presents(confirmable: Binding<Confirmable?>, isActive: Bool = true) -> some View {
+        modifier(PresentsConfirmable(confirmable: confirmable, isActive: isActive))
     }
 
 }

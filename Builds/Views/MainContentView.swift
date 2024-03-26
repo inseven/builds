@@ -89,30 +89,29 @@ struct MainContentView: View {
                 }
             }
         }
-        .presents(confirmable: $sceneModel.confirmation)
+#if os(iOS)
+        .showsURL($sceneModel.previewURL)
+#endif
+        .presents(confirmable: $sceneModel.confirmation, isActive: sceneModel.sheet == nil)
+#if os(iOS)
+        // iOS relies on sheets, but macOS uses windows so doesn't need this.
         .sheet(item: $sceneModel.sheet) { sheet in
             switch sheet {
             case .add:
                 NavigationStack {
                     WorkflowsContentView(applicationModel: applicationModel)
                 }
-#if os(macOS)
-                .frame(minWidth: 300, minHeight: 300)
-#endif
             case .settings:
                 NavigationView {
-#if os(iOS)
                     PhoneSettingsView()
                         .environmentObject(sceneModel)
-#endif
                 }
             case .logIn:
-#if os(iOS)
                 SafariWebView(url: applicationModel.client.authorizationURL)
                     .ignoresSafeArea()
-#endif
             }
         }
+#endif
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
         .environmentObject(sceneModel)
@@ -133,3 +132,42 @@ struct MainContentView: View {
         }
     }
 }
+
+extension URL: Identifiable {
+
+    public var id: Self {
+        return self
+    }
+
+}
+
+#if os(iOS)
+
+struct ShowsURL: ViewModifier {
+
+    @Binding var url: URL?
+    var isActive: Bool
+
+    func body(content: Content) -> some View {
+        if isActive {
+            content
+                .sheet(item: $url) { url in
+                    SafariWebView(url: url)
+                        .ignoresSafeArea()
+                }
+        } else {
+            content
+        }
+    }
+
+}
+
+extension View {
+
+    func showsURL(_ url: Binding<URL?>, isActive: Bool = true) -> some View {
+        return modifier(ShowsURL(url: url, isActive: isActive))
+    }
+
+}
+
+#endif
