@@ -62,6 +62,15 @@ struct WorkflowsView: View {
             }
             .disabled(results.isEmpty)
 
+            Divider()
+
+            MenuItem("Open Commit", systemImage: "safari") {
+                for url in workflowInstances.compactMap({ $0.commitURL }) {
+                    openURL(url)
+                }
+            }
+            .disabled(results.isEmpty)
+
             MenuItem("Open Repository", systemImage: "safari") {
                 for url in workflowInstances.compactMap({ $0.repositoryURL }) {
                     openURL(url)

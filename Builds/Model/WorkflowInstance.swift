@@ -52,6 +52,13 @@ struct WorkflowInstance: Identifiable, Hashable {
         return result?.annotations ?? []
     }
 
+    var commitURL: URL? {
+        guard let result else {
+            return nil
+        }
+        return URL(repositoryFullName: id.repositoryFullName, commit: result.workflowRun.head_sha)
+    }
+
     var details: String {
         return "\(workflowName) (\(id.branch))"
     }

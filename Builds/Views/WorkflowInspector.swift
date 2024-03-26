@@ -63,6 +63,22 @@ struct WorkflowInspector: View {
                 } label: {
                     Text("Branch")
                 }
+                if let result = workflowInstance.result {
+                    Button {
+                        guard let url = workflowInstance.commitURL else {
+                            return
+                        }
+                        openURL(url)
+                    } label: {
+                        LabeledContent {
+                            Text(result.workflowRun.head_sha.prefix(7))
+                                .foregroundStyle(.link)
+                                .monospaced()
+                        } label: {
+                            Text("Commit")
+                        }
+                    }
+                }
             }
             if let result = workflowInstance.result {
                 Section {
