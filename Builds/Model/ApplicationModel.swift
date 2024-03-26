@@ -143,7 +143,28 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         self.start()
     }
 
+    @MainActor func createOrganizations() {
+        self.organizations = favorites.reduce(into: Set<String>()) { partialResult, id in
+            partialResult.insert(id.organization)
+        }.sorted()
+    }
+
+    @MainActor func createResults() {
+        self.results = favorites.map { id in
+            return WorkflowInstance(id: id, result: cachedStatus[id])
+        }
+        .sorted {
+            $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
+        }
+    }
+
+
     @MainActor private func start() {
+
+        self.sync()
+
+        createOrganizations()
+        createResults()
 
         // Start the refresh scheduler.
         refreshScheduler.start()

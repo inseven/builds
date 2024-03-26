@@ -20,9 +20,9 @@
 
 import Foundation
 
-enum SectionIdentifier: Identifiable, Hashable {
+public enum SectionIdentifier: Identifiable, Hashable, Codable {
 
-    var id: String {
+    public var id: String {
         switch self {
         case .all:
             return "all"

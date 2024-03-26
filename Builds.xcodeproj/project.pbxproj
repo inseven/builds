@@ -75,6 +75,7 @@
 		D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE7DD02B7F341800A3DCF0 /* Legal.swift */; };
 		D8EE7DD32B7F3A2900A3DCF0 /* AboutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */; };
 		D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F0CE0427F89A8100F4EC83 /* GitHubClient.swift */; };
+		D8FAAAED2BB2BFC4009F0202 /* SceneStorageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FAAAEC2BB2BFC4009F0202 /* SceneStorageContainer.swift */; };
 		D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */; };
 		D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */; };
 		D8FEAE1027F591B200FDADFA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FEAE0F27F591B200FDADFA /* Assets.xcassets */; };
@@ -168,6 +169,7 @@
 		D8EE7DD02B7F341800A3DCF0 /* Legal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Legal.swift; sourceTree = "<group>"; };
 		D8EE7DD22B7F3A2900A3DCF0 /* AboutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutButton.swift; sourceTree = "<group>"; };
 		D8F0CE0427F89A8100F4EC83 /* GitHubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubClient.swift; sourceTree = "<group>"; };
+		D8FAAAEC2BB2BFC4009F0202 /* SceneStorageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneStorageContainer.swift; sourceTree = "<group>"; };
 		D8FEAE0827F591AE00FDADFA /* Builds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Builds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FEAE0B27F591AE00FDADFA /* BuildsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildsApp.swift; sourceTree = "<group>"; };
 		D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
@@ -337,10 +339,12 @@
 				D8FEAE0D27F591AE00FDADFA /* MainContentView.swift */,
 				D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */,
 				D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */,
+				D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */,
 				D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */,
+				D8FAAAEC2BB2BFC4009F0202 /* SceneStorageContainer.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
-				D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */,
 				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
+				D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */,
 				D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */,
@@ -348,7 +352,6 @@
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
 				D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */,
 				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
-				D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -608,6 +611,7 @@
 				D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */,
 				D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */,
 				D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */,
+				D8FAAAED2BB2BFC4009F0202 /* SceneStorageContainer.swift in Sources */,
 				D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */,
 				D850F4DB2BAA709800CE1796 /* Confirmable.swift in Sources */,
 				D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */,

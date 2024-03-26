@@ -32,10 +32,14 @@ struct MainWindow: Scene {
 
     var body: some Scene {
         WindowGroup(id: Self.id) {
-            MainContentView(applicationModel: applicationModel)
-                .handlesAuthentication()
-                .handlesExternalEvents(preferring: [], allowing: [.main])
-                .environmentObject(applicationModel)
+            SceneStorageContainer {
+                SceneModel.Settings()
+            } content: { sceneSettings in
+                MainContentView(applicationModel: applicationModel, sceneSettings: sceneSettings)
+            }
+            .handlesAuthentication()
+            .handlesExternalEvents(preferring: [], allowing: [.main])
+            .environmentObject(applicationModel)
         }
         .defaultSize(CGSize(width: 800, height: 720))
         .commands {
