@@ -62,6 +62,13 @@ struct WorkflowsView: View {
             }
             .disabled(results.isEmpty)
 
+            MenuItem("Open Repository", systemImage: "safari") {
+                for result in results {
+                    openURL(result.workflowRun.repository.html_url)
+                }
+            }
+            .disabled(results.isEmpty)
+
             Divider()
 
             MenuItem("Remove \(workflowInstances.count) Workflows", systemImage: "trash", role: .destructive) {

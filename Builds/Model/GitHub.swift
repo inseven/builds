@@ -150,6 +150,7 @@ class GitHub {
 
         struct Repository: Codable, Hashable {
             let full_name: String
+            let html_url: URL
         }
 
         let id: Int
