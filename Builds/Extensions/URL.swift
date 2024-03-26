@@ -26,8 +26,14 @@ public extension URL {
     static let main = URL(string: "x-builds://main")!
     static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
 
+    static let gitHub = URL(string: "https://github.com")!
+
     var components: URLComponents? {
         return URLComponents(string: absoluteString)
+    }
+
+    init?(repositoryFullName: String) {
+        self = Self.gitHub.appendingPathComponent(repositoryFullName)
     }
 
     func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {

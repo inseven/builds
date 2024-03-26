@@ -63,8 +63,8 @@ struct WorkflowsView: View {
             .disabled(results.isEmpty)
 
             MenuItem("Open Repository", systemImage: "safari") {
-                for result in results {
-                    openURL(result.workflowRun.repository.html_url)
+                for url in workflowInstances.compactMap({ $0.repositoryURL }) {
+                    openURL(url)
                 }
             }
             .disabled(results.isEmpty)

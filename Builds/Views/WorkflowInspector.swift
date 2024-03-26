@@ -40,10 +40,18 @@ struct WorkflowInspector: View {
     var body: some View {
         Form {
             Section {
-                LabeledContent {
-                    Text(workflowInstance.id.repositoryFullName)
+                Button {
+                    guard let url = workflowInstance.repositoryURL else {
+                        return
+                    }
+                    openURL(url)
                 } label: {
-                    Text("Repository")
+                    LabeledContent {
+                        Text(workflowInstance.id.repositoryFullName)
+                            .foregroundStyle(.link)
+                    } label: {
+                        Text("Repository")
+                    }
                 }
                 LabeledContent {
                     Text(workflowInstance.workflowName)
@@ -79,7 +87,6 @@ struct WorkflowInspector: View {
                 }
                 Section {
                     WorkflowJobList(jobs: result.jobs)
-                        .buttonStyle(.plain)
                 } header: {
                     Text("Jobs")
                 }
@@ -93,6 +100,7 @@ struct WorkflowInspector: View {
             }
         }
         .formStyle(.grouped)
+        .buttonStyle(.plain)
         .safeAreaInset(edge: .top) {
             if horizontalSizeClass == .compact {
                 HStack {
