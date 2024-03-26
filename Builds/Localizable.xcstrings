@@ -78,6 +78,9 @@
     "Cancel" : {
 
     },
+    "Commit" : {
+
+    },
     "Confirm" : {
 
     },
@@ -130,6 +133,9 @@
 
     },
     "Open" : {
+
+    },
+    "Open Commit" : {
 
     },
     "Open Repository" : {

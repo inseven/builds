@@ -33,7 +33,15 @@ public extension URL {
     }
 
     init?(repositoryFullName: String) {
-        self = Self.gitHub.appendingPathComponent(repositoryFullName)
+        self = Self.gitHub
+            .appendingPathComponent(repositoryFullName)
+    }
+
+    init?(repositoryFullName: String, commit: String) {
+        self = Self.gitHub
+            .appendingPathComponent(repositoryFullName)
+            .appendingPathComponent("commit")
+            .appendingPathComponent(commit)
     }
 
     func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {
