@@ -48,28 +48,28 @@ struct WorkflowInstance: Identifiable, Hashable {
 
     }
 
-    let id: ID
-    let result: WorkflowResult?
-
-    init(id: ID, result: WorkflowResult? = nil) {
-        self.id = id
-        self.result = result
-    }
-
-    var repositoryName: String {
-        return id.repositoryName
-    }
-
-    var workflowName: String {
-        return result?.workflowRun.name ?? String(id.workflowId)
+    var annotations: [WorkflowResult.Annotation] {
+        return result?.annotations ?? []
     }
 
     var details: String {
         return "\(workflowName) (\(id.branch))"
     }
 
-    var annotations: [WorkflowResult.Annotation] {
-        return result?.annotations ?? []
+    var lastRun: String {
+        guard let createdAt = result?.workflowRun.created_at else {
+            return "Unknown"
+        }
+        let dateFormatter = RelativeDateTimeFormatter()
+        return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
+    }
+
+    var repositoryName: String {
+        return id.repositoryName
+    }
+
+    var repositoryURL: URL? {
+        return URL(repositoryFullName: id.repositoryFullName)
     }
 
     var state: SummaryState {
@@ -81,12 +81,16 @@ struct WorkflowInstance: Identifiable, Hashable {
         return state.color
     }
 
-    var lastRun: String {
-        guard let createdAt = result?.workflowRun.created_at else {
-            return "Unknown"
-        }
-        let dateFormatter = RelativeDateTimeFormatter()
-        return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
+    var workflowName: String {
+        return result?.workflowRun.name ?? String(id.workflowId)
+    }
+
+    let id: ID
+    let result: WorkflowResult?
+
+    init(id: ID, result: WorkflowResult? = nil) {
+        self.id = id
+        self.result = result
     }
 
 }
