@@ -116,7 +116,7 @@ class SceneModel: ObservableObject, Runnable {
 #endif
     }
 
-    @MainActor func signOut() async {
+    @MainActor func signOut() {
         confirmation = Confirmation(
             "Sign Out",
             message: "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud.",

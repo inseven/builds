@@ -20,24 +20,34 @@
 
 import SwiftUI
 
-// TODO: TYPE THIS?
+fileprivate struct ConfirmablePresenter<Content: View>: View {
 
-// TODO: TYPE ERASURE FOR ANY CONFIRMABLE
+    @Binding var confirmable: Confirmable?
+    @Binding var isActive: Bool
 
-struct PresentsConfirmable: ViewModifier {
+    let content: Content
 
-    @Binding var confirmation: Confirmable?
-
-    init(_ confirmation: Binding<Confirmable?>) {
-        _confirmation = confirmation
+    init(confirmable: Binding<Confirmable?>, isActive: Binding<Bool>, @ViewBuilder content: () -> Content) {
+        self._confirmable = confirmable
+        self._isActive = isActive
+        self.content = content()
     }
 
-    func body(content: Content) -> some View {
+    var binding: Binding<Bool> {
+        return .init {
+            return confirmable != nil && isActive
+        } set: { newValue in
+            if !newValue {
+                confirmable = nil
+            }
+        }
+    }
+
+    var body: some View {
         content
-            .confirmationDialog(confirmation?.title ?? "Confirm",
-                                isPresented: $confirmation.bool(),
-                                titleVisibility: .visible) {
-                ForEach(confirmation?.actions ?? []) { action in
+            .alert(confirmable?.title ?? "Confirm",
+                   isPresented: binding) {
+                ForEach(confirmable?.actions ?? []) { action in
                     Button(role: action.role) {
                         action.perform()
                     } label: {
@@ -45,7 +55,7 @@ struct PresentsConfirmable: ViewModifier {
                     }
                 }
             } message: {
-                if let message = confirmation?.message {
+                if let message = confirmable?.message {
                     Text(message)
                 }
             }
@@ -56,7 +66,11 @@ struct PresentsConfirmable: ViewModifier {
 extension View {
 
     func presents(confirmable: Binding<Confirmable?>) -> some View {
-        modifier(PresentsConfirmable(confirmable))
+        SheetReader("confirmable") { isTop in
+            ConfirmablePresenter(confirmable: confirmable, isActive: isTop) {
+                self
+            }
+        }
     }
 
 }
