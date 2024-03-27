@@ -76,17 +76,20 @@ struct MainContentView: View {
                     .disabled(!applicationModel.isAuthorized)
                 }
 
+#if os(macOS)
+
                 // Only show the inspector toolbar button in larger size classes.
-                if horizontalSizeClass != .compact {
-                    ToolbarItem(id: "inspector", placement: .primaryAction) {
-                        Button {
-                            sceneModel.toggleInspector()
-                        } label: {
-                            Label("Toggle Inspector", systemImage: "sidebar.trailing")
-                        }
-                        .help("Hide or show the Inspector")
+                ToolbarItem(id: "inspector", placement: .primaryAction) {
+                    Button {
+                        sceneModel.toggleInspector()
+                    } label: {
+                        Label("Toggle Inspector", systemImage: "sidebar.trailing")
                     }
+                    .help("Hide or show the Inspector")
                 }
+
+#endif
+
             }
         }
         .presents(confirmable: $sceneModel.confirmation)
@@ -106,8 +109,13 @@ struct MainContentView: View {
             case .logIn:
                 SafariWebView(url: applicationModel.client.authorizationURL)
                     .ignoresSafeArea()
+            case .view(let id):
+                NavigationStack {
+                    WorkflowInspector(applicationModel: applicationModel, id: id)
+                }
             }
         }
+        .showsURL($sceneModel.previewURL)
 #endif
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()

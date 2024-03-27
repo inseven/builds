@@ -27,13 +27,23 @@ class SceneModel: ObservableObject, Runnable {
 
     enum SheetType: Identifiable {
 
-        var id: Self {
-            return self
+        var id: String {
+            switch self {
+            case .add:
+                return "add"
+            case .settings:
+                return "settings"
+            case .logIn:
+                return "log-in"
+            case .view(let id):
+                return "view-\(id)"
+            }
         }
 
         case add
         case settings
         case logIn
+        case view(WorkflowInstance.ID)
     }
 
     @MainActor @Published var section: SectionIdentifier? = .all
@@ -52,6 +62,8 @@ class SceneModel: ObservableObject, Runnable {
     @MainActor @Published var selection = Set<WorkflowInstance.ID>()
 
     @MainActor @Published var confirmation: Confirmable?
+
+    @MainActor @Published var previewURL: URL?
 
     private let applicationModel: ApplicationModel
 
@@ -140,6 +152,14 @@ class SceneModel: ObservableObject, Runnable {
         sheet = .add
 #else
         Application.open(.manageWorkflows)
+#endif
+    }
+
+    @MainActor func openURL(_ url: URL) {
+#if os(iOS)
+        previewURL = url
+#else
+        Application.open(url)
 #endif
     }
 
