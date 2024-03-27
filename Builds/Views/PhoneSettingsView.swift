@@ -68,16 +68,12 @@ struct PhoneSettingsView: View {
 
             Section {
 
-                HStack {
-                    Button {
-                        sceneModel.signOut()
-                    } label: {
-                        Text("Sign Out")
-                    }
-                    .disabled(!applicationModel.isAuthorized)
-                    .presents(confirmable: $sceneModel.confirmation)
+                Button {
+                    sceneModel.signOut()
+                } label: {
+                    Text("Sign Out")
                 }
-
+                .disabled(!applicationModel.isAuthorized)
 
             }
 
@@ -85,6 +81,7 @@ struct PhoneSettingsView: View {
         .formStyle(.grouped)
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .presents(confirmable: $sceneModel.confirmation)
         .sheet(item: $sheet) { sheet in
             switch sheet {
             case .managePermissions:

@@ -92,7 +92,7 @@ struct MainContentView: View {
 #if os(iOS)
         .showsURL($sceneModel.previewURL)
 #endif
-        .presents(confirmable: $sceneModel.confirmation, isActive: sceneModel.sheet == nil)
+        .presents(confirmable: $sceneModel.confirmation)
 #if os(iOS)
         // iOS relies on sheets, but macOS uses windows so doesn't need this.
         .sheet(item: $sceneModel.sheet) { sheet in

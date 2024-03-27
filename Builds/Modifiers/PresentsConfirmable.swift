@@ -20,40 +20,57 @@
 
 import SwiftUI
 
-struct PresentsConfirmable: ViewModifier {
+fileprivate struct ConfirmablePresenter<Content: View>: View {
 
     @Binding var confirmable: Confirmable?
-    var isActive: Bool
+    @Binding var isActive: Bool
 
-    func body(content: Content) -> some View {
-        if isActive {
-            content
-                .confirmationDialog(confirmable?.title ?? "Confirm",
-                                    isPresented: $confirmable.bool(),
-                                    titleVisibility: .visible) {
-                    ForEach(confirmable?.actions ?? []) { action in
-                        Button(role: action.role) {
-                            action.perform()
-                        } label: {
-                            Text(action.title)
-                        }
-                    }
-                } message: {
-                    if let message = confirmable?.message {
-                        Text(message)
+    let content: Content
+
+    init(confirmable: Binding<Confirmable?>, isActive: Binding<Bool>, @ViewBuilder content: () -> Content) {
+        self._confirmable = confirmable
+        self._isActive = isActive
+        self.content = content()
+    }
+
+    var binding: Binding<Bool> {
+        return .init {
+            return confirmable != nil && isActive
+        } set: { newValue in
+            if !newValue {
+                confirmable = nil
+            }
+        }
+    }
+
+    var body: some View {
+        content
+            .alert(confirmable?.title ?? "Confirm",
+                   isPresented: binding) {
+                ForEach(confirmable?.actions ?? []) { action in
+                    Button(role: action.role) {
+                        action.perform()
+                    } label: {
+                        Text(action.title)
                     }
                 }
-        } else {
-            content
-        }
+            } message: {
+                if let message = confirmable?.message {
+                    Text(message)
+                }
+            }
     }
 
 }
 
 extension View {
 
-    func presents(confirmable: Binding<Confirmable?>, isActive: Bool = true) -> some View {
-        modifier(PresentsConfirmable(confirmable: confirmable, isActive: isActive))
+    func presents(confirmable: Binding<Confirmable?>) -> some View {
+        SheetReader("confirmable") { isTop in
+            ConfirmablePresenter(confirmable: confirmable, isActive: isTop) {
+                self
+            }
+        }
     }
 
 }
