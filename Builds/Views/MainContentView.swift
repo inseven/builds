@@ -90,29 +90,25 @@ struct MainContentView: View {
             }
         }
         .presents(confirmable: $sceneModel.confirmation)
+#if os(iOS)
+        // iOS relies on sheets, but macOS uses windows so doesn't need this.
         .sheet(item: $sceneModel.sheet) { sheet in
             switch sheet {
             case .add:
                 NavigationStack {
                     WorkflowsContentView(applicationModel: applicationModel)
                 }
-#if os(macOS)
-                .frame(minWidth: 300, minHeight: 300)
-#endif
             case .settings:
                 NavigationView {
-#if os(iOS)
                     PhoneSettingsView()
                         .environmentObject(sceneModel)
-#endif
                 }
             case .logIn:
-#if os(iOS)
                 SafariWebView(url: applicationModel.client.authorizationURL)
                     .ignoresSafeArea()
-#endif
             }
         }
+#endif
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
         .environmentObject(sceneModel)

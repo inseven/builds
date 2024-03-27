@@ -36,7 +36,7 @@ struct AccountCommands: Commands {
                 }
                 Divider()
                 Button {
-                    await sceneModel?.signOut()
+                    sceneModel?.signOut()
                 } label: {
                     Text("Sign Out...")
                 }
