@@ -49,6 +49,7 @@ struct WorkflowsSection: View {
             if applicationModel.isAuthorized {
                 if applicationModel.results.count > 0 {
                     WorkflowsView(workflows: workflows)
+                    #if os(macOS)
                         .inspector(isPresented: $sceneModel.isShowingInspector) {
                             VStack(alignment: .leading) {
                                 if sceneModel.selection.count > 1 {
@@ -58,9 +59,9 @@ struct WorkflowsSection: View {
                                         Text("Select a workflow to view its details.")
                                     }
                                 } else {
-                                    if let id = sceneModel.selection.first,
-                                       let workflowInstance = applicationModel.results.first(where: { $0.id == id }) {
-                                        WorkflowInspector(workflowInstance: workflowInstance)
+                                    if let id = sceneModel.selection.first {
+                                        WorkflowInspector(applicationModel: applicationModel, id: id)
+                                            .id(id)
                                     } else {
                                         ContentUnavailableView {
                                             Label("No Workflow Selected", systemImage: "rectangle.dashed")
@@ -73,6 +74,7 @@ struct WorkflowsSection: View {
                             .presentationDetents([.large])
                             .presentationBackgroundInteraction(.enabled(upThrough: .height(200)))
                         }
+#endif
 #if os(macOS)
                         .safeAreaInset(edge: .bottom) {
                             VStack(spacing: 0) {

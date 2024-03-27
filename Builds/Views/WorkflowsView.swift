@@ -32,8 +32,6 @@ struct WorkflowsView: View {
     @EnvironmentObject var applicationModel: ApplicationModel
     @EnvironmentObject var sceneModel: SceneModel
 
-    @Environment(\.openURL) var openURL
-
     let workflows: [WorkflowInstance]
 
     private var columns = [GridItem(.adaptive(minimum: 300))]
@@ -57,7 +55,7 @@ struct WorkflowsView: View {
 
             MenuItem("Open", systemImage: "safari") {
                 for result in results {
-                    openURL(result.workflowRun.html_url)
+                    sceneModel.openURL(result.workflowRun.html_url)
                 }
             }
             .disabled(results.isEmpty)
@@ -66,14 +64,14 @@ struct WorkflowsView: View {
 
             MenuItem("Open Commit", systemImage: "safari") {
                 for url in workflowInstances.compactMap({ $0.commitURL }) {
-                    openURL(url)
+                    sceneModel.openURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
             MenuItem("Open Repository", systemImage: "safari") {
                 for url in workflowInstances.compactMap({ $0.repositoryURL }) {
-                    openURL(url)
+                    sceneModel.openURL(url)
                 }
             }
             .disabled(results.isEmpty)
@@ -91,11 +89,13 @@ struct WorkflowsView: View {
 #if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
             for result in workflowInstances.compactMap({ $0.result }) {
-                openURL(result.workflowRun.html_url)
+                sceneModel.openURL(result.workflowRun.html_url)
             }
 #else
-            sceneModel.selection = Set(selection)
-            sceneModel.isShowingInspector = true
+            guard let id = selection.first?.id else {
+                return
+            }
+            sceneModel.sheet = .view(id)
 #endif
         }
         .frame(minWidth: 300)

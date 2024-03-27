@@ -27,6 +27,8 @@
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
 		D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */; };
 		D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */; };
+		D87E0D3E2BB4E2EC00E94A59 /* PresentsURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */; };
+		D87E0D402BB4E52700E94A59 /* WorkflowInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87E0D3F2BB4E52700E94A59 /* WorkflowInspectorModel.swift */; };
 		D87F23742B6600150085DC12 /* material-icons-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23732B6600150085DC12 /* material-icons-license */; };
 		D87F23762B66006F0085DC12 /* builds-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23752B66006F0085DC12 /* builds-license */; };
 		D8800B632BB4B25800AD3BB7 /* SheetReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8800B622BB4B25800AD3BB7 /* SheetReader.swift */; };
@@ -124,6 +126,8 @@
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
 		D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonStyle.swift; sourceTree = "<group>"; };
 		D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
+		D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentsURL.swift; sourceTree = "<group>"; };
+		D87E0D3F2BB4E52700E94A59 /* WorkflowInspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInspectorModel.swift; sourceTree = "<group>"; };
 		D87F23732B6600150085DC12 /* material-icons-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "material-icons-license"; sourceTree = "<group>"; };
 		D87F23752B66006F0085DC12 /* builds-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "builds-license"; sourceTree = "<group>"; };
 		D8800B622BB4B25800AD3BB7 /* SheetReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetReader.swift; sourceTree = "<group>"; };
@@ -228,6 +232,7 @@
 				D883F1B62B97FD6F00B00F1C /* Dismissable.swift */,
 				D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */,
 				D850F4D82BAA4EA700CE1796 /* PresentsConfirmable.swift */,
+				D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */,
 				D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */,
 			);
 			path = Modifiers;
@@ -305,7 +310,7 @@
 			path = Commands;
 			sourceTree = "<group>";
 		};
-		D8D413F1280454F0001BA6C0 /* Model */ = {
+		D8D413F1280454F0001BA6C0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				D8D413F228045535001BA6C0 /* Action.swift */,
@@ -327,8 +332,9 @@
 				D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */,
 				D8D413F428045577001BA6C0 /* WorkflowResult.swift */,
 				D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */,
+				D87E0D3F2BB4E52700E94A59 /* WorkflowInspectorModel.swift */,
 			);
-			path = Model;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D8F0CDFA27F7995700F4EC83 /* Views */ = {
@@ -395,7 +401,7 @@
 				D8CA0EE82B93D6F200DAE758 /* Commands */,
 				D8355DD027F674EB0091BAFD /* Extensions */,
 				D87F23722B65FFFA0085DC12 /* Licenses */,
-				D8D413F1280454F0001BA6C0 /* Model */,
+				D8D413F1280454F0001BA6C0 /* Models */,
 				D81251BB2B92A38C001F6E85 /* Modifiers */,
 				D8FEAE1127F591B200FDADFA /* Preview Content */,
 				D887C5CE2BA0B32100E46174 /* Resources */,
@@ -598,6 +604,7 @@
 				D850F4DD2BAA75F900CE1796 /* ConfirmableAction.swift in Sources */,
 				D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */,
 				D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */,
+				D87E0D3E2BB4E2EC00E94A59 /* PresentsURL.swift in Sources */,
 				D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */,
 				D8DA9D872B97007200C17DBC /* WorkflowsPicker.swift in Sources */,
 				D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */,
@@ -643,6 +650,7 @@
 				D81251B82B929935001F6E85 /* BuildsError.swift in Sources */,
 				D8A269B32BAA454100A0E19A /* InspectorCommands.swift in Sources */,
 				D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */,
+				D87E0D402BB4E52700E94A59 /* WorkflowInspectorModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

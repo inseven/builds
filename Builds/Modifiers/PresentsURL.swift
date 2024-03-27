@@ -18,42 +18,57 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+#if os(iOS)
 
-extension URL: Identifiable {
+import SwiftUI
 
-    public var id: Self {
-        return self
+fileprivate struct URLPresenter<Content: View>: View {
+
+    @Binding var url: URL?
+    @Binding var isActive: Bool
+
+    let content: Content
+
+    init(url: Binding<URL?>, isActive: Binding<Bool>, @ViewBuilder content: () -> Content) {
+        self._url = url
+        self._isActive = isActive
+        self.content = content()
     }
 
-    static let auth = URL(string: "x-builds-auth://oauth")!
-    static let main = URL(string: "x-builds://main")!
-    static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
-
-    static let gitHub = URL(string: "https://github.com")!
-
-    var components: URLComponents? {
-        return URLComponents(string: absoluteString)
-    }
-
-    init?(repositoryFullName: String) {
-        self = Self.gitHub
-            .appendingPathComponent(repositoryFullName)
-    }
-
-    init?(repositoryFullName: String, commit: String) {
-        self = Self.gitHub
-            .appendingPathComponent(repositoryFullName)
-            .appendingPathComponent("commit")
-            .appendingPathComponent(commit)
-    }
-
-    func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {
-        guard var components = components else {
-            return nil
+    var binding: Binding<URL?> {
+        return .init {
+            guard isActive else {
+                return nil
+            }
+            return url
+        } set: { newValue in
+            guard isActive else {
+                return
+            }
+            url = newValue
         }
-        components.queryItems = queryItems
-        return components.url
+    }
+
+    var body: some View {
+        content
+            .sheet(item: binding) { url in
+                SafariWebView(url: url)
+                    .ignoresSafeArea()
+            }
     }
 
 }
+
+extension View {
+
+    func showsURL(_ url: Binding<URL?>, isActive: Bool = true) -> some View {
+        SheetReader("url") { isTop in
+            URLPresenter(url: url, isActive: isTop) {
+                self
+            }
+        }
+    }
+
+}
+
+#endif
