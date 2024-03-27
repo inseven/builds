@@ -18,16 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Combine
 import SwiftUI
+
+import Interact
 
 struct WorkflowInspector: View {
 
-    @EnvironmentObject var applicationModel: ApplicationModel
-    @EnvironmentObject var sceneModel: SceneModel
+    @EnvironmentObject private var applicationModel: ApplicationModel
+    @EnvironmentObject private var sceneModel: SceneModel
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
-    let workflowInstance: WorkflowInstance
+    @State private var model: WorkflowInspectorModel
+
+    private let id: WorkflowInstance.ID
+
+    init(applicationModel: ApplicationModel, id: WorkflowInstance.ID) {
+        self.id = id
+        self._model = State(initialValue: WorkflowInspectorModel(applicationModel: applicationModel, id: id))
+    }
 
     func format(date: Date) -> String {
         let formatter = DateFormatter()
@@ -38,106 +48,92 @@ struct WorkflowInspector: View {
 
     var body: some View {
         Form {
-            Section {
-                Button {
-                    guard let url = workflowInstance.repositoryURL else {
-                        return
-                    }
-                    sceneModel.openURL(url)
-                } label: {
-                    LabeledContent {
-                        Text(workflowInstance.id.repositoryFullName)
-                            .foregroundStyle(.link)
-                    } label: {
-                        Text("Repository")
-                    }
-                }
-                LabeledContent {
-                    Text(workflowInstance.workflowName)
-                } label: {
-                    Text("Workflow")
-                }
-                LabeledContent {
-                    Text(workflowInstance.id.branch)
-                } label: {
-                    Text("Branch")
-                }
-                if let result = workflowInstance.result {
+            if let workflowInstance = model.workflowInstance {
+                Section {
                     Button {
-                        guard let url = workflowInstance.commitURL else {
+                        guard let url = workflowInstance.repositoryURL else {
                             return
                         }
                         sceneModel.openURL(url)
                     } label: {
                         LabeledContent {
-                            Text(result.workflowRun.head_sha.prefix(7))
+                            Text(workflowInstance.id.repositoryFullName)
                                 .foregroundStyle(.link)
-                                .monospaced()
                         } label: {
-                            Text("Commit")
+                            Text("Repository")
+                        }
+                    }
+                    LabeledContent {
+                        Text(workflowInstance.workflowName)
+                    } label: {
+                        Text("Workflow")
+                    }
+                    LabeledContent {
+                        Text(workflowInstance.id.branch)
+                    } label: {
+                        Text("Branch")
+                    }
+                    if let result = workflowInstance.result {
+                        Button {
+                            guard let url = workflowInstance.commitURL else {
+                                return
+                            }
+                            sceneModel.openURL(url)
+                        } label: {
+                            LabeledContent {
+                                Text(result.workflowRun.head_sha.prefix(7))
+                                    .foregroundStyle(.link)
+                                    .monospaced()
+                            } label: {
+                                Text("Commit")
+                            }
                         }
                     }
                 }
-            }
-            if let result = workflowInstance.result {
-                Section {
-                    LabeledContent {
-                        Text(format(date: result.workflowRun.created_at))
-                    } label: {
-                        Text("Created")
-                    }
-                    LabeledContent {
-                        Text(format(date: result.workflowRun.updated_at))
-                    } label: {
-                        Text("Updated")
-                    }
-                    LabeledContent {
-                        let runAttempt = result.workflowRun.run_attempt
-                        Text("#\(runAttempt)")
-                    } label: {
-                        Text("Attempt")
-                    }
-                } header: {
-                    Text("Details")
-                }
-                Section {
-                    WorkflowJobList(jobs: result.jobs)
-                } header: {
-                    Text("Jobs")
-                }
-                if !result.annotations.isEmpty {
+                if let result = workflowInstance.result {
                     Section {
-                        AnnotationList(result: result)
+                        LabeledContent {
+                            Text(format(date: result.workflowRun.created_at))
+                        } label: {
+                            Text("Created")
+                        }
+                        LabeledContent {
+                            Text(format(date: result.workflowRun.updated_at))
+                        } label: {
+                            Text("Updated")
+                        }
+                        LabeledContent {
+                            let runAttempt = result.workflowRun.run_attempt
+                            Text("#\(runAttempt)")
+                        } label: {
+                            Text("Attempt")
+                        }
                     } header: {
-                        Text("Annotations")
+                        Text("Details")
+                    }
+                    Section {
+                        WorkflowJobList(jobs: result.jobs)
+                    } header: {
+                        Text("Jobs")
+                    }
+                    if !result.annotations.isEmpty {
+                        Section {
+                            AnnotationList(result: result)
+                        } header: {
+                            Text("Annotations")
+                        }
                     }
                 }
             }
         }
         .formStyle(.grouped)
         .buttonStyle(.plain)
-        .safeAreaInset(edge: .top) {
-            if horizontalSizeClass == .compact {
-                HStack {
-                    Spacer()
-                    Button {
-                        sceneModel.isShowingInspector = false
-                    } label: {
-                        Image(systemName: "xmark")
-                            .renderingMode(.template)
-                            .foregroundColor(.secondary)
-                            .padding(8.0)
-                            .fontWeight(.bold)
-                            .background(.ultraThickMaterial)
-                            .clipShape(Circle())
-                    }
-                    .padding()
-                }
-            }
-        }
-        #if os(iOS)
+        .navigationTitle(model.workflowInstance?.workflowName ?? String(id.workflowId))
+        .toolbarTitleDisplayMode(.inline)
+        .dismissable(placement: .cancellationAction)
+#if os(iOS)
         .showsURL($sceneModel.previewURL, isActive: horizontalSizeClass == .compact)
-        #endif
+#endif
     }
 
 }

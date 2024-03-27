@@ -27,13 +27,23 @@ class SceneModel: ObservableObject, Runnable {
 
     enum SheetType: Identifiable {
 
-        var id: Self {
-            return self
+        var id: String {
+            switch self {
+            case .add:
+                return "add"
+            case .settings:
+                return "settings"
+            case .logIn:
+                return "log-in"
+            case .view(let id):
+                return "view-\(id)"
+            }
         }
 
         case add
         case settings
         case logIn
+        case view(WorkflowInstance.ID)
     }
 
     @MainActor @Published var section: SectionIdentifier? = .all

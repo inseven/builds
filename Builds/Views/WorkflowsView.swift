@@ -92,8 +92,10 @@ struct WorkflowsView: View {
                 sceneModel.openURL(result.workflowRun.html_url)
             }
 #else
-            sceneModel.selection = Set(selection)
-            sceneModel.isShowingInspector = true
+            guard let id = selection.first?.id else {
+                return
+            }
+            sceneModel.sheet = .view(id)
 #endif
         }
         .frame(minWidth: 300)

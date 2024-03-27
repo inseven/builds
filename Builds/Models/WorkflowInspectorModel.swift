@@ -18,42 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import Combine
+import SwiftUI
 
-extension URL: Identifiable {
+import Interact
 
-    public var id: Self {
-        return self
+@Observable
+class WorkflowInspectorModel {
+
+    let applicationModel: ApplicationModel
+    let id: WorkflowInstance.ID
+
+    @MainActor var workflowInstance: WorkflowInstance? {
+        applicationModel.results.first { $0.id == id }
     }
 
-    static let auth = URL(string: "x-builds-auth://oauth")!
-    static let main = URL(string: "x-builds://main")!
-    static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
+    private var cancellables = Set<AnyCancellable>()
 
-    static let gitHub = URL(string: "https://github.com")!
-
-    var components: URLComponents? {
-        return URLComponents(string: absoluteString)
-    }
-
-    init?(repositoryFullName: String) {
-        self = Self.gitHub
-            .appendingPathComponent(repositoryFullName)
-    }
-
-    init?(repositoryFullName: String, commit: String) {
-        self = Self.gitHub
-            .appendingPathComponent(repositoryFullName)
-            .appendingPathComponent("commit")
-            .appendingPathComponent(commit)
-    }
-
-    func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {
-        guard var components = components else {
-            return nil
-        }
-        components.queryItems = queryItems
-        return components.url
+    init(applicationModel: ApplicationModel, id: WorkflowInstance.ID) {
+        self.applicationModel = applicationModel
+        self.id = id
     }
 
 }

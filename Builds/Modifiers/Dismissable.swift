@@ -20,15 +20,21 @@
 
 import SwiftUI
 
-struct Dismissable: ViewModifier {
+fileprivate struct Dismissable: ViewModifier {
 
     @Environment(\.dismiss) var dismiss
+
+    let placement: ToolbarItemPlacement
+
+    init(placement: ToolbarItemPlacement) {
+        self.placement = placement
+    }
 
     func body(content: Content) -> some View {
 #if os(iOS)
         return content
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
+                ToolbarItem(placement: placement) {
                     Button {
                         dismiss()
                     } label: {
@@ -45,8 +51,8 @@ struct Dismissable: ViewModifier {
 
 extension View {
 
-    func dismissable() -> some View {
-        return modifier(Dismissable())
+    func dismissable(placement: ToolbarItemPlacement = .confirmationAction) -> some View {
+        return modifier(Dismissable(placement: placement))
     }
 
 }

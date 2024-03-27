@@ -76,22 +76,22 @@ struct MainContentView: View {
                     .disabled(!applicationModel.isAuthorized)
                 }
 
+#if os(macOS)
+
                 // Only show the inspector toolbar button in larger size classes.
-                if horizontalSizeClass != .compact {
-                    ToolbarItem(id: "inspector", placement: .primaryAction) {
-                        Button {
-                            sceneModel.toggleInspector()
-                        } label: {
-                            Label("Toggle Inspector", systemImage: "sidebar.trailing")
-                        }
-                        .help("Hide or show the Inspector")
+                ToolbarItem(id: "inspector", placement: .primaryAction) {
+                    Button {
+                        sceneModel.toggleInspector()
+                    } label: {
+                        Label("Toggle Inspector", systemImage: "sidebar.trailing")
                     }
+                    .help("Hide or show the Inspector")
                 }
+
+#endif
+
             }
         }
-#if os(iOS)
-        .showsURL($sceneModel.previewURL)
-#endif
         .presents(confirmable: $sceneModel.confirmation)
 #if os(iOS)
         // iOS relies on sheets, but macOS uses windows so doesn't need this.
@@ -109,8 +109,13 @@ struct MainContentView: View {
             case .logIn:
                 SafariWebView(url: applicationModel.client.authorizationURL)
                     .ignoresSafeArea()
+            case .view(let id):
+                NavigationStack {
+                    WorkflowInspector(applicationModel: applicationModel, id: id)
+                }
             }
         }
+        .showsURL($sceneModel.previewURL)
 #endif
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
@@ -132,42 +137,3 @@ struct MainContentView: View {
         }
     }
 }
-
-extension URL: Identifiable {
-
-    public var id: Self {
-        return self
-    }
-
-}
-
-#if os(iOS)
-
-struct ShowsURL: ViewModifier {
-
-    @Binding var url: URL?
-    var isActive: Bool
-
-    func body(content: Content) -> some View {
-        if isActive {
-            content
-                .sheet(item: $url) { url in
-                    SafariWebView(url: url)
-                        .ignoresSafeArea()
-                }
-        } else {
-            content
-        }
-    }
-
-}
-
-extension View {
-
-    func showsURL(_ url: Binding<URL?>, isActive: Bool = true) -> some View {
-        return modifier(ShowsURL(url: url, isActive: isActive))
-    }
-
-}
-
-#endif
