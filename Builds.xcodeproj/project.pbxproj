@@ -22,6 +22,7 @@
 		D850F4DB2BAA709800CE1796 /* Confirmable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D850F4DA2BAA709800CE1796 /* Confirmable.swift */; };
 		D850F4DD2BAA75F900CE1796 /* ConfirmableAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */; };
 		D85383552BB4EBB50013F267 /* SingleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85383542BB4EBB50013F267 /* SingleWindow.swift */; };
+		D85383592BB4F4700013F267 /* WorkflowJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85383582BB4F4700013F267 /* WorkflowJob.swift */; };
 		D85AC0DB2BAE540B003CAE8F /* SummaryCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
 		D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */; };
@@ -121,6 +122,7 @@
 		D850F4DA2BAA709800CE1796 /* Confirmable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confirmable.swift; sourceTree = "<group>"; };
 		D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmableAction.swift; sourceTree = "<group>"; };
 		D85383542BB4EBB50013F267 /* SingleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWindow.swift; sourceTree = "<group>"; };
+		D85383582BB4F4700013F267 /* WorkflowJob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJob.swift; sourceTree = "<group>"; };
 		D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCommands.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
 		D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInspector.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */,
 				D8CA0EF12B94110A00DAE758 /* TimeInterval.swift */,
 				D8355DD127F674F20091BAFD /* URL.swift */,
+				D85383582BB4F4700013F267 /* WorkflowJob.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -648,6 +651,7 @@
 				D850F4D92BAA4EA700CE1796 /* PresentsConfirmable.swift in Sources */,
 				D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */,
 				D81251B82B929935001F6E85 /* BuildsError.swift in Sources */,
+				D85383592BB4F4700013F267 /* WorkflowJob.swift in Sources */,
 				D8A269B32BAA454100A0E19A /* InspectorCommands.swift in Sources */,
 				D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */,
 				D87E0D402BB4E52700E94A59 /* WorkflowInspectorModel.swift in Sources */,

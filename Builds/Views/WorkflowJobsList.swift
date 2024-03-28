@@ -22,7 +22,13 @@ import SwiftUI
 
 struct WorkflowJobList: View {
 
-    @Environment(\.openURL) private var openURL
+    static let formatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        return formatter
+    }()
+
+    @EnvironmentObject private var sceneModel: SceneModel
 
     let jobs: [GitHub.WorkflowJob]
 
@@ -33,13 +39,19 @@ struct WorkflowJobList: View {
     var body: some View {
         ForEach(jobs) { job in
             Button {
-                openURL(job.html_url)
+                sceneModel.openURL(job.html_url)
             } label: {
                 HStack {
                     Image(systemName: "circle.fill")
                         .renderingMode(.template)
                         .foregroundStyle(color(for: job))
                     Text(job.name)
+                    Spacer()
+                    if let duration = job.duration,
+                       let value = Self.formatter.string(from: duration) {
+                        Text(value)
+                            .foregroundStyle(.secondary)
+                    }
                 }
             }
         }
