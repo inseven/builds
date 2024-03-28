@@ -93,6 +93,18 @@ class SceneModel: ObservableObject, Runnable {
         self.selection = store.wrappedValue.selection
     }
 
+    @MainActor var workflows: [WorkflowInstance] {
+        switch section {
+        case .all:
+            return applicationModel.results
+        case .organization(let organization):
+            return applicationModel.results.filter { $0.id.organization == organization }
+        case .none:
+            return []
+        }
+    }
+
+
     @MainActor func start() {
         applicationModel
             .$organizations
@@ -158,7 +170,11 @@ class SceneModel: ObservableObject, Runnable {
 extension SceneModel: PresentURLAction.Presenter {
 
     @MainActor func presentURL(_ url: URL) {
-        previewURL = url
+        if applicationModel.useInAppBrowser {
+            previewURL = url
+        } else {
+            Application.open(url)
+        }
     }
 
 }

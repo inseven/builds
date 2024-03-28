@@ -32,6 +32,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         case lastUpdate
         case accessToken
         case favorites
+        case useInAppBrowser
     }
 
     @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
@@ -85,6 +86,12 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
+    @MainActor @Published var useInAppBrowser: Bool {
+        didSet {
+            defaults.set(useInAppBrowser, forKey: .useInAppBrowser)
+        }
+    }
+
     @MainActor @Published var lastError: Error? = nil
 
     @MainActor @Published private var activeScenes = 0
@@ -106,6 +113,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         self.client = GitHubClient(api: api)
         self.cachedStatus = (try? defaults.codable(forKey: .status, default: [WorkflowInstance.ID: WorkflowResult]())) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
+        self.useInAppBrowser = defaults.bool(forKey: .useInAppBrowser, default: true)
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
         } else {
