@@ -18,47 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
 import SwiftUI
 
-import Diligence
+import Foundation
 
-@main
-struct BuildsApp: App {
+struct WorkflowCommands: Commands, OpenContext {
 
-    var applicationModel: ApplicationModel!
+    @Environment(\.openWindow) var openWindow
+    @Environment(\.presentURL) var presentURL
 
-    @MainActor init() {
-        applicationModel = ApplicationModel()
+    @EnvironmentObject var applicationModel: ApplicationModel
+
+    @FocusedObject var sceneModel: SceneModel?
+
+    var body: some Commands {
+        CommandMenu("Workflow") {
+            WorkflowMenu.items(applicationModel: applicationModel,
+                               sceneModel: sceneModel,
+                               selection: sceneModel?.selection ?? [],
+                               openContext: self).asContextMenu()
+        }
     }
 
-    var body: some Scene {
-
-        MainWindow()
-            .commands {
-                WorkflowCommands()
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-                InspectorCommands()
-#if DEBUG
-                SummaryCommands(applicationModel: applicationModel)
-#endif
-            }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        About(Legal.contents)
-
-
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
-
-        InfoWindow()
-            .environmentObject(applicationModel)
-
-#endif
-
-    }
-    
 }

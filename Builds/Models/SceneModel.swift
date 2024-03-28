@@ -61,6 +61,18 @@ class SceneModel: ObservableObject, Runnable {
         self.applicationModel = applicationModel
     }
 
+    @MainActor var workflows: [WorkflowInstance] {
+        switch section {
+        case .all:
+            return applicationModel.results
+        case .organization(let organization):
+            return applicationModel.results.filter { $0.id.organization == organization }
+        case .none:
+            return []
+        }
+    }
+
+
     @MainActor func start() {
         applicationModel
             .$organizations

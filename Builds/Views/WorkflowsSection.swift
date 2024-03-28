@@ -35,20 +35,11 @@ struct WorkflowsSection: View {
 
     let section: SectionIdentifier
 
-    var workflows: [WorkflowInstance] {
-        switch section {
-        case .all:
-            return applicationModel.results
-        case .organization(let organization):
-            return applicationModel.results.filter { $0.id.organization == organization }
-        }
-    }
-
     var body: some View {
         VStack {
             if applicationModel.isAuthorized {
                 if applicationModel.results.count > 0 {
-                    WorkflowsView(workflows: workflows)
+                    WorkflowsView(workflows: sceneModel.workflows)
 #if os(macOS)
                         .safeAreaInset(edge: .bottom) {
                             VStack(spacing: 0) {

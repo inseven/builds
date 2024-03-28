@@ -18,47 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
 import SwiftUI
 
-import Diligence
+protocol OpenContext {
 
-@main
-struct BuildsApp: App {
+    var openWindow: OpenWindowAction { get }
+    var presentURL: PresentURLAction { get }
 
-    var applicationModel: ApplicationModel!
-
-    @MainActor init() {
-        applicationModel = ApplicationModel()
-    }
-
-    var body: some Scene {
-
-        MainWindow()
-            .commands {
-                WorkflowCommands()
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
-                InspectorCommands()
-#if DEBUG
-                SummaryCommands(applicationModel: applicationModel)
-#endif
-            }
-            .environmentObject(applicationModel)
-
-#if os(macOS)
-
-        About(Legal.contents)
-
-
-        WorkflowsWindow()
-            .environmentObject(applicationModel)
-
-        InfoWindow()
-            .environmentObject(applicationModel)
-
-#endif
-
-    }
-    
 }
