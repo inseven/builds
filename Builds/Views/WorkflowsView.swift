@@ -23,14 +23,14 @@ import SwiftUI
 import Interact
 import SelectableCollectionView
 
-struct WorkflowsView: View {
+struct WorkflowsView: View, OpenContext {
 
     struct LayoutMetrics {
         static let interItemSpacing: CGFloat? = 10.0
     }
 
-    @Environment(\.openWindow) private var openWindow
-    @Environment(\.presentURL) private var presentURL
+    @Environment(\.openWindow) var openWindow
+    @Environment(\.presentURL) var presentURL
 
     @EnvironmentObject private var applicationModel: ApplicationModel
     @EnvironmentObject private var sceneModel: SceneModel
@@ -52,52 +52,10 @@ struct WorkflowsView: View {
                 .environment(\.isSelected, sceneModel.selection.contains(workflowInstance.id))
 #endif
         } contextMenu: { selection in
-
-            let workflowInstances = workflows.filter(selection: selection)
-            let results = workflowInstances.compactMap { $0.result }
-
-#if os(macOS)
-
-            MenuItem("Get Info", systemImage: "info") {
-                for instance in workflowInstances {
-                    openWindow(id: "info", value: instance.id)
-                }
-            }
-
-            Divider()
-
-#endif
-
-            MenuItem("Open Run", systemImage: "safari") {
-                for result in results {
-                    presentURL(result.workflowRun.html_url)
-                }
-            }
-            .disabled(results.isEmpty)
-
-            MenuItem("Open Commit", systemImage: "safari") {
-                for url in workflowInstances.compactMap({ $0.commitURL }) {
-                    presentURL(url)
-                }
-            }
-            .disabled(results.isEmpty)
-
-            MenuItem("Open Repository", systemImage: "safari") {
-                for url in workflowInstances.compactMap({ $0.repositoryURL }) {
-                    presentURL(url)
-                }
-            }
-            .disabled(results.isEmpty)
-
-            Divider()
-
-            MenuItem("Remove \(workflowInstances.count) Workflows", systemImage: "trash", role: .destructive) {
-                for workflowInstance in workflowInstances {
-                    applicationModel.removeFavorite(workflowInstance.id)
-                }
-            }
-            .disabled(workflowInstances.isEmpty)
-
+            WorkflowMenu.items(applicationModel: applicationModel,
+                               sceneModel: sceneModel,
+                               selection: selection,
+                               openContext: self)
         } primaryAction: { selection in
 #if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
