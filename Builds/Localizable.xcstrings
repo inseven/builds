@@ -39,9 +39,6 @@
         }
       }
     },
-    "%lld Workflows Selected" : {
-
-    },
     "About %@..." : {
 
     },
@@ -93,16 +90,13 @@
     "Done" : {
 
     },
+    "Get Info" : {
+
+    },
     "GitHub" : {
 
     },
-    "Hide Inspector" : {
-
-    },
-    "Hide or show the Inspector" : {
-
-    },
-    "Inspectors" : {
+    "Info" : {
 
     },
     "Jobs" : {
@@ -123,22 +117,19 @@
     "Never Updated" : {
 
     },
-    "No Workflow Selected" : {
-
-    },
     "No Workflows" : {
 
     },
     "Nothing Selected" : {
 
     },
-    "Open" : {
-
-    },
     "Open Commit" : {
 
     },
     "Open Repository" : {
+
+    },
+    "Open Run" : {
 
     },
     "Organizations" : {
@@ -184,16 +175,10 @@
     "Select a section from the sidebar to view workflows." : {
 
     },
-    "Select a workflow to view its details." : {
-
-    },
     "Select workflows to display" : {
 
     },
     "Settings" : {
-
-    },
-    "Show Inspector" : {
 
     },
     "Sign In" : {
@@ -218,9 +203,6 @@
 
     },
     "Summary" : {
-
-    },
-    "Toggle Inspector" : {
 
     },
     "Updated" : {

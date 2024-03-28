@@ -21,10 +21,18 @@
 		D850F4D92BAA4EA700CE1796 /* PresentsConfirmable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D850F4D82BAA4EA700CE1796 /* PresentsConfirmable.swift */; };
 		D850F4DB2BAA709800CE1796 /* Confirmable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D850F4DA2BAA709800CE1796 /* Confirmable.swift */; };
 		D850F4DD2BAA75F900CE1796 /* ConfirmableAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */; };
+		D85383552BB4EBB50013F267 /* SingleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85383542BB4EBB50013F267 /* SingleWindow.swift */; };
 		D85AC0DB2BAE540B003CAE8F /* SummaryCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
 		D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */; };
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
+		D86F531C2BB5023700C9A1AF /* TimelineSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F531B2BB5023700C9A1AF /* TimelineSchedule.swift */; };
+		D86F531E2BB5025100C9A1AF /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F531D2BB5025100C9A1AF /* Calendar.swift */; };
+		D86F53212BB5026C00C9A1AF /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53202BB5026C00C9A1AF /* Date.swift */; };
+		D86F53232BB5028900C9A1AF /* DurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53222BB5028900C9A1AF /* DurationView.swift */; };
+		D86F53252BB50C7100C9A1AF /* InfoWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53242BB50C7100C9A1AF /* InfoWindow.swift */; };
+		D86F53282BB514C000C9A1AF /* PresentURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53272BB514C000C9A1AF /* PresentURLAction.swift */; };
+		D86F532A2BB5163100C9A1AF /* PresentURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53292BB5163100C9A1AF /* PresentURL.swift */; };
 		D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */; };
 		D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */; };
 		D87E0D3E2BB4E2EC00E94A59 /* PresentsURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */; };
@@ -47,7 +55,6 @@
 		D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */; };
 		D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771D2BA5457E0080B20C /* SummaryPanel.swift */; };
 		D8A269B12BAA3B6800A0E19A /* ProgressSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */; };
-		D8A269B32BAA454100A0E19A /* InspectorCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A269B22BAA454100A0E19A /* InspectorCommands.swift */; };
 		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
@@ -120,10 +127,18 @@
 		D850F4D82BAA4EA700CE1796 /* PresentsConfirmable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentsConfirmable.swift; sourceTree = "<group>"; };
 		D850F4DA2BAA709800CE1796 /* Confirmable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confirmable.swift; sourceTree = "<group>"; };
 		D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmableAction.swift; sourceTree = "<group>"; };
+		D85383542BB4EBB50013F267 /* SingleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWindow.swift; sourceTree = "<group>"; };
 		D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCommands.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
 		D86A91462B9E5FF30008FF63 /* WorkflowInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInspector.swift; sourceTree = "<group>"; };
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
+		D86F531B2BB5023700C9A1AF /* TimelineSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineSchedule.swift; sourceTree = "<group>"; };
+		D86F531D2BB5025100C9A1AF /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
+		D86F53202BB5026C00C9A1AF /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		D86F53222BB5028900C9A1AF /* DurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationView.swift; sourceTree = "<group>"; };
+		D86F53242BB50C7100C9A1AF /* InfoWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoWindow.swift; sourceTree = "<group>"; };
+		D86F53272BB514C000C9A1AF /* PresentURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentURLAction.swift; sourceTree = "<group>"; };
+		D86F53292BB5163100C9A1AF /* PresentURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentURL.swift; sourceTree = "<group>"; };
 		D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonStyle.swift; sourceTree = "<group>"; };
 		D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentsURL.swift; sourceTree = "<group>"; };
@@ -146,7 +161,6 @@
 		D891771D2BA5457E0080B20C /* SummaryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanel.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSpinner.swift; sourceTree = "<group>"; };
-		D8A269B22BAA454100A0E19A /* InspectorCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorCommands.swift; sourceTree = "<group>"; };
 		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
 		D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJobsList.swift; sourceTree = "<group>"; };
@@ -220,7 +234,9 @@
 		D81251B02B917EFC001F6E85 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				D86F53242BB50C7100C9A1AF /* InfoWindow.swift */,
 				D81251B92B929B27001F6E85 /* MainWindow.swift */,
+				D85383542BB4EBB50013F267 /* SingleWindow.swift */,
 				D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */,
 			);
 			path = Scenes;
@@ -242,12 +258,24 @@
 			isa = PBXGroup;
 			children = (
 				D8D413FC28047B85001BA6C0 /* Bundle.swift */,
+				D86F531D2BB5025100C9A1AF /* Calendar.swift */,
 				D83929DA2BA367DD0022B4A3 /* Collection.swift */,
+				D86F53202BB5026C00C9A1AF /* Date.swift */,
 				D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */,
 				D8CA0EF12B94110A00DAE758 /* TimeInterval.swift */,
+				D86F531B2BB5023700C9A1AF /* TimelineSchedule.swift */,
 				D8355DD127F674F20091BAFD /* URL.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D86F53262BB5145100C9A1AF /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				D86F53292BB5163100C9A1AF /* PresentURL.swift */,
+				D86F53272BB514C000C9A1AF /* PresentURLAction.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 		D87390EC2BA12FD200EFC8B8 /* Styles */ = {
@@ -303,7 +331,6 @@
 			isa = PBXGroup;
 			children = (
 				D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */,
-				D8A269B22BAA454100A0E19A /* InspectorCommands.swift */,
 				D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */,
 				D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */,
 			);
@@ -361,6 +388,7 @@
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
 				D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */,
 				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
+				D86F53222BB5028900C9A1AF /* DurationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -399,6 +427,7 @@
 				D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */,
 				D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */,
 				D8CA0EE82B93D6F200DAE758 /* Commands */,
+				D86F53262BB5145100C9A1AF /* Environment */,
 				D8355DD027F674EB0091BAFD /* Extensions */,
 				D87F23722B65FFFA0085DC12 /* Licenses */,
 				D8D413F1280454F0001BA6C0 /* Models */,
@@ -598,6 +627,7 @@
 				D86A91472B9E5FF30008FF63 /* WorkflowInspector.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
 				D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */,
+				D86F531E2BB5025100C9A1AF /* Calendar.swift in Sources */,
 				D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */,
 				D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */,
 				D8D413E928043FCD001BA6C0 /* WorkflowInstanceCell.swift in Sources */,
@@ -607,15 +637,20 @@
 				D87E0D3E2BB4E2EC00E94A59 /* PresentsURL.swift in Sources */,
 				D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */,
 				D8DA9D872B97007200C17DBC /* WorkflowsPicker.swift in Sources */,
+				D86F53212BB5026C00C9A1AF /* Date.swift in Sources */,
 				D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */,
 				D81251B62B918472001F6E85 /* SummaryState.swift in Sources */,
 				D8EE7DD32B7F3A2900A3DCF0 /* AboutButton.swift in Sources */,
+				D86F53252BB50C7100C9A1AF /* InfoWindow.swift in Sources */,
+				D86F531C2BB5023700C9A1AF /* TimelineSchedule.swift in Sources */,
+				D85383552BB4EBB50013F267 /* SingleWindow.swift in Sources */,
 				D83DE3962BB218CB00234B01 /* HTTPStatusCode.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */,
 				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */,
 				D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */,
 				D8DA9D852B97004900C17DBC /* WorkflowsWindow.swift in Sources */,
+				D86F53232BB5028900C9A1AF /* DurationView.swift in Sources */,
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8800B632BB4B25800AD3BB7 /* SheetReader.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
@@ -635,12 +670,14 @@
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D88208DB2BB23C030075E9B7 /* HTTPURLResponseError.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,
+				D86F532A2BB5163100C9A1AF /* PresentURL.swift in Sources */,
 				D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */,
 				D8DA9D892B97009900C17DBC /* WorkflowsPickerModel.swift in Sources */,
 				D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */,
 				D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */,
 				D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */,
 				D883F1BB2B9803FD00B00F1C /* SectionIdentifier.swift in Sources */,
+				D86F53282BB514C000C9A1AF /* PresentURLAction.swift in Sources */,
 				D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */,
 				D85AC0DB2BAE540B003CAE8F /* SummaryCommands.swift in Sources */,
 				D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */,
@@ -648,7 +685,6 @@
 				D850F4D92BAA4EA700CE1796 /* PresentsConfirmable.swift in Sources */,
 				D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */,
 				D81251B82B929935001F6E85 /* BuildsError.swift in Sources */,
-				D8A269B32BAA454100A0E19A /* InspectorCommands.swift in Sources */,
 				D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */,
 				D87E0D402BB4E52700E94A59 /* WorkflowInspectorModel.swift in Sources */,
 			);

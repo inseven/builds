@@ -20,33 +20,8 @@
 
 import SwiftUI
 
-struct WorkflowJobList: View {
+extension Date {
 
-    @Environment(\.presentURL) private var presentURL
+    static let referneceDate = Date(timeIntervalSinceReferenceDate: 0)
 
-    let jobs: [GitHub.WorkflowJob]
-
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
-    }
-
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                presentURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                    Spacer()
-                    if let startDate = job.started_at {
-                        DurationView(startDate: startDate, endDate: job.completed_at)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
-        }
-    }
 }

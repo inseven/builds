@@ -20,33 +20,33 @@
 
 import SwiftUI
 
-struct WorkflowJobList: View {
+struct DurationView: View {
 
-    @Environment(\.presentURL) private var presentURL
+    static let formatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .abbreviated
+        formatter.maximumUnitCount = 1
+        return formatter
+    }()
 
-    let jobs: [GitHub.WorkflowJob]
+    let startDate: Date
+    let endDate: Date?
 
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
+    func format(startDate: Date, endDate: Date = Date()) -> String? {
+        let duration = Calendar.gregorian.dateComponents([.hour, .minute, .second], from: startDate, to: endDate)
+        return Self.formatter.string(from: duration)
     }
 
     var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                presentURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                    Spacer()
-                    if let startDate = job.started_at {
-                        DurationView(startDate: startDate, endDate: job.completed_at)
-                            .foregroundColor(.secondary)
-                    }
+        if let endDate, let value = format(startDate: startDate, endDate: endDate) {
+            Text(value)
+        } else {
+            TimelineView(.everySecond) { context in
+                if let value = format(startDate: startDate) {
+                    Text(value)
                 }
             }
         }
     }
+
 }

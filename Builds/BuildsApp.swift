@@ -53,6 +53,9 @@ struct BuildsApp: App {
         WorkflowsWindow()
             .environmentObject(applicationModel)
 
+        InfoWindow()
+            .environmentObject(applicationModel)
+
 #endif
 
     }

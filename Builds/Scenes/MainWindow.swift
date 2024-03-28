@@ -31,7 +31,7 @@ struct MainWindow: Scene {
     @State var error: Error? = nil
 
     var body: some Scene {
-        WindowGroup(id: Self.id) {
+        SingleWindow("Builds", id: Self.id) {
             SceneStorageContainer {
                 SceneModel.Settings()
             } content: { sceneSettings in
