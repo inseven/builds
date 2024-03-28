@@ -18,35 +18,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import Combine
 import SwiftUI
 
-struct WorkflowJobList: View {
+import Interact
 
-    @Environment(\.presentURL) private var presentURL
+struct PresentURLAction {
 
-    let jobs: [GitHub.WorkflowJob]
-
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
+    protocol Presenter {
+        func presentURL(_ url: URL)
     }
 
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                presentURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                    Spacer()
-                    if let startDate = job.started_at {
-                        DurationView(startDate: startDate, endDate: job.completed_at)
-                            .foregroundColor(.secondary)
-                    }
-                }
-            }
+    let presenter: Presenter?
+
+    init(presenter: Presenter? = nil) {
+        self.presenter = presenter
+    }
+
+    public func callAsFunction(_ url: URL) {
+        if let presenter {
+            presenter.presentURL(url)
+        } else {
+            Application.open(url)
         }
     }
+
 }

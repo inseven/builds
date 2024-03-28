@@ -75,21 +75,6 @@ struct MainContentView: View {
                     .help("Select workflows to display")
                     .disabled(!applicationModel.isAuthorized)
                 }
-
-#if os(macOS)
-
-                // Only show the inspector toolbar button in larger size classes.
-                ToolbarItem(id: "inspector", placement: .primaryAction) {
-                    Button {
-                        sceneModel.toggleInspector()
-                    } label: {
-                        Label("Toggle Inspector", systemImage: "sidebar.trailing")
-                    }
-                    .help("Hide or show the Inspector")
-                }
-
-#endif
-
             }
         }
         .presents(confirmable: $sceneModel.confirmation)
@@ -120,6 +105,9 @@ struct MainContentView: View {
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
         .environmentObject(sceneModel)
+#if os(iOS)
+        .presenter(sceneModel)
+#endif
         .focusedSceneObject(sceneModel)
         .onChange(of: scenePhase) { oldValue, newValue in
             switch newValue {

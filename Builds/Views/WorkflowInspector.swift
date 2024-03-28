@@ -29,6 +29,7 @@ struct WorkflowInspector: View {
     @EnvironmentObject private var sceneModel: SceneModel
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    @Environment(\.presentURL) private var presentURL
 
     @State private var model: WorkflowInspectorModel
 
@@ -54,7 +55,7 @@ struct WorkflowInspector: View {
                         guard let url = workflowInstance.repositoryURL else {
                             return
                         }
-                        sceneModel.openURL(url)
+                        presentURL(url)
                     } label: {
                         LabeledContent {
                             Text(workflowInstance.id.repositoryFullName)
@@ -78,7 +79,7 @@ struct WorkflowInspector: View {
                             guard let url = workflowInstance.commitURL else {
                                 return
                             }
-                            sceneModel.openURL(url)
+                            presentURL(url)
                         } label: {
                             LabeledContent {
                                 Text(result.workflowRun.head_sha.prefix(7))
@@ -128,7 +129,7 @@ struct WorkflowInspector: View {
         }
         .formStyle(.grouped)
         .buttonStyle(.plain)
-        .navigationTitle(model.workflowInstance?.workflowName ?? String(id.workflowId))
+        .navigationTitle(model.workflowInstance?.repositoryName ?? "")
         .toolbarTitleDisplayMode(.inline)
         .dismissable(placement: .cancellationAction)
 #if os(iOS)

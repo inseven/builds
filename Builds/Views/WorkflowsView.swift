@@ -29,8 +29,11 @@ struct WorkflowsView: View {
         static let interItemSpacing: CGFloat? = 10.0
     }
 
-    @EnvironmentObject var applicationModel: ApplicationModel
-    @EnvironmentObject var sceneModel: SceneModel
+    @Environment(\.openWindow) private var openWindow
+    @Environment(\.presentURL) private var presentURL
+
+    @EnvironmentObject private var applicationModel: ApplicationModel
+    @EnvironmentObject private var sceneModel: SceneModel
 
     let workflows: [WorkflowInstance]
 
@@ -45,33 +48,43 @@ struct WorkflowsView: View {
                                  columns: columns,
                                  spacing: LayoutMetrics.interItemSpacing) { workflowInstance in
             WorkflowInstanceCell(instance: workflowInstance)
-            #if os(iOS)
+#if os(iOS)
                 .environment(\.isSelected, sceneModel.selection.contains(workflowInstance.id))
-            #endif
+#endif
         } contextMenu: { selection in
 
             let workflowInstances = workflows.filter(selection: selection)
             let results = workflowInstances.compactMap { $0.result }
 
-            MenuItem("Open", systemImage: "safari") {
+#if os(macOS)
+
+            MenuItem("Get Info", systemImage: "info") {
+                for instance in workflowInstances {
+                    openWindow(id: "info", value: instance.id)
+                }
+            }
+
+            Divider()
+
+#endif
+
+            MenuItem("Open Run", systemImage: "safari") {
                 for result in results {
-                    sceneModel.openURL(result.workflowRun.html_url)
+                    presentURL(result.workflowRun.html_url)
                 }
             }
             .disabled(results.isEmpty)
 
-            Divider()
-
             MenuItem("Open Commit", systemImage: "safari") {
                 for url in workflowInstances.compactMap({ $0.commitURL }) {
-                    sceneModel.openURL(url)
+                    presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
             MenuItem("Open Repository", systemImage: "safari") {
                 for url in workflowInstances.compactMap({ $0.repositoryURL }) {
-                    sceneModel.openURL(url)
+                    presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
@@ -89,7 +102,7 @@ struct WorkflowsView: View {
 #if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
             for result in workflowInstances.compactMap({ $0.result }) {
-                sceneModel.openURL(result.workflowRun.html_url)
+                presentURL(result.workflowRun.html_url)
             }
 #else
             guard let id = selection.first?.id else {

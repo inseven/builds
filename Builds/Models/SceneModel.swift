@@ -48,21 +48,8 @@ class SceneModel: ObservableObject, Runnable {
 
     @MainActor @Published var section: SectionIdentifier? = .all
     @MainActor @Published var sheet: SheetType?
-
-    @MainActor @Published var isShowingInspector: Bool = false {
-        didSet {
-            if !isShowingInspector {
-#if os(iOS)
-                selection = []
-#endif
-            }
-        }
-    }
-    
     @MainActor @Published var selection = Set<WorkflowInstance.ID>()
-
     @MainActor @Published var confirmation: Confirmable?
-
     @MainActor @Published var previewURL: URL?
 
     private let applicationModel: ApplicationModel
@@ -96,29 +83,8 @@ class SceneModel: ObservableObject, Runnable {
     }
 
     @MainActor func showSettings() {
-        isShowingInspector = false
         sheet = .settings
     }
-
-    @MainActor func showInspector() {
-        isShowingInspector = true
-    }
-
-    @MainActor func hideInspector() {
-#if os(iOS)
-        selection = []
-#endif
-        isShowingInspector = false
-    }
-
-    @MainActor func toggleInspector() {
-        if isShowingInspector {
-            hideInspector()
-        } else {
-            showInspector()
-        }
-    }
-
 
     @MainActor func logIn() {
 #if os(macOS)
@@ -148,19 +114,18 @@ class SceneModel: ObservableObject, Runnable {
 
     @MainActor func manageWorkflows() {
 #if os(iOS)
-        isShowingInspector = false
         sheet = .add
 #else
         Application.open(.manageWorkflows)
 #endif
     }
 
-    @MainActor func openURL(_ url: URL) {
-#if os(iOS)
+}
+
+extension SceneModel: PresentURLAction.Presenter {
+
+    @MainActor func presentURL(_ url: URL) {
         previewURL = url
-#else
-        Application.open(url)
-#endif
     }
 
 }
