@@ -20,29 +20,8 @@
 
 import SwiftUI
 
-import Diligence
-import Interact
-
-struct MainWindow: Scene {
-
-    static let id = "main"
-
-    @EnvironmentObject var applicationModel: ApplicationModel
-    @State var error: Error? = nil
-
-    var body: some Scene {
-        SingleWindow("Builds", id: Self.id) {
-            MainContentView(applicationModel: applicationModel)
-                .handlesAuthentication()
-                .handlesExternalEvents(preferring: [], allowing: [.main])
-                .environmentObject(applicationModel)
-        }
-        .defaultSize(CGSize(width: 800, height: 720))
-        .commands {
-            SidebarCommands()
-            ToolbarCommands()
-        }
-        .handlesExternalEvents(matching: [.main, .auth])
-    }
-
-}
+#if os(macOS)
+typealias SingleWindow = Window
+#else
+typealias SingleWindow = WindowGroup
+#endif
