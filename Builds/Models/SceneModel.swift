@@ -23,7 +23,16 @@ import SwiftUI
 
 import Interact
 
+// TODO: Can I use the new observable stuff?
 class SceneModel: ObservableObject, Runnable {
+
+    struct Settings: Codable {
+
+        var columnVisibility: NavigationSplitViewVisibility = .automatic
+        var section: SectionIdentifier? = .all
+        var selection = Set<WorkflowInstance.ID>()
+
+    }
 
     enum SheetType: Identifiable {
 
@@ -46,10 +55,25 @@ class SceneModel: ObservableObject, Runnable {
         case view(WorkflowInstance.ID)
     }
 
-    @MainActor @Published var columnVisibility: NavigationSplitViewVisibility = .automatic
-    @MainActor @Published var section: SectionIdentifier? = .all
+    @MainActor @Published var columnVisibility: NavigationSplitViewVisibility = .automatic {
+        didSet {
+            store.columnVisibility = columnVisibility
+            // TODO: Write-through to a global set of scene store defaults.
+        }
+    }
+
+    @MainActor @Published var section: SectionIdentifier? {
+        didSet {
+            store.section = section
+        }
+    }
+    @MainActor @Binding var store: Settings
     @MainActor @Published var sheet: SheetType?
-    @MainActor @Published var selection = Set<WorkflowInstance.ID>()
+    @MainActor @Published var selection: Set<WorkflowInstance.ID> {
+        didSet {
+            store.selection = selection
+        }
+    }
     @MainActor @Published var confirmation: Confirmable?
     @MainActor @Published var previewURL: URL?
 
@@ -57,8 +81,16 @@ class SceneModel: ObservableObject, Runnable {
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(applicationModel: ApplicationModel) {
+    @MainActor init(applicationModel: ApplicationModel, store: Binding<Settings>) {
+        // The scene storage lifecycle is distinctly different betwene macOS and iOS.
+        // On iOS the scene storage is deserialized _before_ the view is created. On macOS, it appears to be
+        // loaded and applied _after_ the view structure is created. This is fucking bonkers and means our model is
+        // created with out of date data and there's no obvious way to broadcast that into the client for a reload.
         self.applicationModel = applicationModel
+        _store = store
+        self.columnVisibility = store.wrappedValue.columnVisibility
+        self.section = store.wrappedValue.section
+        self.selection = store.wrappedValue.selection
     }
 
     @MainActor func start() {
