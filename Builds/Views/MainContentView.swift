@@ -37,7 +37,7 @@ struct MainContentView: View {
     }
 
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $sceneModel.columnVisibility) {
             Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
                 .toolbar {
 #if os(iOS)

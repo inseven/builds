@@ -46,6 +46,7 @@ class SceneModel: ObservableObject, Runnable {
         case view(WorkflowInstance.ID)
     }
 
+    @MainActor @Published var columnVisibility: NavigationSplitViewVisibility = .automatic
     @MainActor @Published var section: SectionIdentifier? = .all
     @MainActor @Published var sheet: SheetType?
     @MainActor @Published var selection = Set<WorkflowInstance.ID>()
