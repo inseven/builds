@@ -20,28 +20,24 @@
 
 import SwiftUI
 
-struct InspectorCommands: Commands {
+private struct PresentURLEnvironmentKey: EnvironmentKey {
+    static let defaultValue = PresentURLAction()
+}
 
-    @FocusedObject var sceneModel: SceneModel?
+extension View {
 
-    var body: some Commands {
-        CommandGroup(before: .toolbar) {
-            Menu {
-                Button {
-                    sceneModel?.toggleInspector()
-                } label: {
-                    if sceneModel?.isShowingInspector ?? false {
-                        Text("Hide Inspector")
-                    } else {
-                        Text("Show Inspector")
-                    }
-                }
-                .keyboardShortcut("i", modifiers: .command)
-                .disabled(sceneModel == nil)
-            } label: {
-                Text("Inspectors")
-            }
-        }
+    func presenter(_ presenter: PresentURLAction.Presenter) -> some View {
+        return self
+            .environment(\.presentURL, PresentURLAction(presenter: presenter))
+    }
+
+}
+
+extension EnvironmentValues {
+
+    var presentURL: PresentURLAction {
+        get { self[PresentURLEnvironmentKey.self] }
+        set { self[PresentURLEnvironmentKey.self] = newValue }
     }
 
 }

@@ -20,33 +20,26 @@
 
 import SwiftUI
 
-struct WorkflowJobList: View {
+#if os(macOS)
 
-    @Environment(\.presentURL) private var presentURL
+struct InfoWindow: Scene {
 
-    let jobs: [GitHub.WorkflowJob]
+    @EnvironmentObject var applicationModel: ApplicationModel
 
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
-    }
+    static let id = "info"
 
-    var body: some View {
-        ForEach(jobs) { job in
-            Button {
-                presentURL(job.html_url)
-            } label: {
-                HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
-                    Text(job.name)
-                    Spacer()
-                    if let startDate = job.started_at {
-                        DurationView(startDate: startDate, endDate: job.completed_at)
-                            .foregroundColor(.secondary)
-                    }
-                }
+    var body: some Scene {
+        WindowGroup("Info", id: Self.id, for: WorkflowInstance.ID.self) { id in
+            if let id = id.wrappedValue{
+                WorkflowInspector(applicationModel: applicationModel, id: id)
+                    .frame(width: 300)
+                    .frame(minHeight: 800)
+                    .environmentObject(applicationModel)
             }
         }
+        .windowResizability(.contentSize)
     }
+
 }
+
+#endif
