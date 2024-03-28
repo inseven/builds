@@ -18,16 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-extension GitHub.WorkflowJob {
+extension TimelineSchedule where Self == PeriodicTimelineSchedule {
 
-    var duration: DateComponents? {
-        let calendar = Calendar(identifier: .gregorian)
-        guard let started_at, let completed_at else {
-            return nil
-        }
-        return calendar.dateComponents([.hour, .minute, .second], from: started_at, to: completed_at)
+    static var everySecond: PeriodicTimelineSchedule {
+        return periodic(from: .referneceDate, by: 1)
     }
 
 }

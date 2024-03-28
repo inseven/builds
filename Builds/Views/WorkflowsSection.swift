@@ -83,7 +83,7 @@ struct WorkflowsSection: View {
                                     if applicationModel.isUpdating {
                                         Text("Updating...")
                                     } else if let lastError = applicationModel.lastError {
-                                        Label(lastError.localizedDescription, systemImage: "exclamationmark.triangle")
+                                        Label(lastError.localizedDescription, systemImage: "exclamationmark.fill")
                                             .symbolRenderingMode(.multicolor)
                                     } else if let lastUpdate = applicationModel.lastUpdate {
                                         Text(lastUpdate, style: .time)
