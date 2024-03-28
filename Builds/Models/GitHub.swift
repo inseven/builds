@@ -116,10 +116,12 @@ class GitHub {
 
         let id: Int
 
+        let completed_at: Date?
         let conclusion: Conclusion?
         let html_url: URL
         let name: String
         let run_id: Int
+        let started_at: Date?
         let status: Status
     }
 
