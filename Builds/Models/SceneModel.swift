@@ -126,7 +126,11 @@ class SceneModel: ObservableObject, Runnable {
 extension SceneModel: PresentURLAction.Presenter {
 
     @MainActor func presentURL(_ url: URL) {
-        previewURL = url
+        if applicationModel.useInAppBrowser {
+            previewURL = url
+        } else {
+            Application.open(url)
+        }
     }
 
 }
