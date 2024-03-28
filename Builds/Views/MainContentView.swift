@@ -31,9 +31,9 @@ struct MainContentView: View {
 
     @StateObject var sceneModel: SceneModel
 
-    init(applicationModel: ApplicationModel) {
+    init(applicationModel: ApplicationModel, sceneSettings: Binding<SceneModel.Settings>) {
         self.applicationModel = applicationModel
-        _sceneModel = StateObject(wrappedValue: SceneModel(applicationModel: applicationModel))
+        _sceneModel = StateObject(wrappedValue: SceneModel(applicationModel: applicationModel, store: sceneSettings))
     }
 
     var body: some View {
