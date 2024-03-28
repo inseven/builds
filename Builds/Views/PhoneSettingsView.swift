@@ -48,6 +48,12 @@ struct PhoneSettingsView: View {
         Form {
 
             Section {
+                Toggle("Use In-App Browser", isOn: $applicationModel.useInAppBrowser)
+            } header: {
+                Text("Viewing")
+            }
+
+            Section {
                 AboutButton(Legal.contents)
             }
 
