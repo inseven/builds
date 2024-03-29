@@ -18,38 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if os(iOS)
+
 import SwiftUI
 
-struct AccountCommands: Commands {
+struct WorkflowDetailsSheet: View {
 
-    @ObservedObject var applicationModel: ApplicationModel
+    @EnvironmentObject var applicationModel: ApplicationModel
 
-    @FocusedObject var focusedSceneModel: FocusedSceneModel?
+    @Environment(SceneModel.self) var sceneModel
 
-    var body: some Commands {
-        CommandMenu("Account") {
-            if applicationModel.isAuthorized {
-                Button {
-                    applicationModel.managePermissions()
-                } label: {
-                    Text("Manage GitHub Permissions...")
-                }
-                Divider()
-                Button {
-                    focusedSceneModel?.sceneModel.signOut()
-                } label: {
-                    Text("Sign Out...")
-                }
-                .disabled(focusedSceneModel == nil)
-            } else {
-                Button {
-                    focusedSceneModel?.sceneModel.logIn()
-                } label: {
-                    Text("Sign In with GitHub...")
-                }
-                .disabled(focusedSceneModel == nil)
-            }
+    let id: WorkflowInstance.ID
+
+    var body: some View {
+        NavigationStack {
+            @Bindable var sceneModel = sceneModel
+            WorkflowDetailsView(applicationModel: applicationModel, id: id)
+                .showsURL($sceneModel.previewURL)
         }
     }
 
 }
+
+#endif

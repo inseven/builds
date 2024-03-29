@@ -41,7 +41,7 @@ struct DurationView: View {
         if let endDate, let value = format(startDate: startDate, endDate: endDate) {
             Text(value)
         } else {
-            TimelineView(.everySecond) { context in
+            TimelineView(.periodic(from: startDate, by: 1)) { context in
                 if let value = format(startDate: startDate) {
                     Text(value)
                 }

@@ -31,7 +31,7 @@ struct WorkflowsSection: View {
     }
 
     @ObservedObject var applicationModel: ApplicationModel
-    @ObservedObject var sceneModel: SceneModel
+    var sceneModel: SceneModel
 
     let section: SectionIdentifier
 

@@ -23,12 +23,8 @@ import SwiftUI
 
 import Interact
 
-struct WorkflowInspector: View {
+struct WorkflowDetailsView: View {
 
-    @EnvironmentObject private var applicationModel: ApplicationModel
-    @EnvironmentObject private var sceneModel: SceneModel
-
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.presentURL) private var presentURL
 
     @State private var model: WorkflowInspectorModel
@@ -132,9 +128,6 @@ struct WorkflowInspector: View {
         .navigationTitle(model.workflowInstance?.repositoryName ?? "")
         .toolbarTitleDisplayMode(.inline)
         .dismissable(placement: .cancellationAction)
-#if os(iOS)
-        .showsURL($sceneModel.previewURL, isActive: horizontalSizeClass == .compact)
-#endif
     }
 
 }

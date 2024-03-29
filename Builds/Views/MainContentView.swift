@@ -29,11 +29,11 @@ struct MainContentView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.openWindow) private var openWindow
 
-    @StateObject var sceneModel: SceneModel
+    @State var sceneModel: SceneModel
 
     init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
-        _sceneModel = StateObject(wrappedValue: SceneModel(applicationModel: applicationModel))
+        _sceneModel = State(initialValue: SceneModel(applicationModel: applicationModel))
     }
 
     var body: some View {
@@ -89,26 +89,24 @@ struct MainContentView: View {
             case .settings:
                 NavigationView {
                     PhoneSettingsView()
-                        .environmentObject(sceneModel)
+                        .environment(sceneModel)
                 }
             case .logIn:
                 SafariWebView(url: applicationModel.client.authorizationURL)
                     .ignoresSafeArea()
             case .view(let id):
-                NavigationStack {
-                    WorkflowInspector(applicationModel: applicationModel, id: id)
-                }
+                WorkflowDetailsSheet(id: id)
             }
         }
         .showsURL($sceneModel.previewURL)
 #endif
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()
-        .environmentObject(sceneModel)
+        .environment(sceneModel)
 #if os(iOS)
         .presenter(sceneModel)
 #endif
-        .focusedSceneObject(sceneModel)
+        .focusedSceneObject(FocusedSceneModel(sceneModel))
         .onChange(of: scenePhase) { oldValue, newValue in
             switch newValue {
             case .background:
