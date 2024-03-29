@@ -131,11 +131,13 @@ struct WorkflowInstanceCell: View {
         .frame(maxWidth: .infinity)
         .padding()
         .background(instance.statusColor)
+        .foregroundColor(.black)
         .clipShape(RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
 #if os(iOS)
-        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
+        .contentShape([.contextMenuPreview, .dragPreview, .hoverEffect], 
+                      RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
+        .hoverEffect(.automatic)
 #endif
-        .foregroundColor(.black)
         .padding(LayoutMetrics.selectionPadding)
         .overlay(RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius + LayoutMetrics.selectionPadding)
             .stroke(background, lineWidth: LayoutMetrics.selectionLineWidth))
