@@ -67,7 +67,7 @@ struct WorkflowsView: View, OpenContext {
             guard let id = selection.first?.id else {
                 return
             }
-            sceneModel.sheet = .view(id)
+            sceneModel.settings.sheet = .view(id)
 #endif
         }
         .frame(minWidth: 300)

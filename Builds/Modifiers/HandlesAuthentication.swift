@@ -44,7 +44,7 @@ struct HandlesAuthentication: ViewModifier {
                 Task {
                     do {
                         try await applicationModel.authenticate(with: url)
-                        focusedSceneModel?.sceneModel.sheet = nil
+                        focusedSceneModel?.sceneModel.settings.sheet = nil
                     } catch {
                         self.error = error
                     }

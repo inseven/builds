@@ -33,6 +33,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         case accessToken
         case favorites
         case useInAppBrowser
+        case sceneSettings
     }
 
     @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
@@ -92,6 +93,12 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         }
     }
 
+    @MainActor @Published var defaultSceneSettings: SceneModel.Settings {
+        didSet {
+            try? defaults.set(codable: defaultSceneSettings, forKey: .sceneSettings)
+        }
+    }
+
     @MainActor @Published var lastError: Error? = nil
 
     @MainActor @Published private var activeScenes = 0
@@ -111,9 +118,10 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")
         self.client = GitHubClient(api: api)
-        self.cachedStatus = (try? defaults.codable(forKey: .status, default: [WorkflowInstance.ID: WorkflowResult]())) ?? [:]
+        self.cachedStatus = (try? defaults.codable(forKey: .status)) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         self.useInAppBrowser = defaults.bool(forKey: .useInAppBrowser, default: true)
+        self.defaultSceneSettings = (try? defaults.codable(forKey: .sceneSettings)) ?? SceneModel.Settings()
         if let accessToken = try? keychain.string(forKey: .accessToken) {
             self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
         } else {

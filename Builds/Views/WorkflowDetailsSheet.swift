@@ -34,7 +34,7 @@ struct WorkflowDetailsSheet: View {
         NavigationStack {
             @Bindable var sceneModel = sceneModel
             WorkflowDetailsView(applicationModel: applicationModel, id: id)
-                .showsURL($sceneModel.previewURL)
+                .showsURL($sceneModel.settings.previewURL)
         }
     }
 
