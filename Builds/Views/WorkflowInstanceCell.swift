@@ -112,16 +112,20 @@ struct WorkflowInstanceCell: View {
 
             }
             GridRow {
-                Text(instance.details)
-                    .font(Font.subheadline)
-                    .opacity(0.6)
+                HStack {
+                    Text(instance.workflowName)
+                    Text(instance.id.branch)
+                        .monospaced()
+                    Text(instance.sha ?? "-")
+                        .monospaced()
+                }
                 TimelineView(.periodic(from: Date(), by: 1)) { _ in
                     Text(instance.lastRun)
-                        .font(Font.subheadline)
-                        .opacity(0.6)
                 }
                 .gridColumnAlignment(.trailing)
             }
+            .font(.subheadline)
+            .opacity(0.6)
         }
         .lineLimit(1)
         .frame(maxWidth: .infinity)

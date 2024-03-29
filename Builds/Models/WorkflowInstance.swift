@@ -69,10 +69,6 @@ struct WorkflowInstance: Identifiable, Hashable {
         return URL(repositoryFullName: id.repositoryFullName, commit: result.workflowRun.head_sha)
     }
 
-    var details: String {
-        return "\(workflowName) (\(id.branch))"
-    }
-
     var lastRun: String {
         guard let createdAt = result?.workflowRun.created_at else {
             return "Unknown"
@@ -87,6 +83,13 @@ struct WorkflowInstance: Identifiable, Hashable {
 
     var repositoryURL: URL? {
         return URL(repositoryFullName: id.repositoryFullName)
+    }
+
+    var sha: String? {
+        guard let result else {
+            return nil
+        }
+        return String(result.workflowRun.head_sha.prefix(7))
     }
 
     var state: SummaryState {
