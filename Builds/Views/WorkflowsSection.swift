@@ -40,28 +40,6 @@ struct WorkflowsSection: View {
             if applicationModel.isAuthorized {
                 if applicationModel.results.count > 0 {
                     WorkflowsView(workflows: sceneModel.workflows)
-#if os(macOS)
-                        .safeAreaInset(edge: .bottom) {
-                            VStack(spacing: 0) {
-                                Divider()
-                                HStack {
-                                    if applicationModel.isUpdating {
-                                        Text("Updating...")
-                                    } else if let lastError = applicationModel.lastError {
-                                        Label(lastError.localizedDescription, systemImage: "exclamationmark.fill")
-                                            .symbolRenderingMode(.multicolor)
-                                    } else if let lastUpdate = applicationModel.lastUpdate {
-                                        Text(lastUpdate, style: .time)
-                                    } else {
-                                        Text("Never Updated")
-                                    }
-                                }
-                                .padding()
-                            }
-                            .foregroundStyle(.secondary)
-                            .background(.thinMaterial)
-                        }
-#endif
                 } else {
                     ContentUnavailableView {
                         Label("No Workflows", systemImage: "checklist.unchecked")

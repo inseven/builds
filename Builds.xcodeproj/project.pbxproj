@@ -60,6 +60,7 @@
 		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
+		D8B49EE82BB76D4D0076E273 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B49EE72BB76D4D0076E273 /* StatusButton.swift */; };
 		D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */; };
 		D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */; };
 		D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */; };
@@ -169,6 +170,7 @@
 		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
 		D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJobsList.swift; sourceTree = "<group>"; };
+		D8B49EE72BB76D4D0076E273 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
 		D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchPickerSheet.swift; sourceTree = "<group>"; };
 		D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleCommands.swift; sourceTree = "<group>"; };
 		D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCommands.swift; sourceTree = "<group>"; };
@@ -387,6 +389,7 @@
 				D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */,
 				D8800B622BB4B25800AD3BB7 /* SheetReader.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
+				D8B49EE72BB76D4D0076E273 /* StatusButton.swift */,
 				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
 				D8D3FAFB2BB64239001298CC /* WorkflowDetailsSheet.swift */,
 				D86A91462B9E5FF30008FF63 /* WorkflowDetailsView.swift */,
@@ -674,6 +677,7 @@
 				D8355DCF27F63B680091BAFD /* GitHub.swift in Sources */,
 				D854FD852BB615D500DD31DD /* WorkflowCommands.swift in Sources */,
 				D8CA0EF22B94110A00DAE758 /* TimeInterval.swift in Sources */,
+				D8B49EE82BB76D4D0076E273 /* StatusButton.swift in Sources */,
 				D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */,
 				D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */,
 				D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */,

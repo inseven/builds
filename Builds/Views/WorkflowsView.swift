@@ -71,10 +71,6 @@ struct WorkflowsView: View, OpenContext {
 #endif
         }
         .frame(minWidth: 300)
-
-#if os(macOS)
-        .navigationSubtitle("\(workflows.count) Workflows")
-#endif
         .refreshable {
             await applicationModel.refresh()
         }
