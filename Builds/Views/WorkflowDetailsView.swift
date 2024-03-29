@@ -98,6 +98,7 @@ struct WorkflowDetailsView: View {
                         } label: {
                             Text(workflowInstance.id.branch)
                                 .foregroundStyle(.link)
+                                .monospaced()
                         }
                         .disabled(workflowInstance.result == nil)
                     } label: {
