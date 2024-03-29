@@ -107,7 +107,20 @@ struct WorkflowDetailsView: View {
 
                     // Workflow.
                     LabeledContent {
-                        Text(workflowInstance.workflowName)
+                        Button {
+                            guard let workflowURL = workflowInstance.workflowURL else {
+                                return
+                            }
+                            presentURL(workflowURL)
+                        } label: {
+                            if let path = workflowInstance.result?.workflowRun.path {
+                                Text(path)
+                                    .foregroundStyle(.link)
+                            } else {
+                                Text("-")
+                            }
+                        }
+                        .disabled(workflowInstance.result == nil)
                     } label: {
                         Text("Workflow")
                     }
