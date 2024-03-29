@@ -26,7 +26,9 @@ import Interact
 struct HandlesAuthentication: ViewModifier {
 
     @EnvironmentObject var applicationModel: ApplicationModel
-    @FocusedObject var sceneModel: SceneModel?
+
+    @FocusedObject var focusedSceneModel: FocusedSceneModel?
+
     @MainActor @State var error: Error? = nil
 
     func body(content: Content) -> some View {
@@ -42,7 +44,7 @@ struct HandlesAuthentication: ViewModifier {
                 Task {
                     do {
                         try await applicationModel.authenticate(with: url)
-                        sceneModel?.sheet = nil
+                        focusedSceneModel?.sceneModel.sheet = nil
                     } catch {
                         self.error = error
                     }

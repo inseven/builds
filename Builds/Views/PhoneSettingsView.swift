@@ -38,13 +38,16 @@ struct PhoneSettingsView: View {
     }
 
     @EnvironmentObject var applicationModel: ApplicationModel
-    @EnvironmentObject var sceneModel: SceneModel
+    @Environment(SceneModel.self) var sceneModel
 
     @Environment(\.dismiss) var dismiss
 
     @State var sheet: SheetType? = nil
 
     var body: some View {
+
+        @Bindable var sceneModel = sceneModel
+
         Form {
 
             Section {

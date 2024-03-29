@@ -24,7 +24,7 @@ struct AccountCommands: Commands {
 
     @ObservedObject var applicationModel: ApplicationModel
 
-    @FocusedObject var sceneModel: SceneModel?
+    @FocusedObject var focusedSceneModel: FocusedSceneModel?
 
     var body: some Commands {
         CommandMenu("Account") {
@@ -36,18 +36,18 @@ struct AccountCommands: Commands {
                 }
                 Divider()
                 Button {
-                    sceneModel?.signOut()
+                    focusedSceneModel?.sceneModel.signOut()
                 } label: {
                     Text("Sign Out...")
                 }
-                .disabled(sceneModel == nil)
+                .disabled(focusedSceneModel == nil)
             } else {
                 Button {
-                    sceneModel?.logIn()
+                    focusedSceneModel?.sceneModel.logIn()
                 } label: {
                     Text("Sign In with GitHub...")
                 }
-                .disabled(sceneModel == nil)
+                .disabled(focusedSceneModel == nil)
             }
         }
     }

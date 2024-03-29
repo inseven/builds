@@ -23,9 +23,10 @@ import SwiftUI
 struct Sidebar: View {
 
     @ObservedObject var applicationModel: ApplicationModel
-    @ObservedObject var sceneModel: SceneModel
+    var sceneModel: SceneModel
 
     var body: some View {
+        @Bindable var sceneModel = sceneModel
         List(selection: $sceneModel.section) {
             Section {
                 let identifier = SectionIdentifier.all

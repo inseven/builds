@@ -33,7 +33,7 @@ struct WorkflowsView: View, OpenContext {
     @Environment(\.presentURL) var presentURL
 
     @EnvironmentObject private var applicationModel: ApplicationModel
-    @EnvironmentObject private var sceneModel: SceneModel
+    @Environment(SceneModel.self) var sceneModel
 
     let workflows: [WorkflowInstance]
 
@@ -44,6 +44,7 @@ struct WorkflowsView: View, OpenContext {
     }
 
     var body: some View {
+        @Bindable var sceneModel = sceneModel
         SelectableCollectionView(workflows, selection: $sceneModel.selection,
                                  columns: columns,
                                  spacing: LayoutMetrics.interItemSpacing) { workflowInstance in

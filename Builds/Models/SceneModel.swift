@@ -23,7 +23,8 @@ import SwiftUI
 
 import Interact
 
-class SceneModel: ObservableObject, Runnable {
+@Observable
+class SceneModel: Runnable {
 
     enum SheetType: Identifiable {
 
@@ -46,12 +47,12 @@ class SceneModel: ObservableObject, Runnable {
         case view(WorkflowInstance.ID)
     }
 
-    @MainActor @Published var columnVisibility: NavigationSplitViewVisibility = .automatic
-    @MainActor @Published var section: SectionIdentifier? = .all
-    @MainActor @Published var sheet: SheetType?
-    @MainActor @Published var selection = Set<WorkflowInstance.ID>()
-    @MainActor @Published var confirmation: Confirmable?
-    @MainActor @Published var previewURL: URL?
+    @MainActor var columnVisibility: NavigationSplitViewVisibility = .automatic
+    @MainActor var section: SectionIdentifier? = .all
+    @MainActor var sheet: SheetType?
+    @MainActor var selection = Set<WorkflowInstance.ID>()
+    @MainActor var confirmation: Confirmable?
+    @MainActor var previewURL: URL?
 
     private let applicationModel: ApplicationModel
 
@@ -71,7 +72,6 @@ class SceneModel: ObservableObject, Runnable {
             return []
         }
     }
-
 
     @MainActor func start() {
         applicationModel

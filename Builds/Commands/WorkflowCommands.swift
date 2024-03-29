@@ -29,13 +29,13 @@ struct WorkflowCommands: Commands, OpenContext {
 
     @EnvironmentObject var applicationModel: ApplicationModel
 
-    @FocusedObject var sceneModel: SceneModel?
+    @FocusedObject var focusedSceneModel: FocusedSceneModel?
 
     var body: some Commands {
         CommandMenu("Workflow") {
             WorkflowMenu.items(applicationModel: applicationModel,
-                               sceneModel: sceneModel,
-                               selection: sceneModel?.selection ?? [],
+                               sceneModel: focusedSceneModel?.sceneModel,
+                               selection: focusedSceneModel?.sceneModel.selection ?? [],
                                openContext: self).asContextMenu()
         }
     }

@@ -20,10 +20,15 @@
 
 import SwiftUI
 
-extension TimelineSchedule where Self == PeriodicTimelineSchedule {
+// `.focusedSceneValue` seems incredibly unreliable in SwiftUI but, so far, `.focusedSceneObject` seems to be relatively
+// robust. This wrapper exists to allow adopt the new Observable objects for most of the UI, but still used focused
+// objects to pass our models back up to command menus and others.
+class FocusedSceneModel: ObservableObject {
 
-    static var everySecond: PeriodicTimelineSchedule {
-        return periodic(from: .referneceDate, by: 1)
+    init(_ sceneModel: SceneModel) {
+        self.sceneModel = sceneModel
     }
+
+    var sceneModel: SceneModel
 
 }
