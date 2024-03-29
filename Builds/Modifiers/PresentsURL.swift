@@ -53,7 +53,6 @@ fileprivate struct URLPresenter<Content: View>: View {
         content
             .sheet(item: binding) { url in
                 SafariWebView(url: url)
-                    .ignoresSafeArea()
             }
     }
 

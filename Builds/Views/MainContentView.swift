@@ -93,7 +93,6 @@ struct MainContentView: View {
                 }
             case .logIn:
                 SafariWebView(url: applicationModel.client.authorizationURL)
-                    .ignoresSafeArea()
             case .view(let id):
                 WorkflowDetailsSheet(id: id)
             }

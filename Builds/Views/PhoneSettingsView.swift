@@ -95,7 +95,6 @@ struct PhoneSettingsView: View {
             switch sheet {
             case .managePermissions:
                 SafariWebView(url: applicationModel.client.permissionsURL)
-                    .ignoresSafeArea()
             }
         }
         .dismissable()

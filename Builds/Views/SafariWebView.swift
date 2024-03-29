@@ -23,16 +23,31 @@
 import SwiftUI
 import SafariServices
 
-struct SafariWebView: UIViewControllerRepresentable {
-    let url: URL
+struct SafariWebView: View {
 
-    func makeUIViewController(context: Context) -> SFSafariViewController {
-        return SFSafariViewController(url: url)
+    private struct SafariViewControllerRepresentable: UIViewControllerRepresentable {
+        let url: URL
+
+        func makeUIViewController(context: Context) -> SFSafariViewController {
+            return SFSafariViewController(url: url)
+        }
+
+        func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {
+
+        }
     }
 
-    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {
+    private let url: URL
 
+    init(url: URL) {
+        self.url = url
     }
+
+    var body: some View {
+        SafariViewControllerRepresentable(url: url)
+            .ignoresSafeArea()
+    }
+
 }
 
 #endif
