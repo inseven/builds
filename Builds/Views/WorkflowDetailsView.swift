@@ -75,8 +75,8 @@ struct WorkflowDetailsView: View {
                             }
                             presentURL(url)
                         } label: {
-                            if let result = workflowInstance.result {
-                                Text(result.workflowRun.head_sha.prefix(7))
+                            if let sha = workflowInstance.sha {
+                                Text(sha)
                                     .foregroundStyle(.link)
                                     .monospaced()
                             } else {
