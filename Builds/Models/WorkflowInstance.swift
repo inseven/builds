@@ -62,11 +62,18 @@ struct WorkflowInstance: Identifiable, Hashable {
         return attributedTitle
     }
 
-    var commitURL: URL? {
-        guard let result else {
+    var branchURL: URL? {
+        guard let repositoryURL else {
             return nil
         }
-        return URL(repositoryFullName: id.repositoryFullName, commit: result.workflowRun.head_sha)
+        return repositoryURL.appendingPathComponents(["tree", id.branch])
+    }
+
+    var commitURL: URL? {
+        guard let result, let repositoryURL else {
+            return nil
+        }
+        return repositoryURL.appendingPathComponents(["commit", result.workflowRun.head_sha])
     }
 
     var lastRun: String {
@@ -82,7 +89,10 @@ struct WorkflowInstance: Identifiable, Hashable {
     }
 
     var repositoryURL: URL? {
-        return URL(repositoryFullName: id.repositoryFullName)
+        guard let url = result?.workflowRun.repository.html_url else {
+            return nil
+        }
+        return url
     }
 
     var sha: String? {

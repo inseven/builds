@@ -36,24 +36,18 @@ extension URL: Identifiable {
         return URLComponents(string: absoluteString)
     }
 
-    init?(repositoryFullName: String) {
-        self = Self.gitHub
-            .appendingPathComponent(repositoryFullName)
-    }
-
-    init?(repositoryFullName: String, commit: String) {
-        self = Self.gitHub
-            .appendingPathComponent(repositoryFullName)
-            .appendingPathComponent("commit")
-            .appendingPathComponent(commit)
-    }
-
     func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {
         guard var components = components else {
             return nil
         }
         components.queryItems = queryItems
         return components.url
+    }
+
+    func appendingPathComponents(_ pathComponents: [String]) -> URL {
+        return pathComponents.reduce(self) { partialResult, pathComponent in
+            return partialResult.appendingPathComponent(pathComponent)
+        }
     }
 
 }

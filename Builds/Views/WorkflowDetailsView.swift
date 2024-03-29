@@ -90,7 +90,16 @@ struct WorkflowDetailsView: View {
 
                     // Branch.
                     LabeledContent {
-                        Text(workflowInstance.id.branch)
+                        Button {
+                            guard let branchesURL = workflowInstance.branchURL else {
+                                return
+                            }
+                            presentURL(branchesURL)
+                        } label: {
+                            Text(workflowInstance.id.branch)
+                                .foregroundStyle(.link)
+                        }
+                        .disabled(workflowInstance.result == nil)
                     } label: {
                         Text("Branch")
                     }
