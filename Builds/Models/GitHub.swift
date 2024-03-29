@@ -161,12 +161,14 @@ class GitHub {
         let check_suite_node_id: String
         let conclusion: Conclusion?
         let created_at: Date
+        let display_title: String
         let event: String
         let head_branch: String
         let head_sha: String
         let html_url: URL
         let name: String
         let node_id: String
+        let path: String
         let repository: Repository
         let rerun_url: URL
         let run_attempt: Int

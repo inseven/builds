@@ -47,45 +47,77 @@ struct WorkflowDetailsView: View {
         Form {
             if let workflowInstance = model.workflowInstance {
                 Section {
-                    Button {
-                        guard let url = workflowInstance.repositoryURL else {
-                            return
-                        }
-                        presentURL(url)
-                    } label: {
-                        LabeledContent {
-                            Text(workflowInstance.id.repositoryFullName)
-                                .foregroundStyle(.link)
+
+                    // Title.
+                    LabeledContent {
+                        Button {
+                            if let result = workflowInstance.result {
+                                presentURL(result.workflowRun.html_url)
+                            }
                         } label: {
-                            Text("Repository")
+                            if let title = workflowInstance.attributedTitle {
+                                Text(title)
+                                    .foregroundStyle(.link)
+                            } else {
+                                Text("-")
+                            }
                         }
-                    }
-                    LabeledContent {
-                        Text(workflowInstance.workflowName)
+                        .disabled(workflowInstance.result == nil)
                     } label: {
-                        Text("Workflow")
+                        Text("Title")
                     }
+
+                    // Commit.
                     LabeledContent {
-                        Text(workflowInstance.id.branch)
-                    } label: {
-                        Text("Branch")
-                    }
-                    if let result = workflowInstance.result {
                         Button {
                             guard let url = workflowInstance.commitURL else {
                                 return
                             }
                             presentURL(url)
                         } label: {
-                            LabeledContent {
+                            if let result = workflowInstance.result {
                                 Text(result.workflowRun.head_sha.prefix(7))
                                     .foregroundStyle(.link)
                                     .monospaced()
-                            } label: {
-                                Text("Commit")
+                            } else {
+                                Text("-")
                             }
                         }
+                        .disabled(workflowInstance.result == nil)
+                    } label: {
+                        Text("Commit")
                     }
+
+                    // Branch.
+                    LabeledContent {
+                        Text(workflowInstance.id.branch)
+                    } label: {
+                        Text("Branch")
+                    }
+
+                    // Workflow.
+                    LabeledContent {
+                        Text(workflowInstance.workflowName)
+                    } label: {
+                        Text("Workflow")
+                    }
+
+                    // Repository.
+                    LabeledContent {
+                        Button {
+                            guard let url = workflowInstance.repositoryURL else {
+                                return
+                            }
+                            presentURL(url)
+                        } label: {
+                            Text(workflowInstance.id.repositoryFullName)
+                                .foregroundStyle(.link)
+                        }
+                        .disabled(workflowInstance.repositoryURL == nil)
+                    } label: {
+                        Text("Repository")
+                    }
+
                 }
                 if let result = workflowInstance.result {
                     Section {
@@ -126,7 +158,23 @@ struct WorkflowDetailsView: View {
         .formStyle(.grouped)
         .buttonStyle(.plain)
         .navigationTitle(model.workflowInstance?.repositoryName ?? "")
+#if os(macOS)
+        .navigationSubtitle(model.workflowInstance?.workflowName ?? "")
+#endif
         .toolbarTitleDisplayMode(.inline)
+#if os(iOS)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack(spacing: 0) {
+                    Text(model.workflowInstance?.repositoryName ?? "")
+                        .font(.headline)
+                    Text(model.workflowInstance?.workflowName ?? "")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+#endif
         .dismissable(placement: .cancellationAction)
     }
 

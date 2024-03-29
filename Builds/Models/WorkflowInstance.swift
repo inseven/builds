@@ -52,6 +52,16 @@ struct WorkflowInstance: Identifiable, Hashable {
         return result?.annotations ?? []
     }
 
+    var attributedTitle: AttributedString? {
+        guard let title = result?.workflowRun.display_title else {
+            return nil
+        }
+        guard let attributedTitle = try? AttributedString(markdown: title) else {
+            return AttributedString(title)
+        }
+        return attributedTitle
+    }
+
     var commitURL: URL? {
         guard let result else {
             return nil
