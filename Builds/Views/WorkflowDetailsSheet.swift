@@ -18,26 +18,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#if os(iOS)
+
 import SwiftUI
 
-#if os(macOS)
-
-struct InfoWindow: Scene {
+struct WorkflowDetailsSheet: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
 
-    static let id = "info"
+    @Environment(SceneModel.self) var sceneModel
 
-    var body: some Scene {
-        WindowGroup("Info", id: Self.id, for: WorkflowInstance.ID.self) { id in
-            if let id = id.wrappedValue{
-                WorkflowDetailsView(applicationModel: applicationModel, id: id)
-                    .frame(width: 300)
-                    .frame(minHeight: 800)
-                    .environmentObject(applicationModel)
-            }
+    let id: WorkflowInstance.ID
+
+    var body: some View {
+        NavigationStack {
+            @Bindable var sceneModel = sceneModel
+            WorkflowDetailsView(applicationModel: applicationModel, id: id)
+                .showsURL($sceneModel.previewURL)
         }
-        .windowResizability(.contentSize)
     }
 
 }

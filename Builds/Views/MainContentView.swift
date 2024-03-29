@@ -95,7 +95,7 @@ struct MainContentView: View {
                 SafariWebView(url: applicationModel.client.authorizationURL)
                     .ignoresSafeArea()
             case .view(let id):
-                WorkflowSheet(id: id)
+                WorkflowDetailsSheet(id: id)
             }
         }
         .showsURL($sceneModel.previewURL)
@@ -123,25 +123,3 @@ struct MainContentView: View {
         }
     }
 }
-
-#if os(iOS)
-
-struct WorkflowSheet: View {
-
-    @EnvironmentObject var applicationModel: ApplicationModel
-
-    @Environment(SceneModel.self) var sceneModel
-
-    let id: WorkflowInstance.ID
-
-    var body: some View {
-        NavigationStack {
-            @Bindable var sceneModel = sceneModel
-            WorkflowInspector(applicationModel: applicationModel, id: id)
-                .showsURL($sceneModel.previewURL)
-        }
-    }
-
-}
-
-#endif
