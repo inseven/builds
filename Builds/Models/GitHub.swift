@@ -151,6 +151,7 @@ class GitHub {
     struct WorkflowRun: Codable, Identifiable, Hashable {
 
         struct Repository: Codable, Hashable {
+            let branches_url: URL
             let full_name: String
             let html_url: URL
         }
