@@ -65,7 +65,11 @@ struct MainContentView: View {
             }
             .toolbarTitleDisplayMode(.inline)
             .navigationTitle(sceneModel.section?.title ?? "")
+#if os(macOS)
+            .navigationSubtitle("\(sceneModel.workflows.count) Workflows")
+#endif
             .toolbar(id: "main") {
+
                 ToolbarItem(id: "manage-workflows", placement: .primaryAction) {
                     Button {
                         sceneModel.manageWorkflows()
@@ -75,6 +79,18 @@ struct MainContentView: View {
                     .help("Select workflows to display")
                     .disabled(!applicationModel.isAuthorized)
                 }
+
+#if os(macOS)
+
+                if applicationModel.isUpdating || applicationModel.lastError != nil {
+                    ToolbarItem(id: "status", placement: .navigation) {
+                        StatusButton(applicationModel: applicationModel, sceneModel: sceneModel)
+                    }
+                    .customizationBehavior(.disabled)
+                }
+
+#endif
+
             }
         }
         .presents(confirmable: $sceneModel.confirmation)
