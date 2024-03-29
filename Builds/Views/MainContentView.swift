@@ -37,7 +37,7 @@ struct MainContentView: View {
     }
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $sceneModel.columnVisibility) {
+        NavigationSplitView(columnVisibility: $sceneModel.settings.columnVisibility) {
             Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
                 .toolbar {
 #if os(iOS)
@@ -80,7 +80,7 @@ struct MainContentView: View {
         .presents(confirmable: $sceneModel.confirmation)
 #if os(iOS)
         // iOS relies on sheets, but macOS uses windows so doesn't need this.
-        .sheet(item: $sceneModel.sheet) { sheet in
+        .sheet(item: $sceneModel.settings.sheet) { sheet in
             switch sheet {
             case .add:
                 NavigationStack {
@@ -97,7 +97,7 @@ struct MainContentView: View {
                 WorkflowDetailsSheet(id: id)
             }
         }
-        .showsURL($sceneModel.previewURL)
+        .showsURL($sceneModel.settings.previewURL, isActive: sceneModel.settings.sheet == nil)
 #endif
         .runs(sceneModel)
         .requestsHigherFrequencyUpdates()

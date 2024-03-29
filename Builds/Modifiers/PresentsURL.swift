@@ -25,13 +25,13 @@ import SwiftUI
 fileprivate struct URLPresenter<Content: View>: View {
 
     @Binding var url: URL?
-    @Binding var isActive: Bool
+    var isActive: Bool
 
     let content: Content
 
-    init(url: Binding<URL?>, isActive: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    init(url: Binding<URL?>, isActive: Bool, @ViewBuilder content: () -> Content) {
         self._url = url
-        self._isActive = isActive
+        self.isActive = isActive
         self.content = content()
     }
 
@@ -61,10 +61,8 @@ fileprivate struct URLPresenter<Content: View>: View {
 extension View {
 
     func showsURL(_ url: Binding<URL?>, isActive: Bool = true) -> some View {
-        SheetReader("url") { isTop in
-            URLPresenter(url: url, isActive: isTop) {
-                self
-            }
+        URLPresenter(url: url, isActive: isActive) {
+            self
         }
     }
 

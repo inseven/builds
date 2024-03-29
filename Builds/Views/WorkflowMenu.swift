@@ -37,7 +37,7 @@ struct WorkflowMenu {
 #if os(macOS)
                 openContext.openWindow(id: "info", value: instance.id)
 #else
-                sceneModel?.sheet = .view(instance.id)
+                sceneModel?.settings.sheet = .view(instance.id)
 #endif
             }
         }

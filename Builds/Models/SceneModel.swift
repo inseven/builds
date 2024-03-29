@@ -26,7 +26,13 @@ import Interact
 @Observable
 class SceneModel: Runnable {
 
-    enum SheetType: Identifiable {
+    struct Settings: Codable {
+        var columnVisibility: NavigationSplitViewVisibility = .automatic
+        var sheet: SheetType?
+        var previewURL: URL?
+    }
+
+    enum SheetType: Identifiable, Codable {
 
         var id: String {
             switch self {
@@ -47,19 +53,23 @@ class SceneModel: Runnable {
         case view(WorkflowInstance.ID)
     }
 
-    @MainActor var columnVisibility: NavigationSplitViewVisibility = .automatic
+    @MainActor var settings: Settings {
+        didSet {
+            applicationModel.defaultSceneSettings = settings
+        }
+    }
+
     @MainActor var section: SectionIdentifier? = .all
-    @MainActor var sheet: SheetType?
     @MainActor var selection = Set<WorkflowInstance.ID>()
     @MainActor var confirmation: Confirmable?
-    @MainActor var previewURL: URL?
 
     private let applicationModel: ApplicationModel
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(applicationModel: ApplicationModel) {
+    @MainActor init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
+        self.settings = applicationModel.defaultSceneSettings
     }
 
     @MainActor var workflows: [WorkflowInstance] {
@@ -96,14 +106,14 @@ class SceneModel: Runnable {
     }
 
     @MainActor func showSettings() {
-        sheet = .settings
+        settings.sheet = .settings
     }
 
     @MainActor func logIn() {
 #if os(macOS)
         applicationModel.logIn()
 #else
-        sheet = .logIn
+        settings.sheet = .logIn
 #endif
     }
 
@@ -114,12 +124,12 @@ class SceneModel: Runnable {
             actions: [
                 ConfirmableAction("Sign Out", role: .destructive) {
                     await self.applicationModel.signOut(preserveFavorites: false)
-                    self.sheet = nil
+                    self.settings.sheet = nil
                     self.section = .all
                 },
                 ConfirmableAction("Sign Out and Keep Favorites") {
                     await self.applicationModel.signOut(preserveFavorites: true)
-                    self.sheet = nil
+                    self.settings.sheet = nil
                     self.section = .all
                 },
             ])
@@ -127,7 +137,7 @@ class SceneModel: Runnable {
 
     @MainActor func manageWorkflows() {
 #if os(iOS)
-        sheet = .add
+        settings.sheet = .add
 #else
         Application.open(.manageWorkflows)
 #endif
@@ -139,7 +149,7 @@ extension SceneModel: PresentURLAction.Presenter {
 
     @MainActor func presentURL(_ url: URL) {
         if applicationModel.useInAppBrowser {
-            previewURL = url
+            settings.previewURL = url
         } else {
             Application.open(url)
         }
