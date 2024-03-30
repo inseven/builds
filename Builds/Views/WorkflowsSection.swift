@@ -49,7 +49,7 @@ struct WorkflowsSection: View {
                         Button {
                             sceneModel.manageWorkflows()
                         } label: {
-                            Text("Manage Workflows")
+                            Text("Add Workflows")
                         }
                     }
                 }
