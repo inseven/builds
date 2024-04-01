@@ -71,7 +71,7 @@ struct PhoneSettingsView: View {
                 } label: {
                     Text("Manage GitHub Permissions")
                 }
-                .disabled(!applicationModel.isAuthorized)
+                .disabled(!applicationModel.isSignedIn)
 
             }
 
@@ -82,7 +82,7 @@ struct PhoneSettingsView: View {
                 } label: {
                     Text("Sign Out")
                 }
-                .disabled(!applicationModel.isAuthorized)
+                .disabled(!applicationModel.isSignedIn)
 
             }
 

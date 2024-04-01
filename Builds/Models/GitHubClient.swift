@@ -20,31 +20,14 @@
 
 import SwiftUI
 
-protocol AuthenticationProvider: NSObject {
-
-    @MainActor var authenticationToken: GitHub.Authentication? { get set }
-
-}
-
 class GitHubClient {
 
     private let api: GitHub
-    weak var authenticationProvider: AuthenticationProvider?
+    private let authentication: GitHub.Authentication
 
-    init(api: GitHub) {
+    init(api: GitHub, authentication: GitHub.Authentication) {
         self.api = api
-    }
-
-    private func getAuthentication() async throws -> GitHub.Authentication {
-        return try await withCheckedThrowingContinuation { completion in
-            DispatchQueue.main.async {
-                guard let authentication = self.authenticationProvider?.authenticationToken else {
-                    completion.resume(throwing: GitHubError.unauthorized)
-                    return
-                }
-                completion.resume(returning: authentication)
-            }
-        }
+        self.authentication = authentication
     }
 
     var authorizationURL: URL {
@@ -55,20 +38,16 @@ class GitHubClient {
         return api.permissionsURL
     }
 
-    func authenticate(with code: String) async throws -> GitHub.Authentication {
-        return try await api.authenticate(with: code)
-    }
-
     func deleteGrant() async throws {
-        try await api.deleteGrant(authentication: try getAuthentication())
+        try await api.deleteGrant(authentication: authentication)
     }
 
     func organizations() async throws -> [GitHub.Organization] {
-        return try await api.organizations(authentication: try getAuthentication())
+        return try await api.organizations(authentication: authentication)
     }
 
     func repositories() async throws -> [GitHub.Repository] {
-        return try await api.repositories(authentication: try getAuthentication())
+        return try await api.repositories(authentication: authentication)
     }
 
     func workflowRuns(repositoryName: String,
@@ -81,7 +60,7 @@ class GitHubClient {
             let workflowRuns = try await api.workflowRuns(repositoryName: repositoryName,
                                                           page: page,
                                                           perPage: 100,
-                                                          authentication: try getAuthentication())
+                                                          authentication: authentication)
             let responseWorkflowIds = workflowRuns.map { workflowRun in
                 return WorkflowInstance.ID(repositoryFullName: repositoryName,
                                            workflowId: workflowRun.workflow_id,
@@ -165,25 +144,25 @@ class GitHubClient {
     }
 
     func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {
-        return try await api.branches(for: repository, authentication: try getAuthentication())
+        return try await api.branches(for: repository, authentication: authentication)
     }
 
     func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
-        return try await api.workflows(for: repository, authentication: try getAuthentication())
+        return try await api.workflows(for: repository, authentication: authentication)
     }
 
     func workflowJobs(for repositoryName: String,
                       workflowRun: GitHub.WorkflowRun) async throws -> [GitHub.WorkflowJob] {
         return try await api.workflowJobs(for: repositoryName,
                                           workflowRun: workflowRun,
-                                          authentication: try getAuthentication())
+                                          authentication: authentication)
     }
 
     func annotations(for repositoryName: String,
                      workflowJob: GitHub.WorkflowJob) async throws -> [GitHub.Annotation] {
         return try await api.annotations(for: repositoryName,
                                          workflowJob: workflowJob,
-                                         authentication: try getAuthentication())
+                                         authentication: authentication)
     }
 
 }

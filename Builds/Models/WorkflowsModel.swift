@@ -52,11 +52,11 @@ class WorkflowsModel: ObservableObject, Runnable {
     }
 
     private func updateRepositories() async {
-        let client = await applicationModel.client
-        await MainActor.run {
-            self.isUpdating = true
-        }
         do {
+            let client = try await applicationModel.client
+            await MainActor.run {
+                self.isUpdating = true
+            }
             let repositories = try await client
                 .repositories()
                 .asyncCompactMap { repository -> RepositoryDetails? in

@@ -24,7 +24,7 @@ import SwiftUI
 import Interact
 
 @MainActor
-class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
+class ApplicationModel: NSObject, ObservableObject {
 
     private enum Key: String {
         case items
@@ -57,19 +57,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     @MainActor @Published var summary: SummaryState = .unknown
     @MainActor @Published var results: [WorkflowInstance] = []
 
-    @MainActor @Published var authenticationToken: GitHub.Authentication? {
-        didSet {
-            do {
-                try keychain.set(authenticationToken?.accessToken, forKey: .accessToken)
-            } catch {
-                print("Failed to update keychain with error \(error).")
-            }
-        }
-    }
-
-    @MainActor var isAuthorized: Bool {
-        return authenticationToken != nil
-    }
+    // Indicates that the user has signed in, not that they have a valid authentication. This allows us to differentiate
+    // recoverable authentication failures from the initial set up.
+    @MainActor @Published var isSignedIn: Bool
 
     @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
         didSet {
@@ -104,11 +94,26 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     @MainActor @Published private var activeScenes = 0
 
     // TODO: Make this private.
-    // TODO: This should be optional; there's no point it existing if we don't have an auth code.
+    // This implementation is intentionally side effecty; if it notices that there's no longer an access token, it will
+    // set isSignedIn to false. This is to avoid explicitly polling for authentication changes when we already have a
+    // mechanism which has to poll the GitHub API fairly frequently for updates and means we're not hitting the keychain
+    // more than we need to.
     @MainActor var client: GitHubClient {
-        let client = GitHubClient(api: self.api)
-        client.authenticationProvider = self
-        return client
+        get throws {
+            do {
+                guard let accessToken = try keychain.string(forKey: .accessToken) else {
+                    throw BuildsError.authenticationFailure
+                }
+                if !isSignedIn {
+                    isSignedIn = true
+                }
+                let client = GitHubClient(api: self.api, authentication: GitHub.Authentication(accessToken: accessToken))
+                return client
+            } catch {
+                isSignedIn = false
+                throw error
+            }
+        }
     }
 
     @MainActor private let defaults = KeyedDefaults<Key>()
@@ -127,15 +132,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         self.useInAppBrowser = defaults.bool(forKey: .useInAppBrowser, default: true)
         self.defaultSceneSettings = (try? defaults.codable(forKey: .sceneSettings)) ?? SceneModel.Settings()
-        if let accessToken = try? keychain.string(forKey: .accessToken) {
-            self.authenticationToken = GitHub.Authentication(accessToken: accessToken)
-        } else {
-            self.authenticationToken = nil
-        }
+        self.isSignedIn = (try? keychain.string(forKey: .accessToken)) != nil
 
         super.init()
-
-        self.client.authenticationProvider = self
 
         refreshScheduler = RefreshScheduler { [weak self] in
             guard let self else {
@@ -171,9 +170,9 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
         // Update the state whenever a user changes the favorites.
         $favorites
-            .combineLatest($authenticationToken)
-            .compactMap { (favorites, token) -> [WorkflowInstance.ID]? in
-                guard token != nil else {
+            .combineLatest($isSignedIn)
+            .compactMap { (favorites, isAuthorized) -> [WorkflowInstance.ID]? in
+                guard isAuthorized else {
                     return nil
                 }
                 return favorites
@@ -277,7 +276,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
     }
 
     @MainActor func logIn() {
-        Application.open(client.authorizationURL)
+        Application.open(api.authorizationURL)
     }
 
     @MainActor func sync() {
@@ -304,7 +303,18 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         else {
             throw BuildsError.authenticationFailure
         }
-        self.authenticationToken = try await client.authenticate(with: code)
+
+        // Get the authentication token.
+        let authenticationToken = try await api.authenticate(with: code)
+        try keychain.set(authenticationToken.accessToken, forKey: .accessToken)
+
+        // Indicate that we're signed in.
+        isSignedIn = true
+
+        // Kick off an update.
+        Task {
+            await refresh()
+        }
     }
 
     @MainActor func signOut(preserveFavorites: Bool) async {
@@ -313,15 +323,16 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         } catch {
             print("Failed to delete client grant with error \(error).")
         }
-        authenticationToken = nil
+        try? keychain.set(nil, forKey: .accessToken)
         cachedStatus = [:]
         if !preserveFavorites {
             favorites = []
         }
+        isSignedIn = false
     }
 
     @MainActor func managePermissions() {
-        Application.open(client.permissionsURL)
+        Application.open(api.permissionsURL)
     }
 
     func refresh() async {

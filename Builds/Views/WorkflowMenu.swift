@@ -72,6 +72,7 @@ struct WorkflowMenu {
                 openContext.presentURL(url)
             }
         }
+        .disabled(results.isEmpty)
 
         MenuItem("Open Repository", systemImage: "safari") {
             for url in Set(workflowInstances.compactMap({ $0.repositoryURL })) {
