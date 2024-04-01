@@ -60,15 +60,15 @@ struct WorkflowMenu {
         }
         .disabled(results.isEmpty)
 
-        MenuItem("Open Branch", systemImage: "safari") {
-            for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
+        MenuItem("Open Workflow", systemImage: "safari") {
+            for url in workflowInstances.compactMap({ $0.workflowURL }) {
                 openContext.presentURL(url)
             }
         }
         .disabled(results.isEmpty)
 
-        MenuItem("Open Workflow", systemImage: "safari") {
-            for url in workflowInstances.compactMap({ $0.workflowURL }) {
+        MenuItem("Open Branch", systemImage: "safari") {
+            for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
                 openContext.presentURL(url)
             }
         }
@@ -80,6 +80,14 @@ struct WorkflowMenu {
             }
         }
         .disabled(results.isEmpty)
+
+        MenuItem("Open Pulls", systemImage: "safari") {
+            for url in workflowInstances.compactMap({ $0.pullsURL }) {
+                openContext.presentURL(url)
+            }
+        }
+        .disabled(results.isEmpty)
+
 
         Divider()
 
