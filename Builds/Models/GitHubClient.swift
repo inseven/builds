@@ -30,14 +30,6 @@ class GitHubClient {
         self.accessToken = accessToken
     }
 
-    var authorizationURL: URL {
-        return api.authorizationURL
-    }
-
-    var permissionsURL: URL {
-        return api.permissionsURL
-    }
-
     func repositories() async throws -> [GitHub.Repository] {
         return try await api.repositories(accessToken: accessToken)
     }
@@ -116,11 +108,13 @@ class GitHubClient {
     private func fetchDetails(id: WorkflowInstance.ID,
                               workflowRun: GitHub.WorkflowRun,
                               callback: @escaping (WorkflowInstance) -> Void) async throws {
-        let workflowJobs = try await self.workflowJobs(for: id.repositoryFullName, workflowRun: workflowRun)
+        let workflowJobs = try await api.workflowJobs(for: id.repositoryFullName,
+                                                      workflowRun: workflowRun,
+                                                      accessToken: accessToken)
         var annotations: [WorkflowResult.Annotation] = []
         for workflowJob in workflowJobs {
-            let results = try await self
-                .annotations(for: id.repositoryFullName, workflowJob: workflowJob)
+            let results = try await api
+                .annotations(for: id.repositoryFullName, workflowJob: workflowJob, accessToken: accessToken)
                 .map {
                     return WorkflowResult.Annotation(jobId: workflowJob.id, annotation: $0)
                 }
@@ -141,20 +135,6 @@ class GitHubClient {
 
     func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
         return try await api.workflows(for: repository, accessToken: accessToken)
-    }
-
-    func workflowJobs(for repositoryName: String,
-                      workflowRun: GitHub.WorkflowRun) async throws -> [GitHub.WorkflowJob] {
-        return try await api.workflowJobs(for: repositoryName,
-                                          workflowRun: workflowRun,
-                                          accessToken: accessToken)
-    }
-
-    func annotations(for repositoryName: String,
-                     workflowJob: GitHub.WorkflowJob) async throws -> [GitHub.Annotation] {
-        return try await api.annotations(for: repositoryName,
-                                         workflowJob: workflowJob,
-                                         accessToken: accessToken)
     }
 
 }
