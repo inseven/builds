@@ -108,6 +108,10 @@ struct InfoView: View {
                         Text("Workflow")
                     }
 
+                }
+
+                Section {
+
                     // Branch.
                     LabeledContent {
                         Button {
@@ -133,12 +137,28 @@ struct InfoView: View {
                             }
                             presentURL(url)
                         } label: {
-                            Text(workflowInstance.id.repositoryFullName)
+                            Text(workflowInstance.id.repositoryName)
                                 .foregroundStyle(.link)
                         }
                         .disabled(workflowInstance.repositoryURL == nil)
                     } label: {
                         Text("Repository")
+                    }
+
+                    // Organization.
+                    LabeledContent {
+                        Button {
+                            guard let url = workflowInstance.organizationURL else {
+                                return
+                            }
+                            presentURL(url)
+                        } label: {
+                            Text(workflowInstance.id.organization)
+                                .foregroundStyle(.link)
+                        }
+                        .disabled(workflowInstance.organizationURL == nil)
+                    } label: {
+                        Text("Organization")
                     }
 
                 }
