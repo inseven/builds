@@ -38,14 +38,6 @@ class GitHubClient {
         return api.permissionsURL
     }
 
-    func deleteGrant() async throws {
-        try await api.deleteGrant(accessToken: accessToken)
-    }
-
-    func organizations() async throws -> [GitHub.Organization] {
-        return try await api.organizations(accessToken: accessToken)
-    }
-
     func repositories() async throws -> [GitHub.Repository] {
         return try await api.repositories(accessToken: accessToken)
     }

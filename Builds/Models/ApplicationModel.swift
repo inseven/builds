@@ -327,7 +327,9 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor func signOut(preserveFavorites: Bool) async {
         do {
-            try await client.deleteGrant()
+            if let accessToken {
+                try await api.deleteGrant(accessToken: accessToken)
+            }
         } catch {
             print("Failed to delete client grant with error \(error).")
         }
