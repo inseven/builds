@@ -94,7 +94,7 @@ struct PhoneSettingsView: View {
         .sheet(item: $sheet) { sheet in
             switch sheet {
             case .managePermissions:
-                SafariWebView(url: applicationModel.client.permissionsURL)
+                SafariWebView(url: applicationModel.permissionsURL)
             }
         }
         .dismissable()

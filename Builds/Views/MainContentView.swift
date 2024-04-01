@@ -108,7 +108,7 @@ struct MainContentView: View {
                         .environment(sceneModel)
                 }
             case .logIn:
-                SafariWebView(url: applicationModel.client.authorizationURL)
+                SafariWebView(url: applicationModel.authorizationURL)
             case .view(let id):
                 WorkflowDetailsSheet(id: id)
             }

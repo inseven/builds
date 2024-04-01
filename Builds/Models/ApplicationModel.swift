@@ -132,6 +132,14 @@ class ApplicationModel: NSObject, ObservableObject {
 
     private let api: GitHub
 
+    var authorizationURL: URL {
+        return api.authorizationURL
+    }
+
+    var permissionsURL: URL {
+        return api.permissionsURL
+    }
+
     override init() {
         let configuration = Bundle.main.configuration()
         self.api = GitHub(clientId: configuration.clientId,
