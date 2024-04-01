@@ -37,7 +37,7 @@ struct WorkflowsSection: View {
 
     var body: some View {
         VStack {
-            if applicationModel.isAuthorized {
+            if applicationModel.isSignedIn {
                 if applicationModel.results.count > 0 {
                     WorkflowsView(workflows: sceneModel.workflows)
                 } else {

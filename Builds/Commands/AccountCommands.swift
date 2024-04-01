@@ -28,7 +28,7 @@ struct AccountCommands: Commands {
 
     var body: some Commands {
         CommandMenu("Account") {
-            if applicationModel.isAuthorized {
+            if applicationModel.isSignedIn {
                 Button {
                     applicationModel.managePermissions()
                 } label: {

@@ -77,12 +77,12 @@ struct MainContentView: View {
                         Label("Manage Workflows", systemImage: "checklist")
                     }
                     .help("Select workflows to display")
-                    .disabled(!applicationModel.isAuthorized)
+                    .disabled(!applicationModel.isSignedIn)
                 }
 
 #if os(macOS)
 
-                if applicationModel.isUpdating || applicationModel.lastError != nil {
+                if applicationModel.isSignedIn && (applicationModel.isUpdating || applicationModel.lastError != nil) {
                     ToolbarItem(id: "status", placement: .navigation) {
                         StatusButton(applicationModel: applicationModel, sceneModel: sceneModel)
                     }
@@ -108,7 +108,7 @@ struct MainContentView: View {
                         .environment(sceneModel)
                 }
             case .logIn:
-                SafariWebView(url: applicationModel.client.authorizationURL)
+                SafariWebView(url: applicationModel.authorizationURL)
             case .view(let id):
                 WorkflowDetailsSheet(id: id)
             }

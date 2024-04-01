@@ -71,7 +71,7 @@ struct PhoneSettingsView: View {
                 } label: {
                     Text("Manage GitHub Permissions")
                 }
-                .disabled(!applicationModel.isAuthorized)
+                .disabled(!applicationModel.isSignedIn)
 
             }
 
@@ -82,7 +82,7 @@ struct PhoneSettingsView: View {
                 } label: {
                     Text("Sign Out")
                 }
-                .disabled(!applicationModel.isAuthorized)
+                .disabled(!applicationModel.isSignedIn)
 
             }
 
@@ -94,7 +94,7 @@ struct PhoneSettingsView: View {
         .sheet(item: $sheet) { sheet in
             switch sheet {
             case .managePermissions:
-                SafariWebView(url: applicationModel.client.permissionsURL)
+                SafariWebView(url: applicationModel.permissionsURL)
             }
         }
         .dismissable()

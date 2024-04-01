@@ -36,7 +36,7 @@ struct LifecycleCommands: Commands {
                 Text("Refresh...")
             }
             .keyboardShortcut("r")
-            .disabled(!applicationModel.isAuthorized)
+            .disabled(!applicationModel.isSignedIn)
         }
     }
 
