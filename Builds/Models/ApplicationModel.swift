@@ -93,6 +93,15 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor @Published private var activeScenes = 0
 
+    @MainActor private var accessToken: String? {
+        get {
+            return try? keychain.string(forKey: .accessToken)
+        }
+        set {
+            try? keychain.set(newValue, forKey: .accessToken)
+        }
+    }
+
     // TODO: Make this private.
     // This implementation is intentionally side effecty; if it notices that there's no longer an access token, it will
     // set isSignedIn to false. This is to avoid explicitly polling for authentication changes when we already have a
@@ -101,13 +110,13 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor var client: GitHubClient {
         get throws {
             do {
-                guard let accessToken = try keychain.string(forKey: .accessToken) else {
+                guard let accessToken else {
                     throw BuildsError.authenticationFailure
                 }
                 if !isSignedIn {
                     isSignedIn = true
                 }
-                let client = GitHubClient(api: self.api, authentication: GitHub.Authentication(accessToken: accessToken))
+                let client = GitHubClient(api: self.api, accessToken: accessToken)
                 return client
             } catch {
                 isSignedIn = false
@@ -305,8 +314,7 @@ class ApplicationModel: NSObject, ObservableObject {
         }
 
         // Get the authentication token.
-        let authenticationToken = try await api.authenticate(with: code)
-        try keychain.set(authenticationToken.accessToken, forKey: .accessToken)
+        self.accessToken = try await api.authenticate(with: code)
 
         // Indicate that we're signed in.
         isSignedIn = true
@@ -323,7 +331,7 @@ class ApplicationModel: NSObject, ObservableObject {
         } catch {
             print("Failed to delete client grant with error \(error).")
         }
-        try? keychain.set(nil, forKey: .accessToken)
+        accessToken = nil
         cachedStatus = [:]
         if !preserveFavorites {
             favorites = []

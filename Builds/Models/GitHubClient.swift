@@ -25,9 +25,9 @@ class GitHubClient {
     private let api: GitHub
     private let authentication: GitHub.Authentication
 
-    init(api: GitHub, authentication: GitHub.Authentication) {
+    init(api: GitHub, accessToken: String) {
         self.api = api
-        self.authentication = authentication
+        self.authentication = GitHub.Authentication(accessToken: accessToken)
     }
 
     var authorizationURL: URL {
@@ -39,7 +39,7 @@ class GitHubClient {
     }
 
     func deleteGrant() async throws {
-        try await api.deleteGrant(authentication: authentication)
+        try await api.deleteGrant(accessToken: authentication.accessToken)
     }
 
     func organizations() async throws -> [GitHub.Organization] {

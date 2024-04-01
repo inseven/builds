@@ -27,6 +27,7 @@ enum GitHubError: Error {
 
 class GitHub {
 
+    // TODO: REMOVE THIS!
     struct Authentication: RawRepresentable {
 
         let accessToken: String
@@ -340,7 +341,7 @@ class GitHub {
         return response
     }
 
-    func authenticate(with code: String) async throws -> Authentication {
+    func authenticate(with code: String) async throws -> String {
         guard let url = url(.accessToken, parameters: [
             "client_id": clientId,
             "client_secret": clientSecret,
@@ -355,10 +356,10 @@ class GitHub {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let accessToken = try decoder.decode(AccessToken.self, from: data)
-        return Authentication(accessToken: accessToken.access_token)
+        return accessToken.access_token
     }
 
-    func deleteGrant(authentication: Authentication) async throws {
+    func deleteGrant(accessToken: String) async throws {
         // This end-point is a little unnusual:
         // https://docs.github.com/en/rest/apps/oauth-applications?apiVersion=2022-11-28#delete-an-app-authorization
         // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#using-basic-authentication
@@ -379,7 +380,7 @@ class GitHub {
 
         let encoder = JSONEncoder()
         request.httpBody = try encoder.encode([
-            "access_token": authentication.accessToken,
+            "access_token": accessToken,
         ])
 
         let (_, response) = try await URLSession.shared.data(for: request)
