@@ -23,11 +23,11 @@ import SwiftUI
 class GitHubClient {
 
     private let api: GitHub
-    private let authentication: GitHub.Authentication
+    private let accessToken: String
 
     init(api: GitHub, accessToken: String) {
         self.api = api
-        self.authentication = GitHub.Authentication(accessToken: accessToken)
+        self.accessToken = accessToken
     }
 
     var authorizationURL: URL {
@@ -39,15 +39,15 @@ class GitHubClient {
     }
 
     func deleteGrant() async throws {
-        try await api.deleteGrant(accessToken: authentication.accessToken)
+        try await api.deleteGrant(accessToken: accessToken)
     }
 
     func organizations() async throws -> [GitHub.Organization] {
-        return try await api.organizations(authentication: authentication)
+        return try await api.organizations(accessToken: accessToken)
     }
 
     func repositories() async throws -> [GitHub.Repository] {
-        return try await api.repositories(authentication: authentication)
+        return try await api.repositories(accessToken: accessToken)
     }
 
     func workflowRuns(repositoryName: String,
@@ -60,7 +60,7 @@ class GitHubClient {
             let workflowRuns = try await api.workflowRuns(repositoryName: repositoryName,
                                                           page: page,
                                                           perPage: 100,
-                                                          authentication: authentication)
+                                                          accessToken: accessToken)
             let responseWorkflowIds = workflowRuns.map { workflowRun in
                 return WorkflowInstance.ID(repositoryFullName: repositoryName,
                                            workflowId: workflowRun.workflow_id,
@@ -144,25 +144,25 @@ class GitHubClient {
     }
 
     func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {
-        return try await api.branches(for: repository, authentication: authentication)
+        return try await api.branches(for: repository, accessToken: accessToken)
     }
 
     func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
-        return try await api.workflows(for: repository, authentication: authentication)
+        return try await api.workflows(for: repository, accessToken: accessToken)
     }
 
     func workflowJobs(for repositoryName: String,
                       workflowRun: GitHub.WorkflowRun) async throws -> [GitHub.WorkflowJob] {
         return try await api.workflowJobs(for: repositoryName,
                                           workflowRun: workflowRun,
-                                          authentication: authentication)
+                                          accessToken: accessToken)
     }
 
     func annotations(for repositoryName: String,
                      workflowJob: GitHub.WorkflowJob) async throws -> [GitHub.Annotation] {
         return try await api.annotations(for: repositoryName,
                                          workflowJob: workflowJob,
-                                         authentication: authentication)
+                                         accessToken: accessToken)
     }
 
 }
