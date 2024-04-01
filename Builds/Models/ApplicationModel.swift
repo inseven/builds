@@ -180,6 +180,21 @@ class ApplicationModel: NSObject, ObservableObject {
         self.start()
     }
 
+    @MainActor private func updateOrganizations() {
+        self.organizations = favorites.reduce(into: Set<String>()) { partialResult, id in
+            partialResult.insert(id.organization)
+        }.sorted()
+    }
+
+    @MainActor private func updateResults() {
+        self.results = favorites.map { id in
+            return WorkflowInstance(id: id, result: cachedStatus[id])
+        }
+        .sorted {
+            $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
+        }
+    }
+
     @MainActor private func start() {
 
         // Start the refresh scheduler.
@@ -202,30 +217,21 @@ class ApplicationModel: NSObject, ObservableObject {
             }
             .store(in: &cancellables)
 
-        // Generate the results array used to back the main window.
+        // Generate the results.
         $favorites
             .combineLatest($cachedStatus)
-            .map { favorites, cachedStatus in
-                return favorites.map { id in
-                    return WorkflowInstance(id: id, result: cachedStatus[id])
-                }
-                .sorted {
-                    $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
-                }
-            }
             .receive(on: DispatchQueue.main)
-            .assign(to: \.results, on: self)
+            .sink { [weak self] _ in
+                self?.updateResults()
+            }
             .store(in: &cancellables)
 
         // Generate the organizations.
         $favorites
-            .map { favorites in
-                return favorites.reduce(into: Set<String>()) { partialResult, id in
-                    partialResult.insert(id.organization)
-                }.sorted()
-            }
             .receive(on: DispatchQueue.main)
-            .assign(to: \.organizations, on: self)
+            .sink { [weak self] _ in
+                self?.updateOrganizations()
+            }
             .store(in: &cancellables)
 
         // Generate an over-arching build summary used to back insight windows and widgets.
@@ -254,6 +260,7 @@ class ApplicationModel: NSObject, ObservableObject {
             .assign(to: \.summary, on: self)
             .store(in: &cancellables)
 
+        // Watch for changes to the iCloud defaults.
         NotificationCenter.default
             .publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)
             .prepend(.init(name: NSUbiquitousKeyValueStore.didChangeExternallyNotification))
@@ -264,6 +271,10 @@ class ApplicationModel: NSObject, ObservableObject {
             }
             .store(in: &cancellables)
 
+        // Load the cached contents to ensure the UI doesn't flash on initial load.
+        sync()
+        updateOrganizations()
+        updateResults()
     }
 
     @MainActor func addFavorite(_ id: WorkflowInstance.ID) {
