@@ -27,12 +27,12 @@
 		D854FD872BB616EE00DD31DD /* WorkflowMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D854FD862BB616EE00DD31DD /* WorkflowMenu.swift */; };
 		D85AC0DB2BAE540B003CAE8F /* SummaryCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
-		D86A91472B9E5FF30008FF63 /* WorkflowDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* WorkflowDetailsView.swift */; };
+		D86A91472B9E5FF30008FF63 /* WorkflowInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* WorkflowInfoView.swift */; };
 		D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */; };
 		D86F531E2BB5025100C9A1AF /* Calendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F531D2BB5025100C9A1AF /* Calendar.swift */; };
 		D86F53212BB5026C00C9A1AF /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53202BB5026C00C9A1AF /* Date.swift */; };
 		D86F53232BB5028900C9A1AF /* DurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53222BB5028900C9A1AF /* DurationView.swift */; };
-		D86F53252BB50C7100C9A1AF /* InfoWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53242BB50C7100C9A1AF /* InfoWindow.swift */; };
+		D86F53252BB50C7100C9A1AF /* WorkflowInfoWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53242BB50C7100C9A1AF /* WorkflowInfoWindow.swift */; };
 		D86F53282BB514C000C9A1AF /* PresentURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53272BB514C000C9A1AF /* PresentURLAction.swift */; };
 		D86F532A2BB5163100C9A1AF /* PresentURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86F53292BB5163100C9A1AF /* PresentURL.swift */; };
 		D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */; };
@@ -70,7 +70,7 @@
 		D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */; };
 		D8CA0EF62B942BD900DAE758 /* WorkflowInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */; };
 		D8D3FAFA2BB63F16001298CC /* FocusedSceneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D3FAF92BB63F16001298CC /* FocusedSceneModel.swift */; };
-		D8D3FAFC2BB64239001298CC /* WorkflowDetailsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D3FAFB2BB64239001298CC /* WorkflowDetailsSheet.swift */; };
+		D8D3FAFC2BB64239001298CC /* WorkflowInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D3FAFB2BB64239001298CC /* WorkflowInfoSheet.swift */; };
 		D8D413E928043FCD001BA6C0 /* WorkflowInstanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */; };
 		D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* WorkflowsView.swift */; };
 		D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */; };
@@ -137,12 +137,12 @@
 		D854FD862BB616EE00DD31DD /* WorkflowMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowMenu.swift; sourceTree = "<group>"; };
 		D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCommands.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
-		D86A91462B9E5FF30008FF63 /* WorkflowDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowDetailsView.swift; sourceTree = "<group>"; };
+		D86A91462B9E5FF30008FF63 /* WorkflowInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInfoView.swift; sourceTree = "<group>"; };
 		D86B1D2F2B9EA78000CA4E21 /* PopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverButton.swift; sourceTree = "<group>"; };
 		D86F531D2BB5025100C9A1AF /* Calendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calendar.swift; sourceTree = "<group>"; };
 		D86F53202BB5026C00C9A1AF /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		D86F53222BB5028900C9A1AF /* DurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationView.swift; sourceTree = "<group>"; };
-		D86F53242BB50C7100C9A1AF /* InfoWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoWindow.swift; sourceTree = "<group>"; };
+		D86F53242BB50C7100C9A1AF /* WorkflowInfoWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInfoWindow.swift; sourceTree = "<group>"; };
 		D86F53272BB514C000C9A1AF /* PresentURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentURLAction.swift; sourceTree = "<group>"; };
 		D86F53292BB5163100C9A1AF /* PresentURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentURL.swift; sourceTree = "<group>"; };
 		D87390ED2BA1301400EFC8B8 /* MenuButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButtonStyle.swift; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 		D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestsHigherFrequencyUpdates.swift; sourceTree = "<group>"; };
 		D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInstance.swift; sourceTree = "<group>"; };
 		D8D3FAF92BB63F16001298CC /* FocusedSceneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedSceneModel.swift; sourceTree = "<group>"; };
-		D8D3FAFB2BB64239001298CC /* WorkflowDetailsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowDetailsSheet.swift; sourceTree = "<group>"; };
+		D8D3FAFB2BB64239001298CC /* WorkflowInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInfoSheet.swift; sourceTree = "<group>"; };
 		D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInstanceCell.swift; sourceTree = "<group>"; };
 		D8D413EA28044062001BA6C0 /* WorkflowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsView.swift; sourceTree = "<group>"; };
 		D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationModel.swift; sourceTree = "<group>"; };
@@ -242,9 +242,9 @@
 		D81251B02B917EFC001F6E85 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				D86F53242BB50C7100C9A1AF /* InfoWindow.swift */,
 				D81251B92B929B27001F6E85 /* MainWindow.swift */,
 				D85383542BB4EBB50013F267 /* SingleWindow.swift */,
+				D86F53242BB50C7100C9A1AF /* WorkflowInfoWindow.swift */,
 				D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */,
 			);
 			path = Scenes;
@@ -391,8 +391,8 @@
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
 				D8B49EE72BB76D4D0076E273 /* StatusButton.swift */,
 				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
-				D8D3FAFB2BB64239001298CC /* WorkflowDetailsSheet.swift */,
-				D86A91462B9E5FF30008FF63 /* WorkflowDetailsView.swift */,
+				D8D3FAFB2BB64239001298CC /* WorkflowInfoSheet.swift */,
+				D86A91462B9E5FF30008FF63 /* WorkflowInfoView.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */,
 				D854FD862BB616EE00DD31DD /* WorkflowMenu.swift */,
@@ -637,7 +637,7 @@
 				D8D413F328045535001BA6C0 /* Action.swift in Sources */,
 				D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */,
 				D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */,
-				D86A91472B9E5FF30008FF63 /* WorkflowDetailsView.swift in Sources */,
+				D86A91472B9E5FF30008FF63 /* WorkflowInfoView.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
 				D8CA0EEE2B93E5A600DAE758 /* SceneModel.swift in Sources */,
 				D8D3FAFA2BB63F16001298CC /* FocusedSceneModel.swift in Sources */,
@@ -655,7 +655,7 @@
 				D8D413F528045577001BA6C0 /* WorkflowResult.swift in Sources */,
 				D81251B62B918472001F6E85 /* SummaryState.swift in Sources */,
 				D8EE7DD32B7F3A2900A3DCF0 /* AboutButton.swift in Sources */,
-				D86F53252BB50C7100C9A1AF /* InfoWindow.swift in Sources */,
+				D86F53252BB50C7100C9A1AF /* WorkflowInfoWindow.swift in Sources */,
 				D85383552BB4EBB50013F267 /* SingleWindow.swift in Sources */,
 				D83DE3962BB218CB00234B01 /* HTTPStatusCode.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */,
@@ -664,7 +664,7 @@
 				D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */,
 				D8DA9D852B97004900C17DBC /* WorkflowsWindow.swift in Sources */,
 				D86F53232BB5028900C9A1AF /* DurationView.swift in Sources */,
-				D8D3FAFC2BB64239001298CC /* WorkflowDetailsSheet.swift in Sources */,
+				D8D3FAFC2BB64239001298CC /* WorkflowInfoSheet.swift in Sources */,
 				D8F0CE0527F89A8100F4EC83 /* GitHubClient.swift in Sources */,
 				D8800B632BB4B25800AD3BB7 /* SheetReader.swift in Sources */,
 				D8FEAE0C27F591AE00FDADFA /* BuildsApp.swift in Sources */,
