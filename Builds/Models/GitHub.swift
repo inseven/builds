@@ -340,27 +340,22 @@ class GitHub {
         return response
     }
 
-    // TODO: This could throw? Might be nicer?
-    func authenticate(with code: String) async -> Result<Authentication, Error> {
-        do {
-            guard let url = url(.accessToken, parameters: [
-                "client_id": clientId,
-                "client_secret": clientSecret,
-                "code": code
-            ]) else {
-                throw GitHubError.invalidUrl
-            }
-            var request = URLRequest(url: url)
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            let (data, response) = try await URLSession.shared.data(for: request)
-            try response.checkHTTPStatusCode()
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let accessToken = try decoder.decode(AccessToken.self, from: data)
-            return .success(Authentication(accessToken: accessToken.access_token))
-        } catch {
-            return .failure(error)
+    func authenticate(with code: String) async throws -> Authentication {
+        guard let url = url(.accessToken, parameters: [
+            "client_id": clientId,
+            "client_secret": clientSecret,
+            "code": code
+        ]) else {
+            throw GitHubError.invalidUrl
         }
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try response.checkHTTPStatusCode()
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let accessToken = try decoder.decode(AccessToken.self, from: data)
+        return Authentication(accessToken: accessToken.access_token)
     }
 
     func deleteGrant(authentication: Authentication) async throws {

@@ -52,7 +52,7 @@ class WorkflowsModel: ObservableObject, Runnable {
     }
 
     private func updateRepositories() async {
-        let client = applicationModel.client
+        let client = await applicationModel.client
         await MainActor.run {
             self.isUpdating = true
         }

@@ -105,19 +105,24 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
 
     // TODO: Make this private.
     // TODO: This should be optional; there's no point it existing if we don't have an auth code.
-    @MainActor let client: GitHubClient
+    @MainActor var client: GitHubClient {
+        let client = GitHubClient(api: self.api)
+        client.authenticationProvider = self
+        return client
+    }
 
     @MainActor private let defaults = KeyedDefaults<Key>()
     @MainActor private let keychain = KeychainManager<Key>()
     @MainActor private var cancellables = Set<AnyCancellable>()
     @MainActor private var refreshScheduler: RefreshScheduler!
 
+    private let api: GitHub
+
     override init() {
         let configuration = Bundle.main.configuration()
-        let api = GitHub(clientId: configuration.clientId,
-                         clientSecret: configuration.clientSecret,
-                         redirectUri: "x-builds-auth://oauth")
-        self.client = GitHubClient(api: api)
+        self.api = GitHub(clientId: configuration.clientId,
+                          clientSecret: configuration.clientSecret,
+                          redirectUri: "x-builds-auth://oauth")
         self.cachedStatus = (try? defaults.codable(forKey: .status)) ?? [:]
         self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
         self.useInAppBrowser = defaults.bool(forKey: .useInAppBrowser, default: true)
@@ -299,7 +304,7 @@ class ApplicationModel: NSObject, ObservableObject, AuthenticationProvider {
         else {
             throw BuildsError.authenticationFailure
         }
-        try await client.authenticate(with: code)
+        self.authenticationToken = try await client.authenticate(with: code)
     }
 
     @MainActor func signOut(preserveFavorites: Bool) async {

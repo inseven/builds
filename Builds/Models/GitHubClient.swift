@@ -55,24 +55,13 @@ class GitHubClient {
         return api.permissionsURL
     }
 
-    func authenticate(with code: String) async throws {
-        let result = await api.authenticate(with: code)
-        try await MainActor.run {
-            switch result {
-            case .success(let authentication):
-                self.authenticationProvider?.authenticationToken = authentication
-            case .failure(let error):
-                self.authenticationProvider?.authenticationToken = nil
-                throw error
-            }
-        }
+    func authenticate(with code: String) async throws -> GitHub.Authentication {
+        return try await api.authenticate(with: code)
     }
 
     func deleteGrant() async throws {
         try await api.deleteGrant(authentication: try getAuthentication())
     }
-
-    // TODO: Wrapper that detects authentication failure.
 
     func organizations() async throws -> [GitHub.Organization] {
         return try await api.organizations(authentication: try getAuthentication())
