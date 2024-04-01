@@ -110,7 +110,7 @@ struct MainContentView: View {
             case .logIn:
                 SafariWebView(url: applicationModel.authorizationURL)
             case .view(let id):
-                WorkflowInfoSheet(id: id)
+                InfoSheet(id: id)
             }
         }
         .showsURL($sceneModel.settings.previewURL, isActive: sceneModel.settings.sheet == nil)
