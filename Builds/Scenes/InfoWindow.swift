@@ -31,7 +31,7 @@ struct InfoWindow: Scene {
     var body: some Scene {
         WindowGroup("Info", id: Self.id, for: WorkflowInstance.ID.self) { id in
             if let id = id.wrappedValue{
-                WorkflowDetailsView(applicationModel: applicationModel, id: id)
+                InfoView(applicationModel: applicationModel, id: id)
                     .frame(width: 300)
                     .frame(minHeight: 800)
                     .environmentObject(applicationModel)

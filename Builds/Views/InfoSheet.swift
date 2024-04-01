@@ -22,7 +22,7 @@
 
 import SwiftUI
 
-struct WorkflowDetailsSheet: View {
+struct InfoSheet: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel
 
@@ -33,7 +33,7 @@ struct WorkflowDetailsSheet: View {
     var body: some View {
         NavigationStack {
             @Bindable var sceneModel = sceneModel
-            WorkflowDetailsView(applicationModel: applicationModel, id: id)
+            InfoView(applicationModel: applicationModel, id: id)
                 .showsURL($sceneModel.settings.previewURL)
         }
     }

@@ -23,7 +23,7 @@ import SwiftUI
 
 import Interact
 
-struct WorkflowDetailsView: View {
+struct InfoView: View {
 
     @Environment(\.presentURL) private var presentURL
 
