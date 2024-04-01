@@ -199,6 +199,7 @@ struct InfoView: View {
         }
 #endif
         .dismissable(placement: .cancellationAction)
+        .requestsHigherFrequencyUpdates()
     }
 
 }
