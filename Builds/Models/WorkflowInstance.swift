@@ -84,6 +84,13 @@ struct WorkflowInstance: Identifiable, Hashable {
         return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
     }
 
+    var organizationURL: URL? {
+        guard let repositoryURL else {
+            return nil
+        }
+        return repositoryURL.deletingLastPathComponent()
+    }
+
     var pullsURL: URL? {
         guard let repositoryURL else {
             return nil
