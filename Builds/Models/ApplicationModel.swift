@@ -314,7 +314,7 @@ class ApplicationModel: NSObject, ObservableObject {
         }
 
         // Get the authentication token.
-        self.accessToken = try await api.authenticate(with: code)
+        accessToken = try await api.authenticate(with: code)
 
         // Indicate that we're signed in.
         isSignedIn = true
