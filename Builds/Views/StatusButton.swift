@@ -82,7 +82,7 @@ struct StatusButton: View {
                 }
 
             } message: {
-                Text(error?.recoveryMessage ?? "")
+                Text(error?.discussion ?? "")
             }
     }
 
@@ -103,7 +103,7 @@ extension Error {
         return false
     }
 
-    var recoveryMessage: String {
+    var discussion: String {
         var lines: [String] = []
         lines.append("\"\(self.localizedDescription)\"")
 
