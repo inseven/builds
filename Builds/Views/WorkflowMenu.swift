@@ -22,6 +22,18 @@ import SwiftUI
 
 import Interact
 
+fileprivate extension ApplicationModel {
+
+    var openMenuItemSystemImage: String {
+        if useInAppBrowser {
+            return "arrow.up.forward.square"
+        } else {
+            return "safari"
+        }
+    }
+
+}
+
 struct WorkflowMenu {
 
     @MainActor @MenuItemBuilder static func items(applicationModel: ApplicationModel,
@@ -48,42 +60,42 @@ struct WorkflowMenu {
 
         MenuItem("Open") {
 
-            MenuItem("Run", systemImage: "safari") {
+            MenuItem("Run", systemImage: applicationModel.openMenuItemSystemImage) {
                 for result in results {
                     openContext.presentURL(result.workflowRun.html_url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Commit", systemImage: "safari") {
+            MenuItem("Commit", systemImage: applicationModel.openMenuItemSystemImage) {
                 for url in workflowInstances.compactMap({ $0.commitURL }) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Workflow", systemImage: "safari") {
+            MenuItem("Workflow", systemImage: applicationModel.openMenuItemSystemImage) {
                 for url in workflowInstances.compactMap({ $0.workflowURL }) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Branch", systemImage: "safari") {
+            MenuItem("Branch", systemImage: applicationModel.openMenuItemSystemImage) {
                 for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Pulls", systemImage: "safari") {
+            MenuItem("Pulls", systemImage: applicationModel.openMenuItemSystemImage) {
                 for url in workflowInstances.compactMap({ $0.pullsURL }) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Repository", systemImage: "safari") {
+            MenuItem("Repository", systemImage: applicationModel.openMenuItemSystemImage) {
                 for url in Set(workflowInstances.compactMap({ $0.repositoryURL })) {
                     openContext.presentURL(url)
                 }
