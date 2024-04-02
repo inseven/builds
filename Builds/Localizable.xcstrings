@@ -71,6 +71,9 @@
     "Cancel" : {
 
     },
+    "Check GitHub Status" : {
+
+    },
     "Commit" : {
 
     },
@@ -90,6 +93,9 @@
 
     },
     "GitHub" : {
+
+    },
+    "GitHub sometimes encounters incidents which can lead to transient failures. You can check 'GitHub Status' or select 'Refresh' to try again." : {
 
     },
     "Info" : {
@@ -129,6 +135,9 @@
 
     },
     "Refresh" : {
+
+    },
+    "Refresh Error" : {
 
     },
     "Refresh..." : {
@@ -196,6 +205,12 @@
 
     },
     "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud." : {
+
+    },
+    "Simulate Authentication Failure" : {
+
+    },
+    "Simulate Failure" : {
 
     },
     "Summary" : {

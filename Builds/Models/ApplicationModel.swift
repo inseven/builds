@@ -394,4 +394,20 @@ class ApplicationModel: NSObject, ObservableObject {
     }
 #endif
 
+#if DEBUG
+
+    enum FailureType {
+        case authentication
+    }
+
+    @MainActor func simulateFailure(_ failureType: FailureType) async {
+        switch failureType {
+        case .authentication:
+            self.accessToken = "fromage"
+        }
+        await refresh()
+    }
+
+#endif
+
 }

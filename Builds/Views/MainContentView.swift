@@ -91,6 +91,22 @@ struct MainContentView: View {
 
 #endif
 
+#if DEBUG
+
+                ToolbarItem(id: "break-auth", placement: .primaryAction) {
+                    Menu {
+                        Button {
+                            await applicationModel.simulateFailure(.authentication)
+                        } label: {
+                            Label("Simulate Authentication Failure", systemImage: "person.slash")
+                        }
+                    } label: {
+                        Label("Simulate Failure", systemImage: "ladybug")
+                    }
+                }
+
+#endif
+
             }
         }
         .presents(confirmable: $sceneModel.confirmation)
