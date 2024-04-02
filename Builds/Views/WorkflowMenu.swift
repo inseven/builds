@@ -46,45 +46,50 @@ struct WorkflowMenu {
 
         Divider()
 
-        MenuItem("Open Run", systemImage: "safari") {
-            for result in results {
-                openContext.presentURL(result.workflowRun.html_url)
-            }
-        }
-        .disabled(results.isEmpty)
+        MenuItem("Open") {
 
-        MenuItem("Open Commit", systemImage: "safari") {
-            for url in workflowInstances.compactMap({ $0.commitURL }) {
-                openContext.presentURL(url)
+            MenuItem("Run", systemImage: "safari") {
+                for result in results {
+                    openContext.presentURL(result.workflowRun.html_url)
+                }
             }
-        }
-        .disabled(results.isEmpty)
+            .disabled(results.isEmpty)
 
-        MenuItem("Open Workflow", systemImage: "safari") {
-            for url in workflowInstances.compactMap({ $0.workflowURL }) {
-                openContext.presentURL(url)
+            MenuItem("Commit", systemImage: "safari") {
+                for url in workflowInstances.compactMap({ $0.commitURL }) {
+                    openContext.presentURL(url)
+                }
             }
-        }
-        .disabled(results.isEmpty)
+            .disabled(results.isEmpty)
 
-        MenuItem("Open Branch", systemImage: "safari") {
-            for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
-                openContext.presentURL(url)
+            MenuItem("Workflow", systemImage: "safari") {
+                for url in workflowInstances.compactMap({ $0.workflowURL }) {
+                    openContext.presentURL(url)
+                }
             }
-        }
-        .disabled(results.isEmpty)
+            .disabled(results.isEmpty)
 
-        MenuItem("Open Pulls", systemImage: "safari") {
-            for url in workflowInstances.compactMap({ $0.pullsURL }) {
-                openContext.presentURL(url)
+            MenuItem("Branch", systemImage: "safari") {
+                for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
+                    openContext.presentURL(url)
+                }
             }
-        }
-        .disabled(results.isEmpty)
+            .disabled(results.isEmpty)
 
-        MenuItem("Open Repository", systemImage: "safari") {
-            for url in Set(workflowInstances.compactMap({ $0.repositoryURL })) {
-                openContext.presentURL(url)
+            MenuItem("Pulls", systemImage: "safari") {
+                for url in workflowInstances.compactMap({ $0.pullsURL }) {
+                    openContext.presentURL(url)
+                }
             }
+            .disabled(results.isEmpty)
+
+            MenuItem("Repository", systemImage: "safari") {
+                for url in Set(workflowInstances.compactMap({ $0.repositoryURL })) {
+                    openContext.presentURL(url)
+                }
+            }
+            .disabled(results.isEmpty)
+
         }
         .disabled(results.isEmpty)
 
