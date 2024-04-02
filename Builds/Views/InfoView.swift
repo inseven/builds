@@ -88,6 +88,23 @@ struct InfoView: View {
                         Text("Commit")
                     }
 
+                    // Branch.
+                    LabeledContent {
+                        Button {
+                            guard let branchesURL = workflowInstance.branchURL else {
+                                return
+                            }
+                            presentURL(branchesURL)
+                        } label: {
+                            Text(workflowInstance.id.branch)
+                                .foregroundStyle(.link)
+                                .monospaced()
+                        }
+                        .disabled(workflowInstance.result == nil)
+                    } label: {
+                        Text("Branch")
+                    }
+
                     // Workflow.
                     LabeledContent {
                         Button {
@@ -111,23 +128,6 @@ struct InfoView: View {
                 }
 
                 Section {
-
-                    // Branch.
-                    LabeledContent {
-                        Button {
-                            guard let branchesURL = workflowInstance.branchURL else {
-                                return
-                            }
-                            presentURL(branchesURL)
-                        } label: {
-                            Text(workflowInstance.id.branch)
-                                .foregroundStyle(.link)
-                                .monospaced()
-                        }
-                        .disabled(workflowInstance.result == nil)
-                    } label: {
-                        Text("Branch")
-                    }
 
                     // Repository.
                     LabeledContent {
