@@ -22,19 +22,17 @@ import SwiftUI
 
 struct StatusButton: View {
 
+    @Environment(\.presentURL) var presentURL
+
     @ObservedObject var applicationModel: ApplicationModel
 
-    @State var lastError: Error?
+    @State var error: Error?
 
     var sceneModel: SceneModel
 
     var body: some View {
             Button {
-                guard let lastError = applicationModel.lastError else {
-                    return
-                }
-                print("Setting error = \(lastError)")
-                self.lastError = lastError
+                self.error = applicationModel.lastError
             } label: {
                 HStack {
                     if applicationModel.lastError != nil {
@@ -48,7 +46,72 @@ struct StatusButton: View {
                 .frame(minWidth: 21.0)
             }
             .disabled(applicationModel.lastUpdate == nil)
-            .presents($lastError)
+            .confirmationDialog("Refresh Error", isPresented: $error.bool()) {
+                if let error {
+
+                    if error.isAuthenticationFailure {
+
+                        Button {
+                            applicationModel.logIn()
+                        } label: {
+                            Text("Sign In")
+                        }
+
+                    } else {
+
+                        Button {
+                            await applicationModel.refresh()
+                        } label: {
+                            Text("Refresh")
+                        }
+
+                        Button {
+                            presentURL(URL(string: "https://www.githubstatus.com")!)
+                        } label: {
+                            Text("Check GitHub Status")
+                        }
+
+                        Button(role: .destructive) {
+
+                        } label: {
+                            Text("Cancel")
+                        }
+
+                    }
+
+                }
+
+            } message: {
+                Text(error?.recoveryMessage ?? "")
+            }
+    }
+
+}
+
+extension Error {
+
+    var isAuthenticationFailure: Bool {
+        if let error = self as? BuildsError {
+            if case .authenticationFailure = error {
+                return true
+            }
+        } else if let error = self as? HTTPURLResponseError {
+            if case .httpError(.unauthorized) = error {
+                return true
+            }
+        }
+        return false
+    }
+
+    var recoveryMessage: String {
+        var lines: [String] = []
+        lines.append("\"\(self.localizedDescription)\"")
+
+        if !isAuthenticationFailure {
+            lines.append("GitHub sometimes encounters incidents which can lead to transient failures. You can check 'GitHub Status' or select 'Refresh' to try again.")
+        }
+
+        return lines.joined(separator: "\n\n")
     }
 
 }
