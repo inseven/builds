@@ -22,6 +22,11 @@ import SwiftUI
 
 struct WorkflowJobList: View {
 
+    struct LayoutMetrics {
+        static let statusImageSize = CGSize(width: 8.0, height: 8.0)
+        static let statusImagePadding = 4.0
+    }
+
     @Environment(\.presentURL) private var presentURL
 
     let jobs: [GitHub.WorkflowJob]
@@ -36,9 +41,12 @@ struct WorkflowJobList: View {
                 presentURL(job.html_url)
             } label: {
                 HStack {
-                    Image(systemName: "circle.fill")
-                        .renderingMode(.template)
-                        .foregroundStyle(color(for: job))
+                    StatusImage(status: job.status, conclusion: job.conclusion, size: LayoutMetrics.statusImageSize)
+                        .foregroundStyle(.white)
+                        .fontWeight(.heavy)
+                        .padding(LayoutMetrics.statusImagePadding)
+                        .background(Circle()
+                            .fill(color(for: job)))
                     Text(job.name)
                     Spacer()
                     if let startDate = job.started_at {

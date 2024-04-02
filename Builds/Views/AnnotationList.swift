@@ -34,13 +34,11 @@ struct AnnotationList: View {
             HStack(alignment: .firstTextBaseline) {
                 switch annotation.annotation.annotation_level {
                 case .failure:
-                    Image(systemName: "exclamationmark.octagon")
-                        .renderingMode(.template)
-                        .foregroundColor(.red)
+                    Image(systemName: "exclamationmark.octagon.fill")
+                        .symbolRenderingMode(.multicolor)
                 case .warning:
-                    Image(systemName: "exclamationmark.triangle")
-                        .renderingMode(.template)
-                        .foregroundColor(.orange)
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .symbolRenderingMode(.multicolor)
                 }
                 VStack(alignment: .leading, spacing: LayoutMetrics.interItemSpacing) {
                     if let job = result.job(for: annotation) {
