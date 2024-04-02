@@ -116,28 +116,16 @@
     "Nothing Selected" : {
 
     },
-    "Open Branch" : {
-
-    },
-    "Open Commit" : {
-
-    },
-    "Open Pulls" : {
-
-    },
-    "Open Repository" : {
-
-    },
-    "Open Run" : {
-
-    },
-    "Open Workflow" : {
+    "Open" : {
 
     },
     "Organization" : {
 
     },
     "Organizations" : {
+
+    },
+    "Pulls" : {
 
     },
     "Refresh" : {
@@ -175,6 +163,9 @@
       }
     },
     "Repository" : {
+
+    },
+    "Run" : {
 
     },
     "Select a section from the sidebar to view workflows." : {
