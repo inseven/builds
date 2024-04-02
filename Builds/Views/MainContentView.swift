@@ -52,7 +52,7 @@ struct MainContentView: View {
                 }
         } detail: {
             VStack {
-                if let section = sceneModel.section {
+                if let section = sceneModel.settings.section {
                     WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
                         .id(section)
                 } else {
@@ -64,7 +64,7 @@ struct MainContentView: View {
                 }
             }
             .toolbarTitleDisplayMode(.inline)
-            .navigationTitle(sceneModel.section?.title ?? "")
+            .navigationTitle(sceneModel.settings.section?.title ?? "")
 #if os(macOS)
             .navigationSubtitle("\(sceneModel.workflows.count) Workflows")
 #endif

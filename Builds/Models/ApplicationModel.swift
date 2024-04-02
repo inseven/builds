@@ -26,32 +26,6 @@ import Interact
 @MainActor
 class ApplicationModel: NSObject, ObservableObject {
 
-    private enum Key: String {
-        case items
-        case status
-        case lastUpdate
-        case accessToken
-        case favorites
-        case useInAppBrowser
-        case sceneSettings
-    }
-
-    @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
-        didSet {
-            do {
-                let data = try JSONEncoder().encode(favorites)
-                let store = NSUbiquitousKeyValueStore.default
-                guard store.data(forKey: Key.favorites.rawValue) != data else {
-                    return
-                }
-                store.set(data, forKey: Key.favorites.rawValue)
-                store.synchronize()
-            } catch {
-                print("Failed to save favorites with error \(error).")
-            }
-        }
-    }
-
     @MainActor @Published var organizations: [String] = []
     @MainActor @Published var isUpdating: Bool = false
     @MainActor @Published var summary: SummaryState = .unknown
@@ -61,46 +35,33 @@ class ApplicationModel: NSObject, ObservableObject {
     // recoverable authentication failures from the initial set up.
     @MainActor @Published var isSignedIn: Bool
 
+    @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
+        didSet {
+            settings.favorites = favorites
+        }
+    }
+
     @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
         didSet {
-            do {
-                try defaults.set(codable: cachedStatus, forKey: .status)
-            } catch {
-                print("Failed to save status with error \(error).")
-            }
+            settings.cachedStatus = cachedStatus
         }
     }
 
     @MainActor @Published var lastUpdate: Date? {
         didSet {
-            defaults.set(lastUpdate, forKey: .lastUpdate)
+            settings.lastUpdate = lastUpdate
         }
     }
 
     @MainActor @Published var useInAppBrowser: Bool {
         didSet {
-            defaults.set(useInAppBrowser, forKey: .useInAppBrowser)
-        }
-    }
-
-    @MainActor @Published var defaultSceneSettings: SceneModel.Settings {
-        didSet {
-            try? defaults.set(codable: defaultSceneSettings, forKey: .sceneSettings)
+            settings.useInAppBrowser = useInAppBrowser
         }
     }
 
     @MainActor @Published var lastError: Error? = nil
 
     @MainActor @Published private var activeScenes = 0
-
-    @MainActor private var accessToken: String? {
-        get {
-            return try? keychain.string(forKey: .accessToken)
-        }
-        set {
-            try? keychain.set(newValue, forKey: .accessToken)
-        }
-    }
 
     // TODO: Make this private.
     // This implementation is intentionally side effecty; if it notices that there's no longer an access token, it will
@@ -110,7 +71,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor var client: GitHubClient {
         get throws {
             do {
-                guard let accessToken else {
+                guard let accessToken = settings.accessToken else {
                     throw BuildsError.authenticationFailure
                 }
                 if !isSignedIn {
@@ -125,12 +86,7 @@ class ApplicationModel: NSObject, ObservableObject {
         }
     }
 
-    @MainActor private let defaults = KeyedDefaults<Key>()
-    @MainActor private let keychain = KeychainManager<Key>()
-    @MainActor private var cancellables = Set<AnyCancellable>()
-    @MainActor private var refreshScheduler: RefreshScheduler!
-
-    private let api: GitHub
+    @MainActor let settings = Settings()
 
     var authorizationURL: URL {
         return api.authorizationURL
@@ -140,16 +96,20 @@ class ApplicationModel: NSObject, ObservableObject {
         return api.permissionsURL
     }
 
+    @MainActor private var cancellables = Set<AnyCancellable>()
+    @MainActor private var refreshScheduler: RefreshScheduler!
+
+    private let api: GitHub
+
     override init() {
         let configuration = Bundle.main.configuration()
         self.api = GitHub(clientId: configuration.clientId,
                           clientSecret: configuration.clientSecret,
                           redirectUri: "x-builds-auth://oauth")
-        self.cachedStatus = (try? defaults.codable(forKey: .status)) ?? [:]
-        self.lastUpdate = defaults.object(forKey: .lastUpdate) as? Date
-        self.useInAppBrowser = defaults.bool(forKey: .useInAppBrowser, default: true)
-        self.defaultSceneSettings = (try? defaults.codable(forKey: .sceneSettings)) ?? SceneModel.Settings()
-        self.isSignedIn = (try? keychain.string(forKey: .accessToken)) != nil
+        self.cachedStatus = settings.cachedStatus
+        self.lastUpdate = settings.lastUpdate
+        self.useInAppBrowser = settings.useInAppBrowser
+        self.isSignedIn = settings.accessToken != nil
 
         super.init()
 
@@ -308,19 +268,11 @@ class ApplicationModel: NSObject, ObservableObject {
     }
 
     @MainActor func sync() {
-        do {
-            NSUbiquitousKeyValueStore.default.synchronize()
-            guard let data = NSUbiquitousKeyValueStore.default.data(forKey: Key.favorites.rawValue) else {
-                return
-            }
-            let favorites = try JSONDecoder().decode([WorkflowInstance.ID].self, from: data)
-            guard self.favorites != favorites else {
-                return
-            }
-            self.favorites = favorites
-        } catch {
-            print("Failed to update favorites with error \(error).")
+        let favorites = settings.favorites
+        guard self.favorites != favorites else {
+            return
         }
+        self.favorites = favorites
     }
 
     func authenticate(with url: URL) async throws {
@@ -333,7 +285,7 @@ class ApplicationModel: NSObject, ObservableObject {
         }
 
         // Get the authentication token.
-        accessToken = try await api.authenticate(with: code)
+        settings.accessToken = try await api.authenticate(with: code)
 
         // Indicate that we're signed in.
         isSignedIn = true
@@ -346,13 +298,13 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor func signOut(preserveFavorites: Bool) async {
         do {
-            if let accessToken {
+            if let accessToken = settings.accessToken {
                 try await api.deleteGrant(accessToken: accessToken)
             }
         } catch {
             print("Failed to delete client grant with error \(error).")
         }
-        accessToken = nil
+        settings.accessToken = nil
         cachedStatus = [:]
         if !preserveFavorites {
             favorites = []
@@ -403,7 +355,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor func simulateFailure(_ failureType: FailureType) async {
         switch failureType {
         case .authentication:
-            self.accessToken = "fromage"
+            settings.accessToken = "fromage"
         }
         await refresh()
     }

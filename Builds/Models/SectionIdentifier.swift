@@ -20,7 +20,7 @@
 
 import Foundation
 
-enum SectionIdentifier: Identifiable, Hashable {
+enum SectionIdentifier: Identifiable, Hashable, Codable {
 
     var id: String {
         switch self {

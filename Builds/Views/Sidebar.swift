@@ -27,7 +27,7 @@ struct Sidebar: View {
 
     var body: some View {
         @Bindable var sceneModel = sceneModel
-        List(selection: $sceneModel.section) {
+        List(selection: $sceneModel.settings.section) {
             Section {
                 let identifier = SectionIdentifier.all
                 NavigationLink(value: identifier) {
