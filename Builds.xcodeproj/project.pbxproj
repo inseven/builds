@@ -57,6 +57,8 @@
 		D889F49C2BAE58EF004CFC50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */; };
 		D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */; };
 		D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771D2BA5457E0080B20C /* SummaryPanel.swift */; };
+		D89ADE432BBCAC5700F915A1 /* StatusImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89ADE422BBCAC5700F915A1 /* StatusImage.swift */; };
+		D89ADE452BBCACAC00F915A1 /* Rotates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89ADE442BBCACAC00F915A1 /* Rotates.swift */; };
 		D8A269B12BAA3B6800A0E19A /* ProgressSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */; };
 		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
@@ -167,6 +169,8 @@
 		D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanelViewController.swift; sourceTree = "<group>"; };
 		D891771D2BA5457E0080B20C /* SummaryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanel.swift; sourceTree = "<group>"; };
+		D89ADE422BBCAC5700F915A1 /* StatusImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusImage.swift; sourceTree = "<group>"; };
+		D89ADE442BBCACAC00F915A1 /* Rotates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rotates.swift; sourceTree = "<group>"; };
 		D89E58172B65D2AA0027EB4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSpinner.swift; sourceTree = "<group>"; };
 		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
@@ -260,6 +264,7 @@
 				D850F4D82BAA4EA700CE1796 /* PresentsConfirmable.swift */,
 				D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */,
 				D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */,
+				D89ADE442BBCACAC00F915A1 /* Rotates.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -404,6 +409,7 @@
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
 				D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */,
 				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
+				D89ADE422BBCAC5700F915A1 /* StatusImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -639,6 +645,7 @@
 				D850F4D72BAA4E7B00CE1796 /* Confirmation.swift in Sources */,
 				D8D413F328045535001BA6C0 /* Action.swift in Sources */,
 				D87390EE2BA1301400EFC8B8 /* MenuButtonStyle.swift in Sources */,
+				D89ADE452BBCACAC00F915A1 /* Rotates.swift in Sources */,
 				D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */,
 				D86A91472B9E5FF30008FF63 /* InfoView.swift in Sources */,
 				D8DA9D8B2B97011800C17DBC /* RepositoryDetails.swift in Sources */,
@@ -662,6 +669,7 @@
 				D85383552BB4EBB50013F267 /* SingleWindow.swift in Sources */,
 				D83DE3962BB218CB00234B01 /* HTTPStatusCode.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */,
+				D89ADE432BBCAC5700F915A1 /* StatusImage.swift in Sources */,
 				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */,
 				D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */,

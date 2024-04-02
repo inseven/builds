@@ -81,31 +81,8 @@ struct WorkflowInstanceCell: View {
                                 .buttonStyle(.menu)
                         }
                     } label: {
-                        if let workflowRun = instance.result?.workflowRun {
-                            switch workflowRun.status {
-                            case .queued:
-                                Image(systemName: "clock.arrow.circlepath")
-                            case .waiting:
-                                Image(systemName: "clock")
-                            case .inProgress:
-                                ProgressSpinner()
-                            case .completed:
-                                switch workflowRun.conclusion {
-                                case .success:
-                                    Image(systemName: "checkmark")
-                                case .failure:
-                                    Image(systemName: "xmark")
-                                case .cancelled:
-                                    Image(systemName: "exclamationmark.octagon")
-                                case .skipped:
-                                    Image(systemName: "slash.circle")
-                                case .none:
-                                    Image(systemName: "questionmark")
-                                }
-                            }
-                        } else {
-                            Image(systemName: "questionmark")
-                        }
+                        StatusImage(status: instance.result?.workflowRun.status,
+                                    conclusion: instance.result?.workflowRun.conclusion)
                     }
                     .disabled(instance.result == nil)
                 }
