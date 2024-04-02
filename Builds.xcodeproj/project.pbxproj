@@ -39,6 +39,7 @@
 		D87390F02BA134D400EFC8B8 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */; };
 		D87E0D3E2BB4E2EC00E94A59 /* PresentsURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */; };
 		D87E0D402BB4E52700E94A59 /* WorkflowInspectorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87E0D3F2BB4E52700E94A59 /* WorkflowInspectorModel.swift */; };
+		D87EDA992BBC8EAE00DCCDDB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87EDA982BBC8EAE00DCCDDB /* Settings.swift */; };
 		D87F23742B6600150085DC12 /* material-icons-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23732B6600150085DC12 /* material-icons-license */; };
 		D87F23762B66006F0085DC12 /* builds-license in Resources */ = {isa = PBXBuildFile; fileRef = D87F23752B66006F0085DC12 /* builds-license */; };
 		D8800B632BB4B25800AD3BB7 /* SheetReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8800B622BB4B25800AD3BB7 /* SheetReader.swift */; };
@@ -149,6 +150,7 @@
 		D87390EF2BA134D400EFC8B8 /* EdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
 		D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentsURL.swift; sourceTree = "<group>"; };
 		D87E0D3F2BB4E52700E94A59 /* WorkflowInspectorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowInspectorModel.swift; sourceTree = "<group>"; };
+		D87EDA982BBC8EAE00DCCDDB /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D87F23732B6600150085DC12 /* material-icons-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "material-icons-license"; sourceTree = "<group>"; };
 		D87F23752B66006F0085DC12 /* builds-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "builds-license"; sourceTree = "<group>"; };
 		D8800B622BB4B25800AD3BB7 /* SheetReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetReader.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 				D850F4DA2BAA709800CE1796 /* Confirmable.swift */,
 				D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */,
 				D850F4D62BAA4E7B00CE1796 /* Confirmation.swift */,
+				D8D3FAF92BB63F16001298CC /* FocusedSceneModel.swift */,
 				D8355DCE27F63B680091BAFD /* GitHub.swift */,
 				D8F0CE0427F89A8100F4EC83 /* GitHubClient.swift */,
 				D83DE3952BB218CB00234B01 /* HTTPStatusCode.swift */,
@@ -364,12 +367,12 @@
 				D8DA9D8A2B97011800C17DBC /* RepositoryDetails.swift */,
 				D8CA0EED2B93E5A600DAE758 /* SceneModel.swift */,
 				D883F1BA2B9803FD00B00F1C /* SectionIdentifier.swift */,
+				D87EDA982BBC8EAE00DCCDDB /* Settings.swift */,
 				D81251B52B918472001F6E85 /* SummaryState.swift */,
 				D87E0D3F2BB4E52700E94A59 /* WorkflowInspectorModel.swift */,
 				D8CA0EF52B942BD900DAE758 /* WorkflowInstance.swift */,
 				D8D413F428045577001BA6C0 /* WorkflowResult.swift */,
 				D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */,
-				D8D3FAF92BB63F16001298CC /* FocusedSceneModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -684,6 +687,7 @@
 				D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */,
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D88208DB2BB23C030075E9B7 /* HTTPURLResponseError.swift in Sources */,
+				D87EDA992BBC8EAE00DCCDDB /* Settings.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,
 				D86F532A2BB5163100C9A1AF /* PresentURL.swift in Sources */,
 				D854FD872BB616EE00DD31DD /* WorkflowMenu.swift in Sources */,

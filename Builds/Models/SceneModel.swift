@@ -30,6 +30,7 @@ class SceneModel: Runnable {
         var columnVisibility: NavigationSplitViewVisibility = .automatic
         var sheet: SheetType?
         var previewURL: URL?
+        var section: SectionIdentifier? = .all
     }
 
     enum SheetType: Identifiable, Codable {
@@ -55,11 +56,10 @@ class SceneModel: Runnable {
 
     @MainActor var settings: Settings {
         didSet {
-            applicationModel.defaultSceneSettings = settings
+            applicationModel.settings.sceneSettings = settings
         }
     }
 
-    @MainActor var section: SectionIdentifier? = .all
     @MainActor var selection = Set<WorkflowInstance.ID>()
     @MainActor var confirmation: Confirmable?
 
@@ -69,11 +69,11 @@ class SceneModel: Runnable {
 
     @MainActor init(applicationModel: ApplicationModel) {
         self.applicationModel = applicationModel
-        self.settings = applicationModel.defaultSceneSettings
+        self.settings = applicationModel.settings.sceneSettings
     }
 
     @MainActor var workflows: [WorkflowInstance] {
-        switch section {
+        switch settings.section {
         case .all:
             return applicationModel.results
         case .organization(let organization):
@@ -91,12 +91,12 @@ class SceneModel: Runnable {
                 guard let self else {
                     return
                 }
-                guard let section = self.section,
+                guard let section = settings.section,
                       case SectionIdentifier.organization(let organization) = section,
                       !organizations.contains(organization) else {
                     return
                 }
-                self.section = nil
+                settings.section = .all
             }
             .store(in: &cancellables)
     }
@@ -125,12 +125,12 @@ class SceneModel: Runnable {
                 ConfirmableAction("Sign Out", role: .destructive) {
                     await self.applicationModel.signOut(preserveFavorites: false)
                     self.settings.sheet = nil
-                    self.section = .all
+                    self.settings.section = .all
                 },
                 ConfirmableAction("Sign Out and Keep Favorites") {
                     await self.applicationModel.signOut(preserveFavorites: true)
                     self.settings.sheet = nil
-                    self.section = .all
+                    self.settings.section = .all
                 },
             ])
     }
