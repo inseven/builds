@@ -74,7 +74,7 @@ struct MainContentView: View {
                     Button {
                         sceneModel.manageWorkflows()
                     } label: {
-                        Label("Manage Workflows", systemImage: "checklist")
+                        Label("Add Workflows", systemImage: "plus")
                     }
                     .help("Select workflows to display")
                     .disabled(!applicationModel.isSignedIn)

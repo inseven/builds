@@ -56,7 +56,7 @@ struct WorkflowsContentView: View {
 #endif
             }
         }
-        .navigationTitle("Manage Workflows")
+        .navigationTitle("Add Workflows")
         .toolbarTitleDisplayMode(.inline)
 #if os(macOS)
         .toolbar {
