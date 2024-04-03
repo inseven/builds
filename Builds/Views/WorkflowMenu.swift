@@ -22,18 +22,6 @@ import SwiftUI
 
 import Interact
 
-fileprivate extension ApplicationModel {
-
-    var openMenuItemSystemImage: String {
-        if useInAppBrowser {
-            return "arrow.up.forward.square"
-        } else {
-            return "safari"
-        }
-    }
-
-}
-
 struct WorkflowMenu {
 
     @MainActor @MenuItemBuilder static func items(applicationModel: ApplicationModel,
@@ -58,45 +46,56 @@ struct WorkflowMenu {
 
         Divider()
 
-        MenuItem("Open") {
+        MenuItem("Open", systemImage: applicationModel.useInAppBrowser ? "rectangle.and.text.magnifyingglass" : "safari") {
 
-            MenuItem("Run", systemImage: applicationModel.openMenuItemSystemImage) {
+            MenuItem("Run", systemImage: "play") {
                 for result in results {
                     openContext.presentURL(result.workflowRun.html_url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Commit", systemImage: applicationModel.openMenuItemSystemImage) {
+            MenuItem("Commit", systemImage: "checkmark.seal") {
                 for url in workflowInstances.compactMap({ $0.commitURL }) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Workflow", systemImage: applicationModel.openMenuItemSystemImage) {
-                for url in workflowInstances.compactMap({ $0.workflowURL }) {
-                    openContext.presentURL(url)
-                }
-            }
-            .disabled(results.isEmpty)
-
-            MenuItem("Branch", systemImage: applicationModel.openMenuItemSystemImage) {
+            MenuItem("Branch", systemImage: "arrow.turn.down.right") {
                 for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Pulls", systemImage: applicationModel.openMenuItemSystemImage) {
-                for url in workflowInstances.compactMap({ $0.pullsURL }) {
+            MenuItem("Workflow", systemImage: "doc.text") {
+                for url in workflowInstances.compactMap({ $0.workflowURL }) {
                     openContext.presentURL(url)
                 }
             }
             .disabled(results.isEmpty)
 
-            MenuItem("Repository", systemImage: applicationModel.openMenuItemSystemImage) {
+            Divider()
+
+            MenuItem("Repository", systemImage: "cylinder") {
                 for url in Set(workflowInstances.compactMap({ $0.repositoryURL })) {
+                    openContext.presentURL(url)
+                }
+            }
+            .disabled(results.isEmpty)
+
+            MenuItem("Organization", systemImage: "building.2") {
+                for url in Set(workflowInstances.compactMap({ $0.organizationURL })) {
+                    openContext.presentURL(url)
+                }
+            }
+            .disabled(results.isEmpty)
+
+            Divider()
+
+            MenuItem("Pulls", systemImage: "checklist") {
+                for url in workflowInstances.compactMap({ $0.pullsURL }) {
                     openContext.presentURL(url)
                 }
             }
@@ -107,7 +106,7 @@ struct WorkflowMenu {
 
         Divider()
 
-        MenuItem("Remove \(workflowInstances.count) Workflows", systemImage: "trash", role: .destructive) {
+        MenuItem("Remove", systemImage: "star.slash", role: .destructive) {
             for workflowInstance in workflowInstances {
                 applicationModel.removeFavorite(workflowInstance.id)
             }
