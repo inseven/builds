@@ -143,33 +143,8 @@
     "Refresh..." : {
 
     },
-    "Remove %lld Workflows" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Remove Workflow"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "Remove %lld Workflows"
-                }
-              },
-              "zero" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Remove Workflow"
-                }
-              }
-            }
-          }
-        }
-      }
+    "Remove" : {
+
     },
     "Repository" : {
 
