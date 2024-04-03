@@ -58,6 +58,7 @@ struct InfoView: View {
                             if let title = workflowInstance.attributedTitle {
                                 Text(title)
                                     .foregroundStyle(.link)
+                                    .multilineTextAlignment(.trailing)
                             } else {
                                 Text("-")
                             }
@@ -79,6 +80,7 @@ struct InfoView: View {
                                 Text(sha)
                                     .foregroundStyle(.link)
                                     .monospaced()
+                                    .multilineTextAlignment(.trailing)
                             } else {
                                 Text("-")
                             }
@@ -99,6 +101,7 @@ struct InfoView: View {
                             Text(workflowInstance.id.branch)
                                 .foregroundStyle(.link)
                                 .monospaced()
+                                .multilineTextAlignment(.trailing)
                         }
                         .disabled(workflowInstance.result == nil)
                     } label: {
@@ -116,6 +119,7 @@ struct InfoView: View {
                             if let path = workflowInstance.result?.workflowRun.path {
                                 Text(path)
                                     .foregroundStyle(.link)
+                                    .multilineTextAlignment(.trailing)
                             } else {
                                 Text("-")
                             }
@@ -139,6 +143,7 @@ struct InfoView: View {
                         } label: {
                             Text(workflowInstance.id.repositoryName)
                                 .foregroundStyle(.link)
+                                .multilineTextAlignment(.trailing)
                         }
                         .disabled(workflowInstance.repositoryURL == nil)
                     } label: {
@@ -155,6 +160,7 @@ struct InfoView: View {
                         } label: {
                             Text(workflowInstance.id.organization)
                                 .foregroundStyle(.link)
+                                .multilineTextAlignment(.trailing)
                         }
                         .disabled(workflowInstance.organizationURL == nil)
                     } label: {
