@@ -245,16 +245,7 @@ class ApplicationModel: NSObject, ObservableObject {
 
         // Fetch the workflow details on demand.
         Task {
-            do {
-                try await client.update(favorites: [id]) { [weak self] workflowInstance in
-                    guard let self else {
-                        return
-                    }
-                    self.cachedStatus[workflowInstance.id] = workflowInstance.result
-                }
-            } catch {
-                print("Failed fetch workflow results on demand with error \(error).")
-            }
+            await refresh(ids: [id])
         }
     }
 
@@ -320,6 +311,19 @@ class ApplicationModel: NSObject, ObservableObject {
         await refreshScheduler.run()
     }
 
+    func refresh(ids: [WorkflowInstance.ID]) async {
+        do {
+            try await client.update(favorites: ids) { [weak self] workflowInstance in
+                guard let self else {
+                    return
+                }
+                self.cachedStatus[workflowInstance.id] = workflowInstance.result
+            }
+        } catch {
+            lastError = error
+        }
+    }
+
     func requestHigherFrequencyUpdates() async {
         if activeScenes < 1 {
             Task {
@@ -333,6 +337,16 @@ class ApplicationModel: NSObject, ObservableObject {
         while !Task.isCancelled {
             try? await Task.sleep(for: .seconds(60*60*24))
         }
+    }
+
+    func rerun(id: WorkflowInstance.ID, workflowRunId: Int) async throws {
+        try await client.rerun(repositoryName: id.repositoryFullName, workflowRunId: workflowRunId)
+        await refresh(ids: [id])
+    }
+
+    func rerunFailedJobs(id: WorkflowInstance.ID, workflowRunId: Int) async throws {
+        try await client.rerunFailedJobs(repositoryName: id.repositoryFullName, workflowRunId: workflowRunId)
+        await refresh(ids: [id])
     }
 
 #if os(macOS)

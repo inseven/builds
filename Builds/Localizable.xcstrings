@@ -50,6 +50,9 @@
     "Add workflows to view their statuses." : {
 
     },
+    "All Jobs" : {
+
+    },
     "All Workflows" : {
 
     },
@@ -87,6 +90,9 @@
 
     },
     "Done" : {
+
+    },
+    "Failed Jobs" : {
 
     },
     "Get Info" : {
