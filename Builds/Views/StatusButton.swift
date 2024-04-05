@@ -34,16 +34,24 @@ struct StatusButton: View {
             Button {
                 self.error = applicationModel.lastError
             } label: {
-                HStack {
+                Label {
                     if applicationModel.lastError != nil {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .symbolRenderingMode(.multicolor)
+                        Text("Update Failed")
                     } else {
-                        ProgressView()
-                            .controlSize(.small)
+                        Text("Updating...")
                     }
+                } icon: {
+                    HStack {
+                        if applicationModel.lastError != nil {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .symbolRenderingMode(.multicolor)
+                        } else {
+                            ProgressView()
+                                .controlSize(.small)
+                        }
+                    }
+                    .frame(minWidth: 21.0)
                 }
-                .frame(minWidth: 21.0)
             }
             .disabled(applicationModel.lastUpdate == nil)
             .confirmationDialog("Refresh Error", isPresented: $error.bool()) {
