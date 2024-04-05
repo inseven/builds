@@ -137,4 +137,17 @@ class GitHubClient {
         return try await api.workflows(for: repository, accessToken: accessToken)
     }
 
+    func rerun(repositoryName: String, workflowRunId: Int) async throws {
+        return try await api.rerun(repositoryName: repositoryName,
+                                   workflowRunId: workflowRunId,
+                                   accessToken: accessToken)
+    }
+
+    func rerunFailedJobs(repositoryName: String, workflowRunId: Int) async throws {
+        return try await api.rerunFailedJobs(repositoryName: repositoryName,
+                                             workflowRunId: workflowRunId,
+                                             accessToken: accessToken)
+    }
+
+
 }

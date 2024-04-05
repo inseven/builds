@@ -71,6 +71,7 @@ struct WorkflowsView: View, OpenContext {
 #endif
         }
         .frame(minWidth: 300)
+        .presents($sceneModel.error)
         .refreshable {
             await applicationModel.refresh()
         }

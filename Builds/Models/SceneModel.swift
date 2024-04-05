@@ -62,6 +62,7 @@ class SceneModel: Runnable {
 
     @MainActor var selection = Set<WorkflowInstance.ID>()
     @MainActor var confirmation: Confirmable?
+    @MainActor var error: Error?
 
     private let applicationModel: ApplicationModel
 
@@ -141,6 +142,28 @@ class SceneModel: Runnable {
 #else
         Application.open(.manageWorkflows)
 #endif
+    }
+
+    func rerun(id: WorkflowInstance.ID, workflowRunId: Int) async {
+        do {
+            try await applicationModel.rerun(id: id, workflowRunId: workflowRunId)
+        } catch {
+            await MainActor.run {
+                print("Failed to re-run \(workflowRunId) in repository \(id.repositoryFullName) with error \(error).")
+                self.error = error
+            }
+        }
+    }
+
+    func rerunFailedJobs(id: WorkflowInstance.ID, workflowRunId: Int) async {
+        do {
+            try await applicationModel.rerunFailedJobs(id: id, workflowRunId: workflowRunId)
+        } catch {
+            await MainActor.run {
+                print("Failed to re-run fialed jobs for \(workflowRunId) in repository \(id.repositoryFullName) with error \(error).")
+                self.error = error
+            }
+        }
     }
 
 }

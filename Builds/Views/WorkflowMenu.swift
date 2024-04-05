@@ -104,6 +104,35 @@ struct WorkflowMenu {
         }
         .disabled(results.isEmpty)
 
+        MenuItem("Re-Run", systemImage: "memories") {
+
+            let disabled = workflowInstances.count != 1 || workflowInstances.first?.result == nil
+            let hasFailedJobs = workflowInstances.first?.jobs.contains(where: { $0.conclusion == .failure }) ?? false
+
+            MenuItem("All Jobs", systemImage: "rectangle.on.rectangle") {
+                Task {
+                    guard let workflowInstance = workflowInstances.first,
+                          let workflowRun = workflowInstance.result?.workflowRun else {
+                        return
+                    }
+                    await sceneModel?.rerun(id: workflowInstance.id, workflowRunId: workflowRun.id)
+                }
+            }
+            .disabled(disabled)
+
+            MenuItem("Failed Jobs", systemImage: "xmark.rectangle") {
+                Task {
+                    guard let workflowInstance = workflowInstances.first,
+                          let workflowRun = workflowInstance.result?.workflowRun else {
+                        return
+                    }
+                    await sceneModel?.rerun(id: workflowInstance.id, workflowRunId: workflowRun.id)
+                }
+            }
+            .disabled(disabled || !hasFailedJobs)
+
+        }
+
         Divider()
 
         MenuItem("Remove", systemImage: "star.slash", role: .destructive) {

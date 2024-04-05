@@ -223,13 +223,18 @@ class GitHub {
         self.redirectUri = redirectUri
     }
 
-    private func fetch<T: Decodable>(_ url: URL, accessToken: String) async throws -> T {
-        print(url.absoluteString)
+    private func fetch(_ url: URL, accessToken: String, method: String = "GET") async throws -> Data {
         var request = URLRequest(url: url)
+        request.httpMethod = method
         request.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
         request.setValue("token \(accessToken)", forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
         try response.checkHTTPStatusCode()
+        return data
+    }
+
+    private func fetch<T: Decodable>(_ url: URL, accessToken: String) async throws -> T {
+        let data = try await fetch(url, accessToken: accessToken)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         do {
@@ -252,6 +257,16 @@ class GitHub {
         }
         let response: T = try await fetch(url, accessToken: accessToken)
         return response
+    }
+
+    func rerun(repositoryName: String, workflowRunId: Int, accessToken: String) async throws {
+        let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs/\(workflowRunId)/rerun")!
+        _ = try await fetch(url, accessToken: accessToken, method: "POST")
+    }
+
+    func rerunFailedJobs(repositoryName: String, workflowRunId: Int, accessToken: String) async throws {
+        let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs/\(workflowRunId)/rerun-failed-jobs")!
+        _ = try await fetch(url, accessToken: accessToken, method: "POST")
     }
 
     func workflowRuns(repositoryName: String,

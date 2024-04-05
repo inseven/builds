@@ -76,6 +76,10 @@ struct WorkflowInstance: Identifiable, Hashable {
         return repositoryURL.appendingPathComponents(["commit", result.workflowRun.head_sha])
     }
 
+    var jobs: [GitHub.WorkflowJob] {
+        return result?.jobs ?? []
+    }
+
     var lastRun: String {
         guard let createdAt = result?.workflowRun.created_at else {
             return "Unknown"
