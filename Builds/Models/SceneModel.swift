@@ -121,14 +121,14 @@ class SceneModel: Runnable {
     @MainActor func signOut() {
         confirmation = Confirmation(
             "Sign Out",
-            message: "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud.",
+            message: "Signing out will remove Builds from your GitHub account and clear your workflows from iCloud.",
             actions: [
                 ConfirmableAction("Sign Out", role: .destructive) {
                     await self.applicationModel.signOut(preserveFavorites: false)
                     self.settings.sheet = nil
                     self.settings.section = .all
                 },
-                ConfirmableAction("Sign Out and Keep Favorites") {
+                ConfirmableAction("Sign Out and Keep Workflows") {
                     await self.applicationModel.signOut(preserveFavorites: true)
                     self.settings.sheet = nil
                     self.settings.section = .all

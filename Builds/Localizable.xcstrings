@@ -188,13 +188,13 @@
     "Sign Out" : {
 
     },
-    "Sign Out and Keep Favorites" : {
+    "Sign Out and Keep Workflows" : {
 
     },
     "Sign Out..." : {
 
     },
-    "Signing out will remove Builds from your GitHub account and clear your favorites from iCloud." : {
+    "Signing out will remove Builds from your GitHub account and clear your workflows from iCloud." : {
 
     },
     "Simulate Authentication Failure" : {
