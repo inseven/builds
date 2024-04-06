@@ -20,6 +20,18 @@
 
 import SwiftUI
 
+extension GitHub.WorkflowJob {
+
+    var operationState: OperationState {
+        return OperationState(status: status, conclusion: conclusion)
+    }
+
+    var color: Color {
+        return operationState.summary.color
+    }
+
+}
+
 struct WorkflowJobList: View {
 
     struct LayoutMetrics {
@@ -31,22 +43,18 @@ struct WorkflowJobList: View {
 
     let jobs: [GitHub.WorkflowJob]
 
-    private func color(for workflowJob: GitHub.WorkflowJob) -> Color {
-        return SummaryState(status: workflowJob.status, conclusion: workflowJob.conclusion).color
-    }
-
     var body: some View {
         ForEach(jobs) { job in
             Button {
                 presentURL(job.html_url)
             } label: {
                 HStack {
-                    StatusImage(status: job.status, conclusion: job.conclusion, size: LayoutMetrics.statusImageSize)
+                    StatusImage(operationState: job.operationState, size: LayoutMetrics.statusImageSize)
                         .foregroundStyle(.white)
                         .fontWeight(.heavy)
                         .padding(LayoutMetrics.statusImagePadding)
                         .background(Circle()
-                            .fill(color(for: job)))
+                            .fill(job.color))
                     Text(job.name)
                     Spacer()
                     if let startDate = job.started_at {
@@ -55,6 +63,7 @@ struct WorkflowJobList: View {
                     }
                 }
             }
+            .help(job.operationState.name)
         }
     }
 }
