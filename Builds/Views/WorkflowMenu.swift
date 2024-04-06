@@ -109,7 +109,7 @@ struct WorkflowMenu {
             let disabled = workflowInstances.count != 1 || workflowInstances.first?.result == nil
             let hasFailedJobs = workflowInstances.first?.jobs.contains(where: { $0.conclusion == .failure }) ?? false
 
-            MenuItem("All Jobs", systemImage: "rectangle.on.rectangle") {
+            MenuItem("All Jobs", systemImage: "square.on.square") {
                 Task {
                     guard let workflowInstance = workflowInstances.first,
                           let workflowRun = workflowInstance.result?.workflowRun else {
@@ -120,7 +120,7 @@ struct WorkflowMenu {
             }
             .disabled(disabled)
 
-            MenuItem("Failed Jobs", systemImage: "xmark.rectangle") {
+            MenuItem("Failed Jobs", systemImage: "xmark.square") {
                 Task {
                     guard let workflowInstance = workflowInstances.first,
                           let workflowRun = workflowInstance.result?.workflowRun else {
@@ -135,7 +135,9 @@ struct WorkflowMenu {
 
         Divider()
 
-        MenuItem("Remove", systemImage: "star.slash", role: .destructive) {
+        MenuItem("Remove",
+                 systemImage: workflowInstances.count == 1 ? "rectangle.slash" : "rectangle.on.rectangle.slash",
+                 role: .destructive) {
             for workflowInstance in workflowInstances {
                 applicationModel.removeFavorite(workflowInstance.id)
             }
