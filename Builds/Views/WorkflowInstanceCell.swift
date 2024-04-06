@@ -81,8 +81,8 @@ struct WorkflowInstanceCell: View {
                                 .buttonStyle(.menu)
                         }
                     } label: {
-                        StatusImage(status: instance.result?.workflowRun.status,
-                                    conclusion: instance.result?.workflowRun.conclusion)
+                        StatusImage(operationState: instance.operationState)
+                            .help(instance.operationState.name)
                     }
                     .disabled(instance.result == nil)
                 }

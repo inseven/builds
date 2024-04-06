@@ -28,7 +28,7 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor @Published var organizations: [String] = []
     @MainActor @Published var isUpdating: Bool = false
-    @MainActor @Published var summary: SummaryState = .unknown
+    @MainActor @Published var summary: OperationState.Summary = .unknown
     @MainActor @Published var results: [WorkflowInstance] = []
 
     // Indicates that the user has signed in, not that they have a valid authentication. This allows us to differentiate
@@ -196,12 +196,12 @@ class ApplicationModel: NSObject, ObservableObject {
 
         // Generate an over-arching build summary used to back insight windows and widgets.
         $results
-            .map { (results) -> SummaryState in
+            .map { (results) -> OperationState.Summary in
                 guard results.count > 0 else {
                     return .unknown
                 }
                 for result in results {
-                    switch result.state {
+                    switch result.summary {
                     case .unknown:
                         return .unknown
                     case .success:  // We require 100% successes for success.

@@ -22,52 +22,24 @@ import SwiftUI
 
 struct StatusImage: View {
 
-    let status: GitHub.Status?
-    let conclusion: GitHub.Conclusion?
+    let operationState: OperationState
     let size: CGSize?
 
-    init(status: GitHub.Status?, conclusion: GitHub.Conclusion?, size: CGSize? = nil) {
-        self.status = status
-        self.conclusion = conclusion
+    init(operationState: OperationState, size: CGSize? = nil) {
+        self.operationState = operationState
         self.size = size
-    }
-
-    var systemImage: String {
-        switch status {
-        case .queued:
-            return "clock.arrow.circlepath"
-        case .waiting:
-            return "clock"
-        case .inProgress:
-            return "circle.dashed"
-        case .completed:
-            switch conclusion {
-            case .success:
-                return "checkmark"
-            case .failure:
-                return "xmark"
-            case .cancelled:
-                return "exclamationmark.octagon"
-            case .skipped:
-                return "slash.circle"
-            case .none:
-                return "questionmark"
-            }
-        case .none:
-            return "questionmark"
-        }
     }
 
     var body: some View {
         if let size {
-            Image(systemName: systemImage)
+            Image(systemName: operationState.systemImage)
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
                 .frame(width: size.width, height: size.height)
-                .rotates(status == .inProgress)
+                .rotates(operationState.isActive)
         } else {
-            Image(systemName: systemImage)
-                .rotates(status == .inProgress)
+            Image(systemName: operationState.systemImage)
+                .rotates(operationState.isActive)
         }
     }
 

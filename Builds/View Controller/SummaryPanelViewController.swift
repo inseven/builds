@@ -91,12 +91,12 @@ class SummaryPanelViewController: NSViewController {
         applicationModel
             .$summary
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] summaryState in
+            .sink { [weak self] summary in
                 guard let self else {
                     return
                 }
                 let newSelection: SCNNode
-                switch summaryState {
+                switch summary {
                 case .unknown:
                     newSelection = silver
                 case .success:

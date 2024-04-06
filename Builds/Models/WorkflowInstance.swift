@@ -88,6 +88,10 @@ struct WorkflowInstance: Identifiable, Hashable {
         return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
     }
 
+    var operationState: OperationState {
+        return OperationState(status: result?.workflowRun.status, conclusion: result?.workflowRun.conclusion)
+    }
+
     var organizationURL: URL? {
         guard let repositoryURL else {
             return nil
@@ -100,13 +104,6 @@ struct WorkflowInstance: Identifiable, Hashable {
             return nil
         }
         return repositoryURL.appendingPathComponent("pulls")
-    }
-
-    var workflowURL: URL? {
-        guard let repositoryURL, let id = result?.workflowRun.id else {
-            return nil
-        }
-        return repositoryURL.appendingPathComponents(["actions", "runs", String(id), "workflow"])
     }
 
     var repositoryName: String {
@@ -127,17 +124,23 @@ struct WorkflowInstance: Identifiable, Hashable {
         return String(result.workflowRun.head_sha.prefix(7))
     }
 
-    var state: SummaryState {
-        return SummaryState(status: result?.workflowRun.status,
-                            conclusion: result?.workflowRun.conclusion)
+    var statusColor: Color {
+        return summary.color
     }
 
-    var statusColor: Color {
-        return state.color
+    var summary: OperationState.Summary {
+        return operationState.summary
     }
 
     var workflowName: String {
         return result?.workflowRun.name ?? String(id.workflowId)
+    }
+
+    var workflowURL: URL? {
+        guard let repositoryURL, let id = result?.workflowRun.id else {
+            return nil
+        }
+        return repositoryURL.appendingPathComponents(["actions", "runs", String(id), "workflow"])
     }
 
     let id: ID
