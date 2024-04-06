@@ -9,11 +9,13 @@
 	<key>manageAppVersionAndBuildNumber</key>
 	<false/>
 	<key>method</key>
-	<string>app-store</string>
+	<string>app-store-connect</string>
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>uk.co.jbmorley.builds.apps.appstore</key>
 		<string>Builds Mac App Store Profile</string>
+		<key>uk.co.jbmorley.builds.apps.appstore.widget</key>
+		<string>Builds Widget Mac App Store Profile</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>91DADFE184A1526FA94D4513D5B4C75E1DB3B252</string>
