@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-import Interact
+import SelectableCollectionView
 
 struct WorkflowMenu {
 
