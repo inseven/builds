@@ -43,6 +43,14 @@ struct WorkflowJobList: View {
 
     let jobs: [GitHub.WorkflowJob]
 
+    func background(_ color: Color) -> some View {
+        Circle()
+            .fill(color)
+#if os(macOS)
+            .strokeBorder(.foreground.opacity(0.2), style: .init(lineWidth: 1.0))
+#endif
+    }
+
     var body: some View {
         ForEach(jobs) { job in
             Button {
@@ -53,8 +61,7 @@ struct WorkflowJobList: View {
                         .foregroundStyle(.white)
                         .fontWeight(.heavy)
                         .padding(LayoutMetrics.statusImagePadding)
-                        .background(Circle()
-                            .fill(job.color))
+                        .background(background(job.color))
                     Text(job.name)
                     Spacer()
                     if let startDate = job.started_at {
