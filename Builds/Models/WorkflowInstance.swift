@@ -80,8 +80,12 @@ struct WorkflowInstance: Identifiable, Hashable {
         return result?.jobs ?? []
     }
 
+    var createdAt: Date? {
+        return result?.workflowRun.created_at
+    }
+
     var lastRun: String {
-        guard let createdAt = result?.workflowRun.created_at else {
+        guard let createdAt else {
             return "Unknown"
         }
         let dateFormatter = RelativeDateTimeFormatter()

@@ -21,7 +21,14 @@
 import WidgetKit
 import SwiftUI
 
+import Interact
+
 struct Provider: AppIntentTimelineProvider {
+
+    enum Key: String {
+        case summary
+    }
+
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
     }
@@ -33,13 +40,12 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+        let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
+        let summary: Summary?  = try? defaults.codable(forKey: .summary)
+
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
+        let entry = SimpleEntry(date: currentDate, summary: summary, configuration: configuration)
+        entries.append(entry)
 
         return Timeline(entries: entries, policy: .atEnd)
     }
@@ -47,18 +53,40 @@ struct Provider: AppIntentTimelineProvider {
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
+    let summary: Summary?
     let configuration: ConfigurationAppIntent
+
+    init(date: Date, summary: Summary? = nil, configuration: ConfigurationAppIntent) {
+        self.date = date
+        self.summary = summary
+        self.configuration = configuration
+    }
 }
 
 struct BuildsWidgetEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        Text("Time:")
-        Text(entry.date, style: .time)
-
-        Text("Favorite Emoji:")
-        Text(entry.configuration.favoriteEmoji)
+        VStack(alignment: .leading) {
+            HStack {
+                Spacer()
+                Image(systemName: entry.summary?.status.systemImage ?? "questionmark")
+                    .imageScale(.large)
+            }
+            Spacer()
+            Text("\(entry.summary?.count ?? 0) Workflows")
+            if let date = entry.summary?.date {
+                Text(date, format: .relative(presentation: .named))
+                    .font(.subheadline)
+                    .opacity(0.6)
+            } else {
+                Text("-")
+                    .font(.subheadline)
+                    .opacity(0.6)
+            }
+        }
+        .foregroundColor(.black)
+        .containerBackground(entry.summary?.status.color ?? .pink, for: .widget)
     }
 }
 
@@ -68,7 +96,6 @@ struct BuildsWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
             BuildsWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
         }
     }
 }

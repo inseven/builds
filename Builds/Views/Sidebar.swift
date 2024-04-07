@@ -31,12 +31,8 @@ struct Sidebar: View {
             Section {
                 let identifier = SectionIdentifier.all
                 NavigationLink(value: identifier) {
-                    Label {
-                        Text(identifier.title)
-                    } icon: {
-                        Image(systemName: identifier.symbolName)
-                    }
-                    .tag(identifier)
+                    Text(identifier.title)
+                        .tag(identifier)
                 }
             }
             if applicationModel.organizations.count > 0 {
@@ -44,12 +40,8 @@ struct Sidebar: View {
                     ForEach(applicationModel.organizations, id: \.self) { organization in
                         let identifier = SectionIdentifier.organization(organization)
                         NavigationLink(value: identifier) {
-                            Label {
-                                Text(identifier.title)
-                            } icon: {
-                                Image(systemName: identifier.symbolName)
-                            }
-                            .tag(identifier)
+                            Text(identifier.title)
+                                .tag(identifier)
                         }
                     }
                 } header: {

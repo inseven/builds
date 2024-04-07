@@ -20,6 +20,7 @@
 
 import Combine
 import SwiftUI
+import WidgetKit
 
 import Interact
 
@@ -28,7 +29,12 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor @Published var organizations: [String] = []
     @MainActor @Published var isUpdating: Bool = false
-    @MainActor @Published var summary: OperationState.Summary = .unknown
+    @MainActor @Published var summary: Summary? = nil {
+        didSet {
+            settings.summary = summary
+            WidgetCenter.shared.reloadTimelines(ofKind: "BuildsWidget")
+        }
+    }
     @MainActor @Published var results: [WorkflowInstance] = []
 
     // Indicates that the user has signed in, not that they have a valid authentication. This allows us to differentiate
@@ -196,25 +202,30 @@ class ApplicationModel: NSObject, ObservableObject {
 
         // Generate an over-arching build summary used to back insight windows and widgets.
         $results
-            .map { (results) -> OperationState.Summary in
+            .map { (results) -> Summary? in
                 guard results.count > 0 else {
-                    return .unknown
+                    return nil
                 }
+                var status: OperationState.Summary = .success
                 for result in results {
                     switch result.summary {
                     case .unknown:
-                        return .unknown
+                        status = .unknown
+                        break
                     case .success:  // We require 100% successes for success.
                         continue
                     case .skipped:  // Skipped builds don't represent failure.
                         continue
                     case .failure:  // We treat any failure as a global failure.
-                        return .failure
+                        status = .failure
+                        break
                     case .inProgress:
-                        return .inProgress
+                        status = .inProgress
+                        break
                     }
                 }
-                return .success
+                let date = results.compactMap({ $0.createdAt }).max()
+                return Summary(status: status, count: results.count, date: date)
             }
             .receive(on: DispatchQueue.main)
             .assign(to: \.summary, on: self)
