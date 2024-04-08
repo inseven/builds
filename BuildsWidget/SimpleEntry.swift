@@ -21,20 +21,16 @@
 import WidgetKit
 import SwiftUI
 
-struct BuildsWidget: Widget {
-    let kind: String = "BuildsWidget"
+import BuildsCore
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            BuildsWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("All Workflows")
+struct SimpleEntry: TimelineEntry {
+    let date: Date
+    let summary: Summary
+    let configuration: ConfigurationAppIntent
+
+    init(date: Date = Date(), summary: Summary = Summary(), configuration: ConfigurationAppIntent) {
+        self.date = date
+        self.summary = summary
+        self.configuration = configuration
     }
-}
-
-#Preview(as: .systemSmall) {
-    BuildsWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
 }
