@@ -89,7 +89,6 @@ class Settings {
         }
     }
 
-    // TODO: Rename this somewhere.
     @MainActor var cachedStatus: [WorkflowInstance.ID: WorkflowResult] {
         get {
             return (try? defaults.codable(forKey: .status)) ?? [:]
