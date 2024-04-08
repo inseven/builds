@@ -64,6 +64,7 @@ struct SimpleEntry: TimelineEntry {
 }
 
 struct BuildsWidgetEntryView : View {
+
     var entry: Provider.Entry
 
     var body: some View {
@@ -85,7 +86,7 @@ struct BuildsWidgetEntryView : View {
                     .opacity(0.6)
             }
         }
-        .foregroundColor(.black)
+        .widgetAccentable()
         .containerBackground(entry.summary?.status.color ?? .pink, for: .widget)
     }
 }
