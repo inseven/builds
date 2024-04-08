@@ -175,10 +175,14 @@ class ApplicationModel: NSObject, ObservableObject {
             }
             .sorted {
                 let repositoryNameOrder = $0.repositoryName.localizedStandardCompare($1.repositoryName)
-                if repositoryNameOrder == .orderedSame {
-                    return $0.workflowName.localizedStandardCompare($1.workflowName) == .orderedAscending
+                if repositoryNameOrder != .orderedSame {
+                    return repositoryNameOrder == .orderedAscending
                 }
-                return repositoryNameOrder == .orderedAscending
+                let workflowNameOrder = $0.workflowName.localizedStandardCompare($1.workflowName)
+                if workflowNameOrder != .orderedSame {
+                    return workflowNameOrder == .orderedAscending
+                }
+                return $0.id.branch.localizedStandardCompare($1.id.branch) == .orderedAscending
             }
     }
 
