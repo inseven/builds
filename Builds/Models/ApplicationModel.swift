@@ -279,10 +279,17 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor func sync() {
         let favorites = settings.favorites
+
+        // Guard against ping-ponging with the server and other devices.
         guard self.favorites != favorites else {
             return
         }
+
+        // Update the favorites.
         self.favorites = favorites
+
+        // Remove cached results that are no longer in our favorites set.
+        self.cachedStatus = self.cachedStatus.filter { favorites.contains($0.key) }
     }
 
     func authenticate(with url: URL) async throws {
