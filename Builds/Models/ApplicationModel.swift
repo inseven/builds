@@ -153,18 +153,20 @@ class ApplicationModel: NSObject, ObservableObject {
     }
 
     @MainActor private func updateOrganizations() {
-        self.organizations = favorites.reduce(into: Set<String>()) { partialResult, id in
-            partialResult.insert(id.organization)
-        }.sorted()
+        self.organizations = favorites
+            .reduce(into: Set<String>()) { partialResult, id in
+                partialResult.insert(id.organization)
+            }.sorted()
     }
 
     @MainActor private func updateResults() {
-        self.results = favorites.map { id in
-            return WorkflowInstance(id: id, result: cachedStatus[id])
-        }
-        .sorted {
-            $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
-        }
+        self.results = favorites
+            .map { id in
+                return WorkflowInstance(id: id, result: cachedStatus[id])
+            }
+            .sorted {
+                $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
+            }
     }
 
     @MainActor private func start() {

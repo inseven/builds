@@ -19,22 +19,36 @@
 // SOFTWARE.
 
 import WidgetKit
-import SwiftUI
 
-struct BuildsWidget: Widget {
-    let kind: String = "BuildsWidget"
+import Interact
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            BuildsWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("All Workflows")
+import BuildsCore
+
+struct Provider: AppIntentTimelineProvider {
+
+    enum Key: String {
+        case summary
     }
-}
 
-#Preview(as: .systemSmall) {
-    BuildsWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+    var summary: Summary {
+        return (try? defaults.codable(forKey: .summary)) ?? Summary()
+    }
+
+    let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
+
+    init() {
+    }
+
+    func placeholder(in context: Context) -> SimpleEntry {
+        return SimpleEntry(configuration: ConfigurationAppIntent())
+    }
+
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
+        return SimpleEntry(summary: summary, configuration: ConfigurationAppIntent())
+    }
+
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
+        let entry = SimpleEntry(summary: summary, configuration: configuration)
+        return Timeline(entries: [entry], policy: .atEnd)
+    }
 }
