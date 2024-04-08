@@ -96,8 +96,14 @@ struct WorkflowInstanceCell: View {
                     Text(instance.sha ?? "-")
                         .monospaced()
                 }
-                TimelineView(.periodic(from: Date(), by: 1)) { _ in
-                    Text(instance.lastRun)
+                VStack {
+                    if let createdAt = instance.createdAt {
+                        TimelineView(.periodic(from: createdAt, by: 1)) { _ in
+                            Text(createdAt, format: .relative(presentation: .numeric))
+                        }
+                    } else {
+                        Text("-")
+                    }
                 }
                 .gridColumnAlignment(.trailing)
             }
