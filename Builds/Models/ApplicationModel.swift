@@ -52,12 +52,14 @@ class ApplicationModel: NSObject, ObservableObject {
         didSet {
             settings.favorites = favorites
             updateOrganizations()
+            updateResults()
         }
     }
 
     @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
         didSet {
             settings.cachedStatus = cachedStatus
+            updateResults()
         }
     }
 
@@ -172,7 +174,11 @@ class ApplicationModel: NSObject, ObservableObject {
                 return WorkflowInstance(id: id, result: cachedStatus[id])
             }
             .sorted {
-                $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
+                let repositoryNameOrder = $0.repositoryName.localizedStandardCompare($1.repositoryName)
+                if repositoryNameOrder == .orderedSame {
+                    return $0.workflowName.localizedStandardCompare($1.workflowName) == .orderedAscending
+                }
+                return repositoryNameOrder == .orderedAscending
             }
     }
 
@@ -206,15 +212,6 @@ class ApplicationModel: NSObject, ObservableObject {
             }
             .store(in: &cancellables)
 
-        // Generate the results.
-        $favorites
-            .combineLatest($cachedStatus)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.updateResults()
-            }
-            .store(in: &cancellables)
-
         // Watch for changes to the iCloud defaults.
         NotificationCenter.default
             .publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)
@@ -238,6 +235,8 @@ class ApplicationModel: NSObject, ObservableObject {
         networkMonitor.start(queue: DispatchQueue.main)
 
         // Load the cached contents to ensure the UI doesn't flash on initial load.
+        // N.B. We don't call `updateSummary` here as this is a side effect of `updateResults` (if things have changed).
+        //      It might be wise to combine these two at some point to avoid confusion.
         sync()
         updateOrganizations()
         updateResults()
