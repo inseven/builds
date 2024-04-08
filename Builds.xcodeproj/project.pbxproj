@@ -10,6 +10,8 @@
 		D81251B82B929935001F6E85 /* BuildsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B72B929935001F6E85 /* BuildsError.swift */; };
 		D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B92B929B27001F6E85 /* MainWindow.swift */; };
 		D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */; };
+		D820A0A62BC481EB00FDD432 /* BuildsCore in Frameworks */ = {isa = PBXBuildFile; productRef = D820A0A52BC481EB00FDD432 /* BuildsCore */; };
+		D820A0A82BC481F300FDD432 /* BuildsCore in Frameworks */ = {isa = PBXBuildFile; productRef = D820A0A72BC481F300FDD432 /* BuildsCore */; };
 		D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */ = {isa = PBXBuildFile; productRef = D826A57C2BA23228006D25FF /* SelectableCollectionView */; };
 		D829F8D22BC35E8B00CA10DB /* Rotates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89ADE442BBCACAC00F915A1 /* Rotates.swift */; };
 		D82E6E722BAB809300536E15 /* Scenes in Resources */ = {isa = PBXBuildFile; fileRef = D82E6E712BAB809200536E15 /* Scenes */; };
@@ -272,6 +274,7 @@
 			files = (
 				D85677F42BC1CFF6003D2DB6 /* SwiftUI.framework in Frameworks */,
 				D85677F22BC1CFF6003D2DB6 /* WidgetKit.framework in Frameworks */,
+				D820A0A62BC481EB00FDD432 /* BuildsCore in Frameworks */,
 				D84D18742BC311D000C907B2 /* Interact in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +283,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D820A0A82BC481F300FDD432 /* BuildsCore in Frameworks */,
 				D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */,
 				D8DDD5F12B65F910003FAB23 /* Interact in Frameworks */,
 				D8DDD5F42B65FB11003FAB23 /* Diligence in Frameworks */,
@@ -585,6 +589,7 @@
 			name = BuildsWidgetExtension;
 			packageProductDependencies = (
 				D84D18732BC311D000C907B2 /* Interact */,
+				D820A0A52BC481EB00FDD432 /* BuildsCore */,
 			);
 			productName = BuildsWidgetExtension;
 			productReference = D85677F02BC1CFF6003D2DB6 /* BuildsWidgetExtension.appex */;
@@ -610,6 +615,7 @@
 				D8DDD5F32B65FB11003FAB23 /* Diligence */,
 				D887C5D52BA0B48000E46174 /* SwiftDraw */,
 				D826A57C2BA23228006D25FF /* SelectableCollectionView */,
+				D820A0A72BC481F300FDD432 /* BuildsCore */,
 			);
 			productName = Status;
 			productReference = D8FEAE0827F591AE00FDADFA /* Builds.app */;
@@ -1340,6 +1346,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D820A0A52BC481EB00FDD432 /* BuildsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BuildsCore;
+		};
+		D820A0A72BC481F300FDD432 /* BuildsCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BuildsCore;
+		};
 		D826A57C2BA23228006D25FF /* SelectableCollectionView */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SelectableCollectionView;
