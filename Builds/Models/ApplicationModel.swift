@@ -19,6 +19,7 @@
 // SOFTWARE.
 
 import Combine
+import Network
 import SwiftUI
 import WidgetKit
 
@@ -113,6 +114,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor private var refreshScheduler: RefreshScheduler!
 
     private let api: GitHub
+    private let networkMonitor = NWPathMonitor()
 
     override init() {
         let configuration = Bundle.main.configuration()
@@ -223,6 +225,17 @@ class ApplicationModel: NSObject, ObservableObject {
                 }
             }
             .store(in: &cancellables)
+
+        // Watch the network for availability.
+        networkMonitor.pathUpdateHandler = { [weak self] path in
+            guard let self, path.status == .satisfied else {
+                return
+            }
+            Task {
+                await self.refresh()
+            }
+        }
+        networkMonitor.start(queue: DispatchQueue.main)
 
         // Load the cached contents to ensure the UI doesn't flash on initial load.
         sync()
