@@ -37,7 +37,11 @@ class ApplicationModel: NSObject, ObservableObject {
             WidgetCenter.shared.reloadTimelines(ofKind: "BuildsWidget")
         }
     }
-    @MainActor @Published var results: [WorkflowInstance] = []
+    @MainActor @Published var results: [WorkflowInstance] = [] {
+        didSet {
+            updateSummary()
+        }
+    }
 
     // Indicates that the user has signed in, not that they have a valid authentication. This allows us to differentiate
     // recoverable authentication failures from the initial set up.
@@ -46,6 +50,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
         didSet {
             settings.favorites = favorites
+            updateOrganizations()
         }
     }
 
@@ -169,6 +174,14 @@ class ApplicationModel: NSObject, ObservableObject {
             }
     }
 
+    @MainActor private func updateSummary() {
+        let summary = Summary(workflowInstances: results)
+        guard self.summary != summary else {
+            return
+        }
+        self.summary = summary
+    }
+
     @MainActor private func start() {
 
         // Start the refresh scheduler.
@@ -198,45 +211,6 @@ class ApplicationModel: NSObject, ObservableObject {
             .sink { [weak self] _ in
                 self?.updateResults()
             }
-            .store(in: &cancellables)
-
-        // Generate the organizations.
-        $favorites
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.updateOrganizations()
-            }
-            .store(in: &cancellables)
-
-        // Generate an over-arching build summary used to back insight windows and widgets.
-        $results
-            .map { (results) -> Summary? in
-                guard results.count > 0 else {
-                    return nil
-                }
-                var status: OperationState.Summary = .success
-                for result in results {
-                    switch result.summary {
-                    case .unknown:
-                        status = .unknown
-                        break
-                    case .success:  // We require 100% successes for success.
-                        continue
-                    case .skipped:  // Skipped builds don't represent failure.
-                        continue
-                    case .failure:  // We treat any failure as a global failure.
-                        status = .failure
-                        break
-                    case .inProgress:
-                        status = .inProgress
-                        break
-                    }
-                }
-                let date = results.compactMap({ $0.createdAt }).max()
-                return Summary(status: status, count: results.count, date: date)
-            }
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.summary, on: self)
             .store(in: &cancellables)
 
         // Watch for changes to the iCloud defaults.
