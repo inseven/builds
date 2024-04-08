@@ -22,7 +22,7 @@ import SwiftUI
 
 struct OperationState {
 
-    enum Summary {
+    enum Summary: Codable {
 
         case unknown
         case success
@@ -42,6 +42,21 @@ struct OperationState {
                 return .yellow
             case .skipped:
                 return .gray
+            }
+        }
+
+        var systemImage: String {
+            switch self {
+            case .unknown:
+                return "questionmark"
+            case .success:
+                return "checkmark"
+            case .failure:
+                return "xmark"
+            case .inProgress:
+                return "circle.dashed"
+            case .skipped:
+                return "slash.circle"
             }
         }
 

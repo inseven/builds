@@ -96,7 +96,7 @@ class SummaryPanelViewController: NSViewController {
                     return
                 }
                 let newSelection: SCNNode
-                switch summary {
+                switch summary?.status {
                 case .unknown:
                     newSelection = silver
                 case .success:
@@ -107,6 +107,8 @@ class SummaryPanelViewController: NSViewController {
                     newSelection = yellow
                 case .skipped:
                     newSelection = whilte
+                case .none:
+                    newSelection = silver
                 }
                 guard newSelection != selection else {
                     return

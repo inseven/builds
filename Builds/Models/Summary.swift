@@ -20,27 +20,22 @@
 
 import Foundation
 
-enum SectionIdentifier: Identifiable, Hashable, Codable {
+struct Summary: Codable {
 
-    var id: String {
-        switch self {
-        case .all:
-            return "all"
-        case .organization(let organization):
-            return "organization-\(organization)"
-        }
+    let status: OperationState.Summary
+    let count: Int
+    let date: Date?
+
+    init() {
+        self.status = .unknown
+        self.count = 0
+        self.date = nil
     }
 
-    var title: String {
-        switch self {
-        case .all:
-            return "All Workflows"
-        case .organization(let organization):
-            return organization
-        }
+    init(status: OperationState.Summary, count: Int, date: Date?) {
+        self.status = status
+        self.count = count
+        self.date = date
     }
-
-    case all
-    case organization(String)
 
 }

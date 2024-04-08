@@ -30,10 +30,11 @@ class Settings {
         case lastUpdate
         case sceneSettings
         case status
+        case summary
         case useInAppBrowser
     }
 
-    @MainActor private let defaults = KeyedDefaults<Key>()
+    @MainActor private let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
     @MainActor private let keychain = KeychainManager<Key>()
 
     @MainActor var accessToken: String? {
@@ -88,6 +89,7 @@ class Settings {
         }
     }
 
+    // TODO: Rename this somewhere.
     @MainActor var cachedStatus: [WorkflowInstance.ID: WorkflowResult] {
         get {
             return (try? defaults.codable(forKey: .status)) ?? [:]
@@ -97,6 +99,19 @@ class Settings {
                 try defaults.set(codable: newValue, forKey: .status)
             } catch {
                 print("Failed to save status with error \(error).")
+            }
+        }
+    }
+
+    @MainActor var summary: Summary? {
+        get {
+            return (try? defaults.codable(forKey: .summary))
+        }
+        set {
+            do {
+                try defaults.set(codable: newValue, forKey: .summary)
+            } catch {
+                print("Failed to save summary with error \(error).")
             }
         }
     }

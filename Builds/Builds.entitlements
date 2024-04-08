@@ -18,5 +18,9 @@
 	<true/>
 	<key>keychain-access-groups</key>
 	<array/>
+	<key>com.apple.security.application-groups</key>
+	<array>
+		<string>group.uk.co.jbmorley.builds</string>
+	</array>
 </dict>
 </plist>
