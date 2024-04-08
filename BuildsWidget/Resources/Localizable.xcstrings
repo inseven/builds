@@ -1,0 +1,43 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "-" : {
+
+    },
+    "%lld Workflows" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Workflow"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld Workflows"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "All Workflows" : {
+
+    },
+    "Configuration" : {
+
+    },
+    "Favorite Emoji" : {
+
+    },
+    "This is an example widget." : {
+
+    }
+  },
+  "version" : "1.0"
+}

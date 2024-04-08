@@ -86,14 +86,6 @@ struct WorkflowInstance: Identifiable, Hashable {
         return result?.workflowRun.created_at
     }
 
-    var lastRun: String {
-        guard let createdAt else {
-            return "Unknown"
-        }
-        let dateFormatter = RelativeDateTimeFormatter()
-        return dateFormatter.localizedString(for: createdAt, relativeTo: Date())
-    }
-
     var operationState: OperationState {
         return OperationState(status: result?.workflowRun.status, conclusion: result?.workflowRun.conclusion)
     }

@@ -35,7 +35,7 @@ struct BuildsWidgetEntryView : View {
             Spacer()
             Text("\(entry.summary.count) Workflows")
             if let date = entry.summary.date {
-                Text(date, format: .relative(presentation: .named))
+                Text(date, format: .relative(presentation: .numeric))
                     .font(.subheadline)
                     .opacity(0.6)
             } else {
