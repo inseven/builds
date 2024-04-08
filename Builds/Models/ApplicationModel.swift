@@ -52,12 +52,14 @@ class ApplicationModel: NSObject, ObservableObject {
         didSet {
             settings.favorites = favorites
             updateOrganizations()
+            updateResults()
         }
     }
 
     @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
         didSet {
             settings.cachedStatus = cachedStatus
+            updateResults()
         }
     }
 
@@ -172,7 +174,15 @@ class ApplicationModel: NSObject, ObservableObject {
                 return WorkflowInstance(id: id, result: cachedStatus[id])
             }
             .sorted {
-                $0.repositoryName.localizedStandardCompare($1.repositoryName) == .orderedAscending
+                let repositoryNameOrder = $0.repositoryName.localizedStandardCompare($1.repositoryName)
+                if repositoryNameOrder != .orderedSame {
+                    return repositoryNameOrder == .orderedAscending
+                }
+                let workflowNameOrder = $0.workflowName.localizedStandardCompare($1.workflowName)
+                if workflowNameOrder != .orderedSame {
+                    return workflowNameOrder == .orderedAscending
+                }
+                return $0.id.branch.localizedStandardCompare($1.id.branch) == .orderedAscending
             }
     }
 
@@ -188,32 +198,6 @@ class ApplicationModel: NSObject, ObservableObject {
 
         // Start the refresh scheduler.
         refreshScheduler.start()
-
-        // Update the state whenever a user changes the favorites.
-        $favorites
-            .combineLatest($isSignedIn)
-            .compactMap { (favorites, isAuthorized) -> [WorkflowInstance.ID]? in
-                guard isAuthorized else {
-                    return nil
-                }
-                return favorites
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                Task {
-                    await self?.refresh()
-                }
-            }
-            .store(in: &cancellables)
-
-        // Generate the results.
-        $favorites
-            .combineLatest($cachedStatus)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.updateResults()
-            }
-            .store(in: &cancellables)
 
         // Watch for changes to the iCloud defaults.
         NotificationCenter.default
@@ -238,6 +222,8 @@ class ApplicationModel: NSObject, ObservableObject {
         networkMonitor.start(queue: DispatchQueue.main)
 
         // Load the cached contents to ensure the UI doesn't flash on initial load.
+        // N.B. We don't call `updateSummary` here as this is a side effect of `updateResults` (if things have changed).
+        //      It might be wise to combine these two at some point to avoid confusion.
         sync()
         updateOrganizations()
         updateResults()
@@ -277,6 +263,11 @@ class ApplicationModel: NSObject, ObservableObject {
 
         // Remove cached results that are no longer in our favorites set.
         self.cachedStatus = self.cachedStatus.filter { favorites.contains($0.key) }
+
+        // Trigger an update if the favorites have changed in sync.
+        Task {
+            await refresh()
+        }
     }
 
     func authenticate(with url: URL) async throws {
