@@ -15,11 +15,17 @@ let package = Package(
             name: "BuildsCore",
             targets: ["BuildsCore"]),
     ],
+    dependencies: [
+        .package(path: "../interact"),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "BuildsCore"),
+            name: "BuildsCore",
+            dependencies: [
+                .product(name: "Interact", package: "interact"),
+            ]),
         .testTarget(
             name: "BuildsCoreTests",
             dependencies: ["BuildsCore"]),
