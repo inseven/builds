@@ -20,19 +20,13 @@
 
 import Foundation
 
-struct Summary: Codable {
+public struct Summary: Codable {
 
-    let status: OperationState.Summary
-    let count: Int
-    let date: Date?
+    public let status: OperationState.Summary
+    public let count: Int
+    public let date: Date?
 
-    init() {
-        self.status = .unknown
-        self.count = 0
-        self.date = nil
-    }
-
-    init(status: OperationState.Summary, count: Int, date: Date?) {
+    public init(status: OperationState.Summary = .unknown, count: Int = 0, date: Date? = nil) {
         self.status = status
         self.count = count
         self.date = date

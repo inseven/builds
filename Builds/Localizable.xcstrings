@@ -74,9 +74,6 @@
     "Cancel" : {
 
     },
-    "Cancelled" : {
-
-    },
     "Check GitHub Status" : {
 
     },
@@ -95,9 +92,6 @@
     "Done" : {
 
     },
-    "Failed" : {
-
-    },
     "Failed Jobs" : {
 
     },
@@ -108,9 +102,6 @@
 
     },
     "GitHub sometimes encounters incidents which can lead to transient failures. You can check 'GitHub Status' or select 'Refresh' to try again." : {
-
-    },
-    "In Progress" : {
 
     },
     "Info" : {
@@ -144,9 +135,6 @@
 
     },
     "Pulls" : {
-
-    },
-    "Queued" : {
 
     },
     "Refresh" : {
@@ -203,12 +191,6 @@
     "Simulate Failure" : {
 
     },
-    "Skipped" : {
-
-    },
-    "Succeeded" : {
-
-    },
     "Summary" : {
 
     },
@@ -231,9 +213,6 @@
 
     },
     "Viewing" : {
-
-    },
-    "Waiting" : {
 
     },
     "Workflow" : {

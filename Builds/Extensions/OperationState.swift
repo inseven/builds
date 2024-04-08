@@ -20,34 +20,35 @@
 
 import Foundation
 
-extension URL: Identifiable {
+import BuildsCore
 
-    public var id: Self {
-        return self
-    }
+extension OperationState {
 
-    static let auth = URL(string: "x-builds-auth://oauth")!
-    static let main = URL(string: "x-builds://main")!
-    static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
-
-    static let gitHub = URL(string: "https://github.com")!
-
-    var components: URLComponents? {
-        return URLComponents(string: absoluteString)
-    }
-
-    func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {
-        guard var components = components else {
-            return nil
+    init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
+        switch status {
+        case .queued:
+            self = .queued
+        case .waiting:
+            self = .waiting
+        case .inProgress:
+            self = .inProgress
+        case .completed:
+            switch conclusion {
+            case .success:
+                self = .success
+            case .failure:
+                self = .failure
+            case .cancelled:
+                self = .cancelled
+            case .skipped:
+                self = .skipped
+            case .none:
+                self = .unknown
+            }
+        case .none:
+            self = .unknown
         }
-        components.queryItems = queryItems
-        return components.url
-    }
 
-    func appendingPathComponents(_ pathComponents: [String]) -> URL {
-        return pathComponents.reduce(self) { partialResult, pathComponent in
-            return partialResult.appendingPathComponent(pathComponent)
-        }
     }
 
 }
