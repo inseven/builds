@@ -40,6 +40,15 @@ enum SectionIdentifier: Identifiable, Hashable, Codable {
         }
     }
 
+    var symbolName: String {
+        switch self {
+        case .all:
+            return "rectangle.on.rectangle"
+        case .organization:
+            return "building.2"
+        }
+    }
+
     case all
     case organization(String)
 
