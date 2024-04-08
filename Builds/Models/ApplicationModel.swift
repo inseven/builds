@@ -133,6 +133,10 @@ class ApplicationModel: NSObject, ObservableObject {
                     guard let self else {
                         return
                     }
+                    // Don't update the cache unless the contents have changed as this will cause an unnecessary redraw.
+                    guard self.cachedStatus[workflowInstance.id] != workflowInstance.result else {
+                        return
+                    }
                     self.cachedStatus[workflowInstance.id] = workflowInstance.result
                 }
                 self.lastUpdate = Date()
@@ -328,6 +332,10 @@ class ApplicationModel: NSObject, ObservableObject {
         do {
             try await client.update(favorites: ids) { [weak self] workflowInstance in
                 guard let self else {
+                    return
+                }
+                // Don't update the cache unless the contents have changed as this will cause an unnecessary redraw.
+                guard self.cachedStatus[workflowInstance.id] != workflowInstance.result else {
                     return
                 }
                 self.cachedStatus[workflowInstance.id] = workflowInstance.result
