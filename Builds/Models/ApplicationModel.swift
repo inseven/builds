@@ -199,23 +199,6 @@ class ApplicationModel: NSObject, ObservableObject {
         // Start the refresh scheduler.
         refreshScheduler.start()
 
-        // Update the state whenever a user changes the favorites.
-        $favorites
-            .combineLatest($isSignedIn)
-            .compactMap { (favorites, isAuthorized) -> [WorkflowInstance.ID]? in
-                guard isAuthorized else {
-                    return nil
-                }
-                return favorites
-            }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                Task {
-                    await self?.refresh()
-                }
-            }
-            .store(in: &cancellables)
-
         // Watch for changes to the iCloud defaults.
         NotificationCenter.default
             .publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification)
@@ -280,6 +263,11 @@ class ApplicationModel: NSObject, ObservableObject {
 
         // Remove cached results that are no longer in our favorites set.
         self.cachedStatus = self.cachedStatus.filter { favorites.contains($0.key) }
+
+        // Trigger an update if the favorites have changed in sync.
+        Task {
+            await refresh()
+        }
     }
 
     func authenticate(with url: URL) async throws {
