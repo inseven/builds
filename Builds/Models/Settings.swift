@@ -22,6 +22,8 @@ import Foundation
 
 import Interact
 
+import BuildsCore
+
 class Settings {
 
     private enum Key: String {

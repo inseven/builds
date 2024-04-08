@@ -20,9 +20,9 @@
 
 import SwiftUI
 
-struct OperationState {
+public enum OperationState: Codable {
 
-    enum Summary: Codable {
+    public enum Summary: Codable {
 
         case unknown
         case success
@@ -30,7 +30,7 @@ struct OperationState {
         case inProgress
         case skipped
 
-        var color: Color {
+        public var color: Color {
             switch self {
             case .unknown:
                 return .gray
@@ -45,7 +45,7 @@ struct OperationState {
             }
         }
 
-        var systemImage: String {
+        public var systemImage: String {
             switch self {
             case .unknown:
                 return "questionmark"
@@ -62,90 +62,76 @@ struct OperationState {
 
     }
 
-    let status: GitHub.Status?
-    let conclusion: GitHub.Conclusion?
+    case unknown
+    case queued
+    case waiting
+    case inProgress
+    case success
+    case failure
+    case cancelled
+    case skipped
 
-    var isActive: Bool {
-        return status == .inProgress
+    public var isActive: Bool {
+        return self == .inProgress
     }
 
-    var name: LocalizedStringKey {
-        switch status {
+    public var name: LocalizedStringKey {
+        switch self {
         case .queued:
             return "Queued"
         case .waiting:
             return "Waiting"
         case .inProgress:
             return "In Progress"
-        case .completed:
-            switch conclusion {
-            case .success:
-                return "Succeeded"
-            case .failure:
-                return "Failed"
-            case .cancelled:
-                return "Cancelled"
-            case .skipped:
-                return "Skipped"
-            case .none:
-                return "Unknown"
-            }
-        case .none:
+        case .success:
+            return "Succeeded"
+        case .failure:
+            return "Failed"
+        case .cancelled:
+            return "Cancelled"
+        case .skipped:
+            return "Skipped"
+        case .unknown:
             return "Unknown"
         }
     }
 
-    var summary: Summary {
-        switch status {
+    public var summary: Summary {
+        switch self {
         case .queued, .waiting, .inProgress:
             return .inProgress
-        case .completed:
-            switch conclusion {
-            case .success:
-                return .success
-            case .failure:
-                return .failure
-            case .cancelled:
-                return .failure
-            case .skipped:
-                return .skipped
-            case .none:
-                return .unknown
-            }
-        case .none:
+        case .success:
+            return .success
+        case .failure:
+            return .failure
+        case .cancelled:
+            return .failure
+        case .skipped:
+            return .skipped
+        case .unknown:
             return .unknown
         }
     }
 
-    var systemImage: String {
-        switch status {
+    public var systemImage: String {
+        switch self {
         case .queued:
             return "clock.arrow.circlepath"
         case .waiting:
             return "clock"
         case .inProgress:
             return "circle.dashed"
-        case .completed:
-            switch conclusion {
-            case .success:
-                return "checkmark"
-            case .failure:
-                return "xmark"
-            case .cancelled:
-                return "exclamationmark.octagon"
-            case .skipped:
-                return "slash.circle"
-            case .none:
-                return "questionmark"
-            }
-        case .none:
+        case .success:
+            return "checkmark"
+        case .failure:
+            return "xmark"
+        case .cancelled:
+            return "exclamationmark.octagon"
+        case .skipped:
+            return "slash.circle"
+        case .unknown:
             return "questionmark"
         }
-    }
-
-    init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
-        self.status = status
-        self.conclusion = conclusion
     }
 
 }

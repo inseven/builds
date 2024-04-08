@@ -18,30 +18,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import SwiftUI
+import Foundation
 
-import BuildsCore
+extension URL: Identifiable {
 
-struct StatusImage: View {
-
-    let operationState: OperationState
-    let size: CGSize?
-
-    init(operationState: OperationState, size: CGSize? = nil) {
-        self.operationState = operationState
-        self.size = size
+    public var id: Self {
+        return self
     }
 
-    var body: some View {
-        if let size {
-            Image(systemName: operationState.systemImage)
-                .resizable()
-                .aspectRatio(1, contentMode: .fit)
-                .frame(width: size.width, height: size.height)
-                .rotates(operationState.isActive)
-        } else {
-            Image(systemName: operationState.systemImage)
-                .rotates(operationState.isActive)
+    public static let auth = URL(string: "x-builds-auth://oauth")!
+    public static let main = URL(string: "x-builds://main")!
+    public static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
+
+    public static let gitHub = URL(string: "https://github.com")!
+
+    public var components: URLComponents? {
+        return URLComponents(string: absoluteString)
+    }
+
+    public func settingQueryItems(_ queryItems: [URLQueryItem]) -> URL? {
+        guard var components = components else {
+            return nil
+        }
+        components.queryItems = queryItems
+        return components.url
+    }
+
+    public func appendingPathComponents(_ pathComponents: [String]) -> URL {
+        return pathComponents.reduce(self) { partialResult, pathComponent in
+            return partialResult.appendingPathComponent(pathComponent)
         }
     }
 

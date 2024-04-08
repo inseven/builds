@@ -23,6 +23,8 @@ import SwiftUI
 
 import Interact
 
+import BuildsCore
+
 struct Provider: AppIntentTimelineProvider {
 
     enum Key: String {

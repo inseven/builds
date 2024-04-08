@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 extension GitHub.WorkflowJob {
 
     var operationState: OperationState {

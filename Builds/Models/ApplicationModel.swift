@@ -24,6 +24,8 @@ import WidgetKit
 
 import Interact
 
+import BuildsCore
+
 @MainActor
 class ApplicationModel: NSObject, ObservableObject {
 

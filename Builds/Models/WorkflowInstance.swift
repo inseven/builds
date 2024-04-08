@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct WorkflowInstance: Identifiable, Hashable {
 
     struct ID: Hashable, Codable {
