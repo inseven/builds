@@ -28,35 +28,7 @@ import BuildsCore
 @Observable
 class SceneModel: Runnable {
 
-    struct Settings: Codable {
-        var columnVisibility: NavigationSplitViewVisibility = .automatic
-        var sheet: SheetType?
-        var previewURL: URL?
-        var section: SectionIdentifier? = .all
-    }
-
-    enum SheetType: Identifiable, Codable {
-
-        var id: String {
-            switch self {
-            case .add:
-                return "add"
-            case .settings:
-                return "settings"
-            case .logIn:
-                return "log-in"
-            case .view(let id):
-                return "view-\(id)"
-            }
-        }
-
-        case add
-        case settings
-        case logIn
-        case view(WorkflowInstance.ID)
-    }
-
-    @MainActor var settings: Settings {
+    @MainActor var settings: SceneSettings {
         didSet {
             applicationModel.settings.sceneSettings = settings
         }

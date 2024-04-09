@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct Sidebar: View {
 
     @ObservedObject var applicationModel: ApplicationModel

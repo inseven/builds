@@ -18,14 +18,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
-import AppIntents
+import Foundation
 
-struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Configuration"
-    static var description = IntentDescription("This is an example widget.")
+public enum SectionIdentifier: Identifiable, Hashable, Codable {
 
-    // An example configurable parameter.
-    @Parameter(title: "Favorite Emoji", default: "😃")
-    var favoriteEmoji: String
+    public var id: String {
+        switch self {
+        case .all:
+            return "all"
+        case .organization(let organization):
+            return "organization-\(organization)"
+        }
+    }
+
+    public var title: String {
+        switch self {
+        case .all:
+            return "All Workflows"
+        case .organization(let organization):
+            return organization
+        }
+    }
+
+    public var symbolName: String {
+        switch self {
+        case .all:
+            return "rectangle.on.rectangle"
+        case .organization:
+            return "building.2"
+        }
+    }
+
+    case all
+    case organization(String)
+
 }

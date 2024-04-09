@@ -18,41 +18,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
-
-import Interact
+import AppIntents
 
 import BuildsCore
 
-// TODO: Move Settings!!
-
-// TODO: RENAME
-struct Provider: AppIntentTimelineProvider {
+struct WorkflowQuery: EntityQuery, EntityStringQuery {
 
     enum Key: String {
         case summary
     }
 
-    var summary: Summary {
-        return (try? defaults.codable(forKey: .summary)) ?? Summary()
+    var workflows: [WorkflowIdentifier] {
+        get async {
+            let settings = await Settings()
+            let workflows = await settings.workflowsCache
+            return workflows.map { id in
+                return WorkflowIdentifier(repository: id.repositoryFullName,
+                                          workflow: id.workflowId,
+                                          branch: id.branch)
+            }
+        }
     }
 
-    let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
-
-    init() {
+    func entities(matching string: String) async throws -> [WorkflowIdentifier] {
+        return await workflows
+            .filter { workflowIdentifier in
+                workflowIdentifier.repository.contains(string)
+            }
     }
 
-    func placeholder(in context: Context) -> SimpleEntry {
-        return SimpleEntry(configuration: ConfigurationAppIntent())
+
+    func entities(for identifiers: [WorkflowIdentifier.ID]) async throws -> [WorkflowIdentifier] {
+        return await workflows.filter { identifiers.contains($0.id) }
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        return SimpleEntry(summary: summary, configuration: ConfigurationAppIntent())
+    func suggestedEntities() async throws -> [WorkflowIdentifier] {
+        return await workflows
     }
 
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        let entry = SimpleEntry(summary: summary, configuration: configuration)
-        return Timeline(entries: [entry], policy: .atEnd)
+    func defaultResult() async -> WorkflowIdentifier? {
+        return nil
     }
-
 }

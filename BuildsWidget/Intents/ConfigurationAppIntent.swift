@@ -18,19 +18,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import WidgetKit
+import AppIntents
+
+import Interact
+
+import BuildsCore
+
+struct ConfigurationAppIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource = "Configuration"
+    static var description = IntentDescription("This is an example widget.")
+
+    @Parameter(title: "Workflow")
+    var workflow: WorkflowIdentifier
+}
 
 extension ConfigurationAppIntent {
 
     static var smiley: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
         return intent
     }
 
     static var starEyes: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
         return intent
     }
 

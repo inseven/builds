@@ -4,6 +4,22 @@
     "-" : {
 
     },
+    "%@" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld %2$@"
+          }
+        }
+      }
+    },
     "%lld Workflows" : {
       "localizations" : {
         "en" : {
@@ -32,10 +48,10 @@
     "Configuration" : {
 
     },
-    "Favorite Emoji" : {
+    "This is an example widget." : {
 
     },
-    "This is an example widget." : {
+    "Workflow" : {
 
     }
   },

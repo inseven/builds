@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct WorkflowsSection: View {
 
     struct LayoutMetrics {

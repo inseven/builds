@@ -234,6 +234,7 @@ class ApplicationModel: NSObject, ObservableObject {
             return
         }
         favorites.append(id)
+        settings.workflowsCache = favorites
 
         // Fetch the workflow details on demand.
         Task {
@@ -243,6 +244,7 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
         favorites.removeAll { $0 == id }
+        settings.workflowsCache = favorites
         cachedStatus.removeValue(forKey: id)
     }
 
@@ -252,6 +254,9 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor func sync() {
         let favorites = settings.favorites
+
+        // Cache the workflows (these are used directly by the widget configuration intent).
+        settings.workflowsCache = settings.favorites
 
         // Guard against ping-ponging with the server and other devices.
         guard self.favorites != favorites else {
