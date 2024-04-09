@@ -22,96 +22,96 @@ import Foundation
 
 // https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
-struct HTTPStatusCode: CaseIterable, Equatable, Hashable {
+public struct HTTPStatusCode: CaseIterable, Equatable, Hashable {
 
-    static func ==(lhs: HTTPStatusCode, rhs: Int) -> Bool {
+    public static func ==(lhs: HTTPStatusCode, rhs: Int) -> Bool {
          return lhs.rawValue == rhs
      }
 
-     static func ==(lhs: Int, rhs: HTTPStatusCode) -> Bool {
+    public static func ==(lhs: Int, rhs: HTTPStatusCode) -> Bool {
          return lhs == rhs.rawValue
      }
 
     // 1XX Informational Response
-    static let `continue` = HTTPStatusCode(rawValue: 100)
-    static let switchingProtocols = HTTPStatusCode(rawValue: 101)
-    static let processing = HTTPStatusCode(rawValue: 102)
-    static let earlyHints = HTTPStatusCode(rawValue: 103)
+    public static let `continue` = HTTPStatusCode(rawValue: 100)
+    public static let switchingProtocols = HTTPStatusCode(rawValue: 101)
+    public static let processing = HTTPStatusCode(rawValue: 102)
+    public static let earlyHints = HTTPStatusCode(rawValue: 103)
 
     // 2XX Success
-    static let ok = HTTPStatusCode(rawValue: 200)
-    static let created = HTTPStatusCode(rawValue: 201)
-    static let accepted = HTTPStatusCode(rawValue: 202)
-    static let nonAuthoritativeInformation = HTTPStatusCode(rawValue: 203)
-    static let noContent = HTTPStatusCode(rawValue: 204)
-    static let resetContent = HTTPStatusCode(rawValue: 205)
-    static let partialContent = HTTPStatusCode(rawValue: 206)
-    static let multiStatus = HTTPStatusCode(rawValue: 207)
-    static let alreadyReported = HTTPStatusCode(rawValue: 208)
-    static let imUsed = HTTPStatusCode(rawValue: 226)
+    public static let ok = HTTPStatusCode(rawValue: 200)
+    public static let created = HTTPStatusCode(rawValue: 201)
+    public static let accepted = HTTPStatusCode(rawValue: 202)
+    public static let nonAuthoritativeInformation = HTTPStatusCode(rawValue: 203)
+    public static let noContent = HTTPStatusCode(rawValue: 204)
+    public static let resetContent = HTTPStatusCode(rawValue: 205)
+    public static let partialContent = HTTPStatusCode(rawValue: 206)
+    public static let multiStatus = HTTPStatusCode(rawValue: 207)
+    public static let alreadyReported = HTTPStatusCode(rawValue: 208)
+    public static let imUsed = HTTPStatusCode(rawValue: 226)
 
     // 3XX Redirection
-    static let multipleChoices = HTTPStatusCode(rawValue: 300)
-    static let movedPermanently = HTTPStatusCode(rawValue: 301)
-    static let found = HTTPStatusCode(rawValue: 302)
-    static let seeOther = HTTPStatusCode(rawValue: 303)
-    static let notModified = HTTPStatusCode(rawValue: 304)
-    static let useProxy = HTTPStatusCode(rawValue: 305)
-    static let switchProxy = HTTPStatusCode(rawValue: 306)
-    static let temporaryRedirect = HTTPStatusCode(rawValue: 307)
-    static let permanentRedirect = HTTPStatusCode(rawValue: 308)
+    public static let multipleChoices = HTTPStatusCode(rawValue: 300)
+    public static let movedPermanently = HTTPStatusCode(rawValue: 301)
+    public static let found = HTTPStatusCode(rawValue: 302)
+    public static let seeOther = HTTPStatusCode(rawValue: 303)
+    public static let notModified = HTTPStatusCode(rawValue: 304)
+    public static let useProxy = HTTPStatusCode(rawValue: 305)
+    public static let switchProxy = HTTPStatusCode(rawValue: 306)
+    public static let temporaryRedirect = HTTPStatusCode(rawValue: 307)
+    public static let permanentRedirect = HTTPStatusCode(rawValue: 308)
 
     // 4XX Client Errors
-    static let badRequest = HTTPStatusCode(rawValue: 400)
-    static let unauthorized = HTTPStatusCode(rawValue: 401)
-    static let paymentRequired = HTTPStatusCode(rawValue: 402)
-    static let forbidden = HTTPStatusCode(rawValue: 403)
-    static let notFound = HTTPStatusCode(rawValue: 404)
-    static let methodNotAllowed = HTTPStatusCode(rawValue: 405)
-    static let notAcceptable = HTTPStatusCode(rawValue: 406)
-    static let proxyAuthenticationRequired = HTTPStatusCode(rawValue: 407)
-    static let requestTimeout = HTTPStatusCode(rawValue: 408)
-    static let conflict = HTTPStatusCode(rawValue: 409)
-    static let gone = HTTPStatusCode(rawValue: 410)
-    static let lengthRequired = HTTPStatusCode(rawValue: 411)
-    static let preconditionFailed = HTTPStatusCode(rawValue: 412)
-    static let payloadTooLarge = HTTPStatusCode(rawValue: 413)
-    static let uriTooLong = HTTPStatusCode(rawValue: 414)
-    static let unsupportedMediaType = HTTPStatusCode(rawValue: 415)
-    static let rangeNotSatisfiable = HTTPStatusCode(rawValue: 416)
-    static let expectationFailed = HTTPStatusCode(rawValue: 417)
-    static let imATeapot = HTTPStatusCode(rawValue: 418)
-    static let misdirectedRequest = HTTPStatusCode(rawValue: 421)
-    static let unprocessableContent = HTTPStatusCode(rawValue: 422)
-    static let locked = HTTPStatusCode(rawValue: 423)
-    static let failedDependency = HTTPStatusCode(rawValue: 424)
-    static let tooEarly = HTTPStatusCode(rawValue: 425)
-    static let upgradeRequired = HTTPStatusCode(rawValue: 426)
-    static let preconditionRequired = HTTPStatusCode(rawValue: 428)
-    static let tooManyRequests = HTTPStatusCode(rawValue: 429)
-    static let requestHeaderFieldsTooLarge = HTTPStatusCode(rawValue: 431)
-    static let unavailableForLegalReasons = HTTPStatusCode(rawValue: 451)
+    public static let badRequest = HTTPStatusCode(rawValue: 400)
+    public static let unauthorized = HTTPStatusCode(rawValue: 401)
+    public static let paymentRequired = HTTPStatusCode(rawValue: 402)
+    public static let forbidden = HTTPStatusCode(rawValue: 403)
+    public static let notFound = HTTPStatusCode(rawValue: 404)
+    public static let methodNotAllowed = HTTPStatusCode(rawValue: 405)
+    public static let notAcceptable = HTTPStatusCode(rawValue: 406)
+    public static let proxyAuthenticationRequired = HTTPStatusCode(rawValue: 407)
+    public static let requestTimeout = HTTPStatusCode(rawValue: 408)
+    public static let conflict = HTTPStatusCode(rawValue: 409)
+    public static let gone = HTTPStatusCode(rawValue: 410)
+    public static let lengthRequired = HTTPStatusCode(rawValue: 411)
+    public static let preconditionFailed = HTTPStatusCode(rawValue: 412)
+    public static let payloadTooLarge = HTTPStatusCode(rawValue: 413)
+    public static let uriTooLong = HTTPStatusCode(rawValue: 414)
+    public static let unsupportedMediaType = HTTPStatusCode(rawValue: 415)
+    public static let rangeNotSatisfiable = HTTPStatusCode(rawValue: 416)
+    public static let expectationFailed = HTTPStatusCode(rawValue: 417)
+    public static let imATeapot = HTTPStatusCode(rawValue: 418)
+    public static let misdirectedRequest = HTTPStatusCode(rawValue: 421)
+    public static let unprocessableContent = HTTPStatusCode(rawValue: 422)
+    public static let locked = HTTPStatusCode(rawValue: 423)
+    public static let failedDependency = HTTPStatusCode(rawValue: 424)
+    public static let tooEarly = HTTPStatusCode(rawValue: 425)
+    public static let upgradeRequired = HTTPStatusCode(rawValue: 426)
+    public static let preconditionRequired = HTTPStatusCode(rawValue: 428)
+    public static let tooManyRequests = HTTPStatusCode(rawValue: 429)
+    public static let requestHeaderFieldsTooLarge = HTTPStatusCode(rawValue: 431)
+    public static let unavailableForLegalReasons = HTTPStatusCode(rawValue: 451)
 
     // 5XX Server Errors
-    static let internalServerError = HTTPStatusCode(rawValue: 500)
-    static let notImplemented = HTTPStatusCode(rawValue: 501)
-    static let badGateway = HTTPStatusCode(rawValue: 502)
-    static let serviceUnavailable = HTTPStatusCode(rawValue: 503)
-    static let gatewayTimeout = HTTPStatusCode(rawValue: 504)
-    static let httpVersionNotSupported = HTTPStatusCode(rawValue: 505)
-    static let variantAlsoNegotiates = HTTPStatusCode(rawValue: 506)
-    static let insufficientStorage = HTTPStatusCode(rawValue: 507)
-    static let loopDetected = HTTPStatusCode(rawValue: 508)
-    static let startingTicketRequired = HTTPStatusCode(rawValue: 509)
-    static let notExtended = HTTPStatusCode(rawValue: 510)
-    static let networkAuthenticationRequired = HTTPStatusCode(rawValue: 511)
+    public static let internalServerError = HTTPStatusCode(rawValue: 500)
+    public static let notImplemented = HTTPStatusCode(rawValue: 501)
+    public static let badGateway = HTTPStatusCode(rawValue: 502)
+    public static let serviceUnavailable = HTTPStatusCode(rawValue: 503)
+    public static let gatewayTimeout = HTTPStatusCode(rawValue: 504)
+    public static let httpVersionNotSupported = HTTPStatusCode(rawValue: 505)
+    public static let variantAlsoNegotiates = HTTPStatusCode(rawValue: 506)
+    public static let insufficientStorage = HTTPStatusCode(rawValue: 507)
+    public static let loopDetected = HTTPStatusCode(rawValue: 508)
+    public static let startingTicketRequired = HTTPStatusCode(rawValue: 509)
+    public static let notExtended = HTTPStatusCode(rawValue: 510)
+    public static let networkAuthenticationRequired = HTTPStatusCode(rawValue: 511)
 
     // 6XX Multi-Sided Errors
-    static let inaccessibleRequest = HTTPStatusCode(rawValue: 604)
-    static let notAllowed = HTTPStatusCode(rawValue: 605)
-    static let requestDeletedOrModified = HTTPStatusCode(rawValue: 644)
+    public static let inaccessibleRequest = HTTPStatusCode(rawValue: 604)
+    public static let notAllowed = HTTPStatusCode(rawValue: 605)
+    public static let requestDeletedOrModified = HTTPStatusCode(rawValue: 644)
 
-    static var allCases: [HTTPStatusCode] = [
+    public static var allCases: [HTTPStatusCode] = [
 
         // 1XX Informational Response
         `continue`,
@@ -193,7 +193,7 @@ struct HTTPStatusCode: CaseIterable, Equatable, Hashable {
         requestDeletedOrModified,
     ]
 
-    var isSuccess: Bool {
+    public var isSuccess: Bool {
         return Set<HTTPStatusCode>.allSuccesses.contains(self)
     }
 
@@ -203,7 +203,7 @@ struct HTTPStatusCode: CaseIterable, Equatable, Hashable {
 
 extension HTTPStatusCode {
 
-    var localizedDescription: String {
+    public var localizedDescription: String {
         switch self {
 
         // 1XX Informational Response
@@ -361,26 +361,26 @@ extension HTTPStatusCode {
 
 extension Set where Element == HTTPStatusCode {
 
-    static var allInformationalResponses: Self = .init(100..<200)
-    static var allSuccesses: Self = .init(200..<300)
-    static var allRedirections: Self = .init(300..<400)
-    static var allClientErrors: Self = .init(400..<500)
-    static var allServerErrors: Self = .init(500..<600)
-    static var allMultiSidedErrors: Self = .init(600..<700)
+    public static var allInformationalResponses: Self = .init(100..<200)
+    public static var allSuccesses: Self = .init(200..<300)
+    public static var allRedirections: Self = .init(300..<400)
+    public static var allClientErrors: Self = .init(400..<500)
+    public static var allServerErrors: Self = .init(500..<600)
+    public static var allMultiSidedErrors: Self = .init(600..<700)
 
     private init(_ range: Range<Int>) {
         self = Set(range.map({ HTTPStatusCode(rawValue: $0) }))
     }
 
-    static func |(lhs: Self, rhs: Self) -> Self {
+    public static func |(lhs: Self, rhs: Self) -> Self {
         return lhs.union(rhs)
     }
 
-    static func |(lhs: Self, rhs: HTTPStatusCode) -> Self {
+    public static func |(lhs: Self, rhs: HTTPStatusCode) -> Self {
         return lhs.union([rhs])
     }
 
-    static func |(lhs: HTTPStatusCode, rhs: Self) -> Self {
+    public static func |(lhs: HTTPStatusCode, rhs: Self) -> Self {
         return rhs.union([lhs])
     }
 
@@ -388,7 +388,7 @@ extension Set where Element == HTTPStatusCode {
 
 extension HTTPStatusCode {
 
-    static func |(lhs: Self, rhs: Self) -> Set<HTTPStatusCode> {
+    public static func |(lhs: Self, rhs: Self) -> Set<HTTPStatusCode> {
         return Set([lhs, rhs])
     }
 

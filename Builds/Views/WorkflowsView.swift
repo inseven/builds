@@ -23,6 +23,8 @@ import SwiftUI
 import Interact
 import SelectableCollectionView
 
+import BuildsCore
+
 struct WorkflowsView: View, OpenContext {
 
     struct LayoutMetrics {

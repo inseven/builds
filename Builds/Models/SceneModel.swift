@@ -23,6 +23,8 @@ import SwiftUI
 
 import Interact
 
+import BuildsCore
+
 @Observable
 class SceneModel: Runnable {
 

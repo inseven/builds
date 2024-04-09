@@ -20,13 +20,7 @@
 
 import SwiftUI
 
-extension GitHub.Annotation: Identifiable {
-
-    var id: String {
-        return "\(path):\(start_line):\(end_line):\(start_column ?? -1):\(end_column ?? -1)"
-    }
-
-}
+import BuildsCore
 
 struct WorkflowInstanceCell: View {
 

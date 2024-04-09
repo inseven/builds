@@ -20,7 +20,7 @@
 
 import Foundation
 
-enum HTTPURLResponseError: Error {
+public enum HTTPURLResponseError: Error {
 
     case invalidResponse
     case httpError(HTTPStatusCode)
@@ -29,7 +29,7 @@ enum HTTPURLResponseError: Error {
 
 extension HTTPURLResponseError: LocalizedError {
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
 
         switch self {
         case .invalidResponse:

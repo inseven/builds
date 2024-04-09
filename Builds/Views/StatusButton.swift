@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct StatusButton: View {
 
     @Environment(\.presentURL) var presentURL
