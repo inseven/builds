@@ -35,7 +35,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor @Published var summary: Summary? = nil {
         didSet {
             settings.summary = summary
-            WidgetCenter.shared.reloadTimelines(ofKind: "BuildsWidget")
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     @MainActor @Published var results: [WorkflowInstance] = [] {

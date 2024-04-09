@@ -24,6 +24,7 @@ import SwiftUI
 @main
 struct BuildsWidgetBundle: WidgetBundle {
     var body: some Widget {
-        BuildsWidget()
+        AllWorkflowsWidget()
+        SingleWorkflowWidget()
     }
 }

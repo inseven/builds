@@ -24,8 +24,16 @@ import Interact
 
 import BuildsCore
 
-// TODO: RENAME
-struct Provider: AppIntentTimelineProvider {
+struct AllWorkflowsTimelineProvider: TimelineProvider {
+    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsEntry) -> Void) {
+        // TODO:
+        completion(AllWorkflowsEntry(summary: summary))
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsEntry>) -> Void) {
+        // TODO: Reload policy.
+        completion(Timeline(entries: [AllWorkflowsEntry(summary: summary)], policy: .after(.now + 60)))
+    }
 
     enum Key: String {
         case summary
@@ -41,17 +49,18 @@ struct Provider: AppIntentTimelineProvider {
     init() {
     }
 
-    func placeholder(in context: Context) -> SingleWorkflowEntry {
-        return SingleWorkflowEntry(configuration: ConfigurationAppIntent())
+    // TODO: UNUSED?
+    func placeholder(in context: Context) -> AllWorkflowsEntry {
+        return AllWorkflowsEntry()
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SingleWorkflowEntry {
-        return SingleWorkflowEntry(summary: summary, configuration: ConfigurationAppIntent())
-    }
-
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SingleWorkflowEntry> {
-        let entry = SingleWorkflowEntry(summary: summary, configuration: configuration)
-        return Timeline(entries: [entry], policy: .atEnd)
-    }
+//    func snapshot(in context: Context) async -> AllWorkflowsEntry {
+//        return AllWorkflowsEntry(summary: summary)
+//    }
+//
+//    func timeline(in context: Context) async -> Timeline<AllWorkflowsEntry> {
+//        let entry = AllWorkflowsEntry(summary: summary)
+//        return Timeline(entries: [entry], policy: .atEnd)
+//    }
 
 }
