@@ -134,4 +134,31 @@ public enum OperationState: Codable {
         }
     }
 
+    public init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
+        switch status {
+        case .queued:
+            self = .queued
+        case .waiting:
+            self = .waiting
+        case .inProgress:
+            self = .inProgress
+        case .completed:
+            switch conclusion {
+            case .success:
+                self = .success
+            case .failure:
+                self = .failure
+            case .cancelled:
+                self = .cancelled
+            case .skipped:
+                self = .skipped
+            case .none:
+                self = .unknown
+            }
+        case .none:
+            self = .unknown
+        }
+
+    }
+
 }

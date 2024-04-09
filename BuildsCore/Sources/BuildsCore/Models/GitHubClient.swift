@@ -20,22 +20,24 @@
 
 import SwiftUI
 
-class GitHubClient {
+import Interact
+
+public class GitHubClient {
 
     private let api: GitHub
     private let accessToken: String
 
-    init(api: GitHub, accessToken: String) {
+    public init(api: GitHub, accessToken: String) {
         self.api = api
         self.accessToken = accessToken
     }
 
-    func repositories() async throws -> [GitHub.Repository] {
+    public func repositories() async throws -> [GitHub.Repository] {
         return try await api.repositories(accessToken: accessToken)
     }
 
-    func workflowRuns(repositoryName: String,
-                      seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [GitHub.WorkflowRun] {
+    public func workflowRuns(repositoryName: String,
+                             seekingWorkflowIds: any Collection<WorkflowInstance.ID>) async throws -> [GitHub.WorkflowRun] {
 
         var workflowIds = Set<WorkflowInstance.ID>()
         let seekingWorkflowIds = Set(seekingWorkflowIds)
@@ -63,8 +65,8 @@ class GitHubClient {
     }
 
     // Top level call that triggers fetching all workflow results.
-    func update(favorites: [WorkflowInstance.ID],
-                        callback: @escaping (WorkflowInstance) -> Void) async throws {
+    public func update(favorites: [WorkflowInstance.ID],
+                       callback: @escaping (WorkflowInstance) -> Void) async throws {
         let repositories = favorites
             .reduce(into: [String: [WorkflowInstance.ID]]()) { partialResult, id in
                 var ids = partialResult[id.repositoryFullName] ?? []
@@ -129,21 +131,21 @@ class GitHubClient {
         }
     }
 
-    func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {
+    public func branches(for repository: GitHub.Repository) async throws -> [GitHub.Branch] {
         return try await api.branches(for: repository, accessToken: accessToken)
     }
 
-    func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
+    public func workflows(for repository: GitHub.Repository) async throws -> [GitHub.Workflow] {
         return try await api.workflows(for: repository, accessToken: accessToken)
     }
 
-    func rerun(repositoryName: String, workflowRunId: Int) async throws {
+    public func rerun(repositoryName: String, workflowRunId: Int) async throws {
         return try await api.rerun(repositoryName: repositoryName,
                                    workflowRunId: workflowRunId,
                                    accessToken: accessToken)
     }
 
-    func rerunFailedJobs(repositoryName: String, workflowRunId: Int) async throws {
+    public func rerunFailedJobs(repositoryName: String, workflowRunId: Int) async throws {
         return try await api.rerunFailedJobs(repositoryName: repositoryName,
                                              workflowRunId: workflowRunId,
                                              accessToken: accessToken)

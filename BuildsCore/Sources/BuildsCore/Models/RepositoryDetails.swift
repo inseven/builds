@@ -20,35 +20,20 @@
 
 import Foundation
 
-import BuildsCore
+public struct RepositoryDetails: Identifiable {
 
-extension OperationState {
+    public var id: Int {
+        repository.id
+    }
 
-    init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
-        switch status {
-        case .queued:
-            self = .queued
-        case .waiting:
-            self = .waiting
-        case .inProgress:
-            self = .inProgress
-        case .completed:
-            switch conclusion {
-            case .success:
-                self = .success
-            case .failure:
-                self = .failure
-            case .cancelled:
-                self = .cancelled
-            case .skipped:
-                self = .skipped
-            case .none:
-                self = .unknown
-            }
-        case .none:
-            self = .unknown
-        }
+    public let repository: GitHub.Repository
+    public let workflows: [GitHub.Workflow]
+    public let branches: [GitHub.Branch]
 
+    public init(repository: GitHub.Repository, workflows: [GitHub.Workflow], branches: [GitHub.Branch]) {
+        self.repository = repository
+        self.workflows = workflows
+        self.branches = branches
     }
 
 }

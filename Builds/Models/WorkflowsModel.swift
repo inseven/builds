@@ -23,6 +23,8 @@ import SwiftUI
 
 import Interact
 
+import BuildsCore
+
 class WorkflowsModel: ObservableObject, Runnable {
 
     @MainActor @Published var isUpdating: Bool = false

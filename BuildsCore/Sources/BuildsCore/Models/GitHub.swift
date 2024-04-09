@@ -20,12 +20,12 @@
 
 import Foundation
 
-enum GitHubError: Error {
+public enum GitHubError: Error {
     case invalidUrl
     case unauthorized
 }
 
-class GitHub {
+public class GitHub {
 
     private struct AccessToken: Codable {
 
@@ -34,178 +34,176 @@ class GitHub {
         let token_type: String
     }
 
-    struct Workflow: Codable, Identifiable, Equatable, Hashable {
+    public struct Workflow: Codable, Identifiable, Equatable, Hashable {
 
-        static func == (lhs: Workflow, rhs: Workflow) -> Bool {
+        public static func == (lhs: Workflow, rhs: Workflow) -> Bool {
             return lhs.id == rhs.id
         }
 
-        let id: Int
+        public let id: Int
 
-        let name: String
-        let node_id: String
-        let path: String
-        let state: String
+        public let name: String
+        public let node_id: String
+        public let path: String
+        public let state: String
     }
 
-    struct Workflows: Codable {
+    public struct Workflows: Codable {
 
-        let total_count: Int
-        let workflows: [Workflow]
+        public let total_count: Int
+        public let workflows: [Workflow]
     }
 
-    struct Repositories: Codable {
+    public struct Repositories: Codable {
 
-        let incomplete_results: Bool
-        let items: [Repository]
-        let total_count: Int
+        public let incomplete_results: Bool
+        public let items: [Repository]
+        public let total_count: Int
     }
 
-    struct Repository: Codable, Identifiable, Equatable, Hashable {
+    public struct Repository: Codable, Identifiable, Equatable, Hashable {
 
-        static func == (lhs: Repository, rhs: Repository) -> Bool {
+        public static func == (lhs: Repository, rhs: Repository) -> Bool {
             return lhs.id == rhs.id
         }
         
-        let id: Int
+        public let id: Int
 
-        let archived: Bool
-        let default_branch: String
-        let full_name: String
-        let name: String
-        let node_id: String
-        let owner: User
-        let url: URL
+        public let archived: Bool
+        public let default_branch: String
+        public let full_name: String
+        public let name: String
+        public let node_id: String
+        public let owner: User
+        public let url: URL
     }
 
-    struct WorkflowRuns: Codable {
+    public struct WorkflowRuns: Codable {
 
-        let total_count: Int
-        let workflow_runs: [WorkflowRun]
+        public let total_count: Int
+        public let workflow_runs: [WorkflowRun]
     }
 
-    struct WorkflowJobs: Codable {
+    public struct WorkflowJobs: Codable {
 
-        let jobs: [WorkflowJob]
-        let total_count: Int
+        public let jobs: [WorkflowJob]
+        public let total_count: Int
 
     }
 
-    struct WorkflowJob: Codable, Hashable, Identifiable {
+    public struct WorkflowJob: Codable, Hashable, Identifiable {
 
-        let id: Int
+        public let id: Int
 
-        let completed_at: Date?
-        let conclusion: Conclusion?
-        let html_url: URL
-        let name: String
-        let run_id: Int
-        let started_at: Date?
-        let status: Status
+        public let completed_at: Date?
+        public let conclusion: Conclusion?
+        public let html_url: URL
+        public let name: String
+        public let run_id: Int
+        public let started_at: Date?
+        public let status: Status
     }
 
-    struct Branch: Codable, Identifiable, Hashable {
+    public struct Branch: Codable, Identifiable, Hashable {
 
-        var id: String {
+        public var id: String {
             return name
         }
 
-        let name: String
+        public let name: String
     }
 
-    enum Status: String, Codable {
+    public enum Status: String, Codable {
         case queued = "queued"
         case waiting = "waiting"
         case inProgress = "in_progress"
         case completed = "completed"
     }
 
-    enum Conclusion: String, Codable {
+    public enum Conclusion: String, Codable {
         case success
         case cancelled
         case failure
         case skipped
     }
 
-    struct WorkflowRun: Codable, Identifiable, Hashable {
+    public struct WorkflowRun: Codable, Identifiable, Hashable {
 
-        struct Repository: Codable, Hashable {
-            let branches_url: URL
-            let full_name: String
-            let html_url: URL
+        public struct Repository: Codable, Hashable {
+            public let branches_url: URL
+            public let full_name: String
+            public let html_url: URL
         }
 
-        let id: Int
+        public let id: Int
 
-        let check_suite_id: Int
-        let check_suite_node_id: String
-        let conclusion: Conclusion?
-        let created_at: Date
-        let display_title: String
-        let event: String
-        let head_branch: String
-        let head_sha: String
-        let html_url: URL
-        let name: String
-        let node_id: String
-        let path: String
-        let repository: Repository
-        let rerun_url: URL
-        let run_attempt: Int
-        let run_number: Int
-        let status: Status
-        let updated_at: Date
-        let url: URL
-        let workflow_id: Int
+        public let check_suite_id: Int
+        public let check_suite_node_id: String
+        public let conclusion: Conclusion?
+        public let created_at: Date
+        public let display_title: String
+        public let event: String
+        public let head_branch: String
+        public let head_sha: String
+        public let html_url: URL
+        public let name: String
+        public let node_id: String
+        public let path: String
+        public let repository: Repository
+        public let rerun_url: URL
+        public let run_attempt: Int
+        public let run_number: Int
+        public let status: Status
+        public let updated_at: Date
+        public let url: URL
+        public let workflow_id: Int
     }
 
-    struct Organization: Codable, Identifiable {
+    public struct Organization: Codable, Identifiable {
 
-        let id: Int
+        public let id: Int
 
-        let login: String
+        public let login: String
     }
 
-    struct User: Codable, Hashable {
+    public struct User: Codable, Hashable {
 
-        let login: String
-        let id: Int
-        let node_id: String
-        let avatar_url: URL
+        public let login: String
+        public let id: Int
+        public let node_id: String
+        public let avatar_url: URL
     }
 
-    enum Level: String, Codable {
+    public enum Level: String, Codable {
         case failure
         case warning
     }
 
-    struct Annotation: Codable, Hashable {
+    public struct Annotation: Codable, Hashable {
 
-        let annotation_level: Level
-        let end_column: Int?
-        let end_line: Int
-        let message: String
-        let path: String
-        let start_column: Int?
-        let start_line: Int
-        let title: String
+        public let annotation_level: Level
+        public let end_column: Int?
+        public let end_line: Int
+        public let message: String
+        public let path: String
+        public let start_column: Int?
+        public let start_line: Int
+        public let title: String
     }
 
-    // TODO: Paged fetch
-
-    enum Path: String {
+    public enum Path: String {
         case authorize = "/login/oauth/authorize"
         case accessToken = "/login/oauth/access_token"
         case settingsConnectionsApplications = "/settings/connections/applications"
     }
 
-    let clientId: String
-    let clientSecret: String
-    let redirectUri: String
+    private let clientId: String
+    private let clientSecret: String
+    private let redirectUri: String
 
-    let syncQueue = DispatchQueue(label: "GitHub.syncQueue")
+    private let syncQueue = DispatchQueue(label: "GitHub.syncQueue")
 
-    var authorizationURL: URL {
+    public var authorizationURL: URL {
         return url(.authorize, parameters: [
             "client_id": clientId,
             "redirect_uri": redirectUri,
@@ -213,11 +211,11 @@ class GitHub {
         ])!
     }
 
-    var permissionsURL: URL {
+    public var permissionsURL: URL {
         return url(.settingsConnectionsApplications)!.appendingPathComponent(clientId)
     }
 
-    init(clientId: String, clientSecret: String, redirectUri: String) {
+    public init(clientId: String, clientSecret: String, redirectUri: String) {
         self.clientId = clientId
         self.clientSecret = clientSecret
         self.redirectUri = redirectUri
@@ -259,20 +257,20 @@ class GitHub {
         return response
     }
 
-    func rerun(repositoryName: String, workflowRunId: Int, accessToken: String) async throws {
+    public func rerun(repositoryName: String, workflowRunId: Int, accessToken: String) async throws {
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs/\(workflowRunId)/rerun")!
         _ = try await fetch(url, accessToken: accessToken, method: "POST")
     }
 
-    func rerunFailedJobs(repositoryName: String, workflowRunId: Int, accessToken: String) async throws {
+    public func rerunFailedJobs(repositoryName: String, workflowRunId: Int, accessToken: String) async throws {
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs/\(workflowRunId)/rerun-failed-jobs")!
         _ = try await fetch(url, accessToken: accessToken, method: "POST")
     }
 
-    func workflowRuns(repositoryName: String,
-                      page: Int?,
-                      perPage: Int?,
-                      accessToken: String) async throws -> [WorkflowRun] {
+    public func workflowRuns(repositoryName: String,
+                             page: Int?,
+                             perPage: Int?,
+                             accessToken: String) async throws -> [WorkflowRun] {
         var queryItems: [URLQueryItem] = []
         if let page {
             queryItems.append(URLQueryItem(name: "page", value: String(page)))
@@ -287,7 +285,7 @@ class GitHub {
     }
 
     // TODO: Paged fetch
-    func repositories(accessToken: String) async throws -> [Repository] {
+    public func repositories(accessToken: String) async throws -> [Repository] {
         var repositories: [Repository] = []
         for page in 1... {
             let url = URL(string: "https://api.github.com/user/repos")!
@@ -301,42 +299,42 @@ class GitHub {
     }
 
     // TODO: Owner and repo as parameters.
-    func branches(for repository: Repository, accessToken: String) async throws -> [Branch] {
+    public func branches(for repository: Repository, accessToken: String) async throws -> [Branch] {
         let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/branches")!
         let response: [Branch] = try await fetch(url, accessToken: accessToken)
         return response
     }
 
-    // TODO: Use repositoryname
-    func workflows(for repository: Repository, accessToken: String) async throws -> [Workflow] {
+    // TODO: Owner and repo as parameters.
+    public func workflows(for repository: Repository, accessToken: String) async throws -> [Workflow] {
         let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/actions/workflows")!
         let response: Workflows = try await fetch(url, accessToken: accessToken)
         return response.workflows
     }
 
-    func organizations(accessToken: String) async throws -> [Organization] {
+    public func organizations(accessToken: String) async throws -> [Organization] {
         let url = URL(string: "https://api.github.com/users/jbmorley/orgs")!
         let response: [Organization] = try await fetch(url, accessToken: accessToken)
         return response
     }
 
-    func workflowJobs(for repositoryName: String,
-                      workflowRun: WorkflowRun,
-                      accessToken: String) async throws -> [WorkflowJob] {
+    public func workflowJobs(for repositoryName: String,
+                            workflowRun: WorkflowRun,
+                            accessToken: String) async throws -> [WorkflowJob] {
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs/\(workflowRun.id)/jobs")!
         let response: WorkflowJobs = try await fetch(url, accessToken: accessToken)
         return response.jobs
     }
 
-    func annotations(for repositoryName: String,
-                     workflowJob: WorkflowJob,
-                     accessToken: String) async throws -> [Annotation] {
+    public func annotations(for repositoryName: String,
+                            workflowJob: WorkflowJob,
+                            accessToken: String) async throws -> [Annotation] {
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/check-runs/\(workflowJob.id)/annotations")!
         let response: [Annotation] = try await fetch(url, accessToken: accessToken)
         return response
     }
 
-    func authenticate(with code: String) async throws -> String {
+    public func authenticate(with code: String) async throws -> String {
         guard let url = url(.accessToken, parameters: [
             "client_id": clientId,
             "client_secret": clientSecret,
@@ -354,7 +352,7 @@ class GitHub {
         return accessToken.access_token
     }
 
-    func deleteGrant(accessToken: String) async throws {
+    public func deleteGrant(accessToken: String) async throws {
         // This end-point is a little unnusual:
         // https://docs.github.com/en/rest/apps/oauth-applications?apiVersion=2022-11-28#delete-an-app-authorization
         // https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api?apiVersion=2022-11-28#using-basic-authentication

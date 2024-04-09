@@ -23,6 +23,8 @@ import SwiftUI
 
 import Interact
 
+import BuildsCore
+
 struct InfoView: View {
 
     @Environment(\.presentURL) private var presentURL

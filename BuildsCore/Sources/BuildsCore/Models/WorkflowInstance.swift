@@ -20,29 +20,27 @@
 
 import SwiftUI
 
-import BuildsCore
+public struct WorkflowInstance: Identifiable, Hashable {
 
-struct WorkflowInstance: Identifiable, Hashable {
+    public struct ID: Hashable, Codable {
 
-    struct ID: Hashable, Codable {
-
-        var id: Self {
+        public var id: Self {
             return self
         }
 
-        var organization: String {
+        public var organization: String {
             return String(repositoryFullName.split(separator: "/").first ?? "?")
         }
 
-        var repositoryName: String {
+        public var repositoryName: String {
             return String(repositoryFullName.split(separator: "/").last ?? "?")
         }
 
-        let repositoryFullName: String
-        let workflowId: Int
-        let branch: String
+        public let repositoryFullName: String
+        public let workflowId: Int
+        public let branch: String
 
-        init(repositoryFullName: String, workflowId: Int, branch: String) {
+        public init(repositoryFullName: String, workflowId: Int, branch: String) {
             self.repositoryFullName = repositoryFullName
             self.workflowId = workflowId
             self.branch = branch
@@ -50,11 +48,11 @@ struct WorkflowInstance: Identifiable, Hashable {
 
     }
 
-    var annotations: [WorkflowResult.Annotation] {
+    public var annotations: [WorkflowResult.Annotation] {
         return result?.annotations ?? []
     }
 
-    var attributedTitle: AttributedString? {
+    public var attributedTitle: AttributedString? {
         guard let title = result?.workflowRun.display_title else {
             return nil
         }
@@ -64,87 +62,87 @@ struct WorkflowInstance: Identifiable, Hashable {
         return attributedTitle
     }
 
-    var branchURL: URL? {
+    public var branchURL: URL? {
         guard let repositoryURL else {
             return nil
         }
         return repositoryURL.appendingPathComponents(["tree", id.branch])
     }
 
-    var commitURL: URL? {
+    public var commitURL: URL? {
         guard let result, let repositoryURL else {
             return nil
         }
         return repositoryURL.appendingPathComponents(["commit", result.workflowRun.head_sha])
     }
 
-    var jobs: [GitHub.WorkflowJob] {
+    public var jobs: [GitHub.WorkflowJob] {
         return result?.jobs ?? []
     }
 
-    var createdAt: Date? {
+    public var createdAt: Date? {
         return result?.workflowRun.created_at
     }
 
-    var operationState: OperationState {
+    public var operationState: OperationState {
         return OperationState(status: result?.workflowRun.status, conclusion: result?.workflowRun.conclusion)
     }
 
-    var organizationURL: URL? {
+    public var organizationURL: URL? {
         guard let repositoryURL else {
             return nil
         }
         return repositoryURL.deletingLastPathComponent()
     }
 
-    var pullsURL: URL? {
+    public var pullsURL: URL? {
         guard let repositoryURL else {
             return nil
         }
         return repositoryURL.appendingPathComponent("pulls")
     }
 
-    var repositoryName: String {
+    public var repositoryName: String {
         return id.repositoryName
     }
 
-    var repositoryURL: URL? {
+    public var repositoryURL: URL? {
         guard let url = result?.workflowRun.repository.html_url else {
             return nil
         }
         return url
     }
 
-    var sha: String? {
+    public var sha: String? {
         guard let result else {
             return nil
         }
         return String(result.workflowRun.head_sha.prefix(7))
     }
 
-    var statusColor: Color {
+    public var statusColor: Color {
         return summary.color
     }
 
-    var summary: OperationState.Summary {
+    public var summary: OperationState.Summary {
         return operationState.summary
     }
 
-    var workflowName: String {
+    public var workflowName: String {
         return result?.workflowRun.name ?? String(id.workflowId)
     }
 
-    var workflowURL: URL? {
+    public var workflowURL: URL? {
         guard let repositoryURL, let id = result?.workflowRun.id else {
             return nil
         }
         return repositoryURL.appendingPathComponents(["actions", "runs", String(id), "workflow"])
     }
 
-    let id: ID
-    let result: WorkflowResult?
+    public let id: ID
+    public let result: WorkflowResult?
 
-    init(id: ID, result: WorkflowResult? = nil) {
+    public init(id: ID, result: WorkflowResult? = nil) {
         self.id = id
         self.result = result
     }

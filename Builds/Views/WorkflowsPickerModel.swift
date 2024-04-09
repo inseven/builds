@@ -23,6 +23,8 @@ import SwiftUI
 
 import Interact
 
+import BuildsCore
+
 class WorkflowPickerModel: ObservableObject, Runnable {
 
     struct WorkflowDetails: Identifiable {

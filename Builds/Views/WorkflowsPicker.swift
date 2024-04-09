@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct WorkflowPicker: View {
 
     @ObservedObject var applicationModel: ApplicationModel

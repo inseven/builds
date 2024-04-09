@@ -22,6 +22,8 @@ import SwiftUI
 
 import SelectableCollectionView
 
+import BuildsCore
+
 struct WorkflowMenu {
 
     @MainActor @MenuItemBuilder static func items(applicationModel: ApplicationModel,

@@ -22,6 +22,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct InfoSheet: View {
 
     @EnvironmentObject var applicationModel: ApplicationModel

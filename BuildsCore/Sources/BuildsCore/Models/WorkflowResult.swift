@@ -18,8 +18,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
-enum BuildsError: Error {
-    case authenticationFailure
+extension GitHub.Annotation: Identifiable {
+
+    public var id: String {
+        return "\(path):\(start_line):\(end_line):\(start_column ?? -1):\(end_column ?? -1)"
+    }
+
+}
+
+public struct WorkflowResult: Codable, Hashable {
+
+    public struct Annotation: Codable, Identifiable, Hashable {
+
+        public var id: GitHub.Annotation.ID {
+            return annotation.id
+        }
+
+        public let jobId: GitHub.WorkflowJob.ID
+        public let annotation: GitHub.Annotation
+    }
+
+    public let workflowRun: GitHub.WorkflowRun
+    public let jobs: [GitHub.WorkflowJob]
+    public let annotations: [Annotation]
+
+    public init(workflowRun: GitHub.WorkflowRun,
+                jobs: [GitHub.WorkflowJob],
+                annotations: [Annotation]) {
+        self.workflowRun = workflowRun
+        self.jobs = jobs
+        self.annotations = annotations
+    }
+
+    public func job(for annotation: Annotation) -> GitHub.WorkflowJob? {
+        return jobs.first {
+            return $0.id == annotation.jobId
+        }
+    }
+
 }

@@ -20,6 +20,8 @@
 
 import SwiftUI
 
+import BuildsCore
+
 struct AnnotationList: View {
 
     struct LayoutMetrics {
