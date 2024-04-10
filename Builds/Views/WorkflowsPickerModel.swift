@@ -71,10 +71,10 @@ class WorkflowPickerModel: ObservableObject, Runnable {
 
         // Ensure we show branches for all workflows that have been saved.
         applicationModel
-            .$favorites
-            .map { favorites in
-                return favorites.filter { favorite in
-                    favorite.repositoryFullName == self.repositoryDetails.repository.full_name
+            .$workflows
+            .map { workflows in
+                return workflows.filter { workflow in
+                    workflow.repositoryFullName == self.repositoryDetails.repository.full_name
                 }.reduce(into: Set<String>()) { partialResult, id in
                     partialResult.insert(id.branch)
                 }

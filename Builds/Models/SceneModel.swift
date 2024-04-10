@@ -98,12 +98,12 @@ class SceneModel: Runnable {
             message: "Signing out will remove Builds from your GitHub account and clear your workflows from iCloud.",
             actions: [
                 ConfirmableAction("Sign Out", role: .destructive) {
-                    await self.applicationModel.signOut(preserveFavorites: false)
+                    await self.applicationModel.signOut(preserveWorkflows: false)
                     self.settings.sheet = nil
                     self.settings.section = .all
                 },
                 ConfirmableAction("Sign Out and Keep Workflows") {
-                    await self.applicationModel.signOut(preserveFavorites: true)
+                    await self.applicationModel.signOut(preserveWorkflows: true)
                     self.settings.sheet = nil
                     self.settings.section = .all
                 },

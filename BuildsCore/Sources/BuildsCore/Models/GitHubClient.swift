@@ -65,9 +65,9 @@ public class GitHubClient {
     }
 
     // Top level call that triggers fetching all workflow results.
-    public func update(favorites: [WorkflowInstance.ID],
+    public func update(workflows: [WorkflowInstance.ID],
                        callback: @escaping (WorkflowInstance) -> Void) async throws {
-        let repositories = favorites
+        let repositories = workflows
             .reduce(into: [String: [WorkflowInstance.ID]]()) { partialResult, id in
                 var ids = partialResult[id.repositoryFullName] ?? []
                 ids.append(id)
