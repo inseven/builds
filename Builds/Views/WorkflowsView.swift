@@ -66,7 +66,7 @@ struct WorkflowsView: View, OpenContext {
                 presentURL(result.workflowRun.html_url)
             }
 #else
-            guard let id = selection.first?.id else {
+            guard let id = selection.first else {
                 return
             }
             sceneModel.settings.sheet = .view(id)

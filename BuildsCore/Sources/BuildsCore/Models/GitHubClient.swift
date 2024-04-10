@@ -71,7 +71,7 @@ public class GitHubClient {
             .reduce(into: [String: [WorkflowInstance.ID]]()) { partialResult, id in
                 var ids = partialResult[id.repositoryFullName] ?? []
                 ids.append(id)
-                partialResult[id.id.repositoryFullName] = ids
+                partialResult[id.repositoryFullName] = ids
             }
         try await repositories.asyncForEach { repository, ids in
             try await self.fetchDetails(repository: repository, ids: ids, callback: callback)

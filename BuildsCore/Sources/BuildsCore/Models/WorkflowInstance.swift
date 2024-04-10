@@ -22,32 +22,6 @@ import SwiftUI
 
 public struct WorkflowInstance: Identifiable, Hashable {
 
-    public struct ID: Hashable, Codable, Sendable {
-
-        public var id: Self {
-            return self
-        }
-
-        public var organization: String {
-            return String(repositoryFullName.split(separator: "/").first ?? "?")
-        }
-
-        public var repositoryName: String {
-            return String(repositoryFullName.split(separator: "/").last ?? "?")
-        }
-
-        public let repositoryFullName: String
-        public let workflowId: Int
-        public let branch: String
-
-        public init(repositoryFullName: String, workflowId: Int, branch: String) {
-            self.repositoryFullName = repositoryFullName
-            self.workflowId = workflowId
-            self.branch = branch
-        }
-
-    }
-
     public var annotations: [WorkflowResult.Annotation] {
         return result?.annotations ?? []
     }
@@ -143,7 +117,7 @@ public struct WorkflowInstance: Identifiable, Hashable {
         return repositoryURL.appendingPathComponents(["actions", "runs", String(id), "workflow"])
     }
 
-    public let id: ID
+    public let id: WorkflowIdentifier
     public let result: WorkflowResult?
 
     public init(id: ID, result: WorkflowResult? = nil) {
