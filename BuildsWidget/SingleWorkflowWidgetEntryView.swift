@@ -30,7 +30,7 @@ struct SingleWorkflowWidgetEntryView : View {
             if let workflowInstance = entry.workflowInstance {
                 HStack {
                     Spacer()
-                    Image(systemName: workflowInstance.operationState.systemImage)  // TODO: Promote image!!
+                    Image(systemName: workflowInstance.systemImage)
                         .imageScale(.large)
                 }
                 Spacer()
