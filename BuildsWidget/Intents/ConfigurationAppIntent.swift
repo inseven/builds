@@ -30,7 +30,7 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var description = IntentDescription("This is an example widget.")
 
     @Parameter(title: "Workflow")
-    var workflow: WorkflowIdentifier
+    var workflow: WorkflowIdentifierEntity
 }
 
 extension ConfigurationAppIntent {

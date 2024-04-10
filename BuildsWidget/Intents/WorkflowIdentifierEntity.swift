@@ -20,22 +20,30 @@
 
 import AppIntents
 
-struct WorkflowIdentifier: AppEntity {
+import BuildsCore
+
+struct WorkflowIdentifierEntity: AppEntity {
 
     var id: String {
-        return "\(repository):\(workflow):\(branch)"
+        return "\(repositoryFullName):\(workflowId):\(branch)"
     }
 
-    let repository: String
-    let workflow: Int
+    let repositoryFullName: String
+    let workflowId: Int
     let branch: String
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Workflow"
     static var defaultQuery = WorkflowQuery()
 
     var displayRepresentation: DisplayRepresentation {
-        return DisplayRepresentation(title: "\(repository)",
-                                     subtitle: "\(workflow) \(branch)")
+        return DisplayRepresentation(title: "\(repositoryFullName)",
+                                     subtitle: "\(workflowId) \(branch)")
+    }
+
+    init(_ id: WorkflowInstance.ID) {
+        self.repositoryFullName = id.repositoryFullName
+        self.workflowId = id.workflowId
+        self.branch = id.branch
     }
 
 }

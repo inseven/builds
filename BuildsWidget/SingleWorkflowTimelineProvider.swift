@@ -29,11 +29,11 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     init() {
     }
 
-    func workflowResult(for workflowIdentifier: WorkflowIdentifier) async -> WorkflowInstance {
+    func workflowResult(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
-        let id = WorkflowInstance.ID(repositoryFullName: workflowIdentifier.repository,
-                                     workflowId: workflowIdentifier.workflow,
+        let id = WorkflowInstance.ID(repositoryFullName: workflowIdentifier.repositoryFullName,
+                                     workflowId: workflowIdentifier.workflowId,
                                      branch: workflowIdentifier.branch)
         let workflowResult = results[id]
         return WorkflowInstance(id: id, result: workflowResult)

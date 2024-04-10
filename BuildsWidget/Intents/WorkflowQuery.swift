@@ -28,35 +28,32 @@ struct WorkflowQuery: EntityQuery, EntityStringQuery {
         case summary
     }
 
-    var workflows: [WorkflowIdentifier] {
+    var workflows: [WorkflowIdentifierEntity] {
         get async {
             let settings = await Settings()
             let workflows = await settings.workflowsCache
-            return workflows.map { id in
-                return WorkflowIdentifier(repository: id.repositoryFullName,
-                                          workflow: id.workflowId,
-                                          branch: id.branch)
-            }
+            return workflows
+                .map { WorkflowIdentifierEntity($0) }
         }
     }
 
-    func entities(matching string: String) async throws -> [WorkflowIdentifier] {
+    func entities(matching string: String) async throws -> [WorkflowIdentifierEntity] {
         return await workflows
             .filter { workflowIdentifier in
-                workflowIdentifier.repository.contains(string)
+                workflowIdentifier.repositoryFullName.contains(string)
             }
     }
 
 
-    func entities(for identifiers: [WorkflowIdentifier.ID]) async throws -> [WorkflowIdentifier] {
+    func entities(for identifiers: [WorkflowIdentifierEntity.ID]) async throws -> [WorkflowIdentifierEntity] {
         return await workflows.filter { identifiers.contains($0.id) }
     }
 
-    func suggestedEntities() async throws -> [WorkflowIdentifier] {
+    func suggestedEntities() async throws -> [WorkflowIdentifierEntity] {
         return await workflows
     }
 
-    func defaultResult() async -> WorkflowIdentifier? {
+    func defaultResult() async -> WorkflowIdentifierEntity? {
         return nil
     }
 }
