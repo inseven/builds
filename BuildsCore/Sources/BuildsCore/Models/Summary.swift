@@ -32,4 +32,34 @@ public struct Summary: Codable, Equatable {
         self.date = date
     }
 
+    public init(workflowInstances: [WorkflowInstance]) {
+
+        guard workflowInstances.count > 0 else {
+            self.init()
+            return
+        }
+
+        var status: OperationState.Summary = .success
+        for result in workflowInstances {
+            switch result.summary {
+            case .unknown:
+                status = .unknown
+                break
+            case .success:  // We require 100% successes for success.
+                continue
+            case .skipped:  // Skipped builds don't represent failure.
+                continue
+            case .failure:  // We treat any failure as a global failure.
+                status = .failure
+                break
+            case .inProgress:
+                status = .inProgress
+                break
+            }
+        }
+        let date = workflowInstances.compactMap({ $0.createdAt }).max()
+
+        self.init(status: status, count: workflowInstances.count, date: date)
+    }
+
 }
