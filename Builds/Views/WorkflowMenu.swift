@@ -141,7 +141,7 @@ struct WorkflowMenu {
                  systemImage: workflowInstances.count == 1 ? "rectangle.slash" : "rectangle.on.rectangle.slash",
                  role: .destructive) {
             for workflowInstance in workflowInstances {
-                applicationModel.removeFavorite(workflowInstance.id)
+                applicationModel.removeWorkflow(workflowInstance.id)
             }
         }
         .disabled(workflowInstances.isEmpty)

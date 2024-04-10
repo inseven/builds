@@ -38,12 +38,12 @@ struct WorkflowPicker: View {
                                      workflowId: workflow.workflowId,
                                      branch: workflow.branch)
         return Binding {
-            return applicationModel.favorites.contains(id)
+            return applicationModel.workflows.contains(id)
         } set: { isOn in
             if isOn {
-                applicationModel.addFavorite(id)
+                applicationModel.addWorkflow(id)
             } else {
-                applicationModel.removeFavorite(id)
+                applicationModel.removeWorkflow(id)
             }
         }
     }

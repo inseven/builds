@@ -48,9 +48,9 @@ class ApplicationModel: NSObject, ObservableObject {
     // recoverable authentication failures from the initial set up.
     @MainActor @Published var isSignedIn: Bool
 
-    @MainActor @Published var favorites: [WorkflowInstance.ID] = [] {
+    @MainActor @Published var workflows: [WorkflowInstance.ID] = [] {
         didSet {
-            settings.favorites = favorites
+            settings.workflows = workflows
             updateOrganizations()
             updateResults()
         }
@@ -138,7 +138,7 @@ class ApplicationModel: NSObject, ObservableObject {
                 print("Refreshing...")
                 self.isUpdating = true
                 self.lastError = nil
-                try await self.client.update(favorites: self.favorites) { [weak self] workflowInstance in
+                try await self.client.update(workflows: self.workflows) { [weak self] workflowInstance in
                     guard let self else {
                         return
                     }
@@ -162,14 +162,14 @@ class ApplicationModel: NSObject, ObservableObject {
     }
 
     @MainActor private func updateOrganizations() {
-        self.organizations = favorites
+        self.organizations = workflows
             .reduce(into: Set<String>()) { partialResult, id in
                 partialResult.insert(id.organization)
             }.sorted()
     }
 
     @MainActor private func updateResults() {
-        self.results = favorites
+        self.results = workflows
             .map { id in
                 return WorkflowInstance(id: id, result: cachedStatus[id])
             }
@@ -229,12 +229,12 @@ class ApplicationModel: NSObject, ObservableObject {
         updateResults()
     }
 
-    @MainActor func addFavorite(_ id: WorkflowInstance.ID) {
-        guard !favorites.contains(id) else {
+    @MainActor func addWorkflow(_ id: WorkflowInstance.ID) {
+        guard !workflows.contains(id) else {
             return
         }
-        favorites.append(id)
-        settings.workflowsCache = favorites
+        workflows.append(id)
+        settings.workflowsCache = workflows
 
         // Fetch the workflow details on demand.
         Task {
@@ -242,9 +242,9 @@ class ApplicationModel: NSObject, ObservableObject {
         }
     }
 
-    @MainActor func removeFavorite(_ id: WorkflowInstance.ID) {
-        favorites.removeAll { $0 == id }
-        settings.workflowsCache = favorites
+    @MainActor func removeWorkflow(_ id: WorkflowInstance.ID) {
+        workflows.removeAll { $0 == id }
+        settings.workflowsCache = workflows
         cachedStatus.removeValue(forKey: id)
     }
 
@@ -253,23 +253,23 @@ class ApplicationModel: NSObject, ObservableObject {
     }
 
     @MainActor func sync() {
-        let favorites = settings.favorites
+        let workflows = settings.workflows
 
         // Cache the workflows (these are used directly by the widget configuration intent).
-        settings.workflowsCache = settings.favorites
+        settings.workflowsCache = settings.workflows
 
         // Guard against ping-ponging with the server and other devices.
-        guard self.favorites != favorites else {
+        guard self.workflows != workflows else {
             return
         }
 
-        // Update the favorites.
-        self.favorites = favorites
+        // Update the workflows.
+        self.workflows = workflows
 
-        // Remove cached results that are no longer in our favorites set.
-        self.cachedStatus = self.cachedStatus.filter { favorites.contains($0.key) }
+        // Remove cached results that are no longer in our workflows set.
+        self.cachedStatus = self.cachedStatus.filter { workflows.contains($0.key) }
 
-        // Trigger an update if the favorites have changed in sync.
+        // Trigger an update if the workflows have changed in sync.
         Task {
             await refresh()
         }
@@ -296,7 +296,7 @@ class ApplicationModel: NSObject, ObservableObject {
         }
     }
 
-    @MainActor func signOut(preserveFavorites: Bool) async {
+    @MainActor func signOut(preserveWorkflows: Bool) async {
         do {
             if let accessToken = settings.accessToken {
                 try await api.deleteGrant(accessToken: accessToken)
@@ -306,8 +306,8 @@ class ApplicationModel: NSObject, ObservableObject {
         }
         settings.accessToken = nil
         cachedStatus = [:]
-        if !preserveFavorites {
-            favorites = []
+        if !preserveWorkflows {
+            workflows = []
         }
         isSignedIn = false
     }
@@ -322,7 +322,7 @@ class ApplicationModel: NSObject, ObservableObject {
 
     func refresh(ids: [WorkflowInstance.ID]) async {
         do {
-            try await client.update(favorites: ids) { [weak self] workflowInstance in
+            try await client.update(workflows: ids) { [weak self] workflowInstance in
                 guard let self else {
                     return
                 }

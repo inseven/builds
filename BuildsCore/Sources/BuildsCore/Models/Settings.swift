@@ -47,7 +47,7 @@ public class Settings {
         }
     }
 
-    @MainActor public var favorites: [WorkflowInstance.ID] {
+    @MainActor public var workflows: [WorkflowInstance.ID] {
         get {
             NSUbiquitousKeyValueStore.default.synchronize()
             guard let data = NSUbiquitousKeyValueStore.default.data(forKey: Key.favorites.rawValue) else {
@@ -56,7 +56,7 @@ public class Settings {
             do {
                 return try JSONDecoder().decode([WorkflowInstance.ID].self, from: data)
             } catch {
-                print("Failed to load favorites with error \(error).")
+                print("Failed to load workflows with error \(error).")
             }
             return []
         }
@@ -70,7 +70,7 @@ public class Settings {
                 store.set(data, forKey: Key.favorites.rawValue)
                 store.synchronize()
             } catch {
-                print("Failed to save favorites with error \(error).")
+                print("Failed to save workflows with error \(error).")
             }
         }
     }
