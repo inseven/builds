@@ -29,14 +29,11 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     init() {
     }
 
-    func workflowResult(for workflowIdentifier: WorkflowIdentifier) async -> WorkflowInstance {
+    func workflowResult(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
-        let id = WorkflowInstance.ID(repositoryFullName: workflowIdentifier.repository,
-                                     workflowId: workflowIdentifier.workflow,
-                                     branch: workflowIdentifier.branch)
-        let workflowResult = results[id]
-        return WorkflowInstance(id: id, result: workflowResult)
+        let workflowResult = results[workflowIdentifier.identifier]
+        return WorkflowInstance(id: workflowIdentifier.identifier, result: workflowResult)
     }
 
     func placeholder(in context: Context) -> SingleWorkflowTimelineEntry {
@@ -56,11 +53,5 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
                                                 configuration: ConfigurationAppIntent())
         return Timeline(entries: [entry], policy: .after(.now + 60))
     }
-
-}
-
-extension Settings {
-
-
 
 }
