@@ -81,7 +81,6 @@ public class Settings {
         }
     }
 
-    // TODO: Rename to workflows.
     @MainActor public var favorites: [WorkflowInstance.ID] {
         get {
             NSUbiquitousKeyValueStore.default.synchronize()
