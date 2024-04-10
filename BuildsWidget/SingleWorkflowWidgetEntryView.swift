@@ -39,19 +39,15 @@ struct SingleWorkflowWidgetEntryView : View {
                     Text(workflowInstance.workflowName)
                     Text(workflowInstance.id.branch)
                         .monospaced()
-//                    Text(workflowInstance.sha ?? "")
-//                        .monospaced()
                 }
                 .font(.footnote)
                 .opacity(0.6)
                 if let date = workflowInstance.createdAt {
                     Text(date, format: .relative(presentation: .numeric))
-//                        .font(.subheadline)
                         .font(.footnote)
                         .opacity(0.6)
                 } else {
                     Text("-")
-//                        .font(.subheadline)
                         .font(.footnote)
                         .opacity(0.6)
                 }

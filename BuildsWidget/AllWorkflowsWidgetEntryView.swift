@@ -36,12 +36,10 @@ struct AllWorkflowsWidgetEntryView : View {
             Text("\(entry.summary.count) Workflows")
             if let date = entry.summary.date {
                 Text(date, format: .relative(presentation: .numeric))
-//                    .font(.subheadline)
                     .font(.footnote)
                     .opacity(0.6)
             } else {
                 Text("-")
-//                    .font(.subheadline)
                     .font(.footnote)
                     .opacity(0.6)
             }

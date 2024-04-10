@@ -32,7 +32,6 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     func workflowResult(for workflowIdentifier: WorkflowIdentifier) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
-        // TODO: Can we share WorkflowInstance.ID?
         let id = WorkflowInstance.ID(repositoryFullName: workflowIdentifier.repository,
                                      workflowId: workflowIdentifier.workflow,
                                      branch: workflowIdentifier.branch)
@@ -44,16 +43,18 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
         return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SingleWorkflowTimelineEntry {
+    func snapshot(for configuration: ConfigurationAppIntent,
+                  in context: Context) async -> SingleWorkflowTimelineEntry {
         let workflowResult = await workflowResult(for: configuration.workflow)
         return SingleWorkflowTimelineEntry(workflowInstance: workflowResult, configuration: ConfigurationAppIntent())
     }
 
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
+    func timeline(for configuration: ConfigurationAppIntent,
+                  in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
         let workflowResult = await workflowResult(for: configuration.workflow)
-        let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult, configuration: ConfigurationAppIntent())
-        // TODO: EXTRACT
-        return Timeline(entries: [entry], policy: .atEnd)
+        let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
+                                                configuration: ConfigurationAppIntent())
+        return Timeline(entries: [entry], policy: .after(.now + 60))
     }
 
 }
