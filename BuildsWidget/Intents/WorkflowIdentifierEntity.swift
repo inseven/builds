@@ -25,25 +25,21 @@ import BuildsCore
 struct WorkflowIdentifierEntity: AppEntity {
 
     var id: String {
-        return "\(repositoryFullName):\(workflowId):\(branch)"
+        return "\(identifier.repositoryFullName):\(identifier.workflowId):\(identifier.branch)"
     }
 
-    let repositoryFullName: String
-    let workflowId: Int
-    let branch: String
+    let identifier: WorkflowInstance.ID
 
     static var typeDisplayRepresentation: TypeDisplayRepresentation = "Workflow"
     static var defaultQuery = WorkflowQuery()
 
     var displayRepresentation: DisplayRepresentation {
-        return DisplayRepresentation(title: "\(repositoryFullName)",
-                                     subtitle: "\(workflowId) \(branch)")
+        return DisplayRepresentation(title: "\(identifier.repositoryFullName)",
+                                     subtitle: "\(identifier.workflowId) \(identifier.branch)")
     }
 
-    init(_ id: WorkflowInstance.ID) {
-        self.repositoryFullName = id.repositoryFullName
-        self.workflowId = id.workflowId
-        self.branch = id.branch
+    init(_ identifier: WorkflowInstance.ID) {
+        self.identifier = identifier
     }
 
 }
