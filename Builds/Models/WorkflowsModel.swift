@@ -54,27 +54,11 @@ class WorkflowsModel: ObservableObject, Runnable {
     }
 
     private func updateRepositories() async {
+        await MainActor.run {
+            self.isUpdating = true
+        }
         do {
-            let client = try await applicationModel.client
-            await MainActor.run {
-                self.isUpdating = true
-            }
-            let repositories = try await client
-                .repositories()
-                .asyncCompactMap { repository -> RepositoryDetails? in
-                    guard !repository.archived else {
-                        return nil
-                    }
-                    let workflows = try await client.workflows(for: repository)
-                    guard workflows.count > 0 else {
-                        return nil
-                    }
-                    let branches = try await client.branches(for: repository)
-                    return RepositoryDetails(repository: repository,
-                                             workflows: workflows,
-                                             branches: branches)
-                }
-                .sorted { $0.repository.full_name.localizedStandardCompare($1.repository.full_name) == .orderedAscending }
+            let repositories = try await applicationModel.repositoryDetails()
             await MainActor.run {
                 self.repositories = repositories
                 self.isUpdating = false

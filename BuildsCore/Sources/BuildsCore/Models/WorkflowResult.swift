@@ -20,20 +20,12 @@
 
 import SwiftUI
 
-extension GitHub.Annotation: Identifiable {
-
-    public var id: String {
-        return "\(path):\(start_line):\(end_line):\(start_column ?? -1):\(end_column ?? -1)"
-    }
-
-}
-
 public struct WorkflowResult: Codable, Hashable {
 
     public struct Annotation: Codable, Identifiable, Hashable {
 
-        public var id: GitHub.Annotation.ID {
-            return annotation.id
+        public var id: String {
+            return "\(annotation.path):\(annotation.start_line):\(annotation.end_line):\(annotation.start_column ?? -1):\(annotation.end_column ?? -1)"
         }
 
         public let jobId: GitHub.WorkflowJob.ID
