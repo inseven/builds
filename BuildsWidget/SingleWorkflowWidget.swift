@@ -25,9 +25,10 @@ struct SingleWorkflowWidget: Widget {
     let kind: String = "SingleWorkflowWidget"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            BuildsWidgetEntryView(entry: entry)
+        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
+            SingleWorkflowWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Single Workflow")
+        .description("Show latest details of a single workflow.")
     }
 }

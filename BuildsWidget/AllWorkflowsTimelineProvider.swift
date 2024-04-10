@@ -25,42 +25,29 @@ import Interact
 import BuildsCore
 
 struct AllWorkflowsTimelineProvider: TimelineProvider {
-    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsEntry) -> Void) {
-        // TODO:
-        completion(AllWorkflowsEntry(summary: summary))
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsEntry>) -> Void) {
-        // TODO: Reload policy.
-        completion(Timeline(entries: [AllWorkflowsEntry(summary: summary)], policy: .after(.now + 60)))
-    }
-
-    enum Key: String {
-        case summary
-    }
 
     var summary: Summary {
-        return (try? defaults.codable(forKey: .summary)) ?? Summary()
+        get async {
+            let settings = await Settings()
+            let summary = await settings.summary ?? Summary()
+            return summary
+        }
     }
 
-    // TODO: Settings
-    let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
-
-    init() {
+    func placeholder(in context: Context) -> AllWorkflowsTimeEntry {
+        return AllWorkflowsTimeEntry(summary: Summary())
     }
 
-    // TODO: UNUSED?
-    func placeholder(in context: Context) -> AllWorkflowsEntry {
-        return AllWorkflowsEntry()
+    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimeEntry) -> Void) {
+        Task {
+            completion(AllWorkflowsTimeEntry(summary: await summary))
+        }
     }
 
-//    func snapshot(in context: Context) async -> AllWorkflowsEntry {
-//        return AllWorkflowsEntry(summary: summary)
-//    }
-//
-//    func timeline(in context: Context) async -> Timeline<AllWorkflowsEntry> {
-//        let entry = AllWorkflowsEntry(summary: summary)
-//        return Timeline(entries: [entry], policy: .atEnd)
-//    }
+    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
+        Task {
+            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .after(.now + 60)))
+        }
+    }
 
 }

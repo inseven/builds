@@ -11,6 +11,8 @@
 		D80ED1E52BC5E8E400897EC7 /* WorkflowIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80ED1E42BC5E8E400897EC7 /* WorkflowIdentifier.swift */; };
 		D80ED1E72BC5EDFB00897EC7 /* SingleWorkflowWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80ED1E62BC5EDFB00897EC7 /* SingleWorkflowWidget.swift */; };
 		D80ED1E92BC5F14E00897EC7 /* AllWorkflowsTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80ED1E82BC5F14E00897EC7 /* AllWorkflowsTimelineProvider.swift */; };
+		D80ED1EB2BC5F3ED00897EC7 /* AllWorkflowsTimelineEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80ED1EA2BC5F3ED00897EC7 /* AllWorkflowsTimelineEntry.swift */; };
+		D80ED1ED2BC5F71F00897EC7 /* AllWorkflowsWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D80ED1EC2BC5F71F00897EC7 /* AllWorkflowsWidgetEntryView.swift */; };
 		D81251BA2B929B27001F6E85 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251B92B929B27001F6E85 /* MainWindow.swift */; };
 		D81251BD2B92A39C001F6E85 /* HandlesAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */; };
 		D81F88A22BC49A7E0038B069 /* Summary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81F88A12BC49A7E0038B069 /* Summary.swift */; };
@@ -20,7 +22,7 @@
 		D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */ = {isa = PBXBuildFile; productRef = D826A57C2BA23228006D25FF /* SelectableCollectionView */; };
 		D829F8D22BC35E8B00CA10DB /* Rotates.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89ADE442BBCACAC00F915A1 /* Rotates.swift */; };
 		D82E6E722BAB809300536E15 /* Scenes in Resources */ = {isa = PBXBuildFile; fileRef = D82E6E712BAB809200536E15 /* Scenes */; };
-		D831743A2BC48FA50036EB40 /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83174392BC48FA50036EB40 /* Provider.swift */; };
+		D831743A2BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83174392BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift */; };
 		D837E7EF2BB62CA000D39C25 /* OpenContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D837E7EE2BB62CA000D39C25 /* OpenContext.swift */; };
 		D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83929DA2BA367DD0022B4A3 /* Collection.swift */; };
 		D84D18742BC311D000C907B2 /* Interact in Frameworks */ = {isa = PBXBuildFile; productRef = D84D18732BC311D000C907B2 /* Interact */; };
@@ -65,8 +67,8 @@
 		D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5D72BA0B49600E46174 /* SVGImage.swift */; };
 		D887C5DA2BA0B60400E46174 /* swiftdraw-license in Resources */ = {isa = PBXBuildFile; fileRef = D887C5D92BA0B60400E46174 /* swiftdraw-license */; };
 		D889F49C2BAE58EF004CFC50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */; };
-		D88AFD742BC4964C0060B5CC /* BuildsWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88AFD732BC4964C0060B5CC /* BuildsWidgetEntryView.swift */; };
-		D88AFD762BC4967A0060B5CC /* SingleWorkflowEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88AFD752BC4967A0060B5CC /* SingleWorkflowEntry.swift */; };
+		D88AFD742BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88AFD732BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift */; };
+		D88AFD762BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88AFD752BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift */; };
 		D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */; };
 		D891771E2BA5457E0080B20C /* SummaryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D891771D2BA5457E0080B20C /* SummaryPanel.swift */; };
 		D89ADE432BBCAC5700F915A1 /* StatusImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D89ADE422BBCAC5700F915A1 /* StatusImage.swift */; };
@@ -154,13 +156,15 @@
 		D80ED1E42BC5E8E400897EC7 /* WorkflowIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowIdentifier.swift; sourceTree = "<group>"; };
 		D80ED1E62BC5EDFB00897EC7 /* SingleWorkflowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWorkflowWidget.swift; sourceTree = "<group>"; };
 		D80ED1E82BC5F14E00897EC7 /* AllWorkflowsTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllWorkflowsTimelineProvider.swift; sourceTree = "<group>"; };
+		D80ED1EA2BC5F3ED00897EC7 /* AllWorkflowsTimelineEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllWorkflowsTimelineEntry.swift; sourceTree = "<group>"; };
+		D80ED1EC2BC5F71F00897EC7 /* AllWorkflowsWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllWorkflowsWidgetEntryView.swift; sourceTree = "<group>"; };
 		D81251B92B929B27001F6E85 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandlesAuthentication.swift; sourceTree = "<group>"; };
 		D81F88A12BC49A7E0038B069 /* Summary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Summary.swift; sourceTree = "<group>"; };
 		D81F88A32BC4A5D50038B069 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		D820A0A42BC480B000FDD432 /* BuildsCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BuildsCore; sourceTree = "<group>"; };
 		D82E6E712BAB809200536E15 /* Scenes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Scenes; path = "builds-resources/Scenes"; sourceTree = SOURCE_ROOT; };
-		D83174392BC48FA50036EB40 /* Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
+		D83174392BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWorkflowTimelineProvider.swift; sourceTree = "<group>"; };
 		D837E7EE2BB62CA000D39C25 /* OpenContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenContext.swift; sourceTree = "<group>"; };
 		D83929DA2BA367DD0022B4A3 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		D850F4D62BAA4E7B00CE1796 /* Confirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confirmation.swift; sourceTree = "<group>"; };
@@ -205,8 +209,8 @@
 		D887C5D72BA0B49600E46174 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
 		D887C5D92BA0B60400E46174 /* swiftdraw-license */ = {isa = PBXFileReference; lastKnownFileType = text; path = "swiftdraw-license"; sourceTree = "<group>"; };
 		D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		D88AFD732BC4964C0060B5CC /* BuildsWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildsWidgetEntryView.swift; sourceTree = "<group>"; };
-		D88AFD752BC4967A0060B5CC /* SingleWorkflowEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWorkflowEntry.swift; sourceTree = "<group>"; };
+		D88AFD732BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWorkflowWidgetEntryView.swift; sourceTree = "<group>"; };
+		D88AFD752BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleWorkflowTimelineEntry.swift; sourceTree = "<group>"; };
 		D891771A2BA5452F0080B20C /* SummaryPanelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanelViewController.swift; sourceTree = "<group>"; };
 		D891771D2BA5457E0080B20C /* SummaryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryPanel.swift; sourceTree = "<group>"; };
 		D89ADE422BBCAC5700F915A1 /* StatusImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusImage.swift; sourceTree = "<group>"; };
@@ -346,13 +350,15 @@
 			children = (
 				D85677FF2BC1CFF7003D2DB6 /* BuildsWidget.entitlements */,
 				D85677FE2BC1CFF7003D2DB6 /* Info.plist */,
+				D80ED1EA2BC5F3ED00897EC7 /* AllWorkflowsTimelineEntry.swift */,
 				D80ED1E82BC5F14E00897EC7 /* AllWorkflowsTimelineProvider.swift */,
 				D85677F82BC1CFF6003D2DB6 /* AllWorkflowsWidget.swift */,
+				D80ED1EC2BC5F71F00897EC7 /* AllWorkflowsWidgetEntryView.swift */,
 				D85677F62BC1CFF6003D2DB6 /* BuildsWidgetBundle.swift */,
-				D88AFD732BC4964C0060B5CC /* BuildsWidgetEntryView.swift */,
-				D83174392BC48FA50036EB40 /* Provider.swift */,
-				D88AFD752BC4967A0060B5CC /* SingleWorkflowEntry.swift */,
+				D88AFD752BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift */,
+				D83174392BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift */,
 				D80ED1E62BC5EDFB00897EC7 /* SingleWorkflowWidget.swift */,
+				D88AFD732BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift */,
 				D85677FC2BC1CFF7003D2DB6 /* Assets.xcassets */,
 				D80ED1E02BC5DFE600897EC7 /* Intents */,
 				D885484F2BC4A6B20088D28D /* Resources */,
@@ -757,14 +763,16 @@
 			files = (
 				D80ED1E92BC5F14E00897EC7 /* AllWorkflowsTimelineProvider.swift in Sources */,
 				D80ED1E72BC5EDFB00897EC7 /* SingleWorkflowWidget.swift in Sources */,
-				D88AFD762BC4967A0060B5CC /* SingleWorkflowEntry.swift in Sources */,
+				D88AFD762BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift in Sources */,
 				D85677F92BC1CFF6003D2DB6 /* AllWorkflowsWidget.swift in Sources */,
 				D80ED1E52BC5E8E400897EC7 /* WorkflowIdentifier.swift in Sources */,
 				D85677F72BC1CFF6003D2DB6 /* BuildsWidgetBundle.swift in Sources */,
 				D85677FB2BC1CFF6003D2DB6 /* ConfigurationAppIntent.swift in Sources */,
 				D829F8D22BC35E8B00CA10DB /* Rotates.swift in Sources */,
-				D831743A2BC48FA50036EB40 /* Provider.swift in Sources */,
-				D88AFD742BC4964C0060B5CC /* BuildsWidgetEntryView.swift in Sources */,
+				D831743A2BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift in Sources */,
+				D88AFD742BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift in Sources */,
+				D80ED1EB2BC5F3ED00897EC7 /* AllWorkflowsTimelineEntry.swift in Sources */,
+				D80ED1ED2BC5F71F00897EC7 /* AllWorkflowsWidgetEntryView.swift in Sources */,
 				D80ED1E32BC5DFFF00897EC7 /* WorkflowQuery.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

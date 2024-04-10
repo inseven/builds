@@ -19,39 +19,14 @@
 // SOFTWARE.
 
 import WidgetKit
-
-import Interact
+import SwiftUI
 
 import BuildsCore
 
-// TODO: RENAME
-struct Provider: AppIntentTimelineProvider {
+struct SingleWorkflowTimelineEntry: TimelineEntry {
 
-    enum Key: String {
-        case summary
-    }
-
-    var summary: Summary {
-        return (try? defaults.codable(forKey: .summary)) ?? Summary()
-    }
-
-    // TODO: Settings
-    let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
-
-    init() {
-    }
-
-    func placeholder(in context: Context) -> SingleWorkflowEntry {
-        return SingleWorkflowEntry(configuration: ConfigurationAppIntent())
-    }
-
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SingleWorkflowEntry {
-        return SingleWorkflowEntry(summary: summary, configuration: ConfigurationAppIntent())
-    }
-
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SingleWorkflowEntry> {
-        let entry = SingleWorkflowEntry(summary: summary, configuration: configuration)
-        return Timeline(entries: [entry], policy: .atEnd)
-    }
+    let date: Date = Date()
+    let workflowInstance: WorkflowInstance?
+    let configuration: ConfigurationAppIntent
 
 }

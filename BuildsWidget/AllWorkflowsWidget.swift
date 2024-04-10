@@ -31,10 +31,3 @@ struct AllWorkflowsWidget: Widget {
         .configurationDisplayName("All Workflows")
     }
 }
-
-#Preview(as: .systemSmall) {
-    AllWorkflowsWidget()
-} timeline: {
-    SingleWorkflowEntry(date: .now, configuration: .smiley)
-    SingleWorkflowEntry(date: .now, configuration: .starEyes)
-}

@@ -23,27 +23,9 @@ import SwiftUI
 
 import BuildsCore
 
-struct SingleWorkflowEntry: TimelineEntry {
-    let date: Date
+struct AllWorkflowsTimeEntry: TimelineEntry {
+
+    let date: Date = Date()
     let summary: Summary
-    let configuration: ConfigurationAppIntent
-
-    init(date: Date = Date(), summary: Summary = Summary(), configuration: ConfigurationAppIntent) {
-        self.date = date
-        self.summary = summary
-        self.configuration = configuration
-    }
-}
-
-struct AllWorkflowsEntry: TimelineEntry {
-
-    let date: Date
-    let summary: Summary
-
-    // TODO: Unnecessary?
-    init(date: Date = Date(), summary: Summary = Summary()) {
-        self.date = date
-        self.summary = summary
-    }
 
 }
