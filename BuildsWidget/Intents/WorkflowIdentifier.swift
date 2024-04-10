@@ -18,14 +18,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import AppIntents
 
-struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Configuration"
-    static var description = IntentDescription("This is an example widget.")
+struct WorkflowIdentifier: AppEntity {
 
-    // An example configurable parameter.
-    @Parameter(title: "Favorite Emoji", default: "😃")
-    var favoriteEmoji: String
+    var id: String {
+        return "\(repository):\(workflow):\(branch)"
+    }
+
+    let repository: String
+    let workflow: Int
+    let branch: String
+
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Workflow"
+    static var defaultQuery = WorkflowQuery()
+
+    var displayRepresentation: DisplayRepresentation {
+        return DisplayRepresentation(title: "\(repository)",
+                                     subtitle: "\(workflow) \(branch)")
+    }
+
 }

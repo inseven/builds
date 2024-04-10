@@ -18,13 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import SwiftUI
 
 import Interact
 
-import BuildsCore
-
-class Settings {
+public class Settings {
 
     private enum Key: String {
         case accessToken
@@ -34,12 +32,13 @@ class Settings {
         case status
         case summary
         case useInAppBrowser
+        case workflowsCache
     }
 
     @MainActor private let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
     @MainActor private let keychain = KeychainManager<Key>()
 
-    @MainActor var accessToken: String? {
+    @MainActor public var accessToken: String? {
         get {
             return try? keychain.string(forKey: .accessToken)
         }
@@ -48,7 +47,7 @@ class Settings {
         }
     }
 
-    @MainActor var favorites: [WorkflowInstance.ID] {
+    @MainActor public var favorites: [WorkflowInstance.ID] {
         get {
             NSUbiquitousKeyValueStore.default.synchronize()
             guard let data = NSUbiquitousKeyValueStore.default.data(forKey: Key.favorites.rawValue) else {
@@ -76,7 +75,25 @@ class Settings {
         }
     }
 
-    @MainActor var lastUpdate: Date? {
+    @MainActor public var workflowsCache: [WorkflowInstance.ID] {
+        get {
+            do {
+                return try defaults.codable(forKey: .workflowsCache, default: [])
+            } catch {
+                print("Failed to load cached workflows with error \(error).")
+                return []
+            }
+        }
+        set {
+            do {
+                try defaults.set(codable: newValue, forKey: .workflowsCache)
+            } catch {
+                print("Failed to cache workflows with error \(error).")
+            }
+        }
+    }
+
+    @MainActor public var lastUpdate: Date? {
         get {
             return defaults.object(forKey: .lastUpdate) as? Date
         }
@@ -85,13 +102,13 @@ class Settings {
         }
     }
 
-    @MainActor var sceneSettings: SceneModel.Settings {
+    @MainActor public var sceneSettings: SceneSettings {
         didSet {
             try? defaults.set(codable: sceneSettings, forKey: .sceneSettings)
         }
     }
 
-    @MainActor var cachedStatus: [WorkflowInstance.ID: WorkflowResult] {
+    @MainActor public var cachedStatus: [WorkflowInstance.ID: WorkflowResult] {
         get {
             return (try? defaults.codable(forKey: .status)) ?? [:]
         }
@@ -104,7 +121,7 @@ class Settings {
         }
     }
 
-    @MainActor var summary: Summary? {
+    @MainActor public var summary: Summary? {
         get {
             return (try? defaults.codable(forKey: .summary))
         }
@@ -117,7 +134,7 @@ class Settings {
         }
     }
 
-    @MainActor var useInAppBrowser: Bool {
+    @MainActor public var useInAppBrowser: Bool {
         get {
             return defaults.bool(forKey: .useInAppBrowser, default: true)
         }
@@ -126,10 +143,10 @@ class Settings {
         }
     }
 
-    @MainActor init() {
+    @MainActor public init() {
         // We read and cache some of the settings here to ensure we're not hitting user defaults when creating SwiftUI
         // models that shadow these values themselves.
-        sceneSettings = (try? defaults.codable(forKey: .sceneSettings)) ?? SceneModel.Settings()
+        sceneSettings = (try? defaults.codable(forKey: .sceneSettings)) ?? SceneSettings()
     }
 
 }

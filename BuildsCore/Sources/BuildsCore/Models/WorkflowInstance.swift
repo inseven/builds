@@ -128,6 +128,10 @@ public struct WorkflowInstance: Identifiable, Hashable {
         return operationState.summary
     }
 
+    public var systemImage: String {
+        return operationState.systemImage
+    }
+
     public var workflowName: String {
         return result?.workflowRun.name ?? String(id.workflowId)
     }

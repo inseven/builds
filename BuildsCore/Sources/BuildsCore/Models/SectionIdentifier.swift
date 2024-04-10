@@ -20,18 +20,36 @@
 
 import Foundation
 
-extension ConfigurationAppIntent {
+public enum SectionIdentifier: Identifiable, Hashable, Codable {
 
-    static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
-        return intent
+    public var id: String {
+        switch self {
+        case .all:
+            return "all"
+        case .organization(let organization):
+            return "organization-\(organization)"
+        }
     }
 
-    static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
-        return intent
+    public var title: String {
+        switch self {
+        case .all:
+            return "All Workflows"
+        case .organization(let organization):
+            return organization
+        }
     }
+
+    public var symbolName: String {
+        switch self {
+        case .all:
+            return "rectangle.on.rectangle"
+        case .organization:
+            return "building.2"
+        }
+    }
+
+    case all
+    case organization(String)
 
 }

@@ -19,12 +19,35 @@
 // SOFTWARE.
 
 import WidgetKit
-import SwiftUI
 
-@main
-struct BuildsWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
+import Interact
+
+import BuildsCore
+
+struct AllWorkflowsTimelineProvider: TimelineProvider {
+
+    var summary: Summary {
+        get async {
+            let settings = await Settings()
+            let summary = await settings.summary ?? Summary()
+            return summary
+        }
     }
+
+    func placeholder(in context: Context) -> AllWorkflowsTimeEntry {
+        return AllWorkflowsTimeEntry(summary: Summary())
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimeEntry) -> Void) {
+        Task {
+            completion(AllWorkflowsTimeEntry(summary: await summary))
+        }
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
+        Task {
+            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .after(.now + 60)))
+        }
+    }
+
 }

@@ -21,10 +21,13 @@
 import WidgetKit
 import SwiftUI
 
-@main
-struct BuildsWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
+struct AllWorkflowsWidget: Widget {
+    let kind: String = "AllWorkflowsWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: AllWorkflowsTimelineProvider()) { entry in
+            AllWorkflowsWidgetEntryView(entry: entry)
+        }
+        .configurationDisplayName("All Workflows")
     }
 }

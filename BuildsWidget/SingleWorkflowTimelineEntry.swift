@@ -21,30 +21,12 @@
 import WidgetKit
 import SwiftUI
 
-struct BuildsWidgetEntryView : View {
+import BuildsCore
 
-    var entry: Provider.Entry
+struct SingleWorkflowTimelineEntry: TimelineEntry {
 
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Spacer()
-                Image(systemName: entry.summary.status.systemImage)
-                    .imageScale(.large)
-            }
-            Spacer()
-            Text("\(entry.summary.count) Workflows")
-            if let date = entry.summary.date {
-                Text(date, format: .relative(presentation: .numeric))
-                    .font(.subheadline)
-                    .opacity(0.6)
-            } else {
-                Text("-")
-                    .font(.subheadline)
-                    .opacity(0.6)
-            }
-        }
-        .widgetAccentable()
-        .containerBackground(entry.summary.status.color, for: .widget)
-    }
+    let date: Date = Date()
+    let workflowInstance: WorkflowInstance?
+    let configuration: ConfigurationAppIntent
+
 }

@@ -21,10 +21,11 @@
 import WidgetKit
 import SwiftUI
 
-@main
-struct BuildsWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
-    }
+import BuildsCore
+
+struct AllWorkflowsTimeEntry: TimelineEntry {
+
+    let date: Date = Date()
+    let summary: Summary
+
 }

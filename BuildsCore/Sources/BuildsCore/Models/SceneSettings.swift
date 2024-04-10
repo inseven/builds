@@ -18,19 +18,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import SwiftUI
 
-import BuildsCore
+public struct SceneSettings: Codable {
 
-struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let summary: Summary
-    let configuration: ConfigurationAppIntent
+    public enum SheetType: Identifiable, Codable {
 
-    init(date: Date = Date(), summary: Summary = Summary(), configuration: ConfigurationAppIntent) {
-        self.date = date
-        self.summary = summary
-        self.configuration = configuration
+        public var id: String {
+            switch self {
+            case .add:
+                return "add"
+            case .settings:
+                return "settings"
+            case .logIn:
+                return "log-in"
+            case .view(let id):
+                return "view-\(id)"
+            }
+        }
+
+        case add
+        case settings
+        case logIn
+        case view(WorkflowInstance.ID)
+    }
+
+    public var columnVisibility: NavigationSplitViewVisibility = .automatic
+    public var sheet: SheetType?
+    public var previewURL: URL?
+    public var section: SectionIdentifier? = .all
+
+    public init() {
+
     }
 }

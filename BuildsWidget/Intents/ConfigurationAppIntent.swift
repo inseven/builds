@@ -18,38 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import WidgetKit
+import AppIntents
 
-enum SectionIdentifier: Identifiable, Hashable, Codable {
+import Interact
 
-    var id: String {
-        switch self {
-        case .all:
-            return "all"
-        case .organization(let organization):
-            return "organization-\(organization)"
-        }
+import BuildsCore
+
+struct ConfigurationAppIntent: WidgetConfigurationIntent {
+    static var title: LocalizedStringResource = "Configuration"
+    static var description = IntentDescription("This is an example widget.")
+
+    @Parameter(title: "Workflow")
+    var workflow: WorkflowIdentifier
+}
+
+extension ConfigurationAppIntent {
+
+    static var smiley: ConfigurationAppIntent {
+        let intent = ConfigurationAppIntent()
+        return intent
     }
 
-    var title: String {
-        switch self {
-        case .all:
-            return "All Workflows"
-        case .organization(let organization):
-            return organization
-        }
+    static var starEyes: ConfigurationAppIntent {
+        let intent = ConfigurationAppIntent()
+        return intent
     }
-
-    var symbolName: String {
-        switch self {
-        case .all:
-            return "rectangle.on.rectangle"
-        case .organization:
-            return "building.2"
-        }
-    }
-
-    case all
-    case organization(String)
 
 }

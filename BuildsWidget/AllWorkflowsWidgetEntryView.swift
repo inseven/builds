@@ -21,20 +21,30 @@
 import WidgetKit
 import SwiftUI
 
-struct BuildsWidget: Widget {
-    let kind: String = "BuildsWidget"
+struct AllWorkflowsWidgetEntryView : View {
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            BuildsWidgetEntryView(entry: entry)
+    var entry: AllWorkflowsTimelineProvider.Entry
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Spacer()
+                Image(systemName: entry.summary.status.systemImage)
+                    .imageScale(.large)
+            }
+            Spacer()
+            Text("\(entry.summary.count) Workflows")
+            if let date = entry.summary.date {
+                Text(date, format: .relative(presentation: .numeric))
+                    .font(.footnote)
+                    .opacity(0.6)
+            } else {
+                Text("-")
+                    .font(.footnote)
+                    .opacity(0.6)
+            }
         }
-        .configurationDisplayName("All Workflows")
+        .widgetAccentable()
+        .containerBackground(entry.summary.status.color, for: .widget)
     }
-}
-
-#Preview(as: .systemSmall) {
-    BuildsWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
 }
