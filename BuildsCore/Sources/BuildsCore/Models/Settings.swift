@@ -22,40 +22,6 @@ import SwiftUI
 
 import Interact
 
-public struct SceneSettings: Codable {
-
-    public enum SheetType: Identifiable, Codable {
-
-        public var id: String {
-            switch self {
-            case .add:
-                return "add"
-            case .settings:
-                return "settings"
-            case .logIn:
-                return "log-in"
-            case .view(let id):
-                return "view-\(id)"
-            }
-        }
-
-        case add
-        case settings
-        case logIn
-        case view(WorkflowInstance.ID)
-    }
-
-    public var columnVisibility: NavigationSplitViewVisibility = .automatic
-    public var sheet: SheetType?
-    public var previewURL: URL?
-    public var section: SectionIdentifier? = .all
-
-    public init() {
-        
-    }
-}
-
-
 public class Settings {
 
     private enum Key: String {
