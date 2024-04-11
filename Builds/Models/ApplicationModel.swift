@@ -79,12 +79,11 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor @Published private var activeScenes = 0
 
-    // TODO: Make this private.
     // This implementation is intentionally side effecty; if it notices that there's no longer an access token, it will
     // set isSignedIn to false. This is to avoid explicitly polling for authentication changes when we already have a
     // mechanism which has to poll the GitHub API fairly frequently for updates and means we're not hitting the keychain
     // more than we need to.
-    @MainActor var client: GitHubClient {
+    @MainActor private var client: GitHubClient {
         get throws {
             do {
                 guard let accessToken = settings.accessToken else {
@@ -314,6 +313,27 @@ class ApplicationModel: NSObject, ObservableObject {
 
     @MainActor func managePermissions() {
         Application.open(api.permissionsURL)
+    }
+
+    @MainActor func repositoryDetails() async throws -> [RepositoryDetails] {
+        let client = try client
+        let repositories = try await client
+            .repositories()
+            .asyncCompactMap { repository -> RepositoryDetails? in
+                guard !repository.archived else {
+                    return nil
+                }
+                let workflows = try await client.workflows(for: repository)
+                guard workflows.count > 0 else {
+                    return nil
+                }
+                let branches = try await client.branches(for: repository)
+                return RepositoryDetails(repository: repository,
+                                         workflows: workflows,
+                                         branches: branches)
+            }
+            .sorted { $0.repository.full_name.localizedStandardCompare($1.repository.full_name) == .orderedAscending }
+        return repositories
     }
 
     func refresh() async {
