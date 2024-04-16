@@ -31,7 +31,7 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     // TODO: #351: Share workflow result fetching code between widget and app (https://github.com/inseven/builds/issues/351)
     func fetch(id: WorkflowInstance.ID) async throws -> WorkflowInstance? {
-        let configuration = Bundle.main.configuration()
+        let configuration = Configuration.shared
         let api = GitHub(clientId: configuration.clientId,
                          clientSecret: configuration.clientSecret,
                          redirectUri: "x-builds-auth://oauth")

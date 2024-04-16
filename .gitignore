@@ -1,7 +1,6 @@
 .jekyll-cache
 .local
 _site
-configuration-legacy.json
 configuration.json
 
 /docs/release-notes
