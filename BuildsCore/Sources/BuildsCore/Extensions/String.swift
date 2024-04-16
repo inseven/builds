@@ -18,17 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
-import SwiftUI
+import Foundation
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+extension String {
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
-    }
+    public static let singleWorkflowWidget = "SingleWorkflowWidget"
+    public static let allWorkflowsWidget = "AllWorkflowsWidget"
+
 }

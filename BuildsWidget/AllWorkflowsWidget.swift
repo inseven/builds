@@ -22,7 +22,7 @@ import WidgetKit
 import SwiftUI
 
 struct AllWorkflowsWidget: Widget {
-    let kind: String = "AllWorkflowsWidget"
+    let kind: String = .allWorkflowsWidget
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: AllWorkflowsTimelineProvider()) { entry in
