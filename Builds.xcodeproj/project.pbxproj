@@ -60,6 +60,7 @@
 		D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B62B97FD6F00B00F1C /* Dismissable.swift */; };
 		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
 		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
+		D88521062BCEF868009BB84C /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D413FA28047AEE001BA6C0 /* configuration.json */; };
 		D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */; };
 		D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */ = {isa = PBXBuildFile; fileRef = D887C5CF2BA0B33800E46174 /* github-mark.svg */; };
 		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
@@ -77,6 +78,7 @@
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
 		D8B49EE82BB76D4D0076E273 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B49EE72BB76D4D0076E273 /* StatusButton.swift */; };
+		D8C018702BCF06ED001C0F45 /* TimelineReloadPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C0186F2BCF06ED001C0F45 /* TimelineReloadPolicy.swift */; };
 		D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */; };
 		D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */; };
 		D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */; };
@@ -90,9 +92,7 @@
 		D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* WorkflowsView.swift */; };
 		D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */; };
 		D8D413F328045535001BA6C0 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F228045535001BA6C0 /* Action.swift */; };
-		D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F8280479B7001BA6C0 /* Configuration.swift */; };
 		D8D413FB28047AEE001BA6C0 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D413FA28047AEE001BA6C0 /* configuration.json */; };
-		D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413FC28047B85001BA6C0 /* Bundle.swift */; };
 		D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */; };
 		D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */; };
 		D8DA9D852B97004900C17DBC /* WorkflowsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */; };
@@ -219,6 +219,7 @@
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
 		D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJobsList.swift; sourceTree = "<group>"; };
 		D8B49EE72BB76D4D0076E273 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
+		D8C0186F2BCF06ED001C0F45 /* TimelineReloadPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineReloadPolicy.swift; sourceTree = "<group>"; };
 		D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchPickerSheet.swift; sourceTree = "<group>"; };
 		D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleCommands.swift; sourceTree = "<group>"; };
 		D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCommands.swift; sourceTree = "<group>"; };
@@ -232,9 +233,7 @@
 		D8D413EA28044062001BA6C0 /* WorkflowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsView.swift; sourceTree = "<group>"; };
 		D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationModel.swift; sourceTree = "<group>"; };
 		D8D413F228045535001BA6C0 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
-		D8D413F8280479B7001BA6C0 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		D8D413FA28047AEE001BA6C0 /* configuration.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
-		D8D413FC28047B85001BA6C0 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsContentView.swift; sourceTree = "<group>"; };
 		D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsModel.swift; sourceTree = "<group>"; };
 		D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsWindow.swift; sourceTree = "<group>"; };
@@ -332,7 +331,6 @@
 		D8355DD027F674EB0091BAFD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D8D413FC28047B85001BA6C0 /* Bundle.swift */,
 				D86F531D2BB5025100C9A1AF /* Calendar.swift */,
 				D83929DA2BA367DD0022B4A3 /* Collection.swift */,
 				D86F53202BB5026C00C9A1AF /* Date.swift */,
@@ -356,7 +354,7 @@
 				D83174392BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift */,
 				D80ED1E62BC5EDFB00897EC7 /* SingleWorkflowWidget.swift */,
 				D88AFD732BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift */,
-				D85677FC2BC1CFF7003D2DB6 /* Assets.xcassets */,
+				D8C018712BCF070B001C0F45 /* Extensions */,
 				D80ED1E02BC5DFE600897EC7 /* Intents */,
 				D885484F2BC4A6B20088D28D /* Resources */,
 			);
@@ -393,6 +391,7 @@
 		D885484F2BC4A6B20088D28D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D85677FC2BC1CFF7003D2DB6 /* Assets.xcassets */,
 				D81F88A32BC4A5D50038B069 /* Localizable.xcstrings */,
 			);
 			path = Resources;
@@ -431,6 +430,14 @@
 			path = Windows;
 			sourceTree = "<group>";
 		};
+		D8C018712BCF070B001C0F45 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D8C0186F2BCF06ED001C0F45 /* TimelineReloadPolicy.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D8CA0EE82B93D6F200DAE758 /* Commands */ = {
 			isa = PBXGroup;
 			children = (
@@ -447,7 +454,6 @@
 			children = (
 				D8D413F228045535001BA6C0 /* Action.swift */,
 				D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */,
-				D8D413F8280479B7001BA6C0 /* Configuration.swift */,
 				D850F4DA2BAA709800CE1796 /* Confirmable.swift */,
 				D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */,
 				D850F4D62BAA4E7B00CE1796 /* Confirmation.swift */,
@@ -716,6 +722,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D81F88A42BC4A5D50038B069 /* Localizable.xcstrings in Resources */,
+				D88521062BCEF868009BB84C /* configuration.json in Resources */,
 				D85677FD2BC1CFF7003D2DB6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -763,6 +770,7 @@
 				D88AFD762BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift in Sources */,
 				D85677F92BC1CFF6003D2DB6 /* AllWorkflowsWidget.swift in Sources */,
 				D80ED1E52BC5E8E400897EC7 /* WorkflowIdentifierEntity.swift in Sources */,
+				D8C018702BCF06ED001C0F45 /* TimelineReloadPolicy.swift in Sources */,
 				D85677F72BC1CFF6003D2DB6 /* BuildsWidgetBundle.swift in Sources */,
 				D85677FB2BC1CFF6003D2DB6 /* ConfigurationAppIntent.swift in Sources */,
 				D829F8D22BC35E8B00CA10DB /* Rotates.swift in Sources */,
@@ -803,7 +811,6 @@
 				D85383552BB4EBB50013F267 /* SingleWindow.swift in Sources */,
 				D8FEAE0E27F591AE00FDADFA /* MainContentView.swift in Sources */,
 				D89ADE432BBCAC5700F915A1 /* StatusImage.swift in Sources */,
-				D8D413F9280479B7001BA6C0 /* Configuration.swift in Sources */,
 				D8EE7DD12B7F341800A3DCF0 /* Legal.swift in Sources */,
 				D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */,
 				D8DA9D852B97004900C17DBC /* WorkflowsWindow.swift in Sources */,
@@ -822,7 +829,6 @@
 				D8B49EE82BB76D4D0076E273 /* StatusButton.swift in Sources */,
 				D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */,
 				D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */,
-				D8D413FD28047B85001BA6C0 /* Bundle.swift in Sources */,
 				D887C5D82BA0B49600E46174 /* SVGImage.swift in Sources */,
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,

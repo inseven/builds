@@ -18,13 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import WidgetKit
 
-extension Bundle {
+extension TimelineReloadPolicy {
 
-    func configuration() -> Configuration {
-        let url = Bundle.main.url(forResource: "configuration", withExtension: "json")!
-        return try! Configuration(url: url)
+    static var standard: TimelineReloadPolicy {
+        return after(.now + 60)
     }
 
 }

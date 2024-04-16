@@ -29,6 +29,27 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     init() {
     }
 
+    // TODO: Move this into BuildsCore.
+    // TODO: Perhaps the internal async implementation can have two return paths?
+    // TODO: Optional parameter to request a lightweight update.
+    func fetch(id: WorkflowInstance.ID) async throws -> WorkflowInstance? {
+        let configuration = Bundle.main.configuration()
+        let api = GitHub(clientId: configuration.clientId,
+                         clientSecret: configuration.clientSecret,
+                         redirectUri: "x-builds-auth://oauth")
+        guard let accessToken = await Settings().accessToken else {
+            throw BuildsError.authenticationFailure
+        }
+        let client = GitHubClient(api: api, accessToken: accessToken)
+        // TODO: Perhaps this completion should always get called in the case of an error?
+        var workflowInstance: WorkflowInstance? = nil
+        try await client.update(workflows: [id], options: []) { result in
+            workflowInstance = result
+        }
+        return workflowInstance
+    }
+
+    // TODO: This is `workflowInstance`
     func workflowResult(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
@@ -48,10 +69,17 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
-        let workflowResult = await workflowResult(for: configuration.workflow)
-        let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
-                                                configuration: ConfigurationAppIntent())
-        return Timeline(entries: [entry], policy: .after(.now + 60))
+        // TODO: This code is incredibly messy and needs a cleaner lifecycle.
+        do {
+            guard let workflowResult = try await fetch(id: configuration.workflow.identifier) else {
+                return Timeline(entries: [placeholder(in: context)], policy: .standard)
+            }
+            let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
+                                                    configuration: ConfigurationAppIntent())
+            return Timeline(entries: [entry], policy: .standard)
+        } catch {
+            return Timeline(entries: [placeholder(in: context)], policy: .standard)
+        }
     }
 
 }

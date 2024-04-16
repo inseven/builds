@@ -40,10 +40,12 @@ public class Settings {
 
     @MainActor public var accessToken: String? {
         get {
-            return try? keychain.string(forKey: .accessToken)
+            return defaults.string(forKey: .accessToken)
+//            return try? keychain.string(forKey: .accessToken)
         }
         set {
-            try? keychain.set(newValue, forKey: .accessToken)
+            defaults.set(newValue, forKey: .accessToken)
+//            try? keychain.set(newValue, forKey: .accessToken)
         }
     }
 
