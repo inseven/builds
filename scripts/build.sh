@@ -35,7 +35,8 @@ KEYCHAIN_PATH="${TEMPORARY_DIRECTORY}/temporary.keychain"
 IOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-iOS.xcarchive"
 MACOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-macOS.xcarchive"
 ENV_PATH="${ROOT_DIRECTORY}/.env"
-CONFIGURATION_PATH="${ROOT_DIRECTORY}/BuildsCore/Sources/BuildsCore/Resources/configuration.json"
+CONFIGURATION_DIRECTORY="${ROOT_DIRECTORY}/BuildsCore/Sources/BuildsCore/Resources"
+CONFIGURATION_PATH="${CONFIGURATION_DIRECTORY}/configuration.json"
 
 RELEASE_SCRIPT_PATH="${SCRIPTS_DIRECTORY}/release.sh"
 
@@ -124,6 +125,7 @@ function cleanup {
 trap cleanup EXIT
 
 # Create the configuration file.
+mkdir -p "$CONFIGURATION_DIRECTORY"
 echo $APP_CONFIGURATION > "$CONFIGURATION_PATH"
 
 # Determine the version and build number.
