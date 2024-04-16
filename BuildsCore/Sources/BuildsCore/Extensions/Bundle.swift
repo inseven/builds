@@ -20,19 +20,11 @@
 
 import Foundation
 
-struct Configuration: Codable {
+extension Bundle {
 
-    public enum CodingKeys: String, CodingKey {
-        case clientId = "client-id"
-        case clientSecret = "client-secret"
-    }
-
-    let clientId: String
-    let clientSecret: String
-
-    init(url: URL) throws {
-        let data = try Data(contentsOf: url)
-        self = try JSONDecoder().decode(Self.self, from: data)
+    public func configuration() -> Configuration {
+        let url = url(forResource: "configuration", withExtension: "json")!
+        return try! Configuration(url: url)
     }
 
 }

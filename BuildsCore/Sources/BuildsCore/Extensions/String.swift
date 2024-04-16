@@ -20,11 +20,11 @@
 
 import Foundation
 
-extension Bundle {
+extension String {
 
-    func configuration() -> Configuration {
-        let url = Bundle.main.url(forResource: "configuration", withExtension: "json")!
-        return try! Configuration(url: url)
-    }
+    static let sharedKeychainAccessGroup = "QS82QFHKWB.uk.co.jbmorley.builds.apps.appstore"
+
+    public static let singleWorkflowWidget = "SingleWorkflowWidget"
+    public static let allWorkflowsWidget = "AllWorkflowsWidget"
 
 }

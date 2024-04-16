@@ -19,16 +19,11 @@
 // SOFTWARE.
 
 import WidgetKit
-import SwiftUI
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+extension TimelineReloadPolicy {
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
+    static var standard: TimelineReloadPolicy {
+        return after(.now + (5 * 60))
     }
+
 }

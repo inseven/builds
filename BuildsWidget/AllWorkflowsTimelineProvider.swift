@@ -46,7 +46,7 @@ struct AllWorkflowsTimelineProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
         Task {
-            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .after(.now + 60)))
+            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .standard))
         }
     }
 

@@ -18,17 +18,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
-import SwiftUI
+import Foundation
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+public struct Configuration: Codable {
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
+    public enum CodingKeys: String, CodingKey {
+        case clientId = "client-id"
+        case clientSecret = "client-secret"
     }
+
+    public let clientId: String
+    public let clientSecret: String
+
+    public init(url: URL) throws {
+        let data = try Data(contentsOf: url)
+        self = try JSONDecoder().decode(Self.self, from: data)
+    }
+
 }
