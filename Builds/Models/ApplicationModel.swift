@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import BackgroundTasks
 import Combine
 import Network
 import SwiftUI
@@ -26,6 +27,46 @@ import WidgetKit
 import Interact
 
 import BuildsCore
+
+#if os(iOS)
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+
+    let applicationModel = ApplicationModel()
+
+    @MainActor func application(_ application: UIApplication,
+                                didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
+        // Background refresh handler.
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "uk.co.jbmorley.builds.tasks.refresh", using: nil) { task in
+            Task {
+                await self.applicationModel.refresh()
+                task.setTaskCompleted(success: true)
+            }
+        }
+
+        NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification,
+                                               object: nil,
+                                               queue: nil) { [weak self] _ in
+            self?.scheduleBackgroundRefresh()
+        }
+
+        return true
+    }
+
+    func scheduleBackgroundRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: "uk.co.jbmorley.builds.tasks.refresh")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 5 * 60)
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
+        }
+    }
+
+}
+
+#endif
 
 @MainActor
 class ApplicationModel: NSObject, ObservableObject {
