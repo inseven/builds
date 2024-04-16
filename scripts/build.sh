@@ -35,6 +35,8 @@ KEYCHAIN_PATH="${TEMPORARY_DIRECTORY}/temporary.keychain"
 IOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-iOS.xcarchive"
 MACOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-macOS.xcarchive"
 ENV_PATH="${ROOT_DIRECTORY}/.env"
+CONFIGURATION_DIRECTORY="${ROOT_DIRECTORY}/BuildsCore/Sources/BuildsCore/Resources"
+CONFIGURATION_PATH="${CONFIGURATION_DIRECTORY}/configuration.json"
 
 RELEASE_SCRIPT_PATH="${SCRIPTS_DIRECTORY}/release.sh"
 
@@ -117,13 +119,14 @@ function cleanup {
     build-tools delete-keychain "$KEYCHAIN_PATH"
     rm -rf "$TEMPORARY_DIRECTORY"
     rm -rf ~/.appstoreconnect/private_keys
-    rm -rf "${ROOT_DIRECTORY}/configuration.json"
+    rm -rf "$CONFIGURATION_PATH"
 }
 
 trap cleanup EXIT
 
 # Create the configuration file.
-echo $APP_CONFIGURATION > "${ROOT_DIRECTORY}/configuration.json"
+mkdir -p "$CONFIGURATION_DIRECTORY"
+echo $APP_CONFIGURATION > "$CONFIGURATION_PATH"
 
 # Determine the version and build number.
 VERSION_NUMBER=`changes version`

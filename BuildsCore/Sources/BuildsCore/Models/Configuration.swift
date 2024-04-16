@@ -30,6 +30,10 @@ public struct Configuration: Codable {
     public let clientId: String
     public let clientSecret: String
 
+    public static let shared: Configuration = {
+        return try! Configuration(url: Bundle.module.url(forResource: "configuration", withExtension: "json")!)
+    }()
+
     public init(url: URL) throws {
         let data = try Data(contentsOf: url)
         self = try JSONDecoder().decode(Self.self, from: data)

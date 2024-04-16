@@ -60,7 +60,6 @@
 		D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B62B97FD6F00B00F1C /* Dismissable.swift */; };
 		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
 		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
-		D88521062BCEF868009BB84C /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D413FA28047AEE001BA6C0 /* configuration.json */; };
 		D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */; };
 		D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */ = {isa = PBXBuildFile; fileRef = D887C5CF2BA0B33800E46174 /* github-mark.svg */; };
 		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
@@ -92,7 +91,6 @@
 		D8D413EB28044062001BA6C0 /* WorkflowsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EA28044062001BA6C0 /* WorkflowsView.swift */; };
 		D8D413EF280454AA001BA6C0 /* ApplicationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */; };
 		D8D413F328045535001BA6C0 /* Action.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D413F228045535001BA6C0 /* Action.swift */; };
-		D8D413FB28047AEE001BA6C0 /* configuration.json in Resources */ = {isa = PBXBuildFile; fileRef = D8D413FA28047AEE001BA6C0 /* configuration.json */; };
 		D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */; };
 		D8DA9D832B97000F00C17DBC /* WorkflowsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */; };
 		D8DA9D852B97004900C17DBC /* WorkflowsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */; };
@@ -233,7 +231,6 @@
 		D8D413EA28044062001BA6C0 /* WorkflowsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsView.swift; sourceTree = "<group>"; };
 		D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationModel.swift; sourceTree = "<group>"; };
 		D8D413F228045535001BA6C0 /* Action.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Action.swift; sourceTree = "<group>"; };
-		D8D413FA28047AEE001BA6C0 /* configuration.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = configuration.json; sourceTree = "<group>"; };
 		D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsContentView.swift; sourceTree = "<group>"; };
 		D8DA9D822B97000F00C17DBC /* WorkflowsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsModel.swift; sourceTree = "<group>"; };
 		D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsWindow.swift; sourceTree = "<group>"; };
@@ -504,7 +501,6 @@
 			isa = PBXGroup;
 			children = (
 				D820A0A42BC480B000FDD432 /* BuildsCore */,
-				D8D413FA28047AEE001BA6C0 /* configuration.json */,
 				D8FEAE0A27F591AE00FDADFA /* Builds */,
 				D8FEAE1B27F591B200FDADFA /* BuildsTests */,
 				D8FEAE2527F591B200FDADFA /* BuildsUITests */,
@@ -722,7 +718,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D81F88A42BC4A5D50038B069 /* Localizable.xcstrings in Resources */,
-				D88521062BCEF868009BB84C /* configuration.json in Resources */,
 				D85677FD2BC1CFF7003D2DB6 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -732,7 +727,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8FEAE1327F591B200FDADFA /* Preview Assets.xcassets in Resources */,
-				D8D413FB28047AEE001BA6C0 /* configuration.json in Resources */,
 				D883F1B52B97EC9E00B00F1C /* Localizable.xcstrings in Resources */,
 				D82E6E722BAB809300536E15 /* Scenes in Resources */,
 				D87F23762B66006F0085DC12 /* builds-license in Resources */,

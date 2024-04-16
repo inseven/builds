@@ -119,7 +119,7 @@ class ApplicationModel: NSObject, ObservableObject {
     private let networkMonitor = NWPathMonitor()
 
     override init() {
-        let configuration = Bundle.main.configuration()
+        let configuration = Configuration.shared
         self.api = GitHub(clientId: configuration.clientId,
                           clientSecret: configuration.clientSecret,
                           redirectUri: "x-builds-auth://oauth")
