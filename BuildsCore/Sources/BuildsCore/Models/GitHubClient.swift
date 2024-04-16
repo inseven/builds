@@ -24,6 +24,18 @@ import Interact
 
 public class GitHubClient {
 
+    public struct WorkflowFetchOptions: OptionSet {
+        public let rawValue: Int
+
+        public static let jobs = WorkflowFetchOptions(rawValue: 1 << 0)
+
+        public static let all: WorkflowFetchOptions = [.jobs]
+
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+    }
+
     private let api: GitHub
     private let accessToken: String
 
@@ -64,21 +76,9 @@ public class GitHubClient {
         return results
     }
 
-    public struct FetchOptions: OptionSet {
-        public let rawValue: Int
-
-        public static let jobs = FetchOptions(rawValue: 1 << 0)
-
-        public static let all: FetchOptions = [.jobs]
-
-        public init(rawValue: Int) {
-            self.rawValue = rawValue
-        }
-    }
-
     // Top level call that triggers fetching all workflow results.
     public func update(workflows: [WorkflowInstance.ID],
-                       options: FetchOptions = .all,
+                       options: WorkflowFetchOptions = .all,
                        callback: @escaping (WorkflowInstance) -> Void) async throws {
         let repositories = workflows
             .reduce(into: [String: [WorkflowInstance.ID]]()) { partialResult, id in
@@ -94,7 +94,7 @@ public class GitHubClient {
     // Fetch the workflow details from a single repository.
     private func fetchDetails(repository: String,
                               ids: [WorkflowInstance.ID],
-                              options: FetchOptions,
+                              options: WorkflowFetchOptions,
                               callback: @escaping (WorkflowInstance) -> Void) async throws {
 
         // Search for workflow runs for each of our requested ids.
@@ -123,7 +123,7 @@ public class GitHubClient {
     // Fetch the details for individual workflows.
     private func fetchDetails(id: WorkflowInstance.ID,
                               workflowRun: GitHub.WorkflowRun,
-                              options: FetchOptions,
+                              options: WorkflowFetchOptions,
                               callback: @escaping (WorkflowInstance) -> Void) async throws {
 
         var workflowJobs: [GitHub.WorkflowJob] = []

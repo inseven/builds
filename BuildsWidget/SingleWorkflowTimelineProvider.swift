@@ -29,9 +29,7 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     init() {
     }
 
-    // TODO: Move this into BuildsCore.
-    // TODO: Perhaps the internal async implementation can have two return paths?
-    // TODO: Optional parameter to request a lightweight update.
+    // TODO: #351: Share workflow result fetching code between widget and app (https://github.com/inseven/builds/issues/351)
     func fetch(id: WorkflowInstance.ID) async throws -> WorkflowInstance? {
         let configuration = Bundle.main.configuration()
         let api = GitHub(clientId: configuration.clientId,
@@ -41,7 +39,6 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
             throw BuildsError.authenticationFailure
         }
         let client = GitHubClient(api: api, accessToken: accessToken)
-        // TODO: Perhaps this completion should always get called in the case of an error?
         var workflowInstance: WorkflowInstance? = nil
         try await client.update(workflows: [id], options: []) { result in
             workflowInstance = result
@@ -49,8 +46,7 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
         return workflowInstance
     }
 
-    // TODO: This is `workflowInstance`
-    func workflowResult(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
+    func workflowInstance(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
         let workflowResult = results[workflowIdentifier.identifier]
@@ -63,23 +59,18 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     func snapshot(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> SingleWorkflowTimelineEntry {
-        let workflowResult = await workflowResult(for: configuration.workflow)
+        let workflowResult = await workflowInstance(for: configuration.workflow)
         return SingleWorkflowTimelineEntry(workflowInstance: workflowResult, configuration: ConfigurationAppIntent())
     }
 
     func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
-        // TODO: This code is incredibly messy and needs a cleaner lifecycle.
-        do {
-            guard let workflowResult = try await fetch(id: configuration.workflow.identifier) else {
-                return Timeline(entries: [placeholder(in: context)], policy: .standard)
-            }
-            let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
-                                                    configuration: ConfigurationAppIntent())
-            return Timeline(entries: [entry], policy: .standard)
-        } catch {
+        guard let workflowResult = try? await fetch(id: configuration.workflow.identifier) else {
             return Timeline(entries: [placeholder(in: context)], policy: .standard)
         }
+        let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
+                                                configuration: ConfigurationAppIntent())
+        return Timeline(entries: [entry], policy: .standard)
     }
 
 }

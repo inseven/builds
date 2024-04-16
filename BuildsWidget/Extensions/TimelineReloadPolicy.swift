@@ -23,7 +23,7 @@ import WidgetKit
 extension TimelineReloadPolicy {
 
     static var standard: TimelineReloadPolicy {
-        return after(.now + 60)
+        return after(.now + (5 * 60))
     }
 
 }

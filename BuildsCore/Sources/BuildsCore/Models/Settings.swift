@@ -36,16 +36,14 @@ public class Settings {
     }
 
     @MainActor private let defaults = KeyedDefaults<Key>(defaults: UserDefaults(suiteName: "group.uk.co.jbmorley.builds")!)
-    @MainActor private let keychain = KeychainManager<Key>()
+    @MainActor private let keychain = KeychainManager<Key>(accessGroup: .sharedKeychainAccessGroup)
 
     @MainActor public var accessToken: String? {
         get {
-            return defaults.string(forKey: .accessToken)
-//            return try? keychain.string(forKey: .accessToken)
+            return try? keychain.string(forKey: .accessToken)
         }
         set {
-            defaults.set(newValue, forKey: .accessToken)
-//            try? keychain.set(newValue, forKey: .accessToken)
+            try? keychain.set(newValue, forKey: .accessToken, accessPolicy: .afterFirstUnlock)
         }
     }
 

@@ -22,6 +22,8 @@ import Foundation
 
 extension String {
 
+    static let sharedKeychainAccessGroup = "QS82QFHKWB.uk.co.jbmorley.builds.apps.appstore"
+
     public static let singleWorkflowWidget = "SingleWorkflowWidget"
     public static let allWorkflowsWidget = "AllWorkflowsWidget"
 
