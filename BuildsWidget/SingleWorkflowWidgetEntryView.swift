@@ -23,6 +23,8 @@ import SwiftUI
 
 struct SingleWorkflowWidgetEntryView : View {
 
+    @Environment(\.widgetRenderingMode) private var widgetRenderingMode
+
     var entry: SingleWorkflowTimelineProvider.Entry
 
     var body: some View {
@@ -53,7 +55,7 @@ struct SingleWorkflowWidgetEntryView : View {
                 }
             }
         }
-        .widgetAccentable()
+        .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
         .containerBackground(entry.workflowInstance?.statusColor ?? .gray, for: .widget)
     }
 }
