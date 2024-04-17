@@ -61,6 +61,7 @@
 		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
 		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
 		D88534522BD044B80089A812 /* GitHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88534512BD044B80089A812 /* GitHubClient.swift */; };
+		D88534542BD04D440089A812 /* Redacted.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88534532BD04D440089A812 /* Redacted.swift */; };
 		D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */; };
 		D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */ = {isa = PBXBuildFile; fileRef = D887C5CF2BA0B33800E46174 /* github-mark.svg */; };
 		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
@@ -202,6 +203,7 @@
 		D883F1B82B98019400B00F1C /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsSection.swift; sourceTree = "<group>"; };
 		D88534512BD044B80089A812 /* GitHubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubClient.swift; sourceTree = "<group>"; };
+		D88534532BD04D440089A812 /* Redacted.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Redacted.swift; sourceTree = "<group>"; };
 		D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebView.swift; sourceTree = "<group>"; };
 		D887C5CF2BA0B33800E46174 /* github-mark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "github-mark.svg"; sourceTree = "<group>"; };
 		D887C5D72BA0B49600E46174 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
@@ -321,6 +323,7 @@
 				D81251BC2B92A39C001F6E85 /* HandlesAuthentication.swift */,
 				D850F4D82BAA4EA700CE1796 /* PresentsConfirmable.swift */,
 				D87E0D3D2BB4E2EC00E94A59 /* PresentsURL.swift */,
+				D88534532BD04D440089A812 /* Redacted.swift */,
 				D8CA0EF32B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift */,
 				D89ADE442BBCACAC00F915A1 /* Rotates.swift */,
 			);
@@ -846,6 +849,7 @@
 				D891771B2BA5452F0080B20C /* SummaryPanelViewController.swift in Sources */,
 				D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */,
 				D87E0D402BB4E52700E94A59 /* WorkflowInspectorModel.swift in Sources */,
+				D88534542BD04D440089A812 /* Redacted.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
