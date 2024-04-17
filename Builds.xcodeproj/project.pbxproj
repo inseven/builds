@@ -60,6 +60,7 @@
 		D883F1B72B97FD6F00B00F1C /* Dismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B62B97FD6F00B00F1C /* Dismissable.swift */; };
 		D883F1B92B98019400B00F1C /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1B82B98019400B00F1C /* Sidebar.swift */; };
 		D883F1BE2B98087700B00F1C /* WorkflowsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */; };
+		D88534522BD044B80089A812 /* GitHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88534512BD044B80089A812 /* GitHubClient.swift */; };
 		D887C5CC2BA0AAF700E46174 /* SafariWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */; };
 		D887C5D02BA0B33800E46174 /* github-mark.svg in Resources */ = {isa = PBXBuildFile; fileRef = D887C5CF2BA0B33800E46174 /* github-mark.svg */; };
 		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
@@ -200,6 +201,7 @@
 		D883F1B62B97FD6F00B00F1C /* Dismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dismissable.swift; sourceTree = "<group>"; };
 		D883F1B82B98019400B00F1C /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsSection.swift; sourceTree = "<group>"; };
+		D88534512BD044B80089A812 /* GitHubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubClient.swift; sourceTree = "<group>"; };
 		D887C5CB2BA0AAF700E46174 /* SafariWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebView.swift; sourceTree = "<group>"; };
 		D887C5CF2BA0B33800E46174 /* github-mark.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "github-mark.svg"; sourceTree = "<group>"; };
 		D887C5D72BA0B49600E46174 /* SVGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGImage.swift; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 		D8C018712BCF070B001C0F45 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D88534512BD044B80089A812 /* GitHubClient.swift */,
 				D8C0186F2BCF06ED001C0F45 /* TimelineReloadPolicy.swift */,
 			);
 			path = Extensions;
@@ -759,6 +762,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D88534522BD044B80089A812 /* GitHubClient.swift in Sources */,
 				D80ED1E92BC5F14E00897EC7 /* AllWorkflowsTimelineProvider.swift in Sources */,
 				D80ED1E72BC5EDFB00897EC7 /* SingleWorkflowWidget.swift in Sources */,
 				D88AFD762BC4967A0060B5CC /* SingleWorkflowTimelineEntry.swift in Sources */,

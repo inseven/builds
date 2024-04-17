@@ -29,23 +29,6 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     init() {
     }
 
-    // TODO: #351: Share workflow result fetching code between widget and app (https://github.com/inseven/builds/issues/351)
-    func fetch(id: WorkflowInstance.ID) async throws -> WorkflowInstance? {
-        let configuration = Configuration.shared
-        let api = GitHub(clientId: configuration.clientId,
-                         clientSecret: configuration.clientSecret,
-                         redirectUri: "x-builds-auth://oauth")
-        guard let accessToken = await Settings().accessToken else {
-            throw BuildsError.authenticationFailure
-        }
-        let client = GitHubClient(api: api, accessToken: accessToken)
-        var workflowInstance: WorkflowInstance? = nil
-        try await client.update(workflows: [id], options: []) { result in
-            workflowInstance = result
-        }
-        return workflowInstance
-    }
-
     func workflowInstance(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
@@ -65,7 +48,7 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
-        guard let workflowResult = try? await fetch(id: configuration.workflow.identifier) else {
+        guard let workflowResult = try? await GitHubClient.default.fetch(id: configuration.workflow.identifier) else {
             return Timeline(entries: [placeholder(in: context)], policy: .standard)
         }
         let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
