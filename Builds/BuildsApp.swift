@@ -53,7 +53,6 @@ struct BuildsApp: App {
 
         About(Legal.contents)
 
-
         WorkflowsWindow()
             .environmentObject(appDelegate.applicationModel)
 
