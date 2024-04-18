@@ -137,10 +137,18 @@ echo "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" | build-tools import-base64-cert
 echo "$MACOS_DEVELOPER_INSTALLER_CERTIFICATE_PASSWORD" | build-tools import-base64-certificate --password "$KEYCHAIN_PATH" "$MACOS_DEVELOPER_INSTALLER_CERTIFICATE_BASE64"
 
 # Install the provisioning profiles.
+
+# Builds
 build-tools install-provisioning-profile "profiles/Builds_App_Store_Profile.mobileprovision"
 build-tools install-provisioning-profile "profiles/Builds_Mac_App_Store_Profile.provisionprofile"
 build-tools install-provisioning-profile "profiles/Builds_Widget_App_Store_Profile.mobileprovision"
 build-tools install-provisioning-profile "profiles/Builds_Widget_Mac_App_Store_Profile.provisionprofile"
+
+# BuildsPreviewHost
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_App_Store_Profile.mobileprovision"
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Mac_App_Store_Profile.provisionprofile"
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_App_Store_Profile.mobileprovision"
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_Mac_App_Store_Profile.provisionprofile"
 
 # Select a suitable version of Xcode.
 sudo xcode-select --switch "$IOS_XCODE_PATH"
@@ -150,13 +158,15 @@ xcodebuild \
     -project Builds.xcodeproj \
     -scheme BuildsPreviewHost \
     -sdk iphoneos \
-    -config Debug \
+    -config Release \
+    OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
     build
 xcodebuild \
     -project Builds.xcodeproj \
     -scheme BuildsPreviewHost \
     -sdk macosx \
-    -config Debug \
+    -config Release \
+    OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
     build
 
 # Build and archive the iOS project.
