@@ -24,7 +24,7 @@ import BuildsCore
 import WidgetKit
 
 @main
-struct BuildsWidgetHostApp: App {
+struct BuildsPreviewHostApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

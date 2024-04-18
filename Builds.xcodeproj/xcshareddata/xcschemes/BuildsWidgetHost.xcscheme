@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D8E8A9082BD12D2B00E2F282"
-               BuildableName = "BuildsWidgetHost.app"
-               BlueprintName = "BuildsWidgetHost"
+               BuildableName = "BuildsPreviewHost.app"
+               BlueprintName = "BuildsPreviewHost"
                ReferencedContainer = "container:Builds.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8E8A9082BD12D2B00E2F282"
-            BuildableName = "BuildsWidgetHost.app"
-            BlueprintName = "BuildsWidgetHost"
+            BuildableName = "BuildsPreviewHost.app"
+            BlueprintName = "BuildsPreviewHost"
             ReferencedContainer = "container:Builds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D8E8A9082BD12D2B00E2F282"
-            BuildableName = "BuildsWidgetHost.app"
-            BlueprintName = "BuildsWidgetHost"
+            BuildableName = "BuildsPreviewHost.app"
+            BlueprintName = "BuildsPreviewHost"
             ReferencedContainer = "container:Builds.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

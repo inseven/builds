@@ -265,7 +265,7 @@
 		D8DA9D842B97004900C17DBC /* WorkflowsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsWindow.swift; sourceTree = "<group>"; };
 		D8DA9D862B97007200C17DBC /* WorkflowsPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsPicker.swift; sourceTree = "<group>"; };
 		D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsPickerModel.swift; sourceTree = "<group>"; };
-		D8E8A9092BD12D2B00E2F282 /* BuildsWidgetHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuildsWidgetHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8E8A9092BD12D2B00E2F282 /* BuildsPreviewHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuildsPreviewHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E8A90B2BD12D2B00E2F282 /* BuildsWidgetHostApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildsWidgetHostApp.swift; sourceTree = "<group>"; };
 		D8E8A90D2BD12D2B00E2F282 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D8E8A90F2BD12D2B00E2F282 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -517,7 +517,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D8E8A90A2BD12D2B00E2F282 /* BuildsWidgetHost */ = {
+		D8E8A90A2BD12D2B00E2F282 /* BuildsPreviewHost */ = {
 			isa = PBXGroup;
 			children = (
 				D8E8A90B2BD12D2B00E2F282 /* BuildsWidgetHostApp.swift */,
@@ -525,7 +525,7 @@
 				D8E8A90F2BD12D2B00E2F282 /* Assets.xcassets */,
 				D8E8A9112BD12D2B00E2F282 /* Preview Content */,
 			);
-			path = BuildsWidgetHost;
+			path = BuildsPreviewHost;
 			sourceTree = "<group>";
 		};
 		D8E8A9112BD12D2B00E2F282 /* Preview Content */ = {
@@ -576,7 +576,7 @@
 				D8FEAE1B27F591B200FDADFA /* BuildsTests */,
 				D8FEAE2527F591B200FDADFA /* BuildsUITests */,
 				D85677F52BC1CFF6003D2DB6 /* BuildsWidget */,
-				D8E8A90A2BD12D2B00E2F282 /* BuildsWidgetHost */,
+				D8E8A90A2BD12D2B00E2F282 /* BuildsPreviewHost */,
 				D8A1223C2BD131C4002BDF42 /* BuildsWidgetPreviewHost */,
 				D8FEAE0927F591AE00FDADFA /* Products */,
 				D887C5D12BA0B3E600E46174 /* Frameworks */,
@@ -590,7 +590,7 @@
 				D8FEAE1827F591B200FDADFA /* BuildsTests.xctest */,
 				D8FEAE2227F591B200FDADFA /* BuildsUITests.xctest */,
 				D85677F02BC1CFF6003D2DB6 /* BuildsWidgetExtension.appex */,
-				D8E8A9092BD12D2B00E2F282 /* BuildsWidgetHost.app */,
+				D8E8A9092BD12D2B00E2F282 /* BuildsPreviewHost.app */,
 				D8A122392BD131C4002BDF42 /* BuildsWidgetPreviewHostExtension.appex */,
 			);
 			name = Products;
@@ -692,9 +692,9 @@
 			productReference = D8A122392BD131C4002BDF42 /* BuildsWidgetPreviewHostExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		D8E8A9082BD12D2B00E2F282 /* BuildsWidgetHost */ = {
+		D8E8A9082BD12D2B00E2F282 /* BuildsPreviewHost */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D8E8A9162BD12D2B00E2F282 /* Build configuration list for PBXNativeTarget "BuildsWidgetHost" */;
+			buildConfigurationList = D8E8A9162BD12D2B00E2F282 /* Build configuration list for PBXNativeTarget "BuildsPreviewHost" */;
 			buildPhases = (
 				D8E8A9052BD12D2B00E2F282 /* Sources */,
 				D8E8A9062BD12D2B00E2F282 /* Frameworks */,
@@ -706,12 +706,12 @@
 			dependencies = (
 				D8A122492BD131C5002BDF42 /* PBXTargetDependency */,
 			);
-			name = BuildsWidgetHost;
+			name = BuildsPreviewHost;
 			packageProductDependencies = (
 				D8E8A9172BD12D5500E2F282 /* BuildsCore */,
 			);
 			productName = BuildsWidgetHost;
-			productReference = D8E8A9092BD12D2B00E2F282 /* BuildsWidgetHost.app */;
+			productReference = D8E8A9092BD12D2B00E2F282 /* BuildsPreviewHost.app */;
 			productType = "com.apple.product-type.application";
 		};
 		D8FEAE0727F591AE00FDADFA /* Builds */ = {
@@ -831,7 +831,7 @@
 				D8FEAE1727F591B200FDADFA /* BuildsTests */,
 				D8FEAE2127F591B200FDADFA /* BuildsUITests */,
 				D85677EF2BC1CFF6003D2DB6 /* BuildsWidgetExtension */,
-				D8E8A9082BD12D2B00E2F282 /* BuildsWidgetHost */,
+				D8E8A9082BD12D2B00E2F282 /* BuildsPreviewHost */,
 				D8A122382BD131C4002BDF42 /* BuildsWidgetPreviewHostExtension */,
 			);
 		};
@@ -1154,7 +1154,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsWidgetHost.BuildsWidgetPreviewHost;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsPreviewHost.BuildsWidgetPreviewHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1190,7 +1190,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsWidgetHost.BuildsWidgetPreviewHost;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsPreviewHost.BuildsWidgetPreviewHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -1212,7 +1212,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"BuildsWidgetHost/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"BuildsPreviewHost/Preview Content\"";
 				DEVELOPMENT_TEAM = QS82QFHKWB;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -1229,7 +1229,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsWidgetHost;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsPreviewHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -1251,7 +1251,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"BuildsWidgetHost/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"BuildsPreviewHost/Preview Content\"";
 				DEVELOPMENT_TEAM = QS82QFHKWB;
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -1268,7 +1268,7 @@
 				);
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsWidgetHost;
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.jbmorley.BuildsPreviewHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -1590,7 +1590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D8E8A9162BD12D2B00E2F282 /* Build configuration list for PBXNativeTarget "BuildsWidgetHost" */ = {
+		D8E8A9162BD12D2B00E2F282 /* Build configuration list for PBXNativeTarget "BuildsPreviewHost" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8E8A9142BD12D2B00E2F282 /* Debug */,
