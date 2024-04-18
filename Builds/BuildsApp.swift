@@ -26,10 +26,13 @@ import Diligence
 @main
 struct BuildsApp: App {
 
-    var applicationModel: ApplicationModel!
+    #if os(iOS)
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    #else
+    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    #endif
 
     @MainActor init() {
-        applicationModel = ApplicationModel()
     }
 
     var body: some Scene {
@@ -37,14 +40,14 @@ struct BuildsApp: App {
         MainWindow()
             .commands {
                 WorkflowCommands()
-                AccountCommands(applicationModel: applicationModel)
-                LifecycleCommands(applicationModel: applicationModel)
+                AccountCommands(applicationModel: appDelegate.applicationModel)
+                LifecycleCommands(applicationModel: appDelegate.applicationModel)
                 InspectorCommands()
 #if DEBUG
-                SummaryCommands(applicationModel: applicationModel)
+                SummaryCommands(applicationModel: appDelegate.applicationModel)
 #endif
             }
-            .environmentObject(applicationModel)
+            .environmentObject(appDelegate.applicationModel)
 
 #if os(macOS)
 
@@ -52,10 +55,10 @@ struct BuildsApp: App {
 
 
         WorkflowsWindow()
-            .environmentObject(applicationModel)
+            .environmentObject(appDelegate.applicationModel)
 
         InfoWindow()
-            .environmentObject(applicationModel)
+            .environmentObject(appDelegate.applicationModel)
 
 #endif
 
