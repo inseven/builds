@@ -76,6 +76,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor @Published var summary: Summary? = nil {
         didSet {
             settings.summary = summary
+            // TODO: #350: Widget timeline reload should be more fine-grained (https://github.com/inseven/builds/issues/350)
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
@@ -159,7 +160,7 @@ class ApplicationModel: NSObject, ObservableObject {
     private let networkMonitor = NWPathMonitor()
 
     override init() {
-        let configuration = Bundle.main.configuration()
+        let configuration = Configuration.shared
         self.api = GitHub(clientId: configuration.clientId,
                           clientSecret: configuration.clientSecret,
                           redirectUri: "x-builds-auth://oauth")

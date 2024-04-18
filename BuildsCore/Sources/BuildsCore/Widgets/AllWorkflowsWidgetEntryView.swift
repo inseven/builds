@@ -23,6 +23,8 @@ import SwiftUI
 
 struct AllWorkflowsWidgetEntryView : View {
 
+    @Environment(\.widgetRenderingMode) private var widgetRenderingMode
+
     var entry: AllWorkflowsTimelineProvider.Entry
 
     var body: some View {
@@ -31,6 +33,7 @@ struct AllWorkflowsWidgetEntryView : View {
                 Spacer()
                 Image(systemName: entry.summary.status.systemImage)
                     .imageScale(.large)
+                    .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
             Spacer()
             Text("\(entry.summary.count) Workflows")
@@ -39,12 +42,13 @@ struct AllWorkflowsWidgetEntryView : View {
                     .font(.footnote)
                     .opacity(0.6)
             } else {
-                Text("-")
+                Text("5 minutes ago")
                     .font(.footnote)
                     .opacity(0.6)
+                    .redacted(reason: .placeholder)
             }
         }
-        .widgetAccentable()
+        .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
         .containerBackground(entry.summary.status.color, for: .widget)
     }
 }

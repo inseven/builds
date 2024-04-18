@@ -21,14 +21,11 @@
 import WidgetKit
 import SwiftUI
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+import BuildsCore
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
+@main
+struct BuildsPreviewHostWidgetBundle: WidgetBundle {
+    var body: some Widget {
+        DemoWidget()
     }
 }

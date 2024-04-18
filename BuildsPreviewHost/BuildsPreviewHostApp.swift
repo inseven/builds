@@ -18,16 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import SwiftUI
 
-struct AllWorkflowsWidget: Widget {
-    let kind: String = "AllWorkflowsWidget"
+import BuildsCore
+import WidgetKit
 
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: AllWorkflowsTimelineProvider()) { entry in
-            AllWorkflowsWidgetEntryView(entry: entry)
+@main
+struct BuildsPreviewHostApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
         }
-        .configurationDisplayName("All Workflows")
     }
 }

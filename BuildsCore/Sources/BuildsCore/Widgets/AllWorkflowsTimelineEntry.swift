@@ -18,21 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import WidgetKit
+import SwiftUI
 
-struct Configuration: Codable {
+public struct AllWorkflowsTimelineEntry: TimelineEntry {
 
-    public enum CodingKeys: String, CodingKey {
-        case clientId = "client-id"
-        case clientSecret = "client-secret"
-    }
+    public let date: Date = Date()
+    public let summary: Summary
 
-    let clientId: String
-    let clientSecret: String
-
-    init(url: URL) throws {
-        let data = try Data(contentsOf: url)
-        self = try JSONDecoder().decode(Self.self, from: data)
+    public init(summary: Summary) {
+        self.summary = summary
     }
 
 }

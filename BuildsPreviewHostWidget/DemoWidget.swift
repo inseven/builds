@@ -21,14 +21,50 @@
 import WidgetKit
 import SwiftUI
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+struct DemoProvider: TimelineProvider {
+
+    func placeholder(in context: Context) -> DemoEntry {
+        DemoEntry()
+    }
+
+    func getSnapshot(in context: Context, completion: @escaping (DemoEntry) -> Void) {
+        completion(DemoEntry())
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<DemoEntry>) -> Void) {
+        completion(Timeline(entries: [DemoEntry()], policy: .atEnd))
+    }
+
+}
+
+struct DemoEntry: TimelineEntry {
+    let date: Date = .now
+}
+
+struct DemoWidgetEntryView : View {
+    var entry: DemoProvider.Entry
+
+    var body: some View {
+        VStack {
+            Text("🌺")
+                .font(.system(size: 40))
+        }
+    }
+}
+
+struct DemoWidget: Widget {
+    let kind: String = "DemoWidget"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
+        StaticConfiguration(kind: kind, provider: DemoProvider()) { entry in
+            DemoWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
     }
+}
+
+#Preview(as: .systemSmall) {
+    DemoWidget()
+} timeline: {
+    DemoEntry()
 }

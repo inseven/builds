@@ -35,6 +35,8 @@ KEYCHAIN_PATH="${TEMPORARY_DIRECTORY}/temporary.keychain"
 IOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-iOS.xcarchive"
 MACOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-macOS.xcarchive"
 ENV_PATH="${ROOT_DIRECTORY}/.env"
+CONFIGURATION_DIRECTORY="${ROOT_DIRECTORY}/BuildsCore/Sources/BuildsCore/Resources"
+CONFIGURATION_PATH="${CONFIGURATION_DIRECTORY}/configuration.json"
 
 RELEASE_SCRIPT_PATH="${SCRIPTS_DIRECTORY}/release.sh"
 
@@ -117,13 +119,14 @@ function cleanup {
     build-tools delete-keychain "$KEYCHAIN_PATH"
     rm -rf "$TEMPORARY_DIRECTORY"
     rm -rf ~/.appstoreconnect/private_keys
-    rm -rf "${ROOT_DIRECTORY}/configuration.json"
+    rm -rf "$CONFIGURATION_PATH"
 }
 
 trap cleanup EXIT
 
 # Create the configuration file.
-echo $APP_CONFIGURATION > "${ROOT_DIRECTORY}/configuration.json"
+mkdir -p "$CONFIGURATION_DIRECTORY"
+echo $APP_CONFIGURATION > "$CONFIGURATION_PATH"
 
 # Determine the version and build number.
 VERSION_NUMBER=`changes version`
@@ -134,13 +137,39 @@ echo "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" | build-tools import-base64-cert
 echo "$MACOS_DEVELOPER_INSTALLER_CERTIFICATE_PASSWORD" | build-tools import-base64-certificate --password "$KEYCHAIN_PATH" "$MACOS_DEVELOPER_INSTALLER_CERTIFICATE_BASE64"
 
 # Install the provisioning profiles.
+
+# Builds
 build-tools install-provisioning-profile "profiles/Builds_App_Store_Profile.mobileprovision"
 build-tools install-provisioning-profile "profiles/Builds_Mac_App_Store_Profile.provisionprofile"
 build-tools install-provisioning-profile "profiles/Builds_Widget_App_Store_Profile.mobileprovision"
 build-tools install-provisioning-profile "profiles/Builds_Widget_Mac_App_Store_Profile.provisionprofile"
 
-# Build and archive the iOS project.
+# BuildsPreviewHost
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_App_Store_Profile.mobileprovision"
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Mac_App_Store_Profile.provisionprofile"
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_App_Store_Profile.mobileprovision"
+build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_Mac_App_Store_Profile.provisionprofile"
+
+# Select a suitable version of Xcode.
 sudo xcode-select --switch "$IOS_XCODE_PATH"
+
+# Smoke test builds of the SwiftUI preview targets.
+xcodebuild \
+    -project Builds.xcodeproj \
+    -scheme BuildsPreviewHost \
+    -sdk iphoneos \
+    -config Release \
+    OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
+    build
+xcodebuild \
+    -project Builds.xcodeproj \
+    -scheme BuildsPreviewHost \
+    -sdk macosx \
+    -config Release \
+    OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
+    build
+
+# Build and archive the iOS project.
 xcodebuild \
     -project Builds.xcodeproj \
     -scheme "Builds" \

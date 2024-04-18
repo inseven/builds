@@ -18,13 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Foundation
+import WidgetKit
+import SwiftUI
 
-extension Bundle {
+public struct AllWorkflowsWidget: Widget {
+    public let kind: String = .allWorkflowsWidget
 
-    func configuration() -> Configuration {
-        let url = Bundle.main.url(forResource: "configuration", withExtension: "json")!
-        return try! Configuration(url: url)
+    public init() {
+        
     }
 
+    public var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: AllWorkflowsTimelineProvider()) { entry in
+            AllWorkflowsWidgetEntryView(entry: entry)
+        }
+        .configurationDisplayName("All Workflows")
+    }
 }

@@ -18,14 +18,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import SwiftUI
 
 import BuildsCore
 
-struct AllWorkflowsTimeEntry: TimelineEntry {
+struct ContentView: View {
+    var body: some View {
+        Text("🌸")
+            .font(.system(size: 40))
+        .padding()
+    }
+}
 
-    let date: Date = Date()
-    let summary: Summary
-
+#Preview {
+    ContentView()
 }

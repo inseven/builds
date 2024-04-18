@@ -18,17 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import SwiftUI
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+fileprivate struct Redacted: ViewModifier {
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
+    private let reason: RedactionReasons?
+
+    init(reason: RedactionReasons?) {
+        self.reason = reason
     }
+
+    func body(content: Content) -> some View {
+        if let reason {
+            content
+                .redacted(reason: reason)
+        } else {
+            content
+        }
+    }
+
+}
+
+extension View {
+
+    public func redacted(reason: RedactionReasons? = .placeholder) -> some View {
+        return modifier(Redacted(reason: reason))
+    }
+
 }

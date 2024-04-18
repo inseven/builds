@@ -25,6 +25,9 @@ let package = Package(
             name: "BuildsCore",
             dependencies: [
                 .product(name: "Interact", package: "interact"),
+            ],
+            resources: [
+                .process("Resources")
             ]),
         .testTarget(
             name: "BuildsCoreTests",

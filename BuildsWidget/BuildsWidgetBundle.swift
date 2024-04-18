@@ -21,6 +21,8 @@
 import WidgetKit
 import SwiftUI
 
+import BuildsCore
+
 @main
 struct BuildsWidgetBundle: WidgetBundle {
     var body: some Widget {

@@ -18,36 +18,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
+import Foundation
 
-import Interact
+public struct Configuration: Codable {
 
-import BuildsCore
-
-struct AllWorkflowsTimelineProvider: TimelineProvider {
-
-    var summary: Summary {
-        get async {
-            let settings = await Settings()
-            let summary = await settings.summary ?? Summary()
-            return summary
-        }
+    public enum CodingKeys: String, CodingKey {
+        case clientId = "client-id"
+        case clientSecret = "client-secret"
     }
 
-    func placeholder(in context: Context) -> AllWorkflowsTimeEntry {
-        return AllWorkflowsTimeEntry(summary: Summary())
-    }
+    public let clientId: String
+    public let clientSecret: String
 
-    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimeEntry) -> Void) {
-        Task {
-            completion(AllWorkflowsTimeEntry(summary: await summary))
-        }
-    }
+    public static let shared: Configuration = {
+        return try! Configuration(url: Bundle.module.url(forResource: "configuration", withExtension: "json")!)
+    }()
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
-        Task {
-            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .after(.now + 60)))
-        }
+    public init(url: URL) throws {
+        let data = try Data(contentsOf: url)
+        self = try JSONDecoder().decode(Self.self, from: data)
     }
 
 }
