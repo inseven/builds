@@ -32,19 +32,19 @@ struct AllWorkflowsTimelineProvider: TimelineProvider {
         }
     }
 
-    func placeholder(in context: Context) -> AllWorkflowsTimeEntry {
-        return AllWorkflowsTimeEntry(summary: Summary())
+    func placeholder(in context: Context) -> AllWorkflowsTimelineEntry {
+        return AllWorkflowsTimelineEntry(summary: Summary())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimeEntry) -> Void) {
+    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimelineEntry) -> Void) {
         Task {
-            completion(AllWorkflowsTimeEntry(summary: await summary))
+            completion(AllWorkflowsTimelineEntry(summary: await summary))
         }
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimelineEntry>) -> Void) {
         Task {
-            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .standard))
+            completion(Timeline(entries: [AllWorkflowsTimelineEntry(summary: await summary)], policy: .standard))
         }
     }
 

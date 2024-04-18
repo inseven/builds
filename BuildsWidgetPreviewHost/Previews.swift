@@ -25,10 +25,10 @@ import BuildsCore
 #Preview(as: .systemSmall) {
     AllWorkflowsWidget()
 } timeline: {
-    AllWorkflowsTimeEntry(summary: Summary())
-    AllWorkflowsTimeEntry(summary: Summary(status: .unknown, count: 12, date: .now))
-    AllWorkflowsTimeEntry(summary: Summary(status: .inProgress, count: 12, date: .now))
-    AllWorkflowsTimeEntry(summary: Summary(status: .success, count: 12, date: .now))
-    AllWorkflowsTimeEntry(summary: Summary(status: .skipped, count: 12, date: .now))
-    AllWorkflowsTimeEntry(summary: Summary(status: .failure, count: 34, date: .now.addingTimeInterval(-100)))
+    AllWorkflowsTimelineEntry(summary: Summary())
+    AllWorkflowsTimelineEntry(summary: Summary(status: .unknown, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .inProgress, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .success, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .skipped, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .failure, count: 34, date: .now.addingTimeInterval(-100)))
 }

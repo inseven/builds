@@ -21,9 +21,7 @@
 import WidgetKit
 import SwiftUI
 
-import BuildsCore
-
-public struct AllWorkflowsTimeEntry: TimelineEntry {
+public struct AllWorkflowsTimelineEntry: TimelineEntry {
 
     public let date: Date = Date()
     public let summary: Summary
