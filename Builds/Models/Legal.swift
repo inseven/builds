@@ -42,6 +42,7 @@ public struct Legal {
             Credit("Lukas Fittl")
             Credit("Mike Rhodes")
             Credit("Pavlos Vinieratos")
+            Credit("Sara Frederixon")
             Credit("Sarah Barbour")
         }
     } licenses: {
