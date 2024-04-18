@@ -33,7 +33,23 @@ struct AnnotationList: View {
     var body: some View {
         let annotations = result.annotations
         ForEach(annotations) { annotation in
-            HStack(alignment: .firstTextBaseline) {
+            Label {
+                HStack(alignment: .firstTextBaseline) {
+                    VStack(alignment: .leading, spacing: LayoutMetrics.interItemSpacing) {
+                        if let job = result.job(for: annotation) {
+                            Text(job.name)
+                                .fontWeight(.bold)
+                        }
+                        if !annotation.annotation.title.isEmpty {
+                            Text(annotation.annotation.title)
+                        }
+                        Text(annotation.annotation.message)
+                            .lineLimit(10)
+                            .foregroundColor(.secondary)
+                            .monospaced()
+                    }
+                }
+            } icon: {
                 switch annotation.annotation.annotation_level {
                 case .failure:
                     Image(systemName: "exclamationmark.octagon.fill")
@@ -41,19 +57,6 @@ struct AnnotationList: View {
                 case .warning:
                     Image(systemName: "exclamationmark.triangle.fill")
                         .symbolRenderingMode(.multicolor)
-                }
-                VStack(alignment: .leading, spacing: LayoutMetrics.interItemSpacing) {
-                    if let job = result.job(for: annotation) {
-                        Text(job.name)
-                            .fontWeight(.bold)
-                    }
-                    if !annotation.annotation.title.isEmpty {
-                        Text(annotation.annotation.title)
-                    }
-                    Text(annotation.annotation.message)
-                        .lineLimit(10)
-                        .foregroundColor(.secondary)
-                        .monospaced()
                 }
             }
         }

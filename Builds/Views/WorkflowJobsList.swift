@@ -48,9 +48,6 @@ struct WorkflowJobList: View {
     func background(_ color: Color) -> some View {
         Circle()
             .fill(color)
-#if os(macOS)
-            .strokeBorder(.foreground.opacity(0.2), style: .init(lineWidth: 1.0))
-#endif
     }
 
     var body: some View {
@@ -58,18 +55,21 @@ struct WorkflowJobList: View {
             Button {
                 presentURL(job.html_url)
             } label: {
-                HStack {
+                Label {
+                    HStack {
+                        Text(job.name)
+                        Spacer()
+                        if let startDate = job.started_at {
+                            DurationView(startDate: startDate, endDate: job.completed_at)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                } icon: {
                     StatusImage(operationState: job.operationState, size: LayoutMetrics.statusImageSize)
                         .foregroundStyle(.white)
                         .fontWeight(.heavy)
                         .padding(LayoutMetrics.statusImagePadding)
                         .background(background(job.color))
-                    Text(job.name)
-                    Spacer()
-                    if let startDate = job.started_at {
-                        DurationView(startDate: startDate, endDate: job.completed_at)
-                            .foregroundColor(.secondary)
-                    }
                 }
             }
             .help(job.operationState.name)
