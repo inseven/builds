@@ -18,35 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import SwiftUI
 
-struct AllWorkflowsWidgetEntryView : View {
+fileprivate struct Redacted: ViewModifier {
 
-    @Environment(\.widgetRenderingMode) private var widgetRenderingMode
+    private let reason: RedactionReasons?
 
-    var entry: AllWorkflowsTimelineProvider.Entry
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Spacer()
-                Image(systemName: entry.summary.status.systemImage)
-                    .imageScale(.large)
-            }
-            Spacer()
-            Text("\(entry.summary.count) Workflows")
-            if let date = entry.summary.date {
-                Text(date, format: .relative(presentation: .numeric))
-                    .font(.footnote)
-                    .opacity(0.6)
-            } else {
-                Text("-")
-                    .font(.footnote)
-                    .opacity(0.6)
-            }
-        }
-        .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
-        .containerBackground(entry.summary.status.color, for: .widget)
+    init(reason: RedactionReasons?) {
+        self.reason = reason
     }
+
+    func body(content: Content) -> some View {
+        if let reason {
+            content
+                .redacted(reason: reason)
+        } else {
+            content
+        }
+    }
+
+}
+
+extension View {
+
+    public func redacted(reason: RedactionReasons? = .placeholder) -> some View {
+        return modifier(Redacted(reason: reason))
+    }
+
 }

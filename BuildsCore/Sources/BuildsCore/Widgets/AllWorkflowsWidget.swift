@@ -18,31 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import WidgetKit
 import SwiftUI
 
-fileprivate struct Redacted: ViewModifier {
+public struct AllWorkflowsWidget: Widget {
+    public let kind: String = .allWorkflowsWidget
 
-    private let reason: RedactionReasons?
-
-    init(reason: RedactionReasons?) {
-        self.reason = reason
+    public init() {
+        
     }
 
-    func body(content: Content) -> some View {
-        if let reason {
-            content
-                .redacted(reason: reason)
-        } else {
-            content
+    public var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: AllWorkflowsTimelineProvider()) { entry in
+            AllWorkflowsWidgetEntryView(entry: entry)
         }
+        .configurationDisplayName("All Workflows")
     }
-
-}
-
-extension View {
-
-    func redacted(reason: RedactionReasons? = .placeholder) -> some View {
-        return modifier(Redacted(reason: reason))
-    }
-
 }

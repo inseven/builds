@@ -19,13 +19,11 @@
 // SOFTWARE.
 
 import WidgetKit
-import SwiftUI
 
-import BuildsCore
+extension TimelineReloadPolicy {
 
-struct AllWorkflowsTimeEntry: TimelineEntry {
-
-    let date: Date = Date()
-    let summary: Summary
+    public static var standard: TimelineReloadPolicy {
+        return after(.now + (5 * 60))
+    }
 
 }

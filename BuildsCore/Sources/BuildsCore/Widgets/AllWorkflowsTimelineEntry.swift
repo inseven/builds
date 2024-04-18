@@ -19,35 +19,17 @@
 // SOFTWARE.
 
 import WidgetKit
-
-import Interact
+import SwiftUI
 
 import BuildsCore
 
-struct AllWorkflowsTimelineProvider: TimelineProvider {
+public struct AllWorkflowsTimeEntry: TimelineEntry {
 
-    var summary: Summary {
-        get async {
-            let settings = await Settings()
-            let summary = await settings.summary ?? Summary()
-            return summary
-        }
-    }
+    public let date: Date = Date()
+    public let summary: Summary
 
-    func placeholder(in context: Context) -> AllWorkflowsTimeEntry {
-        return AllWorkflowsTimeEntry(summary: Summary())
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimeEntry) -> Void) {
-        Task {
-            completion(AllWorkflowsTimeEntry(summary: await summary))
-        }
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
-        Task {
-            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .standard))
-        }
+    public init(summary: Summary) {
+        self.summary = summary
     }
 
 }
