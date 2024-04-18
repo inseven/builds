@@ -21,28 +21,28 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: TimelineProvider {
+struct DemoProvider: TimelineProvider {
 
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry()
+    func placeholder(in context: Context) -> DemoEntry {
+        DemoEntry()
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> Void) {
-        completion(SimpleEntry())
+    func getSnapshot(in context: Context, completion: @escaping (DemoEntry) -> Void) {
+        completion(DemoEntry())
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> Void) {
-        completion(Timeline(entries: [SimpleEntry()], policy: .atEnd))
+    func getTimeline(in context: Context, completion: @escaping (Timeline<DemoEntry>) -> Void) {
+        completion(Timeline(entries: [DemoEntry()], policy: .atEnd))
     }
 
 }
 
-struct SimpleEntry: TimelineEntry {
+struct DemoEntry: TimelineEntry {
     let date: Date = .now
 }
 
-struct BuildsWidgetPreviewHostEntryView : View {
-    var entry: Provider.Entry
+struct DemoWidgetEntryView : View {
+    var entry: DemoProvider.Entry
 
     var body: some View {
         VStack {
@@ -52,19 +52,19 @@ struct BuildsWidgetPreviewHostEntryView : View {
     }
 }
 
-struct BuildsWidgetPreviewHost: Widget {
-    let kind: String = "BuildsWidgetPreviewHost"
+struct DemoWidget: Widget {
+    let kind: String = "DemoWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            BuildsWidgetPreviewHostEntryView(entry: entry)
+        StaticConfiguration(kind: kind, provider: DemoProvider()) { entry in
+            DemoWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
     }
 }
 
 #Preview(as: .systemSmall) {
-    BuildsWidgetPreviewHost()
+    DemoWidget()
 } timeline: {
-    SimpleEntry()
+    DemoEntry()
 }

@@ -24,8 +24,8 @@ import SwiftUI
 import BuildsCore
 
 @main
-struct BuildsWidgetPreviewHostBundle: WidgetBundle {
+struct BuildsPreviewHostWidgetBundle: WidgetBundle {
     var body: some Widget {
-        BuildsWidgetPreviewHost()
+        DemoWidget()
     }
 }
