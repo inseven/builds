@@ -19,11 +19,19 @@
 // SOFTWARE.
 
 import WidgetKit
+import SwiftUI
 
-extension TimelineReloadPolicy {
+public struct AllWorkflowsWidget: Widget {
+    public let kind: String = .allWorkflowsWidget
 
-    static var standard: TimelineReloadPolicy {
-        return after(.now + (5 * 60))
+    public init() {
+        
     }
 
+    public var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: AllWorkflowsTimelineProvider()) { entry in
+            AllWorkflowsWidgetEntryView(entry: entry)
+        }
+        .configurationDisplayName("All Workflows")
+    }
 }

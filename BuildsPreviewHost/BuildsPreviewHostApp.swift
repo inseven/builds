@@ -18,36 +18,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
-
-import Interact
+import SwiftUI
 
 import BuildsCore
+import WidgetKit
 
-struct AllWorkflowsTimelineProvider: TimelineProvider {
-
-    var summary: Summary {
-        get async {
-            let settings = await Settings()
-            let summary = await settings.summary ?? Summary()
-            return summary
+@main
+struct BuildsPreviewHostApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
         }
     }
-
-    func placeholder(in context: Context) -> AllWorkflowsTimeEntry {
-        return AllWorkflowsTimeEntry(summary: Summary())
-    }
-
-    func getSnapshot(in context: Context, completion: @escaping (AllWorkflowsTimeEntry) -> Void) {
-        Task {
-            completion(AllWorkflowsTimeEntry(summary: await summary))
-        }
-    }
-
-    func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimeEntry>) -> Void) {
-        Task {
-            completion(Timeline(entries: [AllWorkflowsTimeEntry(summary: await summary)], policy: .standard))
-        }
-    }
-
 }

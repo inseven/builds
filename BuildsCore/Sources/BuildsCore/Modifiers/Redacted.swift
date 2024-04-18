@@ -18,15 +18,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
 import SwiftUI
 
-import BuildsCore
+fileprivate struct Redacted: ViewModifier {
 
-@main
-struct BuildsWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
+    private let reason: RedactionReasons?
+
+    init(reason: RedactionReasons?) {
+        self.reason = reason
     }
+
+    func body(content: Content) -> some View {
+        if let reason {
+            content
+                .redacted(reason: reason)
+        } else {
+            content
+        }
+    }
+
+}
+
+extension View {
+
+    public func redacted(reason: RedactionReasons? = .placeholder) -> some View {
+        return modifier(Redacted(reason: reason))
+    }
+
 }

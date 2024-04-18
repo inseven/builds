@@ -19,34 +19,36 @@
 // SOFTWARE.
 
 import WidgetKit
+import SwiftUI
 
-import Interact
+struct AllWorkflowsWidgetEntryView : View {
 
-import BuildsCore
+    @Environment(\.widgetRenderingMode) private var widgetRenderingMode
 
-// TODO: #351: Share workflow result fetching code between widget and app (https://github.com/inseven/builds/issues/351)
-extension GitHubClient {
+    var entry: AllWorkflowsTimelineProvider.Entry
 
-    @MainActor static var `default`: GitHubClient {
-        get throws {
-            let configuration = Configuration.shared
-            let api = GitHub(clientId: configuration.clientId,
-                             clientSecret: configuration.clientSecret,
-                             redirectUri: "x-builds-auth://oauth")
-            guard let accessToken = Settings().accessToken else {
-                throw BuildsError.authenticationFailure
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Spacer()
+                Image(systemName: entry.summary.status.systemImage)
+                    .imageScale(.large)
+                    .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
-            return GitHubClient(api: api, accessToken: accessToken)
+            Spacer()
+            Text("\(entry.summary.count) Workflows")
+            if let date = entry.summary.date {
+                Text(date, format: .relative(presentation: .numeric))
+                    .font(.footnote)
+                    .opacity(0.6)
+            } else {
+                Text("5 minutes ago")
+                    .font(.footnote)
+                    .opacity(0.6)
+                    .redacted(reason: .placeholder)
+            }
         }
+        .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
+        .containerBackground(entry.summary.status.color, for: .widget)
     }
-
-    func fetch(id: WorkflowInstance.ID) async throws -> WorkflowInstance? {
-        let client = try await GitHubClient.default
-        var workflowInstance: WorkflowInstance? = nil
-        try await client.update(workflows: [id], options: []) { result in
-            workflowInstance = result
-        }
-        return workflowInstance
-    }
-
 }

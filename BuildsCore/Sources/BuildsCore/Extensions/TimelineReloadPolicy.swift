@@ -19,14 +19,11 @@
 // SOFTWARE.
 
 import WidgetKit
-import SwiftUI
 
-import BuildsCore
+extension TimelineReloadPolicy {
 
-@main
-struct BuildsWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
+    public static var standard: TimelineReloadPolicy {
+        return after(.now + (5 * 60))
     }
+
 }

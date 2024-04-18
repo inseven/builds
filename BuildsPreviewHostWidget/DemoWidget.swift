@@ -21,32 +21,50 @@
 import WidgetKit
 import SwiftUI
 
-struct AllWorkflowsWidgetEntryView : View {
+struct DemoProvider: TimelineProvider {
 
-    @Environment(\.widgetRenderingMode) private var widgetRenderingMode
+    func placeholder(in context: Context) -> DemoEntry {
+        DemoEntry()
+    }
 
-    var entry: AllWorkflowsTimelineProvider.Entry
+    func getSnapshot(in context: Context, completion: @escaping (DemoEntry) -> Void) {
+        completion(DemoEntry())
+    }
+
+    func getTimeline(in context: Context, completion: @escaping (Timeline<DemoEntry>) -> Void) {
+        completion(Timeline(entries: [DemoEntry()], policy: .atEnd))
+    }
+
+}
+
+struct DemoEntry: TimelineEntry {
+    let date: Date = .now
+}
+
+struct DemoWidgetEntryView : View {
+    var entry: DemoProvider.Entry
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Spacer()
-                Image(systemName: entry.summary.status.systemImage)
-                    .imageScale(.large)
-            }
-            Spacer()
-            Text("\(entry.summary.count) Workflows")
-            if let date = entry.summary.date {
-                Text(date, format: .relative(presentation: .numeric))
-                    .font(.footnote)
-                    .opacity(0.6)
-            } else {
-                Text("-")
-                    .font(.footnote)
-                    .opacity(0.6)
-            }
+        VStack {
+            Text("🌺")
+                .font(.system(size: 40))
         }
-        .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
-        .containerBackground(entry.summary.status.color, for: .widget)
     }
+}
+
+struct DemoWidget: Widget {
+    let kind: String = "DemoWidget"
+
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: DemoProvider()) { entry in
+            DemoWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+    }
+}
+
+#Preview(as: .systemSmall) {
+    DemoWidget()
+} timeline: {
+    DemoEntry()
 }

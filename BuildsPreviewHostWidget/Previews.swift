@@ -19,14 +19,16 @@
 // SOFTWARE.
 
 import WidgetKit
-import SwiftUI
 
 import BuildsCore
 
-@main
-struct BuildsWidgetBundle: WidgetBundle {
-    var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
-    }
+#Preview(as: .systemSmall) {
+    AllWorkflowsWidget()
+} timeline: {
+    AllWorkflowsTimelineEntry(summary: Summary())
+    AllWorkflowsTimelineEntry(summary: Summary(status: .unknown, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .inProgress, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .success, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .skipped, count: 12, date: .now))
+    AllWorkflowsTimelineEntry(summary: Summary(status: .failure, count: 34, date: .now.addingTimeInterval(-100)))
 }

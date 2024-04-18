@@ -24,9 +24,8 @@ import SwiftUI
 import BuildsCore
 
 @main
-struct BuildsWidgetBundle: WidgetBundle {
+struct BuildsPreviewHostWidgetBundle: WidgetBundle {
     var body: some Widget {
-        AllWorkflowsWidget()
-        SingleWorkflowWidget()
+        DemoWidget()
     }
 }

@@ -21,6 +21,7 @@
       }
     },
     "%lld Workflows" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -41,9 +42,6 @@
           }
         }
       }
-    },
-    "All Workflows" : {
-
     },
     "Configuration" : {
 
