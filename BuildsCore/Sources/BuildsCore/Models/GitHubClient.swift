@@ -36,6 +36,19 @@ public class GitHubClient {
         }
     }
 
+    @MainActor public static var `default`: GitHubClient {
+        get throws {
+            let configuration = Configuration.shared
+            let api = GitHub(clientId: configuration.clientId,
+                             clientSecret: configuration.clientSecret,
+                             redirectUri: "x-builds-auth://oauth")
+            guard let accessToken = Settings().accessToken else {
+                throw BuildsError.authenticationFailure
+            }
+            return GitHubClient(api: api, accessToken: accessToken)
+        }
+    }
+
     private let api: GitHub
     private let accessToken: String
 
@@ -74,6 +87,16 @@ public class GitHubClient {
             }
         }
         return results
+    }
+
+    // Convenience for fetching results for a single workflow.
+    public func fetch(id: WorkflowInstance.ID) async throws -> WorkflowInstance? {
+        let client = try await GitHubClient.default
+        var workflowInstance: WorkflowInstance? = nil
+        try await client.update(workflows: [id], options: []) { result in
+            workflowInstance = result
+        }
+        return workflowInstance
     }
 
     // Top level call that triggers fetching all workflow results.
