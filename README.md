@@ -4,7 +4,7 @@
 
 GitHub Actions status board for macOS and iOS.
 
-<img src="screenshot@2x.png" width="488" />
+<img src="images/screenshot@2x.png" width="1290" />
 
 ## Development
 
