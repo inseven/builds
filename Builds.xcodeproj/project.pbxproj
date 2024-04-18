@@ -77,6 +77,7 @@
 		D8A1224A2BD131C5002BDF42 /* BuildsPreviewHostWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D8A122392BD131C4002BDF42 /* BuildsPreviewHostWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8A122502BD131E0002BDF42 /* BuildsCore in Frameworks */ = {isa = PBXBuildFile; productRef = D8A1224F2BD131E0002BDF42 /* BuildsCore */; };
 		D8A269B12BAA3B6800A0E19A /* ProgressSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */; };
+		D8A4658C2BD1D0FF00CA2849 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A4658B2BD1D0FF00CA2849 /* AppDelegate.swift */; };
 		D8ADD98F2B9E9E2700D314F1 /* DetailsPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */; };
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
@@ -241,6 +242,7 @@
 		D8A122452BD131C5002BDF42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8A122472BD131C5002BDF42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D8A269B02BAA3B6800A0E19A /* ProgressSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressSpinner.swift; sourceTree = "<group>"; };
+		D8A4658B2BD1D0FF00CA2849 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8ADD98E2B9E9E2700D314F1 /* DetailsPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsPopover.swift; sourceTree = "<group>"; };
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
 		D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJobsList.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 			isa = PBXGroup;
 			children = (
 				D8D413F228045535001BA6C0 /* Action.swift */,
+				D8A4658B2BD1D0FF00CA2849 /* AppDelegate.swift */,
 				D8D413EE280454AA001BA6C0 /* ApplicationModel.swift */,
 				D850F4DA2BAA709800CE1796 /* Confirmable.swift */,
 				D850F4DC2BAA75F900CE1796 /* ConfirmableAction.swift */,
@@ -972,6 +975,7 @@
 				D850F4DB2BAA709800CE1796 /* Confirmable.swift in Sources */,
 				D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */,
 				D854FD852BB615D500DD31DD /* WorkflowCommands.swift in Sources */,
+				D8A4658C2BD1D0FF00CA2849 /* AppDelegate.swift in Sources */,
 				D8CA0EF22B94110A00DAE758 /* TimeInterval.swift in Sources */,
 				D8B49EE82BB76D4D0076E273 /* StatusButton.swift in Sources */,
 				D86B1D302B9EA78000CA4E21 /* PopoverButton.swift in Sources */,

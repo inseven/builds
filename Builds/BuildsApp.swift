@@ -26,7 +26,11 @@ import Diligence
 @main
 struct BuildsApp: App {
 
+    #if os(iOS)
     @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    #else
+    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    #endif
 
     @MainActor init() {
     }
@@ -51,10 +55,10 @@ struct BuildsApp: App {
 
 
         WorkflowsWindow()
-            .environmentObject(applicationModel)
+            .environmentObject(appDelegate.applicationModel)
 
         InfoWindow()
-            .environmentObject(applicationModel)
+            .environmentObject(appDelegate.applicationModel)
 
 #endif
 
