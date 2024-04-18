@@ -399,7 +399,6 @@
 				D83174392BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift */,
 				D80ED1E62BC5EDFB00897EC7 /* SingleWorkflowWidget.swift */,
 				D88AFD732BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift */,
-				D8C018712BCF070B001C0F45 /* Extensions */,
 				D80ED1E02BC5DFE600897EC7 /* Intents */,
 				D885484F2BC4A6B20088D28D /* Resources */,
 			);
@@ -486,13 +485,6 @@
 				D8A122452BD131C5002BDF42 /* Assets.xcassets */,
 			);
 			path = BuildsWidgetPreviewHost;
-			sourceTree = "<group>";
-		};
-		D8C018712BCF070B001C0F45 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D8CA0EE82B93D6F200DAE758 /* Commands */ = {
