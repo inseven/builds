@@ -40,7 +40,7 @@ struct AllWorkflowsWidgetEntryView : View {
         VStack(alignment: .leading) {
             HStack {
                 Spacer()
-                Image(systemName: entry.summary.status.systemImage)
+                Image(systemName: entry.summary.operationState.systemImage)
                     .imageScale(.large)
                     .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
@@ -79,6 +79,6 @@ struct AllWorkflowsWidgetEntryView : View {
             }
         }
         .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
-        .containerBackground(entry.summary.status.color, for: .widget)
+        .containerBackground(entry.summary.operationState.color, for: .widget)
     }
 }

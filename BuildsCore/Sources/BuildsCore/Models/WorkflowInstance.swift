@@ -95,11 +95,7 @@ public struct WorkflowInstance: Identifiable, Hashable {
     }
 
     public var statusColor: Color {
-        return summary.color
-    }
-
-    public var summary: OperationState.Summary {
-        return operationState.summary
+        return operationState.color
     }
 
     public var systemImage: String {

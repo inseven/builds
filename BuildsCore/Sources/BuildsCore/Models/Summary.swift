@@ -22,16 +22,16 @@ import Foundation
 
 public struct Summary: Codable, Equatable {
 
-    public let status: OperationState.Summary  // TODO: Remove OperationState.Summary
+    public let operationState: OperationState
     public let count: Int
     public let date: Date?
     public let details: [OperationState: Int]
 
-    public init(status: OperationState.Summary = .unknown,
+    public init(operationState: OperationState = .unknown,
                 count: Int = 0,
                 date: Date? = nil,
                 details: [OperationState: Int] = [:]) {
-        self.status = status
+        self.operationState = operationState
         self.count = count
         self.date = date
         self.details = details
@@ -44,30 +44,43 @@ public struct Summary: Codable, Equatable {
             return
         }
 
-        var status: OperationState.Summary = .success
         var details: [OperationState: Int] = [:]
         for result in workflowInstances {
             let count = details[result.operationState] ?? 0
             details[result.operationState] = count + 1
-            switch result.summary {
-            case .unknown:
-                status = .unknown
-                break
-            case .success:  // We require 100% successes for success.
-                continue
-            case .skipped:  // Skipped builds don't represent failure.
-                continue
-            case .failure:  // We treat any failure as a global failure.
-                status = .failure
-                break
-            case .inProgress:
-                status = .inProgress
-                break
-            }
         }
-        let date = workflowInstances.compactMap({ $0.createdAt }).max()
 
-        self.init(status: status, count: workflowInstances.count, date: date, details: details)
+        // TODO: Double check the count.
+        let priorities: [OperationState] = [
+            .failure,
+            .waiting,
+            .inProgress,
+            .queued,
+            .cancelled,
+            .skipped,
+            .success,
+            .unknown,
+        ]
+
+        let scores = priorities
+            .enumerated()
+            .reduce(into: [OperationState: Int]()) { partialResult, item in
+                partialResult[item.element] = item.offset
+            }
+
+        let orderedWorkflowInstances = workflowInstances.sorted {
+            return scores[$0.operationState]! < scores[$1.operationState]!
+        }
+
+        guard let relevantWorkflow = orderedWorkflowInstances.first else {
+            self.init(operationState: .unknown, count: workflowInstances.count, date: nil, details: details)
+            return
+        }
+
+        self.init(operationState: relevantWorkflow.operationState,
+                  count: workflowInstances.count,
+                  date: relevantWorkflow.createdAt,
+                  details: details)
     }
 
 }

@@ -22,46 +22,6 @@ import SwiftUI
 
 public enum OperationState: Codable {
 
-    public enum Summary: Codable {
-
-        case unknown
-        case success
-        case failure
-        case inProgress
-        case skipped
-
-        public var color: Color {
-            switch self {
-            case .unknown:
-                return .gray
-            case .success:
-                return .green
-            case .failure:
-                return .red
-            case .inProgress:
-                return .yellow
-            case .skipped:
-                return .gray
-            }
-        }
-
-        public var systemImage: String {
-            switch self {
-            case .unknown:
-                return "questionmark"
-            case .success:
-                return "checkmark"
-            case .failure:
-                return "xmark"
-            case .inProgress:
-                return "circle.dashed"
-            case .skipped:
-                return "slash.circle"
-            }
-        }
-
-    }
-
     case unknown
     case queued
     case waiting
@@ -96,20 +56,24 @@ public enum OperationState: Codable {
         }
     }
 
-    public var summary: Summary {
+    public var color: Color {
         switch self {
-        case .queued, .waiting, .inProgress:
-            return .inProgress
+        case .queued:
+            return .yellow
+        case .waiting:
+            return .yellow
+        case .inProgress:
+            return .yellow
         case .success:
-            return .success
+            return .green
         case .failure:
-            return .failure
+            return .red
         case .cancelled:
-            return .failure
+            return .red
         case .skipped:
-            return .skipped
+            return .gray
         case .unknown:
-            return .unknown
+            return .gray
         }
     }
 

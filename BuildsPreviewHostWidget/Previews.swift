@@ -24,21 +24,21 @@ import BuildsCore
 
 let timeline: [AllWorkflowsTimelineEntry] = [
     .init(summary: Summary()),
-    .init(summary: Summary(status: .unknown, count: 12, date: .now)),
-    .init(summary: Summary(status: .inProgress,
+    .init(summary: Summary(operationState: .unknown, count: 12, date: .now)),
+    .init(summary: Summary(operationState: .inProgress,
                            count: 12,
                            date: .now,
                            details: [
                             .inProgress: 4,
                             .success: 8
                            ])),
-    .init(summary: Summary(status: .success,
+    .init(summary: Summary(operationState: .success,
                            count: 1,
                            date: .now)),
-    .init(summary: Summary(status: .skipped,
+    .init(summary: Summary(operationState: .skipped,
                            count: 12,
                            date: .now)),
-    .init(summary: Summary(status: .failure,
+    .init(summary: Summary(operationState: .failure,
                            count: 34,
                            date: .now.addingTimeInterval(-100))),
 ]
