@@ -119,27 +119,6 @@ public enum OperationState: Codable {
         }
     }
 
-    public var circularSystemImage: String {
-        switch self {
-        case .queued:
-            return "circle.circle.fill"
-        case .waiting:
-            return "clock.circle.fill"
-        case .inProgress:
-            return "circle.dotted.circle.fill"
-        case .success:
-            return "checkmark.circle.fill"
-        case .failure:
-            return "xmark.circle.fill"
-        case .cancelled:
-            return "exclamationmark.circle.fill"
-        case .skipped:
-            return "slash.circle.fill"
-        case .unknown:
-            return "questionmark.circle.fill"
-        }
-    }
-
     public init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
         switch status {
         case .queued:
