@@ -30,5 +30,6 @@ struct SingleWorkflowWidget: Widget {
         }
         .configurationDisplayName("Single Workflow")
         .description("Show latest details of a single workflow.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
