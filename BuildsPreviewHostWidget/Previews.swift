@@ -34,7 +34,10 @@ let timeline: [AllWorkflowsTimelineEntry] = [
                            ])),
     .init(summary: Summary(operationState: .success,
                            count: 1,
-                           date: .now)),
+                           date: .now,
+                           details: [
+                             .success: 1
+                           ])),
     .init(summary: Summary(operationState: .skipped,
                            count: 12,
                            date: .now)),
