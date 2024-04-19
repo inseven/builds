@@ -40,7 +40,7 @@ struct WorkflowQuery: EntityQuery, EntityStringQuery {
     func entities(matching string: String) async throws -> [WorkflowIdentifierEntity] {
         return await workflows
             .filter { workflowIdentifier in
-                workflowIdentifier.identifier.repositoryFullName.contains(string)
+                workflowIdentifier.identifier.repositoryFullName.localizedCaseInsensitiveContains(string)
             }
     }
 
