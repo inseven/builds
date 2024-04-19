@@ -42,8 +42,13 @@ let timeline: [AllWorkflowsTimelineEntry] = [
                            count: 12,
                            date: .now)),
     .init(summary: Summary(operationState: .failure,
-                           count: 34,
-                           date: .now.addingTimeInterval(-100))),
+                           count: 4,
+                           date: .now.addingTimeInterval(-100),
+                          details: [
+                            .failure: 1,
+                            .skipped: 1,
+                            .success: 2
+                          ])),
 ]
 
 #Preview("All Workflows, System Small", as: .systemSmall) {

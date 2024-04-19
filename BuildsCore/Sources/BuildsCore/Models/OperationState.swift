@@ -147,3 +147,11 @@ public enum OperationState: Codable {
     }
 
 }
+
+extension Collection where Element == OperationState {
+
+    public func sorted() -> [OperationState] {
+        return sorted { $0.score < $1.score }
+    }
+
+}

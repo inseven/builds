@@ -36,6 +36,19 @@ struct AllWorkflowsWidgetEntryView : View {
 
     var entry: AllWorkflowsTimelineProvider.Entry
 
+    var maximumDetailCount: Int {
+        switch widgetFamily {
+        case .systemSmall:
+            return 0
+        case .systemMedium:
+            return 2
+        case .systemLarge:
+            return 20
+        default:
+            return 0
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -55,15 +68,13 @@ struct AllWorkflowsWidgetEntryView : View {
                         Text(label)
                             .gridColumnAlignment(.leading)
                     }
-                    if widgetFamily != .systemSmall {
-                        ForEach(Array(entry.summary.details.keys)) { key in
-                            GridRow {
-                                Text(entry.summary.details[key]!, format: .number)
-                                Text(key.name)
-                            }
+                    ForEach(Array(entry.summary.details.keys.sorted().prefix(maximumDetailCount))) { key in
+                        GridRow {
+                            Text(entry.summary.details[key]!, format: .number)
+                            Text(key.name)
                         }
-                        .opacity(0.6)
                     }
+                    .opacity(0.6)
                 }
             } secondary: {
                 if let date = entry.summary.date {
