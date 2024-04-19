@@ -52,10 +52,10 @@ struct AnnotationList: View {
             } icon: {
                 switch annotation.annotation.annotation_level {
                 case .failure:
-                    Image(systemName: "exclamationmark.octagon.fill")
+                    Image(systemName: "exclamationmark.octagon")
                         .symbolRenderingMode(.multicolor)
                 case .warning:
-                    Image(systemName: "exclamationmark.triangle.fill")
+                    Image(systemName: "exclamationmark.triangle")
                         .symbolRenderingMode(.multicolor)
                 }
             }

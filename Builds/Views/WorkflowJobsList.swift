@@ -36,11 +36,6 @@ extension GitHub.WorkflowJob {
 
 struct WorkflowJobList: View {
 
-    struct LayoutMetrics {
-        static let statusImageSize = CGSize(width: 8.0, height: 8.0)
-        static let statusImagePadding = 4.0
-    }
-
     @Environment(\.presentURL) private var presentURL
 
     let jobs: [GitHub.WorkflowJob]
@@ -56,7 +51,7 @@ struct WorkflowJobList: View {
                 presentURL(job.html_url)
             } label: {
                 Label {
-                    HStack {
+                    HStack(alignment: .firstTextBaseline) {
                         Text(job.name)
                         Spacer()
                         if let startDate = job.started_at {
@@ -65,11 +60,8 @@ struct WorkflowJobList: View {
                         }
                     }
                 } icon: {
-                    StatusImage(operationState: job.operationState, size: LayoutMetrics.statusImageSize)
-                        .foregroundStyle(.white)
-                        .fontWeight(.heavy)
-                        .padding(LayoutMetrics.statusImagePadding)
-                        .background(background(job.color))
+                    StatusImage(operationState: job.operationState)
+                        .foregroundStyle(job.color)
                 }
             }
             .help(job.operationState.name)

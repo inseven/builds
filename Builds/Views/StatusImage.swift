@@ -25,24 +25,14 @@ import BuildsCore
 struct StatusImage: View {
 
     let operationState: OperationState
-    let size: CGSize?
 
-    init(operationState: OperationState, size: CGSize? = nil) {
+    init(operationState: OperationState) {
         self.operationState = operationState
-        self.size = size
     }
 
     var body: some View {
-        if let size {
-            Image(systemName: operationState.systemImage)
-                .resizable()
-                .aspectRatio(1, contentMode: .fit)
-                .frame(width: size.width, height: size.height)
-                .rotates(operationState.isActive)
-        } else {
-            Image(systemName: operationState.systemImage)
-                .rotates(operationState.isActive)
-        }
+        Image(systemName: operationState.systemImage)
+            .rotates(operationState.isActive)
     }
 
 }

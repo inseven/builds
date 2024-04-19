@@ -101,7 +101,7 @@ public enum OperationState: Codable {
     public var systemImage: String {
         switch self {
         case .queued:
-            return "clock.arrow.circlepath"
+            return "circle"
         case .waiting:
             return "clock"
         case .inProgress:
