@@ -24,25 +24,22 @@ import BuildsCore
 
 struct StatusImage: View {
 
-    let operationState: OperationState
-    let size: CGSize?
+    enum Style {
+        case plain
+        case circular
+    }
 
-    init(operationState: OperationState, size: CGSize? = nil) {
+    let operationState: OperationState
+    let style: Style
+
+    init(operationState: OperationState, style: Style = .plain) {
         self.operationState = operationState
-        self.size = size
+        self.style = style
     }
 
     var body: some View {
-        if let size {
-            Image(systemName: operationState.systemImage)
-                .resizable()
-                .aspectRatio(1, contentMode: .fit)
-                .frame(width: size.width, height: size.height)
-                .rotates(operationState.isActive)
-        } else {
-            Image(systemName: operationState.systemImage)
-                .rotates(operationState.isActive)
-        }
+        Image(systemName: style == .circular ? operationState.circularSystemImage : operationState.systemImage)
+            .rotates(operationState.isActive)
     }
 
 }
