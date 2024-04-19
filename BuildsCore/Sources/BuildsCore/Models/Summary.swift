@@ -50,26 +50,8 @@ public struct Summary: Codable, Equatable {
             details[result.operationState] = count + 1
         }
 
-        // TODO: Double check the count.
-        let priorities: [OperationState] = [
-            .failure,
-            .waiting,
-            .inProgress,
-            .queued,
-            .cancelled,
-            .skipped,
-            .success,
-            .unknown,
-        ]
-
-        let scores = priorities
-            .enumerated()
-            .reduce(into: [OperationState: Int]()) { partialResult, item in
-                partialResult[item.element] = item.offset
-            }
-
         let orderedWorkflowInstances = workflowInstances.sorted {
-            return scores[$0.operationState]! < scores[$1.operationState]!
+            return $0.operationState.score < $1.operationState.score
         }
 
         guard let relevantWorkflow = orderedWorkflowInstances.first else {

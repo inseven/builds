@@ -31,6 +31,27 @@ public enum OperationState: Codable {
     case cancelled
     case skipped
 
+    private static let order: [OperationState] = [
+        .failure,
+        .waiting,
+        .inProgress,
+        .queued,
+        .cancelled,
+        .skipped,
+        .success,
+        .unknown,
+    ]
+
+    private static let scores: [OperationState: Int] = order
+        .enumerated()
+        .reduce(into: [OperationState: Int]()) { partialResult, item in
+            partialResult[item.element] = item.offset
+        }
+
+    public var score: Int {
+        return Self.scores[self] ?? 100
+    }
+
     public var isActive: Bool {
         return self == .inProgress
     }
