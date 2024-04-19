@@ -33,5 +33,7 @@ public struct AllWorkflowsWidget: Widget {
             AllWorkflowsWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("All Workflows")
+        .description("Show a summary of all your workflows.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
