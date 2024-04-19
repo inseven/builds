@@ -60,9 +60,8 @@ struct WorkflowJobList: View {
                         }
                     }
                 } icon: {
-                    StatusImage(operationState: job.operationState, style: .circular)
-                        .symbolRenderingMode(.palette)
-                        .foregroundStyle(.black, job.color)
+                    StatusImage(operationState: job.operationState)
+                        .foregroundStyle(job.color)
                 }
             }
             .help(job.operationState.name)

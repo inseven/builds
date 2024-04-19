@@ -24,21 +24,14 @@ import BuildsCore
 
 struct StatusImage: View {
 
-    enum Style {
-        case plain
-        case circular
-    }
-
     let operationState: OperationState
-    let style: Style
 
-    init(operationState: OperationState, style: Style = .plain) {
+    init(operationState: OperationState) {
         self.operationState = operationState
-        self.style = style
     }
 
     var body: some View {
-        Image(systemName: style == .circular ? operationState.circularSystemImage : operationState.systemImage)
+        Image(systemName: operationState.systemImage)
             .rotates(operationState.isActive)
     }
 
