@@ -29,36 +29,6 @@ extension OperationState: Identifiable {
 
 }
 
-struct StackingColumns<Content: View, Detail: View>: View {
-
-    @Environment(\.widgetFamily) private var widgetFamily
-
-    let content: Content
-    let detail: Detail
-
-    init(@ViewBuilder content: () -> Content, @ViewBuilder detail: () -> Detail) {
-        self.content = content()
-        self.detail = detail()
-    }
-
-    var body: some View {
-        switch widgetFamily {
-        case .systemSmall:
-            VStack(alignment: .leading) {
-                content
-                detail
-            }
-        default:
-            HStack(alignment: .bottom) {
-                content
-                Spacer()
-                detail
-            }
-        }
-    }
-
-}
-
 struct AllWorkflowsWidgetEntryView : View {
 
     @Environment(\.widgetFamily) private var widgetFamily
@@ -75,7 +45,7 @@ struct AllWorkflowsWidgetEntryView : View {
                     .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
             Spacer()
-            StackingColumns {
+            WidgetStackingColumnLayout {
                 Grid {
                     GridRow {
                         Text(entry.summary.count, format: .number)
@@ -95,7 +65,7 @@ struct AllWorkflowsWidgetEntryView : View {
                         .opacity(0.6)
                     }
                 }
-            } detail: {
+            } secondary: {
                 if let date = entry.summary.date {
                     Text(date, format: .relative(presentation: .numeric))
                         .font(.footnote)
