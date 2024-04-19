@@ -29,7 +29,7 @@ extension GitHub.WorkflowJob {
     }
 
     var color: Color {
-        return operationState.summary.color
+        return operationState.color
     }
 
 }

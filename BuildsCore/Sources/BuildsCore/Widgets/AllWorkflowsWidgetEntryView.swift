@@ -21,8 +21,17 @@
 import WidgetKit
 import SwiftUI
 
+extension OperationState: Identifiable {
+
+    public var id: Self {
+        return self
+    }
+
+}
+
 struct AllWorkflowsWidgetEntryView : View {
 
+    @Environment(\.widgetFamily) private var widgetFamily
     @Environment(\.widgetRenderingMode) private var widgetRenderingMode
 
     var entry: AllWorkflowsTimelineProvider.Entry
@@ -31,24 +40,45 @@ struct AllWorkflowsWidgetEntryView : View {
         VStack(alignment: .leading) {
             HStack {
                 Spacer()
-                Image(systemName: entry.summary.status.systemImage)
+                Image(systemName: entry.summary.operationState.systemImage)
                     .imageScale(.large)
                     .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
             Spacer()
-            Text("\(entry.summary.count) Workflows")
-            if let date = entry.summary.date {
-                Text(date, format: .relative(presentation: .numeric))
-                    .font(.footnote)
-                    .opacity(0.6)
-            } else {
-                Text("5 minutes ago")
-                    .font(.footnote)
-                    .opacity(0.6)
-                    .redacted(reason: .placeholder)
+            WidgetStackingColumnLayout {
+                Grid {
+                    GridRow {
+                        Text(entry.summary.count, format: .number)
+                            .gridColumnAlignment(.trailing)
+                        let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
+                        let label = String.localizedStringWithFormat(format, entry.summary.count)
+                        Text(label)
+                            .gridColumnAlignment(.leading)
+                    }
+                    if widgetFamily != .systemSmall {
+                        ForEach(Array(entry.summary.details.keys)) { key in
+                            GridRow {
+                                Text(entry.summary.details[key]!, format: .number)
+                                Text(key.name)
+                            }
+                        }
+                        .opacity(0.6)
+                    }
+                }
+            } secondary: {
+                if let date = entry.summary.date {
+                    Text(date, format: .relative(presentation: .numeric))
+                        .font(.footnote)
+                        .opacity(0.6)
+                } else {
+                    Text("5 minutes ago")
+                        .font(.footnote)
+                        .opacity(0.6)
+                        .redacted(reason: .placeholder)
+                }
             }
         }
         .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
-        .containerBackground(entry.summary.status.color, for: .widget)
+        .containerBackground(entry.summary.operationState.color, for: .widget)
     }
 }

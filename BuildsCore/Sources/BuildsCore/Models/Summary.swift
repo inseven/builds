@@ -22,14 +22,19 @@ import Foundation
 
 public struct Summary: Codable, Equatable {
 
-    public let status: OperationState.Summary
+    public let operationState: OperationState
     public let count: Int
     public let date: Date?
+    public let details: [OperationState: Int]
 
-    public init(status: OperationState.Summary = .unknown, count: Int = 0, date: Date? = nil) {
-        self.status = status
+    public init(operationState: OperationState = .unknown,
+                count: Int = 0,
+                date: Date? = nil,
+                details: [OperationState: Int] = [:]) {
+        self.operationState = operationState
         self.count = count
         self.date = date
+        self.details = details
     }
 
     public init(workflowInstances: [WorkflowInstance]) {
@@ -39,27 +44,25 @@ public struct Summary: Codable, Equatable {
             return
         }
 
-        var status: OperationState.Summary = .success
+        var details: [OperationState: Int] = [:]
         for result in workflowInstances {
-            switch result.summary {
-            case .unknown:
-                status = .unknown
-                break
-            case .success:  // We require 100% successes for success.
-                continue
-            case .skipped:  // Skipped builds don't represent failure.
-                continue
-            case .failure:  // We treat any failure as a global failure.
-                status = .failure
-                break
-            case .inProgress:
-                status = .inProgress
-                break
-            }
+            let count = details[result.operationState] ?? 0
+            details[result.operationState] = count + 1
         }
-        let date = workflowInstances.compactMap({ $0.createdAt }).max()
 
-        self.init(status: status, count: workflowInstances.count, date: date)
+        let orderedWorkflowInstances = workflowInstances.sorted {
+            return $0.operationState.score < $1.operationState.score
+        }
+
+        guard let relevantWorkflow = orderedWorkflowInstances.first else {
+            self.init(operationState: .unknown, count: workflowInstances.count, date: nil, details: details)
+            return
+        }
+
+        self.init(operationState: relevantWorkflow.operationState,
+                  count: workflowInstances.count,
+                  date: relevantWorkflow.createdAt,
+                  details: details)
     }
 
 }
