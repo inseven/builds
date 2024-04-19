@@ -22,14 +22,19 @@ import Foundation
 
 public struct Summary: Codable, Equatable {
 
-    public let status: OperationState.Summary
+    public let status: OperationState.Summary  // TODO: Remove OperationState.Summary
     public let count: Int
     public let date: Date?
+    public let details: [OperationState: Int]
 
-    public init(status: OperationState.Summary = .unknown, count: Int = 0, date: Date? = nil) {
+    public init(status: OperationState.Summary = .unknown,
+                count: Int = 0,
+                date: Date? = nil,
+                details: [OperationState: Int] = [:]) {
         self.status = status
         self.count = count
         self.date = date
+        self.details = details
     }
 
     public init(workflowInstances: [WorkflowInstance]) {
@@ -40,7 +45,10 @@ public struct Summary: Codable, Equatable {
         }
 
         var status: OperationState.Summary = .success
+        var details: [OperationState: Int] = [:]
         for result in workflowInstances {
+            let count = details[result.operationState] ?? 0
+            details[result.operationState] = count + 1
             switch result.summary {
             case .unknown:
                 status = .unknown
@@ -59,7 +67,7 @@ public struct Summary: Codable, Equatable {
         }
         let date = workflowInstances.compactMap({ $0.createdAt }).max()
 
-        self.init(status: status, count: workflowInstances.count, date: date)
+        self.init(status: status, count: workflowInstances.count, date: date, details: details)
     }
 
 }

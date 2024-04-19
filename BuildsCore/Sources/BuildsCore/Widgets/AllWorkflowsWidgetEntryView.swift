@@ -21,8 +21,47 @@
 import WidgetKit
 import SwiftUI
 
+extension OperationState: Identifiable {
+
+    public var id: Self {
+        return self
+    }
+
+}
+
+struct StackingColumns<Content: View, Detail: View>: View {
+
+    @Environment(\.widgetFamily) private var widgetFamily
+
+    let content: Content
+    let detail: Detail
+
+    init(@ViewBuilder content: () -> Content, @ViewBuilder detail: () -> Detail) {
+        self.content = content()
+        self.detail = detail()
+    }
+
+    var body: some View {
+        switch widgetFamily {
+        case .systemSmall:
+            VStack(alignment: .leading) {
+                content
+                detail
+            }
+        default:
+            HStack(alignment: .bottom) {
+                content
+                Spacer()
+                detail
+            }
+        }
+    }
+
+}
+
 struct AllWorkflowsWidgetEntryView : View {
 
+    @Environment(\.widgetFamily) private var widgetFamily
     @Environment(\.widgetRenderingMode) private var widgetRenderingMode
 
     var entry: AllWorkflowsTimelineProvider.Entry
@@ -36,16 +75,37 @@ struct AllWorkflowsWidgetEntryView : View {
                     .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
             Spacer()
-            Text("\(entry.summary.count) Workflows")
-            if let date = entry.summary.date {
-                Text(date, format: .relative(presentation: .numeric))
-                    .font(.footnote)
-                    .opacity(0.6)
-            } else {
-                Text("5 minutes ago")
-                    .font(.footnote)
-                    .opacity(0.6)
-                    .redacted(reason: .placeholder)
+            StackingColumns {
+                Grid {
+                    GridRow {
+                        Text(entry.summary.count, format: .number)
+                            .gridColumnAlignment(.trailing)
+                        let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
+                        let label = String.localizedStringWithFormat(format, entry.summary.count)
+                        Text(label)
+                            .gridColumnAlignment(.leading)
+                    }
+                    if widgetFamily != .systemSmall {
+                        ForEach(Array(entry.summary.details.keys)) { key in
+                            GridRow {
+                                Text(entry.summary.details[key]!, format: .number)
+                                Text(key.name)
+                            }
+                        }
+                        .opacity(0.6)
+                    }
+                }
+            } detail: {
+                if let date = entry.summary.date {
+                    Text(date, format: .relative(presentation: .numeric))
+                        .font(.footnote)
+                        .opacity(0.6)
+                } else {
+                    Text("5 minutes ago")
+                        .font(.footnote)
+                        .opacity(0.6)
+                        .redacted(reason: .placeholder)
+                }
             }
         }
         .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)

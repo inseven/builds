@@ -22,13 +22,41 @@ import WidgetKit
 
 import BuildsCore
 
-#Preview(as: .systemSmall) {
+let timeline: [AllWorkflowsTimelineEntry] = [
+    .init(summary: Summary()),
+    .init(summary: Summary(status: .unknown, count: 12, date: .now)),
+    .init(summary: Summary(status: .inProgress,
+                           count: 12,
+                           date: .now,
+                           details: [
+                            .inProgress: 4,
+                            .success: 8
+                           ])),
+    .init(summary: Summary(status: .success,
+                           count: 1,
+                           date: .now)),
+    .init(summary: Summary(status: .skipped,
+                           count: 12,
+                           date: .now)),
+    .init(summary: Summary(status: .failure,
+                           count: 34,
+                           date: .now.addingTimeInterval(-100))),
+]
+
+#Preview("All Workflows, System Small", as: .systemSmall) {
     AllWorkflowsWidget()
 } timeline: {
-    AllWorkflowsTimelineEntry(summary: Summary())
-    AllWorkflowsTimelineEntry(summary: Summary(status: .unknown, count: 12, date: .now))
-    AllWorkflowsTimelineEntry(summary: Summary(status: .inProgress, count: 12, date: .now))
-    AllWorkflowsTimelineEntry(summary: Summary(status: .success, count: 12, date: .now))
-    AllWorkflowsTimelineEntry(summary: Summary(status: .skipped, count: 12, date: .now))
-    AllWorkflowsTimelineEntry(summary: Summary(status: .failure, count: 34, date: .now.addingTimeInterval(-100)))
+    return timeline
+}
+
+#Preview("All Workflows, System Medium", as: .systemMedium) {
+    AllWorkflowsWidget()
+} timeline: {
+    return timeline
+}
+
+#Preview("All Workflows, System Medium", as: .systemLarge) {
+    AllWorkflowsWidget()
+} timeline: {
+    return timeline
 }
