@@ -103,7 +103,7 @@ public struct WorkflowInstance: Identifiable, Hashable {
     }
 
     public var workflowName: String {
-        return result?.workflowRun.name ?? String(id.workflowId)
+        return result?.workflowRun.name ?? id.workflowNameSnapshot
     }
 
     public var workflowURL: URL? {

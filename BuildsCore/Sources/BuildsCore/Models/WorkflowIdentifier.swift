@@ -36,11 +36,16 @@ public struct WorkflowIdentifier: Hashable, Codable, Sendable {
 
     public let repositoryFullName: String
     public let workflowId: Int
+
+    /// Name of the workflow at the time the identifier was created..
+    public let workflowNameSnapshot: String
+
     public let branch: String
 
-    public init(repositoryFullName: String, workflowId: Int, branch: String) {
+    public init(repositoryFullName: String, workflowId: Int, workflowNameSnapshot: String, branch: String) {
         self.repositoryFullName = repositoryFullName
         self.workflowId = workflowId
+        self.workflowNameSnapshot = workflowNameSnapshot
         self.branch = branch
     }
 
