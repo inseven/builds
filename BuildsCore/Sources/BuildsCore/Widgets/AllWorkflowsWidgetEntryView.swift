@@ -59,22 +59,26 @@ struct AllWorkflowsWidgetEntryView : View {
             }
             Spacer()
             WidgetStackingColumnLayout {
-                Grid {
-                    GridRow {
-                        Text(entry.summary.count, format: .number)
-                            .gridColumnAlignment(.trailing)
-                        let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
-                        let label = String.localizedStringWithFormat(format, entry.summary.count)
-                        Text(label)
-                            .gridColumnAlignment(.leading)
-                    }
-                    ForEach(Array(entry.summary.details.keys.sorted().prefix(maximumDetailCount))) { key in
+                let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
+                let label = String.localizedStringWithFormat(format, entry.summary.count)
+                if maximumDetailCount > 0 {
+                    Grid {
                         GridRow {
-                            Text(entry.summary.details[key]!, format: .number)
-                            Text(key.name)
+                            Text(entry.summary.count, format: .number)
+                                .gridColumnAlignment(.trailing)
+                            Text(label)
+                                .gridColumnAlignment(.leading)
                         }
+                        ForEach(Array(entry.summary.details.keys.sorted().prefix(maximumDetailCount))) { key in
+                            GridRow {
+                                Text(entry.summary.details[key]!, format: .number)
+                                Text(key.name)
+                            }
+                        }
+                        .opacity(0.6)
                     }
-                    .opacity(0.6)
+                } else {
+                    Text("\(entry.summary.count) \(label)", bundle: .module)
                 }
             } secondary: {
                 if let date = entry.summary.date {
