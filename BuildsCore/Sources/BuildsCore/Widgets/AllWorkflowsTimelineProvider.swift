@@ -24,12 +24,21 @@ import Interact
 
 struct AllWorkflowsTimelineProvider: TimelineProvider {
 
+    // This fetches the cached version.
     var summary: Summary {
         get async {
             let settings = await Settings()
             let summary = await settings.summary ?? Summary()
             return summary
         }
+    }
+
+    // This fetches a live version.
+    func fetchSummary() async throws -> Summary {
+        let settings = await Settings()
+        let workflows = await settings.workflowsCache
+        let workflowInstances = try await GitHubClient.default.update(workflows: workflows, options: [])
+        return Summary(workflowInstances: workflowInstances)
     }
 
     func placeholder(in context: Context) -> AllWorkflowsTimelineEntry {
@@ -44,7 +53,13 @@ struct AllWorkflowsTimelineProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<AllWorkflowsTimelineEntry>) -> Void) {
         Task {
-            completion(Timeline(entries: [AllWorkflowsTimelineEntry(summary: await summary)], policy: .standard))
+            do {
+                let summary = try await fetchSummary()
+                completion(Timeline(entries: [AllWorkflowsTimelineEntry(summary: summary)], policy: .standard))
+            } catch {
+                print("Failed to fetch all results with error \(error)")
+                completion(Timeline(entries: [AllWorkflowsTimelineEntry(summary: Summary())], policy: .standard))
+            }
         }
     }
 

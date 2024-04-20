@@ -48,7 +48,9 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
-        guard let workflowResult = try? await GitHubClient.default.fetch(id: configuration.workflow.identifier) else {
+        guard let workflowResult = try? await GitHubClient.default.fetch(id: configuration.workflow.identifier,
+                                                                         options: [])
+        else {
             return Timeline(entries: [placeholder(in: context)], policy: .standard)
         }
         let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,

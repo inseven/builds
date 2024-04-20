@@ -138,7 +138,7 @@ class ApplicationModel: NSObject, ObservableObject {
                 print("Refreshing...")
                 self.isUpdating = true
                 self.lastError = nil
-                try await self.client.update(workflows: self.workflows) { [weak self] workflowInstance in
+                _ = try await self.client.update(workflows: self.workflows) { [weak self] workflowInstance in
                     guard let self else {
                         return
                     }
@@ -343,7 +343,7 @@ class ApplicationModel: NSObject, ObservableObject {
 
     func refresh(ids: [WorkflowInstance.ID]) async {
         do {
-            try await client.update(workflows: ids) { [weak self] workflowInstance in
+            _ = try await client.update(workflows: ids) { [weak self] workflowInstance in
                 guard let self else {
                     return
                 }
