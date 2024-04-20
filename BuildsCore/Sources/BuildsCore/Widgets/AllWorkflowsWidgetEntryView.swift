@@ -59,22 +59,18 @@ struct AllWorkflowsWidgetEntryView : View {
             }
             Spacer()
             WidgetStackingColumnLayout {
-                Grid(horizontalSpacing: 0) {
+                Grid {
                     GridRow {
                         Text(entry.summary.count, format: .number)
                             .gridColumnAlignment(.trailing)
-                        let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", 
-                                                       bundle: .module,
-                                                       comment: "Pluralised widget workflow label")
+                        let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
                         let label = String.localizedStringWithFormat(format, entry.summary.count)
-                        Text(" ")
                         Text(label)
                             .gridColumnAlignment(.leading)
                     }
                     ForEach(Array(entry.summary.details.keys.sorted().prefix(maximumDetailCount))) { key in
                         GridRow {
                             Text(entry.summary.details[key]!, format: .number)
-                            Text(" ")
                             Text(key.name)
                         }
                     }
