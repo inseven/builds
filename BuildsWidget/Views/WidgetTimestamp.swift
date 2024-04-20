@@ -19,16 +19,28 @@
 // SOFTWARE.
 
 import WidgetKit
-import AppIntents
-
-import Interact
+import SwiftUI
 
 import BuildsCore
 
-struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Configuration"
-    static var description = IntentDescription("This is an example widget.")
+struct WidgetTimestamp: View {
 
-    @Parameter(title: "Workflow")
-    var workflow: WorkflowIdentifierEntity?
+    let date: Date?
+
+    init(date: Date?) {
+        self.date = date
+    }
+
+    var body: some View {
+        if let date {
+            Text(date, format: .relative(presentation: .numeric))
+                .font(.footnote)
+                .opacity(0.6)
+        } else {
+            Text("never")
+                .font(.footnote)
+                .opacity(0.6)
+        }
+    }
+
 }

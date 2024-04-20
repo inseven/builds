@@ -50,16 +50,12 @@ struct SingleWorkflowWidgetEntryView : View {
                         .opacity(0.6)
                     }
                 } secondary: {
-                    if let date = workflowInstance.createdAt {
-                        Text(date, format: .relative(presentation: .numeric))
-                            .font(.footnote)
-                            .opacity(0.6)
-                    } else {
-                        Text("-")
-                            .font(.footnote)
-                            .opacity(0.6)
-                    }
+                    WidgetTimestamp(date: workflowInstance.createdAt)
                 }
+            } else {
+                Text("Edit widget to select workflow")
+                    .multilineTextAlignment(.center)
+                    .font(.footnote)
             }
         }
         .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)

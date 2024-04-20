@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "-" : {
-
-    },
     "%@" : {
 
     },
@@ -44,6 +41,12 @@
       }
     },
     "Configuration" : {
+
+    },
+    "Edit widget to select workflow" : {
+
+    },
+    "never" : {
 
     },
     "Show latest details of a single workflow." : {
