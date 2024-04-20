@@ -36,6 +36,17 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
         return WorkflowInstance(id: workflowIdentifier.identifier, result: workflowResult)
     }
 
+    func mostRecentCachedWorkflowInstance() async -> WorkflowInstance? {
+        let settings = await Settings()
+        let cachedStatus = await settings.cachedStatus
+        return await settings.workflowsCache
+            .map { id in
+                return WorkflowInstance(id: id, result: cachedStatus[id])
+            }
+            .sortedByDateDescending()
+            .first
+    }
+
     func placeholder(in context: Context) -> SingleWorkflowTimelineEntry {
         return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
     }
@@ -43,7 +54,9 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     func snapshot(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> SingleWorkflowTimelineEntry {
         guard let workflowIdentifierEntity = configuration.workflow else {
-            return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
+            let workflowInstance = context.isPreview ? await mostRecentCachedWorkflowInstance() : nil
+            return SingleWorkflowTimelineEntry(workflowInstance: workflowInstance,
+                                               configuration: ConfigurationAppIntent())
         }
         let workflowInstance = await workflowInstance(for: workflowIdentifierEntity)
         return SingleWorkflowTimelineEntry(workflowInstance: workflowInstance, configuration: ConfigurationAppIntent())
