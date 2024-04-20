@@ -21,6 +21,8 @@
 import WidgetKit
 import SwiftUI
 
+import BuildsCore
+
 struct SingleWorkflowWidgetEntryView : View {
 
     @Environment(\.widgetRenderingMode) private var widgetRenderingMode
@@ -36,22 +38,27 @@ struct SingleWorkflowWidgetEntryView : View {
                         .imageScale(.large)
                 }
                 Spacer()
-                Text(workflowInstance.repositoryName)
-                HStack {
-                    Text(workflowInstance.workflowName)
-                    Text(workflowInstance.id.branch)
-                        .monospaced()
-                }
-                .font(.footnote)
-                .opacity(0.6)
-                if let date = workflowInstance.createdAt {
-                    Text(date, format: .relative(presentation: .numeric))
+                WidgetStackingColumnLayout {
+                    VStack(alignment: .leading) {
+                        Text(workflowInstance.repositoryName)
+                        VStack(alignment: .leading) {
+                            Text(workflowInstance.workflowName)
+                            Text(workflowInstance.id.branch)
+                                .monospaced()
+                        }
                         .font(.footnote)
                         .opacity(0.6)
-                } else {
-                    Text("-")
-                        .font(.footnote)
-                        .opacity(0.6)
+                    }
+                } secondary: {
+                    if let date = workflowInstance.createdAt {
+                        Text(date, format: .relative(presentation: .numeric))
+                            .font(.footnote)
+                            .opacity(0.6)
+                    } else {
+                        Text("-")
+                            .font(.footnote)
+                            .opacity(0.6)
+                    }
                 }
             }
         }
