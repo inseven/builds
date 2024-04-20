@@ -42,13 +42,19 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     func snapshot(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> SingleWorkflowTimelineEntry {
-        let workflowResult = await workflowInstance(for: configuration.workflow)
-        return SingleWorkflowTimelineEntry(workflowInstance: workflowResult, configuration: ConfigurationAppIntent())
+        guard let workflowIdentifierEntity = configuration.workflow else {
+            return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
+        }
+        let workflowInstance = await workflowInstance(for: workflowIdentifierEntity)
+        return SingleWorkflowTimelineEntry(workflowInstance: workflowInstance, configuration: ConfigurationAppIntent())
     }
 
     func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
-        guard let workflowResult = try? await GitHubClient.default.fetch(id: configuration.workflow.identifier,
+        guard let workflowIdentifierEntity = configuration.workflow else {
+            return Timeline(entries: [SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())], policy: .atEnd)
+        }
+        guard let workflowResult = try? await GitHubClient.default.fetch(id: workflowIdentifierEntity.identifier,
                                                                          options: [])
         else {
             return Timeline(entries: [placeholder(in: context)], policy: .standard)
