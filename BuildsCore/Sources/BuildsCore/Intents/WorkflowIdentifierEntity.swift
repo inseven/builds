@@ -18,18 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import WidgetKit
-import SwiftUI
+import AppIntents
 
-struct SingleWorkflowWidget: Widget {
-    let kind: String = .singleWorkflowWidget
+public struct WorkflowIdentifierEntity: AppEntity {
 
-    var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
-            SingleWorkflowWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Single Workflow")
-        .description("Show latest details of a single workflow.")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+    public var id: String {
+        return "\(identifier.repositoryFullName):\(identifier.workflowId):\(identifier.branch)"
     }
+
+    public let identifier: WorkflowInstance.ID
+
+    public static var typeDisplayRepresentation: TypeDisplayRepresentation = "Workflow"
+    public static var defaultQuery = WorkflowQuery()
+
+    public var displayRepresentation: DisplayRepresentation {
+        return DisplayRepresentation(title: "\(identifier.repositoryFullName)",
+                                     subtitle: "\(identifier.workflowId) \(identifier.branch)")
+    }
+
+    public init(_ identifier: WorkflowInstance.ID) {
+        self.identifier = identifier
+    }
+
 }

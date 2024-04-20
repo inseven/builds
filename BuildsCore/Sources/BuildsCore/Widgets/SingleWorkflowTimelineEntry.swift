@@ -21,12 +21,10 @@
 import WidgetKit
 import SwiftUI
 
-import BuildsCore
+public struct SingleWorkflowTimelineEntry: TimelineEntry {
 
-struct SingleWorkflowTimelineEntry: TimelineEntry {
-
-    let date: Date = Date()
-    let workflowInstance: WorkflowInstance?
-    let configuration: ConfigurationAppIntent
+    public let date: Date = Date()
+    public let workflowInstance: WorkflowInstance?
+    public let configuration: ConfigurationAppIntent
 
 }

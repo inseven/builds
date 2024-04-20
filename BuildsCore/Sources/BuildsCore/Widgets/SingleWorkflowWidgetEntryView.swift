@@ -53,9 +53,12 @@ struct SingleWorkflowWidgetEntryView : View {
                         .font(.footnote)
                         .opacity(0.6)
                 }
+            } else {
+                Text("Edit to select widget")
+                    .foregroundStyle(.white)
             }
         }
         .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)
-        .containerBackground(entry.workflowInstance?.statusColor ?? .gray, for: .widget)
+        .containerBackground(entry.workflowInstance?.statusColor ?? .red, for: .widget)
     }
 }

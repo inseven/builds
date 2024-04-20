@@ -20,26 +20,42 @@
 
 import AppIntents
 
-import BuildsCore
+public struct WorkflowQuery: EntityQuery, EntityStringQuery {
 
-struct WorkflowIdentifierEntity: AppEntity {
-
-    var id: String {
-        return "\(identifier.repositoryFullName):\(identifier.workflowId):\(identifier.branch)"
+    enum Key: String {
+        case summary
     }
 
-    let identifier: WorkflowInstance.ID
-
-    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Workflow"
-    static var defaultQuery = WorkflowQuery()
-
-    var displayRepresentation: DisplayRepresentation {
-        return DisplayRepresentation(title: "\(identifier.repositoryFullName)",
-                                     subtitle: "\(identifier.workflowId) \(identifier.branch)")
+    var workflows: [WorkflowIdentifierEntity] {
+        get async {
+            let settings = await Settings()
+            let workflows = await settings.workflowsCache
+            return workflows
+                .map { WorkflowIdentifierEntity($0) }
+        }
     }
 
-    init(_ identifier: WorkflowInstance.ID) {
-        self.identifier = identifier
+    public init() {
+
     }
 
+    public func entities(matching string: String) async throws -> [WorkflowIdentifierEntity] {
+        return await workflows
+            .filter { workflowIdentifier in
+                workflowIdentifier.identifier.repositoryFullName.localizedCaseInsensitiveContains(string)
+            }
+    }
+
+
+    public func entities(for identifiers: [WorkflowIdentifierEntity.ID]) async throws -> [WorkflowIdentifierEntity] {
+        return await workflows.filter { identifiers.contains($0.id) }
+    }
+
+    public func suggestedEntities() async throws -> [WorkflowIdentifierEntity] {
+        return await workflows
+    }
+
+    public func defaultResult() async -> WorkflowIdentifierEntity? {
+        return nil
+    }
 }

@@ -1,25 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "-" : {
-
-    },
-    "%@" : {
-
-    },
-    "%lld" : {
-
-    },
-    "%lld %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld %2$@"
-          }
-        }
-      }
-    },
     "%lld Workflows" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -42,21 +23,6 @@
           }
         }
       }
-    },
-    "Configuration" : {
-
-    },
-    "Show latest details of a single workflow." : {
-
-    },
-    "Single Workflow" : {
-
-    },
-    "This is an example widget." : {
-
-    },
-    "Workflow" : {
-
     }
   },
   "version" : "1.0"

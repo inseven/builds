@@ -21,28 +21,16 @@
 import WidgetKit
 import AppIntents
 
-import Interact
-
-import BuildsCore
-
-struct ConfigurationAppIntent: WidgetConfigurationIntent {
-    static var title: LocalizedStringResource = "Configuration"
-    static var description = IntentDescription("This is an example widget.")
+public struct ConfigurationAppIntent: WidgetConfigurationIntent {
+    public static var title: LocalizedStringResource = "Configuration"
+    public static var description = IntentDescription("This is an example widget.")
 
     @Parameter(title: "Workflow")
-    var workflow: WorkflowIdentifierEntity
+    public var workflow: WorkflowIdentifierEntity?
+
+    public init() {
+        
+    }
 }
 
-extension ConfigurationAppIntent {
-
-    static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        return intent
-    }
-
-    static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        return intent
-    }
-
-}
+public struct BuildsCoreIntentsPackage: AppIntentsPackage { }

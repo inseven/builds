@@ -20,13 +20,20 @@
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 import BuildsCore
 
 @main
 struct BuildsWidgetBundle: WidgetBundle {
     var body: some Widget {
-        AllWorkflowsWidget()
+//        AllWorkflowsWidget()
         SingleWorkflowWidget()
     }
+}
+
+struct MyAppPackage: AppIntentsPackage {
+   static var includedPackages: [any AppIntentsPackage.Type] {
+       [BuildsCoreIntentsPackage.self]
+   }
 }

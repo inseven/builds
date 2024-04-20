@@ -18,42 +18,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import AppIntents
+import WidgetKit
+import SwiftUI
 
-import BuildsCore
+public struct SingleWorkflowWidget: Widget {
 
-struct WorkflowQuery: EntityQuery, EntityStringQuery {
+    public let kind: String = .singleWorkflowWidget
 
-    enum Key: String {
-        case summary
+    public init() {
+
     }
 
-    var workflows: [WorkflowIdentifierEntity] {
-        get async {
-            let settings = await Settings()
-            let workflows = await settings.workflowsCache
-            return workflows
-                .map { WorkflowIdentifierEntity($0) }
+    public var body: some WidgetConfiguration {
+        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: SingleWorkflowTimelineProvider()) { entry in
+            SingleWorkflowWidgetEntryView(entry: entry)
         }
-    }
-
-    func entities(matching string: String) async throws -> [WorkflowIdentifierEntity] {
-        return await workflows
-            .filter { workflowIdentifier in
-                workflowIdentifier.identifier.repositoryFullName.localizedCaseInsensitiveContains(string)
-            }
-    }
-
-
-    func entities(for identifiers: [WorkflowIdentifierEntity.ID]) async throws -> [WorkflowIdentifierEntity] {
-        return await workflows.filter { identifiers.contains($0.id) }
-    }
-
-    func suggestedEntities() async throws -> [WorkflowIdentifierEntity] {
-        return await workflows
-    }
-
-    func defaultResult() async -> WorkflowIdentifierEntity? {
-        return nil
+        .configurationDisplayName("Single Workflow")
+        .description("Show latest details of a single workflow.")
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

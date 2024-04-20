@@ -22,9 +22,19 @@ import WidgetKit
 
 import Interact
 
-import BuildsCore
+extension WorkflowIdentifier {
 
-struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
+    static let placeholder = WorkflowIdentifier(repositoryFullName: "a/b", workflowId: 2, branch: "main")
+
+}
+
+extension WorkflowIdentifierEntity {
+
+    static let placeholder = WorkflowIdentifierEntity(.placeholder)
+
+}
+
+public struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
 
     init() {
     }
@@ -36,19 +46,19 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
         return WorkflowInstance(id: workflowIdentifier.identifier, result: workflowResult)
     }
 
-    func placeholder(in context: Context) -> SingleWorkflowTimelineEntry {
+    public func placeholder(in context: Context) -> SingleWorkflowTimelineEntry {
         return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
     }
 
-    func snapshot(for configuration: ConfigurationAppIntent,
+    public func snapshot(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> SingleWorkflowTimelineEntry {
-        let workflowResult = await workflowInstance(for: configuration.workflow)
+        let workflowResult = await workflowInstance(for: configuration.workflow ?? .placeholder)
         return SingleWorkflowTimelineEntry(workflowInstance: workflowResult, configuration: ConfigurationAppIntent())
     }
 
-    func timeline(for configuration: ConfigurationAppIntent,
+    public func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
-        guard let workflowResult = try? await GitHubClient.default.fetch(id: configuration.workflow.identifier) else {
+        guard let workflowResult = try? await GitHubClient.default.fetch(id: configuration.workflow?.identifier ?? .placeholder) else {
             return Timeline(entries: [placeholder(in: context)], policy: .standard)
         }
         let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
