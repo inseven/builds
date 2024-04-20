@@ -87,7 +87,7 @@ struct WorkflowInstanceCell: View {
                     Text(instance.workflowName)
                     Text(instance.id.branch)
                         .monospaced()
-                    Text(instance.sha ?? "1234567")
+                    Text(instance.sha ?? "-")
                         .monospaced()
                 }
                 VStack {
@@ -96,12 +96,11 @@ struct WorkflowInstanceCell: View {
                             Text(createdAt, format: .relative(presentation: .numeric))
                         }
                     } else {
-                        Text("5 minutes ago")
+                        Text("never")
                     }
                 }
                 .gridColumnAlignment(.trailing)
             }
-            .redacted(reason: instance.result == nil ? .placeholder : nil)
             .font(.subheadline)
             .opacity(0.6)
         }

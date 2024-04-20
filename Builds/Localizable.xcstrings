@@ -32,12 +32,6 @@
         }
       }
     },
-    "5 minutes ago" : {
-
-    },
-    "1234567" : {
-
-    },
     "About %@..." : {
 
     },
@@ -120,6 +114,9 @@
 
     },
     "Manage GitHub Permissions..." : {
+
+    },
+    "never" : {
 
     },
     "No Workflows" : {

@@ -75,6 +75,7 @@ public class GitHubClient {
             let responseWorkflowIds = workflowRuns.map { workflowRun in
                 return WorkflowInstance.ID(repositoryFullName: repositoryName,
                                            workflowId: workflowRun.workflow_id,
+                                           workflowNameSnapshot: workflowRun.name,
                                            branch: workflowRun.head_branch)
             }
             workflowIds.formUnion(responseWorkflowIds)
@@ -126,6 +127,7 @@ public class GitHubClient {
             .reduce(into: [WorkflowInstance.ID: GitHub.WorkflowRun]()) { partialResult, workflowRun in
                 let id = WorkflowInstance.ID(repositoryFullName: workflowRun.repository.full_name,
                                              workflowId: workflowRun.workflow_id,
+                                             workflowNameSnapshot: workflowRun.name,
                                              branch: workflowRun.head_branch)
                 guard partialResult[id] == nil else {
                     return

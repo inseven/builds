@@ -35,7 +35,7 @@ struct WorkflowIdentifierEntity: AppEntity {
 
     var displayRepresentation: DisplayRepresentation {
         return DisplayRepresentation(title: "\(identifier.repositoryFullName)",
-                                     subtitle: "\(identifier.workflowId) \(identifier.branch)")
+                                     subtitle: "\(identifier.workflowNameSnapshot) \(identifier.branch)")
     }
 
     init(_ identifier: WorkflowInstance.ID) {
