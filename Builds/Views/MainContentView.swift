@@ -22,6 +22,14 @@ import SwiftUI
 
 struct MainContentView: View {
 
+    struct LayoutMetrics {
+#if os(macOS)
+        static let symbolSize = 46.0  // 41.0 matches SF Symbols but feels too small.
+#else
+        static let symbolSize = 54.5
+#endif
+    }
+
     @ObservedObject var applicationModel: ApplicationModel
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -37,76 +45,31 @@ struct MainContentView: View {
     }
 
     var body: some View {
-        NavigationSplitView(columnVisibility: $sceneModel.settings.columnVisibility) {
-            Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
-                .toolbar {
-#if os(iOS)
-                    ToolbarItem(id: "settings", placement: .topBarLeading) {
-                        Button {
-                            sceneModel.showSettings()
-                        } label: {
-                            Image(systemName: "gear")
-                        }
-                    }
-#endif
+        VStack {
+            if applicationModel.isSignedIn {
+                NavigationSplitView(columnVisibility: $sceneModel.settings.columnVisibility) {
+                    Sidebar(applicationModel: applicationModel, sceneModel: sceneModel)
+                } detail: {
+                    WorkflowsDetailView(applicationModel: applicationModel, sceneModel: sceneModel)
                 }
-        } detail: {
-            VStack {
-                if let section = sceneModel.settings.section {
-                    WorkflowsSection(applicationModel: applicationModel, sceneModel: sceneModel, section: section)
-                        .id(section)
-                } else {
-                    ContentUnavailableView {
-                        Label("Nothing Selected", systemImage: "sidebar.leading")
-                    } description: {
-                        Text("Select a section from the sidebar to view workflows.")
+            } else {
+                ContentUnavailableView {
+                    Label {
+                        Text("Sign In")
+                    } icon: {
+                        SVGImage(url: Bundle.main.url(forResource: "github-mark", withExtension: "svg")!)
+                            .frame(width: LayoutMetrics.symbolSize, height: LayoutMetrics.symbolSize)
                     }
-                }
-            }
-            .toolbarTitleDisplayMode(.inline)
-            .navigationTitle(sceneModel.settings.section?.title ?? "")
-#if os(macOS)
-            .navigationSubtitle("\(sceneModel.workflows.count) Workflows")
-#endif
-            .toolbar(id: "main") {
-
-                ToolbarItem(id: "manage-workflows", placement: .primaryAction) {
+                } description: {
+                    Text("Builds uses your GitHub account to retrieve information about your GitHub Actions workflow statuses.")
+                } actions: {
                     Button {
-                        sceneModel.manageWorkflows()
+                        sceneModel.logIn()
                     } label: {
-                        Label("Add Workflows", systemImage: "plus")
-                    }
-                    .help("Select workflows to display")
-                    .disabled(!applicationModel.isSignedIn)
-                }
-
-#if os(macOS)
-
-                if applicationModel.isSignedIn && (applicationModel.isUpdating || applicationModel.lastError != nil) {
-                    ToolbarItem(id: "status", placement: .navigation) {
-                        StatusButton(applicationModel: applicationModel, sceneModel: sceneModel)
-                    }
-                    .customizationBehavior(.disabled)
-                }
-
-#endif
-
-#if DEBUG
-
-                ToolbarItem(id: "break-auth", placement: .primaryAction) {
-                    Menu {
-                        Button {
-                            await applicationModel.simulateFailure(.authentication)
-                        } label: {
-                            Label("Simulate Authentication Failure", systemImage: "person.slash")
-                        }
-                    } label: {
-                        Label("Simulate Failure", systemImage: "ladybug")
+                        Text("Sign In with GitHub")
                     }
                 }
-
-#endif
-
+                .toolbarTitleDisplayMode(.inlineLarge)
             }
         }
         .presents(confirmable: $sceneModel.confirmation)
