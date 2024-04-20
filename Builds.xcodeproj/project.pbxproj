@@ -83,6 +83,7 @@
 		D8ADD9912B9E9E5600D314F1 /* AnnotationList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */; };
 		D8ADD9932B9EA06800D314F1 /* WorkflowJobsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */; };
 		D8B49EE82BB76D4D0076E273 /* StatusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B49EE72BB76D4D0076E273 /* StatusButton.swift */; };
+		D8BE7CB02BD4649900D1FA34 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D8BE7CAF2BD4649900D1FA34 /* PrivacyInfo.xcprivacy */; };
 		D8C2FE182B9D61D00086A630 /* BranchPickerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */; };
 		D8CA0EEA2B93D6FD00DAE758 /* LifecycleCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */; };
 		D8CA0EEC2B93E1E800DAE758 /* AccountCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */; };
@@ -249,6 +250,7 @@
 		D8ADD9902B9E9E5600D314F1 /* AnnotationList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationList.swift; sourceTree = "<group>"; };
 		D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowJobsList.swift; sourceTree = "<group>"; };
 		D8B49EE72BB76D4D0076E273 /* StatusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusButton.swift; sourceTree = "<group>"; };
+		D8BE7CAF2BD4649900D1FA34 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		D8C2FE172B9D61D00086A630 /* BranchPickerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchPickerSheet.swift; sourceTree = "<group>"; };
 		D8CA0EE92B93D6FD00DAE758 /* LifecycleCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifecycleCommands.swift; sourceTree = "<group>"; };
 		D8CA0EEB2B93E1E800DAE758 /* AccountCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCommands.swift; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 				D83174392BC48FA50036EB40 /* SingleWorkflowTimelineProvider.swift */,
 				D80ED1E62BC5EDFB00897EC7 /* SingleWorkflowWidget.swift */,
 				D88AFD732BC4964C0060B5CC /* SingleWorkflowWidgetEntryView.swift */,
+				D8BE7CAF2BD4649900D1FA34 /* PrivacyInfo.xcprivacy */,
 				D80ED1E02BC5DFE600897EC7 /* Intents */,
 				D885484F2BC4A6B20088D28D /* Resources */,
 				D8A0C7C02BD444900003478F /* Views */,
@@ -853,6 +856,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8BE7CB02BD4649900D1FA34 /* PrivacyInfo.xcprivacy in Resources */,
 				D81F88A42BC4A5D50038B069 /* Localizable.xcstrings in Resources */,
 				D85677FD2BC1CFF7003D2DB6 /* Assets.xcassets in Resources */,
 			);
