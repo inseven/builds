@@ -20,19 +20,19 @@
 
 import SwiftUI
 
-struct WidgetStackingColumnLayout<Primary: View, Secondary: View>: View {
+public struct WidgetStackingColumnLayout<Primary: View, Secondary: View>: View {
 
     @Environment(\.widgetFamily) private var widgetFamily
 
     let primary: Primary
     let secondary: Secondary
 
-    init(@ViewBuilder primary: () -> Primary, @ViewBuilder secondary: () -> Secondary) {
+    public init(@ViewBuilder primary: () -> Primary, @ViewBuilder secondary: () -> Secondary) {
         self.primary = primary()
         self.secondary = secondary()
     }
 
-    var body: some View {
+    public var body: some View {
         switch widgetFamily {
         case .systemSmall:
             VStack(alignment: .leading) {
