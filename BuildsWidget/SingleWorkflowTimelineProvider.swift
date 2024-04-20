@@ -36,31 +36,42 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
         return WorkflowInstance(id: workflowIdentifier.identifier, result: workflowResult)
     }
 
+    func mostRecentCachedWorkflowInstance() async -> WorkflowInstance? {
+        let settings = await Settings()
+        let cachedStatus = await settings.cachedStatus
+        return await settings.workflowsCache
+            .map { id in
+                return WorkflowInstance(id: id, result: cachedStatus[id])
+            }
+            .sortedByDateDescending()
+            .first
+    }
+
     func placeholder(in context: Context) -> SingleWorkflowTimelineEntry {
-        return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
+        return SingleWorkflowTimelineEntry(workflowInstance: nil)
     }
 
     func snapshot(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> SingleWorkflowTimelineEntry {
         guard let workflowIdentifierEntity = configuration.workflow else {
-            return SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())
+            let workflowInstance = context.isPreview ? await mostRecentCachedWorkflowInstance() : nil
+            return SingleWorkflowTimelineEntry(workflowInstance: workflowInstance)
         }
         let workflowInstance = await workflowInstance(for: workflowIdentifierEntity)
-        return SingleWorkflowTimelineEntry(workflowInstance: workflowInstance, configuration: ConfigurationAppIntent())
+        return SingleWorkflowTimelineEntry(workflowInstance: workflowInstance)
     }
 
     func timeline(for configuration: ConfigurationAppIntent,
                   in context: Context) async -> Timeline<SingleWorkflowTimelineEntry> {
         guard let workflowIdentifierEntity = configuration.workflow else {
-            return Timeline(entries: [SingleWorkflowTimelineEntry(workflowInstance: nil, configuration: ConfigurationAppIntent())], policy: .atEnd)
+            return Timeline(entries: [SingleWorkflowTimelineEntry(workflowInstance: nil)], policy: .atEnd)
         }
         guard let workflowResult = try? await GitHubClient.default.fetch(id: workflowIdentifierEntity.identifier,
                                                                          options: [])
         else {
             return Timeline(entries: [placeholder(in: context)], policy: .standard)
         }
-        let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult,
-                                                configuration: ConfigurationAppIntent())
+        let entry = SingleWorkflowTimelineEntry(workflowInstance: workflowResult)
         return Timeline(entries: [entry], policy: .standard)
     }
 

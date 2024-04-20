@@ -27,6 +27,6 @@ struct SingleWorkflowTimelineEntry: TimelineEntry {
 
     let date: Date = Date()
     let workflowInstance: WorkflowInstance?
-    let configuration: ConfigurationAppIntent
+//    let configuration: ConfigurationAppIntent  // TODO: Is this actually necessary once we've inflated it?
 
 }

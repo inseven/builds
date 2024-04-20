@@ -122,3 +122,15 @@ public struct WorkflowInstance: Identifiable, Hashable {
     }
 
 }
+
+extension Collection where Element == WorkflowInstance {
+
+    public func sortedByDateDescending() -> [WorkflowInstance] {
+        return sorted {
+            let date0 = $0.createdAt ?? .distantPast
+            let date1 = $1.createdAt ?? .distantPast
+            return date0.compare(date1) == .orderedDescending
+        }
+    }
+
+}
