@@ -54,6 +54,10 @@ public struct Summary: Codable, Equatable {
             return $0.operationState.score < $1.operationState.score
         }
 
+        let relevantDate = workflowInstances
+            .compactMap { $0.createdAt }
+            .max()
+
         guard let relevantWorkflow = orderedWorkflowInstances.first else {
             self.init(operationState: .unknown, count: workflowInstances.count, date: nil, details: details)
             return
@@ -61,7 +65,7 @@ public struct Summary: Codable, Equatable {
 
         self.init(operationState: relevantWorkflow.operationState,
                   count: workflowInstances.count,
-                  date: relevantWorkflow.createdAt,
+                  date: relevantDate,
                   details: details)
     }
 
