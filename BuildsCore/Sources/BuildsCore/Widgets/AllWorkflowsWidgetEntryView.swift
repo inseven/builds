@@ -58,39 +58,26 @@ struct AllWorkflowsWidgetEntryView : View {
                     .redacted(reason: entry.summary.count > 0 ? nil : .placeholder)
             }
             Spacer()
-            WidgetStackingColumnLayout {
-                let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
-                let label = String.localizedStringWithFormat(format, entry.summary.count)
-                if maximumDetailCount > 0 {
-                    Grid {
-                        GridRow {
-                            Text(entry.summary.count, format: .number)
-                                .gridColumnAlignment(.trailing)
-                            Text(label)
-                                .gridColumnAlignment(.leading)
-                        }
-                        ForEach(Array(entry.summary.details.keys.sorted().prefix(maximumDetailCount))) { key in
-                            GridRow {
-                                Text(entry.summary.details[key]!, format: .number)
-                                Text(key.name)
-                            }
-                        }
-                        .opacity(0.6)
+            let format = NSLocalizedString("PLURAL_WORKFLOW_LABEL", bundle: .module, comment: "Pluralised widget workflow label")
+            let label = String.localizedStringWithFormat(format, entry.summary.count)
+            if maximumDetailCount > 0 {
+                Grid {
+                    GridRow {
+                        Text(entry.summary.count, format: .number)
+                            .gridColumnAlignment(.trailing)
+                        Text(label)
+                            .gridColumnAlignment(.leading)
                     }
-                } else {
-                    Text("\(entry.summary.count) \(label)", bundle: .module)
+                    ForEach(Array(entry.summary.details.keys.sorted().prefix(maximumDetailCount))) { key in
+                        GridRow {
+                            Text(entry.summary.details[key]!, format: .number)
+                            Text(key.name)
+                        }
+                    }
+                    .opacity(0.6)
                 }
-            } secondary: {
-                if let date = entry.summary.date {
-                    Text(date, format: .relative(presentation: .numeric))
-                        .font(.footnote)
-                        .opacity(0.6)
-                } else {
-                    Text("5 minutes ago")
-                        .font(.footnote)
-                        .opacity(0.6)
-                        .redacted(reason: .placeholder)
-                }
+            } else {
+                Text("\(entry.summary.count) \(label)", bundle: .module)
             }
         }
         .foregroundColor(widgetRenderingMode == .fullColor ? .black : nil)

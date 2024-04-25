@@ -38,19 +38,15 @@ struct SingleWorkflowWidgetEntryView : View {
                         .imageScale(.large)
                 }
                 Spacer()
-                WidgetStackingColumnLayout {
+                VStack(alignment: .leading) {
+                    Text(workflowInstance.repositoryName)
                     VStack(alignment: .leading) {
-                        Text(workflowInstance.repositoryName)
-                        VStack(alignment: .leading) {
-                            Text(workflowInstance.workflowName)
-                            Text(workflowInstance.id.branch)
-                                .monospaced()
-                        }
-                        .font(.footnote)
-                        .opacity(0.6)
+                        Text(workflowInstance.workflowName)
+                        Text(workflowInstance.id.branch)
+                            .monospaced()
                     }
-                } secondary: {
-                    WidgetTimestamp(date: workflowInstance.createdAt)
+                    .font(.footnote)
+                    .opacity(0.6)
                 }
             } else {
                 Text("Edit widget to select workflow")
