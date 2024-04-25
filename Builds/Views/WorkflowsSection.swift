@@ -24,14 +24,6 @@ import BuildsCore
 
 struct WorkflowsSection: View {
 
-    struct LayoutMetrics {
-#if os(macOS)
-        static let symbolSize = 46.0  // 41.0 matches SF Symbols but feels too small.
-#else
-        static let symbolSize = 54.5
-#endif
-    }
-
     @ObservedObject var applicationModel: ApplicationModel
     var sceneModel: SceneModel
 
@@ -39,37 +31,18 @@ struct WorkflowsSection: View {
 
     var body: some View {
         VStack {
-            if applicationModel.isSignedIn {
-                if applicationModel.results.count > 0 {
-                    WorkflowsView(workflows: sceneModel.workflows)
-                } else {
-                    ContentUnavailableView {
-                        Label("No Workflows", systemImage: "checklist.unchecked")
-                    } description: {
-                        Text("Add workflows to view their statuses.")
-                    } actions: {
-                        Button {
-                            sceneModel.manageWorkflows()
-                        } label: {
-                            Text("Add Workflows")
-                        }
-                    }
-                }
+            if applicationModel.results.count > 0 {
+                WorkflowsView(workflows: sceneModel.workflows)
             } else {
                 ContentUnavailableView {
-                    Label {
-                        Text("Sign In")
-                    } icon: {
-                        SVGImage(url: Bundle.main.url(forResource: "github-mark", withExtension: "svg")!)
-                            .frame(width: LayoutMetrics.symbolSize, height: LayoutMetrics.symbolSize)
-                    }
+                    Label("No Workflows", systemImage: "checklist.unchecked")
                 } description: {
-                    Text("Builds uses your GitHub account to retrieve information about your GitHub Actions workflow statuses.")
+                    Text("Add workflows to view their statuses.")
                 } actions: {
                     Button {
-                        sceneModel.logIn()
+                        sceneModel.manageWorkflows()
                     } label: {
-                        Text("Sign In with GitHub")
+                        Text("Add Workflows")
                     }
                 }
             }

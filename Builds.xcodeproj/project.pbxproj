@@ -36,6 +36,7 @@
 		D85677FB2BC1CFF6003D2DB6 /* ConfigurationAppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85677FA2BC1CFF6003D2DB6 /* ConfigurationAppIntent.swift */; };
 		D85677FD2BC1CFF7003D2DB6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D85677FC2BC1CFF7003D2DB6 /* Assets.xcassets */; };
 		D85678022BC1CFF7003D2DB6 /* BuildsWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D85677F02BC1CFF6003D2DB6 /* BuildsWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D85A844A2BD46BDA007AFB56 /* WorkflowsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85A84492BD46BDA007AFB56 /* WorkflowsDetailView.swift */; };
 		D85AC0DB2BAE540B003CAE8F /* SummaryCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */; };
 		D866F250280350BC00FC6EBB /* PhoneSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */; };
 		D86A91472B9E5FF30008FF63 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86A91462B9E5FF30008FF63 /* InfoView.swift */; };
@@ -205,6 +206,7 @@
 		D85677FC2BC1CFF7003D2DB6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D85677FE2BC1CFF7003D2DB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D85677FF2BC1CFF7003D2DB6 /* BuildsWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BuildsWidget.entitlements; sourceTree = "<group>"; };
+		D85A84492BD46BDA007AFB56 /* WorkflowsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkflowsDetailView.swift; sourceTree = "<group>"; };
 		D85AC0DA2BAE540B003CAE8F /* SummaryCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCommands.swift; sourceTree = "<group>"; };
 		D866F24F280350BC00FC6EBB /* PhoneSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSettingsView.swift; sourceTree = "<group>"; };
 		D86A91462B9E5FF30008FF63 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
@@ -568,16 +570,17 @@
 				D8800B622BB4B25800AD3BB7 /* SheetReader.swift */,
 				D883F1B82B98019400B00F1C /* Sidebar.swift */,
 				D8B49EE72BB76D4D0076E273 /* StatusButton.swift */,
+				D89ADE422BBCAC5700F915A1 /* StatusImage.swift */,
 				D887C5D72BA0B49600E46174 /* SVGImage.swift */,
 				D8D413E828043FCD001BA6C0 /* WorkflowInstanceCell.swift */,
 				D8ADD9922B9EA06800D314F1 /* WorkflowJobsList.swift */,
 				D854FD862BB616EE00DD31DD /* WorkflowMenu.swift */,
 				D8DA9D802B96FFEC00C17DBC /* WorkflowsContentView.swift */,
+				D85A84492BD46BDA007AFB56 /* WorkflowsDetailView.swift */,
 				D8DA9D862B97007200C17DBC /* WorkflowsPicker.swift */,
 				D8DA9D882B97009900C17DBC /* WorkflowsPickerModel.swift */,
 				D883F1BD2B98087700B00F1C /* WorkflowsSection.swift */,
 				D8D413EA28044062001BA6C0 /* WorkflowsView.swift */,
-				D89ADE422BBCAC5700F915A1 /* StatusImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1000,6 +1003,7 @@
 				D8DA9D812B96FFEC00C17DBC /* WorkflowsContentView.swift in Sources */,
 				D8CA0EF42B9412C300DAE758 /* RequestsHigherFrequencyUpdates.swift in Sources */,
 				D86F532A2BB5163100C9A1AF /* PresentURL.swift in Sources */,
+				D85A844A2BD46BDA007AFB56 /* WorkflowsDetailView.swift in Sources */,
 				D854FD872BB616EE00DD31DD /* WorkflowMenu.swift in Sources */,
 				D83929DB2BA367DD0022B4A3 /* Collection.swift in Sources */,
 				D8DA9D892B97009900C17DBC /* WorkflowsPickerModel.swift in Sources */,

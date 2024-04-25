@@ -64,6 +64,17 @@ struct Sidebar: View {
         .refreshable {
             await applicationModel.refresh()
         }
+        .toolbar {
+#if os(iOS)
+            ToolbarItem(id: "settings", placement: .topBarLeading) {
+                Button {
+                    sceneModel.showSettings()
+                } label: {
+                    Image(systemName: "gear")
+                }
+            }
+#endif
+        }
     }
 
 }
