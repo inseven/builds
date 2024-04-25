@@ -20,12 +20,36 @@
 
 import SwiftUI
 
+fileprivate struct MenuButtonStyleTintColorEnvironmentKey: EnvironmentKey {
+    static let defaultValue: Color? = nil
+}
+
+
+extension EnvironmentValues {
+
+    fileprivate var menuButtonStyleTintColor: Color? {
+        get { self[MenuButtonStyleTintColorEnvironmentKey.self] }
+        set { self[MenuButtonStyleTintColorEnvironmentKey.self] = newValue }
+    }
+
+}
+
+extension View {
+
+    func menuButtonStyleTintColor(_ tintColor: Color?) -> some View {
+        return environment(\.menuButtonStyleTintColor, tintColor)
+    }
+
+}
+
 struct MenuButtonStyle: ButtonStyle {
 
     struct LayoutMetrics {
         static let padding = 8.0
         static let cornerRadius = 8.0
     }
+
+    @Environment(\.menuButtonStyleTintColor) private var tintColor
 
     @State var isActive: Bool = false
 
@@ -41,11 +65,19 @@ struct MenuButtonStyle: ButtonStyle {
         }
     }
 
-    var foregroundColor: Color {
+    var primaryColor: Color {
         if isActive {
             return Color.white
         } else {
             return Color.primary
+        }
+    }
+
+    var secondaryColor: Color {
+        if isActive {
+            return Color.white
+        } else {
+            return Color.secondary
         }
     }
 
@@ -54,7 +86,8 @@ struct MenuButtonStyle: ButtonStyle {
             configuration.label
             Spacer()
         }
-        .foregroundStyle(foregroundColor)
+        .foregroundStyle(primaryColor, secondaryColor)
+        .tint(isActive ? .white : tintColor)
         .padding(LayoutMetrics.padding)
         .background(background())
         .onHover { hovering in

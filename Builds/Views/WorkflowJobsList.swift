@@ -56,14 +56,16 @@ struct WorkflowJobList: View {
                         Spacer()
                         if let startDate = job.started_at {
                             DurationView(startDate: startDate, endDate: job.completed_at)
-                                .foregroundColor(.secondary)
+                                .foregroundStyle(.secondary)
                         }
                     }
                 } icon: {
                     StatusImage(operationState: job.operationState)
-                        .foregroundStyle(job.color)
+                        .foregroundStyle(.tint)
                 }
             }
+            .tint(job.color)
+            .menuButtonStyleTintColor(job.color)
             .help(job.operationState.name)
         }
     }
