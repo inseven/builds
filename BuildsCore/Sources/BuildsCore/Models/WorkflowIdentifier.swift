@@ -34,17 +34,23 @@ public struct WorkflowIdentifier: Hashable, Codable, Sendable {
         return String(repositoryFullName.split(separator: "/").last ?? "?")
     }
 
-    public let repositoryFullName: String
-    public let workflowId: Int
+    public let repositoryFullName: String  // TODO: Separate to owner and name?
+    public let workflowId: Int  // TODO: Remove this?
+    public let workflowNodeId: String
 
     /// Name of the workflow at the time the identifier was created..
     public let workflowNameSnapshot: String
 
     public let branch: String
 
-    public init(repositoryFullName: String, workflowId: Int, workflowNameSnapshot: String, branch: String) {
+    public init(repositoryFullName: String,
+                workflowId: Int,
+                workflowNodeId: String,
+                workflowNameSnapshot: String,
+                branch: String) {
         self.repositoryFullName = repositoryFullName
         self.workflowId = workflowId
+        self.workflowNodeId = workflowNodeId
         self.workflowNameSnapshot = workflowNameSnapshot
         self.branch = branch
     }

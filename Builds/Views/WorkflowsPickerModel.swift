@@ -34,6 +34,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
         }
 
         let workflowId: Int
+        let workflowNodeId: String
         let workflowName: String
         let branch: String
     }
@@ -96,8 +97,9 @@ class WorkflowPickerModel: ObservableObject, Runnable {
                     return self.workflows
                         .map { workflow in
                             return WorkflowDetails(workflowId: workflow.id,
-                                                           workflowName: workflow.name,
-                                                           branch: branch)
+                                                   workflowNodeId: workflow.node_id,
+                                                   workflowName: workflow.name,
+                                                   branch: branch)
                         }
                 }
                 .reduce([], +)
