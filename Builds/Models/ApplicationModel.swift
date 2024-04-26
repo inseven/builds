@@ -227,6 +227,18 @@ class ApplicationModel: NSObject, ObservableObject {
         sync()
         updateOrganizations()
         updateResults()
+
+        Task {
+            do {
+                guard let accessToken = settings.accessToken else {
+                    print("Failed to get access token")
+                    return
+                }
+                try await testStuff(accessToken: accessToken)
+            } catch {
+                print("Failed to perform GraphQL query with error \(error).")
+            }
+        }
     }
 
     @MainActor func addWorkflow(_ id: WorkflowInstance.ID) {
@@ -409,5 +421,27 @@ class ApplicationModel: NSObject, ObservableObject {
     }
 
 #endif
+
+    func testStuff(accessToken: String) async throws {
+
+        let login = Property<String>("login")
+        let bio = Property<String>("bio")
+        let viewer = Field("viewer") { // <- So this is really a User.
+            login
+            bio
+        }
+
+        let userQuery = Query {
+            viewer
+        }
+
+        let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
+        let result = try await client.query(userQuery, accessToken: accessToken)
+
+        print(result)
+        print(result[viewer])
+        print(result[viewer][login])
+    }
+
 
 }
