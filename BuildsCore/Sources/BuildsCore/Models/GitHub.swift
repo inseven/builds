@@ -41,9 +41,9 @@ public class GitHub {
         }
 
         public let id: Int
+        public let node_id: String
 
         public let name: String
-        public let node_id: String
         public let path: String
         public let state: String
     }
@@ -159,11 +159,30 @@ public class GitHub {
         public let workflow_id: Int
     }
 
-    public struct Organization: Codable, Identifiable {
+    public protocol RepositoryScope {
+        var repos_url: URL { get }
+    }
+
+    public struct UserScope: RepositoryScope {
+        public var repos_url = URL(string: "https://api.github.com/user/repos")!
+    }
+
+    public struct Organization: Codable, Identifiable, RepositoryScope {
 
         public let id: Int
 
         public let login: String
+        public let name: String?
+        public let repos_url: URL
+    }
+
+    public struct OrganizationReference: Codable, Identifiable, RepositoryScope {
+
+        public let id: Int
+
+        public let login: String
+        public let url: URL
+        public let repos_url: URL
     }
 
     public struct User: Codable, Hashable {
@@ -284,12 +303,13 @@ public class GitHub {
         return response.workflow_runs
     }
 
-    // TODO: Paged fetch
-    public func repositories(accessToken: String) async throws -> [Repository] {
+    public func repositories(scope: RepositoryScope, accessToken: String) async throws -> [Repository] {
         var repositories: [Repository] = []
         for page in 1... {
-            let url = URL(string: "https://api.github.com/user/repos")!
-            let response: [Repository] = try await fetch(url, accessToken: accessToken, page: page, perPage: 100)
+            let response: [Repository] = try await fetch(scope.repos_url,
+                                                         accessToken: accessToken,
+                                                         page: page,
+                                                         perPage: 100)
             repositories += response
             if response.isEmpty {
                 break
@@ -313,8 +333,20 @@ public class GitHub {
     }
 
     public func organizations(accessToken: String) async throws -> [Organization] {
-        let url = URL(string: "https://api.github.com/users/jbmorley/orgs")!
-        let response: [Organization] = try await fetch(url, accessToken: accessToken)
+        let organizationReferences = try await self.organizationReferences(accessToken: accessToken)
+        return try await organizationReferences.asyncMap { organizationReference in
+            return try await self.organization(organizationReference: organizationReference, accessToken: accessToken)
+        }
+    }
+
+    public func organizationReferences(accessToken: String) async throws -> [OrganizationReference] {
+        let url = URL(string: "https://api.github.com/user/orgs")!
+        let response: [OrganizationReference] = try await fetch(url, accessToken: accessToken)
+        return response
+    }
+
+    public func organization(organizationReference: OrganizationReference, accessToken: String) async throws -> Organization {
+        let response: Organization = try await fetch(organizationReference.url, accessToken: accessToken)
         return response
     }
 
@@ -389,4 +421,12 @@ public class GitHub {
         return components.url
     }
 
+}
+
+extension GitHub.RepositoryScope where Self == GitHub.UserScope {
+
+    public static var user: GitHub.UserScope {
+        return GitHub.UserScope()
+    }
+    
 }

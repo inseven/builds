@@ -319,7 +319,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor func repositoryDetails() async throws -> [RepositoryDetails] {
         let client = try client
         let repositories = try await client
-            .repositories()
+            .repositories(scope: .user)
             .asyncCompactMap { repository -> RepositoryDetails? in
                 guard !repository.archived else {
                     return nil

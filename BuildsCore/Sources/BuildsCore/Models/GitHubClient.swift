@@ -57,8 +57,8 @@ public class GitHubClient {
         self.accessToken = accessToken
     }
 
-    public func repositories() async throws -> [GitHub.Repository] {
-        return try await api.repositories(accessToken: accessToken)
+    public func repositories(scope: GitHub.RepositoryScope) async throws -> [GitHub.Repository] {
+        return try await api.repositories(scope: scope, accessToken: accessToken)
     }
 
     public func workflowRuns(repositoryName: String,
@@ -201,6 +201,10 @@ public class GitHubClient {
         return try await api.rerunFailedJobs(repositoryName: repositoryName,
                                              workflowRunId: workflowRunId,
                                              accessToken: accessToken)
+    }
+
+    public func organizations() async throws -> [GitHub.Organization] {
+        return try await api.organizations(accessToken: accessToken)
     }
 
 
