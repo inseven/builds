@@ -66,20 +66,34 @@ public class GitHubClient {
 
         var workflowIds = Set<WorkflowInstance.ID>()
         let seekingWorkflowIds = Set(seekingWorkflowIds)
+
+        var workflowIdToNodeIdMap: [Int: String] = [:]
+        for workflowId in seekingWorkflowIds {
+            workflowIdToNodeIdMap[workflowId.workflowId] = workflowId.workflowNodeId
+        }
+
         var results = [GitHub.WorkflowRun]()
         for page in 1..<10 {
             let workflowRuns = try await api.workflowRuns(repositoryName: repositoryName,
                                                           page: page,
                                                           perPage: 100,
                                                           accessToken: accessToken)
-            let responseWorkflowIds = workflowRuns.map { workflowRun in
+
+            let responseWorkflowIds = workflowRuns.compactMap { (workflowRun) -> WorkflowInstance.ID? in
+                guard let workflowNodeId = workflowIdToNodeIdMap[workflowRun.workflow_id] else {
+                    return nil
+                }
                 return WorkflowInstance.ID(repositoryFullName: repositoryName,
                                            workflowId: workflowRun.workflow_id,
+                                           workflowNodeId: workflowNodeId,
                                            workflowNameSnapshot: workflowRun.name,
                                            branch: workflowRun.head_branch)
             }
+
             workflowIds.formUnion(responseWorkflowIds)
-            results.append(contentsOf: workflowRuns)
+            results.append(contentsOf: workflowRuns.filter {
+                workflowIdToNodeIdMap[$0.workflow_id] != nil
+            })
             if workflowRuns.isEmpty {
                 break
             }
@@ -120,6 +134,11 @@ public class GitHubClient {
                               options: WorkflowFetchOptions,
                               callback: ((WorkflowInstance) -> Void)?) async throws -> [WorkflowInstance] {
 
+        var workflowIdToNodeIdMap: [Int: String] = [:]
+        for workflowId in ids {
+            workflowIdToNodeIdMap[workflowId.workflowId] = workflowId.workflowNodeId
+        }
+
         // Search for workflow runs for each of our requested ids.
         let ids = Set(ids)
         let workflowRuns = try await self
@@ -127,6 +146,7 @@ public class GitHubClient {
             .reduce(into: [WorkflowInstance.ID: GitHub.WorkflowRun]()) { partialResult, workflowRun in
                 let id = WorkflowInstance.ID(repositoryFullName: workflowRun.repository.full_name,
                                              workflowId: workflowRun.workflow_id,
+                                             workflowNodeId: workflowIdToNodeIdMap[workflowRun.workflow_id]!,
                                              workflowNameSnapshot: workflowRun.name,
                                              branch: workflowRun.head_branch)
                 guard partialResult[id] == nil else {
