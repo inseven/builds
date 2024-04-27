@@ -27,4 +27,8 @@ extension String {
     public static let singleWorkflowWidget = "SingleWorkflowWidget"
     public static let allWorkflowsWidget = "AllWorkflowsWidget"
 
+    func stringPrefix(_ maxLength: Int) -> String {
+        String(prefix(maxLength))
+    }
+
 }
