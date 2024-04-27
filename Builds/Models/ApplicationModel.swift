@@ -57,7 +57,7 @@ class ApplicationModel: NSObject, ObservableObject {
         }
     }
 
-    @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowResult] = [:] {
+    @MainActor @Published var cachedStatus: [WorkflowInstance.ID: WorkflowInstance] = [:] {
         didSet {
             settings.cachedStatus = cachedStatus
             updateResults()
@@ -143,10 +143,10 @@ class ApplicationModel: NSObject, ObservableObject {
                         return
                     }
                     // Don't update the cache unless the contents have changed as this will cause an unnecessary redraw.
-                    guard self.cachedStatus[workflowInstance.id] != workflowInstance.result else {
+                    guard self.cachedStatus[workflowInstance.id] != workflowInstance else {
                         return
                     }
-                    self.cachedStatus[workflowInstance.id] = workflowInstance.result
+                    self.cachedStatus[workflowInstance.id] = workflowInstance
                 }
                 self.lastUpdate = Date()
             } catch {
@@ -171,7 +171,7 @@ class ApplicationModel: NSObject, ObservableObject {
     @MainActor private func updateResults() {
         self.results = workflows
             .map { id in
-                return WorkflowInstance(id: id, result: cachedStatus[id])
+                return cachedStatus[id] ?? WorkflowInstance(id: id)
             }
             .sorted {
                 let repositoryNameOrder = $0.repositoryName.localizedStandardCompare($1.repositoryName)
@@ -348,10 +348,10 @@ class ApplicationModel: NSObject, ObservableObject {
                     return
                 }
                 // Don't update the cache unless the contents have changed as this will cause an unnecessary redraw.
-                guard self.cachedStatus[workflowInstance.id] != workflowInstance.result else {
+                guard self.cachedStatus[workflowInstance.id] != workflowInstance else {
                     return
                 }
-                self.cachedStatus[workflowInstance.id] = workflowInstance.result
+                self.cachedStatus[workflowInstance.id] = workflowInstance
             }
         } catch {
             lastError = error

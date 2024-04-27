@@ -175,7 +175,7 @@ public class GitHubClient {
                               callback: ((WorkflowInstance) -> Void)?) async throws -> WorkflowInstance {
 
         var workflowJobs: [GitHub.WorkflowJob] = []
-        var annotations: [WorkflowResult.Annotation] = []
+        var annotations: [Annotation] = []
 
         if options.contains(.jobs) {
             workflowJobs = try await api.workflowJobs(for: id.repositoryFullName,
@@ -186,7 +186,7 @@ public class GitHubClient {
                 let results = try await api
                     .annotations(for: id.repositoryFullName, workflowJob: workflowJob, accessToken: accessToken)
                     .map {
-                        return WorkflowResult.Annotation(jobId: workflowJob.id, annotation: $0)
+                        return Annotation(jobId: workflowJob.id, annotation: $0)
                     }
                 annotations.append(contentsOf: results)
             }

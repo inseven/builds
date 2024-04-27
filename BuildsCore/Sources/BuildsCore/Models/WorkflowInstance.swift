@@ -20,14 +20,10 @@
 
 import SwiftUI
 
-public struct WorkflowInstance: Identifiable, Hashable {
-
-    public var annotations: [WorkflowResult.Annotation] {
-        return result?.annotations ?? []
-    }
+public struct WorkflowInstance: Identifiable, Hashable, Codable {
 
     public var attributedTitle: AttributedString? {
-        guard let title = result?.workflowRun.display_title else {
+        guard let title else {
             return nil
         }
         guard let attributedTitle = try? AttributedString(markdown: title) else {
@@ -37,61 +33,30 @@ public struct WorkflowInstance: Identifiable, Hashable {
     }
 
     public var branchURL: URL? {
-        guard let repositoryURL else {
-            return nil
-        }
-        return repositoryURL.appendingPathComponents(["tree", id.branch])
+        return repositoryURL?.appendingPathComponents(["tree", id.branch])
     }
 
     public var commitURL: URL? {
-        guard let result, let repositoryURL else {
+        guard let repositoryURL, let sha else {
             return nil
         }
-        return repositoryURL.appendingPathComponents(["commit", result.workflowRun.head_sha])
-    }
-
-    public var jobs: [GitHub.WorkflowJob] {
-        return result?.jobs ?? []
-    }
-
-    public var createdAt: Date? {
-        return result?.workflowRun.created_at
-    }
-
-    public var operationState: OperationState {
-        return OperationState(status: result?.workflowRun.status, conclusion: result?.workflowRun.conclusion)
+        return repositoryURL.appendingPathComponents(["commit", sha])
     }
 
     public var organizationURL: URL? {
-        guard let repositoryURL else {
-            return nil
-        }
-        return repositoryURL.deletingLastPathComponent()
+        return repositoryURL?.deletingLastPathComponent()
     }
 
     public var pullsURL: URL? {
-        guard let repositoryURL else {
-            return nil
-        }
-        return repositoryURL.appendingPathComponent("pulls")
+        return repositoryURL?.appendingPathComponent("pulls")
     }
 
     public var repositoryName: String {
         return id.repositoryName
     }
 
-    public var repositoryURL: URL? {
-        guard let url = result?.workflowRun.repository.html_url else {
-            return nil
-        }
-        return url
-    }
-
-    public var sha: String? {
-        guard let result else {
-            return nil
-        }
-        return String(result.workflowRun.head_sha.prefix(7))
+    public var shortSha: String? {
+        return sha?.stringPrefix(7)
     }
 
     public var statusColor: Color {
@@ -102,23 +67,50 @@ public struct WorkflowInstance: Identifiable, Hashable {
         return operationState.systemImage
     }
 
-    public var workflowName: String {
-        return result?.workflowRun.name ?? id.workflowNameSnapshot
-    }
-
     public var workflowURL: URL? {
-        guard let repositoryURL, let id = result?.workflowRun.id else {
+        guard let repositoryURL, let workflowRunId else {
             return nil
         }
-        return repositoryURL.appendingPathComponents(["actions", "runs", String(id), "workflow"])
+        return repositoryURL.appendingPathComponents(["actions", "runs", String(workflowRunId), "workflow"])
     }
 
     public let id: WorkflowIdentifier
-    public let result: WorkflowResult?
+
+    public let annotations: [Annotation]
+    public let createdAt: Date?
+    public let jobs: [GitHub.WorkflowJob]
+    public let operationState: OperationState
+    public let repositoryURL: URL?
+    public let sha: String?
+    public let title: String?
+    public let updatedAt: Date?
+    public let workflowFilePath: String?
+    public let workflowName: String
+    public let workflowRunAttempt: Int?
+    public let workflowRunId: Int?
 
     public init(id: ID, result: WorkflowResult? = nil) {
         self.id = id
-        self.result = result
+
+        self.annotations = result?.annotations ?? []
+        self.createdAt = result?.workflowRun.created_at
+        self.jobs = result?.jobs ?? []
+        self.operationState = OperationState(status: result?.workflowRun.status,
+                                             conclusion: result?.workflowRun.conclusion)
+        self.repositoryURL = result?.workflowRun.repository.html_url
+        self.sha = result?.workflowRun.head_sha
+        self.title = result?.workflowRun.display_title
+        self.updatedAt = result?.workflowRun.updated_at
+        self.workflowFilePath = result?.workflowRun.path
+        self.workflowName = result?.workflowRun.name ?? id.workflowNameSnapshot
+        self.workflowRunAttempt = result?.workflowRun.run_attempt
+        self.workflowRunId = result?.workflowRun.id
+    }
+
+    public func job(for annotation: Annotation) -> GitHub.WorkflowJob? {
+        return jobs.first {
+            return $0.id == annotation.jobId
+        }
     }
 
 }

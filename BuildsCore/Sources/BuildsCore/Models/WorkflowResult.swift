@@ -22,16 +22,6 @@ import SwiftUI
 
 public struct WorkflowResult: Codable, Hashable {
 
-    public struct Annotation: Codable, Identifiable, Hashable {
-
-        public var id: String {
-            return "\(annotation.path):\(annotation.start_line):\(annotation.end_line):\(annotation.start_column ?? -1):\(annotation.end_column ?? -1)"
-        }
-
-        public let jobId: GitHub.WorkflowJob.ID
-        public let annotation: GitHub.Annotation
-    }
-
     public let workflowRun: GitHub.WorkflowRun
     public let jobs: [GitHub.WorkflowJob]
     public let annotations: [Annotation]
@@ -42,12 +32,6 @@ public struct WorkflowResult: Codable, Hashable {
         self.workflowRun = workflowRun
         self.jobs = jobs
         self.annotations = annotations
-    }
-
-    public func job(for annotation: Annotation) -> GitHub.WorkflowJob? {
-        return jobs.first {
-            return $0.id == annotation.jobId
-        }
     }
 
 }

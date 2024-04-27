@@ -53,8 +53,8 @@ struct InfoView: View {
                     // Title.
                     LabeledContent {
                         Button {
-                            if let result = workflowInstance.result {
-                                presentURL(result.workflowRun.html_url)
+                            if let workflowURL = workflowInstance.workflowURL {
+                                presentURL(workflowURL)
                             }
                         } label: {
                             if let title = workflowInstance.attributedTitle {
@@ -65,7 +65,7 @@ struct InfoView: View {
                                 Text("-")
                             }
                         }
-                        .disabled(workflowInstance.result == nil)
+                        .disabled(workflowInstance.workflowURL == nil)
                     } label: {
                         Text("Title")
                     }
@@ -78,7 +78,7 @@ struct InfoView: View {
                             }
                             presentURL(url)
                         } label: {
-                            if let sha = workflowInstance.sha {
+                            if let sha = workflowInstance.shortSha {
                                 Text(sha)
                                     .foregroundStyle(.link)
                                     .monospaced()
@@ -87,7 +87,7 @@ struct InfoView: View {
                                 Text("-")
                             }
                         }
-                        .disabled(workflowInstance.result == nil)
+                        .disabled(workflowInstance.commitURL == nil)
                     } label: {
                         Text("Commit")
                     }
@@ -95,17 +95,17 @@ struct InfoView: View {
                     // Branch.
                     LabeledContent {
                         Button {
-                            guard let branchesURL = workflowInstance.branchURL else {
+                            guard let brancheURL = workflowInstance.branchURL else {
                                 return
                             }
-                            presentURL(branchesURL)
+                            presentURL(brancheURL)
                         } label: {
                             Text(workflowInstance.id.branch)
                                 .foregroundStyle(.link)
                                 .monospaced()
                                 .multilineTextAlignment(.trailing)
                         }
-                        .disabled(workflowInstance.result == nil)
+                        .disabled(workflowInstance.branchURL == nil)
                     } label: {
                         Text("Branch")
                     }
@@ -118,15 +118,15 @@ struct InfoView: View {
                             }
                             presentURL(workflowURL)
                         } label: {
-                            if let path = workflowInstance.result?.workflowRun.path {
-                                Text(path)
+                            if let workflowFilePath = workflowInstance.workflowFilePath {
+                                Text(workflowFilePath)
                                     .foregroundStyle(.link)
                                     .multilineTextAlignment(.trailing)
                             } else {
                                 Text("-")
                             }
                         }
-                        .disabled(workflowInstance.result == nil)
+                        .disabled(workflowInstance.workflowURL == nil)
                     } label: {
                         Text("Workflow")
                     }
@@ -170,38 +170,41 @@ struct InfoView: View {
                     }
 
                 }
-                if let result = workflowInstance.result {
-                    Section {
-                        LabeledContent {
-                            Text(format(date: result.workflowRun.created_at))
-                        } label: {
-                            Text("Created")
+                Section {
+                    LabeledContent {
+                        if let createdAt = workflowInstance.createdAt {
+                            Text(format(date: createdAt))
                         }
-                        LabeledContent {
-                            Text(format(date: result.workflowRun.updated_at))
-                        } label: {
-                            Text("Updated")
+                    } label: {
+                        Text("Created")
+                    }
+                    LabeledContent {
+                        if let updatedAt = workflowInstance.updatedAt {
+                            Text(format(date: updatedAt))
                         }
-                        LabeledContent {
-                            let runAttempt = result.workflowRun.run_attempt
+                    } label: {
+                        Text("Updated")
+                    }
+                    LabeledContent {
+                        if let runAttempt = workflowInstance.workflowRunAttempt {
                             Text("#\(runAttempt)")
-                        } label: {
-                            Text("Attempt")
                         }
-                    } header: {
-                        Text("Details")
+                    } label: {
+                        Text("Attempt")
                     }
+                } header: {
+                    Text("Details")
+                }
+                Section {
+                    WorkflowJobList(jobs: workflowInstance.jobs)
+                } header: {
+                    Text("Jobs")
+                }
+                if !workflowInstance.annotations.isEmpty {
                     Section {
-                        WorkflowJobList(jobs: result.jobs)
+                        AnnotationList(workflowInstance: workflowInstance)
                     } header: {
-                        Text("Jobs")
-                    }
-                    if !result.annotations.isEmpty {
-                        Section {
-                            AnnotationList(result: result)
-                        } header: {
-                            Text("Annotations")
-                        }
+                        Text("Annotations")
                     }
                 }
             }

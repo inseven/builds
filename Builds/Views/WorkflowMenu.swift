@@ -32,7 +32,7 @@ struct WorkflowMenu {
                                                   openContext: OpenContext) -> [MenuItem] {
 
         let workflowInstances = sceneModel?.workflows.filter(selection: selection) ?? []
-        let results = workflowInstances.compactMap { $0.result }
+//        let results = workflowInstances.compactMap { $0.result }
 
         MenuItem("Get Info", systemImage: "info") {
             for instance in workflowInstances {
@@ -44,80 +44,109 @@ struct WorkflowMenu {
             }
         }
         .keyboardShortcut("i")
-        .disabled(results.isEmpty)
+        .disabled(workflowInstances.isEmpty)
 
         Divider()
 
         MenuItem("Open", systemImage: applicationModel.useInAppBrowser ? "rectangle.and.text.magnifyingglass" : "safari") {
 
+            // Open Run.
+
+            let workflowURLs = workflowInstances
+                .compactMap { $0.workflowURL }
+
             MenuItem("Run", systemImage: "play") {
-                for result in results {
-                    openContext.presentURL(result.workflowRun.html_url)
-                }
+                workflowURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(workflowURLs.isEmpty)
+
+            // Open Commit.
+
+            let commitURLs = workflowInstances
+                .compactMap { $0.commitURL }
 
             MenuItem("Commit", systemImage: "checkmark.seal") {
-                for url in workflowInstances.compactMap({ $0.commitURL }) {
-                    openContext.presentURL(url)
-                }
+                workflowURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(commitURLs.isEmpty)
+
+            // Open Branch.
+
+            let branchURLs = workflowInstances
+                .compactMap { $0.branchURL }
 
             MenuItem("Branch", systemImage: "arrow.turn.down.right") {
-                for url in Set(workflowInstances.compactMap({ $0.branchURL })) {
-                    openContext.presentURL(url)
-                }
+                branchURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(branchURLs.isEmpty)
+
+            // Open Workflow.
 
             MenuItem("Workflow", systemImage: "doc.text") {
-                for url in workflowInstances.compactMap({ $0.workflowURL }) {
-                    openContext.presentURL(url)
-                }
+                workflowURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(workflowURLs.isEmpty)
+
+            // Divider.
 
             Divider()
+
+            // Open Repository.
+
+            let repositoryURLs = workflowInstances
+                .compactMap { $0.repositoryURL }
 
             MenuItem("Repository", systemImage: "cylinder") {
-                for url in Set(workflowInstances.compactMap({ $0.repositoryURL })) {
-                    openContext.presentURL(url)
-                }
+                repositoryURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(repositoryURLs.isEmpty)
+
+            // Open Organization.
+
+            let organizationURLs = workflowInstances
+                .compactMap { $0.organizationURL }
 
             MenuItem("Organization", systemImage: "building.2") {
-                for url in Set(workflowInstances.compactMap({ $0.organizationURL })) {
-                    openContext.presentURL(url)
-                }
+                organizationURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(organizationURLs.isEmpty)
+
+            // Divider.
 
             Divider()
 
+            // Open Pulls.
+
+            let pullsURLs = workflowInstances
+                .compactMap { $0.pullsURL }
+
             MenuItem("Pulls", systemImage: "checklist") {
-                for url in workflowInstances.compactMap({ $0.pullsURL }) {
-                    openContext.presentURL(url)
-                }
+                pullsURLs
+                    .forEach { openContext.presentURL($0) }
             }
-            .disabled(results.isEmpty)
+            .disabled(pullsURLs.isEmpty)
 
         }
-        .disabled(results.isEmpty)
+        .disabled(workflowInstances.isEmpty)
 
         MenuItem("Re-Run", systemImage: "memories") {
 
-            let disabled = workflowInstances.count != 1 || workflowInstances.first?.result == nil
+            let disabled = workflowInstances.count != 1 || workflowInstances.first?.operationState != .unknown
             let hasFailedJobs = workflowInstances.first?.jobs.contains(where: { $0.conclusion == .failure }) ?? false
 
             MenuItem("All Jobs", systemImage: "square.on.square") {
                 Task {
                     guard let workflowInstance = workflowInstances.first,
-                          let workflowRun = workflowInstance.result?.workflowRun else {
+                          let workflowRunId = workflowInstance.workflowRunId else {
                         return
                     }
-                    await sceneModel?.rerun(id: workflowInstance.id, workflowRunId: workflowRun.id)
+                    await sceneModel?.rerun(id: workflowInstance.id, workflowRunId: workflowRunId)
                 }
             }
             .disabled(disabled)
@@ -125,10 +154,10 @@ struct WorkflowMenu {
             MenuItem("Failed Jobs", systemImage: "xmark.square") {
                 Task {
                     guard let workflowInstance = workflowInstances.first,
-                          let workflowRun = workflowInstance.result?.workflowRun else {
+                          let workflowRunId = workflowInstance.workflowRunId else {
                         return
                     }
-                    await sceneModel?.rerun(id: workflowInstance.id, workflowRunId: workflowRun.id)
+                    await sceneModel?.rerun(id: workflowInstance.id, workflowRunId: workflowRunId)
                 }
             }
             .disabled(disabled || !hasFailedJobs)

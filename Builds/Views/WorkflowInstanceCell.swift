@@ -37,6 +37,7 @@ struct WorkflowInstanceCell: View {
         static let selectionPadding = 2.5
     }
 
+    // TODO: Rename to workflowInstance
     let instance: WorkflowInstance
 
     var showsHighlight: Bool {
@@ -62,23 +63,19 @@ struct WorkflowInstanceCell: View {
                 HStack(spacing: LayoutMetrics.popoverButtonSpacing) {
                     if instance.annotations.count > 0 {
                         DetailsPopover(listRowInsets: LayoutMetrics.annotationListRowInsets) {
-                            if let result = instance.result {
-                                AnnotationList(result: result)
-                            }
+                            AnnotationList(workflowInstance: instance)
                         } label: {
                             Image(systemName: "text.alignleft")
                         }
                     }
                     DetailsPopover(listRowInsets: LayoutMetrics.worfklowJobListRowInsets) {
-                        if let jobs = instance.result?.jobs {
-                            WorkflowJobList(jobs: jobs)
-                                .buttonStyle(.menu)
-                        }
+                        WorkflowJobList(jobs: instance.jobs)
+                            .buttonStyle(.menu)
                     } label: {
                         StatusImage(operationState: instance.operationState)
                             .help(instance.operationState.name)
                     }
-                    .disabled(instance.result == nil)
+                    .disabled(instance.jobs.isEmpty)
                 }
 
             }
@@ -87,7 +84,7 @@ struct WorkflowInstanceCell: View {
                     Text(instance.workflowName)
                     Text(instance.id.branch)
                         .monospaced()
-                    Text(instance.sha ?? "-")
+                    Text(instance.shortSha ?? "-")
                         .monospaced()
                 }
                 VStack {

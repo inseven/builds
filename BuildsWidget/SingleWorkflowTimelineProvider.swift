@@ -32,8 +32,8 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
     func workflowInstance(for workflowIdentifier: WorkflowIdentifierEntity) async -> WorkflowInstance {
         let settings = await Settings()
         let results = await settings.cachedStatus
-        let workflowResult = results[workflowIdentifier.identifier]
-        return WorkflowInstance(id: workflowIdentifier.identifier, result: workflowResult)
+        let workflowInstance = results[workflowIdentifier.identifier]
+        return workflowInstance ?? WorkflowInstance(id: workflowIdentifier.identifier)
     }
 
     func mostRecentCachedWorkflowInstance() async -> WorkflowInstance? {
@@ -41,7 +41,7 @@ struct SingleWorkflowTimelineProvider: AppIntentTimelineProvider {
         let cachedStatus = await settings.cachedStatus
         return await settings.workflowsCache
             .map { id in
-                return WorkflowInstance(id: id, result: cachedStatus[id])
+                cachedStatus[id] ?? WorkflowInstance(id: id)
             }
             .sortedByDateDescending()
             .first

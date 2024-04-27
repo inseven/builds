@@ -62,8 +62,8 @@ struct WorkflowsView: View, OpenContext {
         } primaryAction: { selection in
 #if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
-            for result in workflowInstances.compactMap({ $0.result }) {
-                presentURL(result.workflowRun.html_url)
+            for workflowURL in workflowInstances.compactMap({ $0.workflowURL }) {
+                presentURL(workflowURL)
             }
 #else
             guard let id = selection.first else {
