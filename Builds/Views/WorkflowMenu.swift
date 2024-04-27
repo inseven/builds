@@ -32,7 +32,6 @@ struct WorkflowMenu {
                                                   openContext: OpenContext) -> [MenuItem] {
 
         let workflowInstances = sceneModel?.workflows.filter(selection: selection) ?? []
-//        let results = workflowInstances.compactMap { $0.result }
 
         MenuItem("Get Info", systemImage: "info") {
             for instance in workflowInstances {
@@ -52,14 +51,14 @@ struct WorkflowMenu {
 
             // Open Run.
 
-            let workflowURLs = workflowInstances
-                .compactMap { $0.workflowURL }
+            let workflowRunURLs = workflowInstances
+                .compactMap { $0.workflowRunURL }
 
             MenuItem("Run", systemImage: "play") {
-                workflowURLs
+                workflowRunURLs
                     .forEach { openContext.presentURL($0) }
             }
-            .disabled(workflowURLs.isEmpty)
+            .disabled(workflowRunURLs.isEmpty)
 
             // Open Commit.
 
@@ -67,7 +66,7 @@ struct WorkflowMenu {
                 .compactMap { $0.commitURL }
 
             MenuItem("Commit", systemImage: "checkmark.seal") {
-                workflowURLs
+                commitURLs
                     .forEach { openContext.presentURL($0) }
             }
             .disabled(commitURLs.isEmpty)
@@ -85,11 +84,15 @@ struct WorkflowMenu {
 
             // Open Workflow.
 
+            let workflowFileURLs = workflowInstances
+                .compactMap { $0.workflowFileURL }
+
+
             MenuItem("Workflow", systemImage: "doc.text") {
-                workflowURLs
+                workflowFileURLs
                     .forEach { openContext.presentURL($0) }
             }
-            .disabled(workflowURLs.isEmpty)
+            .disabled(workflowFileURLs.isEmpty)
 
             // Divider.
 

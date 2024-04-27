@@ -67,7 +67,7 @@ public struct WorkflowInstance: Identifiable, Hashable, Codable {
         return operationState.systemImage
     }
 
-    public var workflowURL: URL? {
+    public var workflowFileURL: URL? {
         guard let repositoryURL, let workflowRunId else {
             return nil
         }
@@ -88,6 +88,7 @@ public struct WorkflowInstance: Identifiable, Hashable, Codable {
     public let workflowName: String
     public let workflowRunAttempt: Int?
     public let workflowRunId: Int?
+    public let workflowRunURL: URL?
 
     public init(id: ID, result: WorkflowResult? = nil) {
         self.id = id
@@ -105,6 +106,7 @@ public struct WorkflowInstance: Identifiable, Hashable, Codable {
         self.workflowName = result?.workflowRun.name ?? id.workflowNameSnapshot
         self.workflowRunAttempt = result?.workflowRun.run_attempt
         self.workflowRunId = result?.workflowRun.id
+        self.workflowRunURL = result?.workflowRun.html_url
     }
 
     public func job(for annotation: Annotation) -> GitHub.WorkflowJob? {

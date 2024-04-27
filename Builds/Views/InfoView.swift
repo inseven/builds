@@ -53,8 +53,8 @@ struct InfoView: View {
                     // Title.
                     LabeledContent {
                         Button {
-                            if let workflowURL = workflowInstance.workflowURL {
-                                presentURL(workflowURL)
+                            if let workflowRunURL = workflowInstance.workflowRunURL {
+                                presentURL(workflowRunURL)
                             }
                         } label: {
                             if let title = workflowInstance.attributedTitle {
@@ -65,7 +65,7 @@ struct InfoView: View {
                                 Text("-")
                             }
                         }
-                        .disabled(workflowInstance.workflowURL == nil)
+                        .disabled(workflowInstance.workflowRunURL == nil)
                     } label: {
                         Text("Title")
                     }
@@ -113,7 +113,7 @@ struct InfoView: View {
                     // Workflow.
                     LabeledContent {
                         Button {
-                            guard let workflowURL = workflowInstance.workflowURL else {
+                            guard let workflowURL = workflowInstance.workflowFileURL else {
                                 return
                             }
                             presentURL(workflowURL)
@@ -126,7 +126,7 @@ struct InfoView: View {
                                 Text("-")
                             }
                         }
-                        .disabled(workflowInstance.workflowURL == nil)
+                        .disabled(workflowInstance.workflowFileURL == nil)
                     } label: {
                         Text("Workflow")
                     }
