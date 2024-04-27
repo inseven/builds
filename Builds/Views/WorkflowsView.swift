@@ -50,7 +50,7 @@ struct WorkflowsView: View, OpenContext {
         SelectableCollectionView(workflows, selection: $sceneModel.selection,
                                  columns: columns,
                                  spacing: LayoutMetrics.interItemSpacing) { workflowInstance in
-            WorkflowInstanceCell(instance: workflowInstance)
+            WorkflowInstanceCell(workflowInstance: workflowInstance)
 #if os(iOS)
                 .environment(\.isSelected, sceneModel.selection.contains(workflowInstance.id))
 #endif

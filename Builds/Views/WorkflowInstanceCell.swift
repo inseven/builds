@@ -37,8 +37,7 @@ struct WorkflowInstanceCell: View {
         static let selectionPadding = 2.5
     }
 
-    // TODO: Rename to workflowInstance
-    let instance: WorkflowInstance
+    let workflowInstance: WorkflowInstance
 
     var showsHighlight: Bool {
         return isSelected || highlightState == .forSelection
@@ -56,39 +55,39 @@ struct WorkflowInstanceCell: View {
         Grid(alignment: .leadingFirstTextBaseline) {
             GridRow {
                 HStack {
-                    Text(instance.repositoryName)
+                    Text(workflowInstance.repositoryName)
                         .font(Font.headline)
                     Spacer()
                 }
                 HStack(spacing: LayoutMetrics.popoverButtonSpacing) {
-                    if instance.annotations.count > 0 {
+                    if workflowInstance.annotations.count > 0 {
                         DetailsPopover(listRowInsets: LayoutMetrics.annotationListRowInsets) {
-                            AnnotationList(workflowInstance: instance)
+                            AnnotationList(workflowInstance: workflowInstance)
                         } label: {
                             Image(systemName: "text.alignleft")
                         }
                     }
                     DetailsPopover(listRowInsets: LayoutMetrics.worfklowJobListRowInsets) {
-                        WorkflowJobList(jobs: instance.jobs)
+                        WorkflowJobList(jobs: workflowInstance.jobs)
                             .buttonStyle(.menu)
                     } label: {
-                        StatusImage(operationState: instance.operationState)
-                            .help(instance.operationState.name)
+                        StatusImage(operationState: workflowInstance.operationState)
+                            .help(workflowInstance.operationState.name)
                     }
-                    .disabled(instance.jobs.isEmpty)
+                    .disabled(workflowInstance.jobs.isEmpty)
                 }
 
             }
             GridRow {
                 HStack {
-                    Text(instance.workflowName)
-                    Text(instance.id.branch)
+                    Text(workflowInstance.workflowName)
+                    Text(workflowInstance.id.branch)
                         .monospaced()
-                    Text(instance.shortSha ?? "-")
+                    Text(workflowInstance.shortSha ?? "-")
                         .monospaced()
                 }
                 VStack {
-                    if let createdAt = instance.createdAt {
+                    if let createdAt = workflowInstance.createdAt {
                         TimelineView(.periodic(from: createdAt, by: 1)) { _ in
                             Text(createdAt, format: .relative(presentation: .numeric))
                         }
@@ -104,7 +103,7 @@ struct WorkflowInstanceCell: View {
         .lineLimit(1)
         .frame(maxWidth: .infinity)
         .padding()
-        .background(instance.statusColor)
+        .background(workflowInstance.statusColor)
         .foregroundColor(.black)
         .clipShape(RoundedRectangle(cornerRadius: LayoutMetrics.cornerRadius))
 #if os(iOS)
