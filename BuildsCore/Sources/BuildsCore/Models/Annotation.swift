@@ -33,25 +33,29 @@ public struct Annotation: Codable, Identifiable, Hashable {
 
     public let jobId: Int
 
-    public let endColumn: Int?
+    public let startLine: Int
     public let endLine: Int
+
+    public let startColumn: Int?
+    public let endColumn: Int?
+
     public let level: Level
     public let message: String
     public let path: String
-    public let startColumn: Int?
-    public let startLine: Int
     public let title: String
 
     init(jobId: Int, annotation: GitHub.Annotation) {
         self.jobId = jobId
 
-        self.endColumn = annotation.end_column
+        self.startLine = annotation.start_line
         self.endLine = annotation.end_line
+
+        self.startColumn = annotation.end_column
+        self.endColumn = annotation.end_column
+
         self.level = Level(annotation.annotation_level)
         self.message = annotation.message
         self.path = annotation.path
-        self.startColumn = annotation.end_column
-        self.startLine = annotation.start_line
         self.title = annotation.title
     }
 }
