@@ -28,29 +28,28 @@ struct AnnotationList: View {
         static let interItemSpacing = 8.0
     }
 
-    let result: WorkflowResult
+    let workflowInstance: WorkflowInstance
 
     var body: some View {
-        let annotations = result.annotations
-        ForEach(annotations) { annotation in
+        ForEach(workflowInstance.annotations) { annotation in
             Label {
                 HStack(alignment: .firstTextBaseline) {
                     VStack(alignment: .leading, spacing: LayoutMetrics.interItemSpacing) {
-                        if let job = result.job(for: annotation) {
+                        if let job = workflowInstance.job(for: annotation) {
                             Text(job.name)
                                 .fontWeight(.bold)
                         }
-                        if !annotation.annotation.title.isEmpty {
-                            Text(annotation.annotation.title)
+                        if !annotation.title.isEmpty {
+                            Text(annotation.title)
                         }
-                        Text(annotation.annotation.message)
+                        Text(annotation.message)
                             .lineLimit(10)
                             .foregroundColor(.secondary)
                             .monospaced()
                     }
                 }
             } icon: {
-                switch annotation.annotation.annotation_level {
+                switch annotation.level {
                 case .failure:
                     Image(systemName: "exclamationmark.octagon")
                         .symbolRenderingMode(.multicolor)

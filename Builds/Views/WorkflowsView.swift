@@ -50,7 +50,7 @@ struct WorkflowsView: View, OpenContext {
         SelectableCollectionView(workflows, selection: $sceneModel.selection,
                                  columns: columns,
                                  spacing: LayoutMetrics.interItemSpacing) { workflowInstance in
-            WorkflowInstanceCell(instance: workflowInstance)
+            WorkflowInstanceCell(workflowInstance: workflowInstance)
 #if os(iOS)
                 .environment(\.isSelected, sceneModel.selection.contains(workflowInstance.id))
 #endif
@@ -62,8 +62,8 @@ struct WorkflowsView: View, OpenContext {
         } primaryAction: { selection in
 #if os(macOS)
             let workflowInstances = workflows.filter(selection: selection)
-            for result in workflowInstances.compactMap({ $0.result }) {
-                presentURL(result.workflowRun.html_url)
+            for workflowRunURL in workflowInstances.compactMap({ $0.workflowRunURL }) {
+                presentURL(workflowRunURL)
             }
 #else
             guard let id = selection.first else {

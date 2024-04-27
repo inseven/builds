@@ -20,18 +20,36 @@
 
 import SwiftUI
 
-public struct WorkflowResult: Codable, Hashable {
+public struct Job: Identifiable, Codable, Hashable {
 
-    public let workflowRun: GitHub.WorkflowRun
-    public let jobs: [GitHub.WorkflowJob]
-    public let annotations: [Annotation]
+    public var color: Color {
+        return operationState.color
+    }
 
-    public init(workflowRun: GitHub.WorkflowRun,
-                jobs: [GitHub.WorkflowJob],
-                annotations: [Annotation]) {
-        self.workflowRun = workflowRun
-        self.jobs = jobs
-        self.annotations = annotations
+    public let id: Int
+    public let name: String
+
+    public let startedAt: Date?
+    public let completedAt: Date?
+
+    public let operationState: OperationState
+
+    public let url: URL
+}
+
+extension Job {
+
+    init(_ workflowJob: GitHub.WorkflowJob) {
+
+        self.id = workflowJob.id
+        self.name = workflowJob.name
+
+        self.startedAt = workflowJob.started_at
+        self.completedAt = workflowJob.completed_at
+
+        self.operationState = OperationState(status: workflowJob.status, conclusion: workflowJob.conclusion)
+
+        self.url = workflowJob.html_url
     }
 
 }

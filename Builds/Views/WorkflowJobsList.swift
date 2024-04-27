@@ -22,23 +22,11 @@ import SwiftUI
 
 import BuildsCore
 
-extension GitHub.WorkflowJob {
-
-    var operationState: OperationState {
-        return OperationState(status: status, conclusion: conclusion)
-    }
-
-    var color: Color {
-        return operationState.color
-    }
-
-}
-
 struct WorkflowJobList: View {
 
     @Environment(\.presentURL) private var presentURL
 
-    let jobs: [GitHub.WorkflowJob]
+    let jobs: [Job]
 
     func background(_ color: Color) -> some View {
         Circle()
@@ -48,14 +36,14 @@ struct WorkflowJobList: View {
     var body: some View {
         ForEach(jobs) { job in
             Button {
-                presentURL(job.html_url)
+                presentURL(job.url)
             } label: {
                 Label {
                     HStack(alignment: .firstTextBaseline) {
                         Text(job.name)
                         Spacer()
-                        if let startDate = job.started_at {
-                            DurationView(startDate: startDate, endDate: job.completed_at)
+                        if let startDate = job.startedAt {
+                            DurationView(startDate: startDate, endDate: job.completedAt)
                                 .foregroundStyle(.secondary)
                         }
                     }

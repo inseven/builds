@@ -108,7 +108,7 @@ public class Settings {
         }
     }
 
-    @MainActor public var cachedStatus: [WorkflowInstance.ID: WorkflowResult] {
+    @MainActor public var cachedStatus: [WorkflowInstance.ID: WorkflowInstance] {
         get {
             return (try? defaults.codable(forKey: .status)) ?? [:]
         }
