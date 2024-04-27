@@ -24,7 +24,7 @@ public struct Summary: Codable, Equatable {
 
     public let operationState: OperationState
     public let count: Int
-    public let date: Date?
+    public let date: Date?  // TODO: Remove unused!
     public let details: [OperationState: Int]
 
     public init(operationState: OperationState = .unknown,
