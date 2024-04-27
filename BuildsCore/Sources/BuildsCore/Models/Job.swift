@@ -27,23 +27,28 @@ public struct Job: Identifiable, Codable, Hashable {
     }
 
     public let id: Int
-
-    public let completedAt: Date?
     public let name: String
-    public let operationState: OperationState
-    public let startedAt: Date?
-    public let url: URL
 
+    public let startedAt: Date?
+    public let completedAt: Date?
+
+    public let operationState: OperationState
+
+    public let url: URL
 }
 
 extension Job {
 
     init(_ workflowJob: GitHub.WorkflowJob) {
+
         self.id = workflowJob.id
-        self.completedAt = workflowJob.completed_at
         self.name = workflowJob.name
-        self.operationState = OperationState(status: workflowJob.status, conclusion: workflowJob.conclusion)
+
         self.startedAt = workflowJob.started_at
+        self.completedAt = workflowJob.completed_at
+
+        self.operationState = OperationState(status: workflowJob.status, conclusion: workflowJob.conclusion)
+
         self.url = workflowJob.html_url
     }
 
