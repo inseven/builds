@@ -420,51 +420,65 @@ class ApplicationModel: NSObject, ObservableObject {
         await refresh()
     }
 
+    struct Workflow: StaticSelectableContainer {
+
+        static let id = Selection<String>("id")
+        static let event = Selection<String>("event")
+        static let createdAt = Selection<Date>("createdAt")
+
+        // TODO: Push `SelectionBuilder` into the protocol?
+        @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+            id
+            event
+            createdAt
+        }
+
+        let id: String
+        let event: String
+        let createdAt: Date
+
+        // TODO: Ideally this would take a KeyedContainer
+        // TODO: Can we actually get away without the custom decoder if we pass in a single value container instead?
+        init(from container: DecodingContainer) throws {
+            self.id = try container.decode(Self.id)
+            self.event = try container.decode(Self.event)
+            self.createdAt = try container.decode(Self.createdAt)
+        }
+
+    }
+
 #endif
 
     func testStuff(accessToken: String) async throws {
 
-        struct User: StaticSelectable {
+        struct User: StaticSelectableContainer {
 
-            enum CodingKeys: String, CodingKey {
-                case login
-                case bio
-            }
+            static let login = Selection<String>("login")
+            static let bio = Selection<String>("bio")
 
             @SelectionBuilder static func selections() -> [any Selectable] {
-                Selection<String>(CodingKeys.login)
-                Selection<String>(CodingKeys.bio)
+                login
+                bio
             }
 
             let login: String
             let bio: String
 
-            public init(from decoder: MyDecoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                self.login = try container.decode(String.self, forKey: .login)
-                self.bio = try container.decode(String.self, forKey: .bio)
+            public init(from container: DecodingContainer) throws {
+                self.login = try container.decode(Self.login)
+                self.bio = try container.decode(Self.bio)
             }
 
         }
 
-        let login = Selection<String>("login")
-        let bio = Selection<String>("bio")
-        let viewer = Selection<KeyedContainer>("viewer") {
-            login
-            bio
-        }
-
-
-        // TODO: It's really really important we only allow the queries to be injected.
-        let userQuery = Query {
-            viewer
-        }
-
         let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
-        let result = try await client.query(userQuery, accessToken: accessToken)
 
-        print(try result[viewer][login])
+        let viewer = Selection<User>("viewer")
+        let result = try await client.query(Query {
+            viewer
+        }, accessToken: accessToken)
 
+        print(try result[viewer].login)
 
         let id = Selection<String>("id")
         let event = Selection<String>("event")
@@ -479,6 +493,12 @@ class ApplicationModel: NSObject, ObservableObject {
         let runs = Selection<KeyedContainer>("runs", arguments: ["first" : 1]) {
             nodes
         }
+
+//        let firstNodes = Selection("nodes") {
+//            
+//        } transform: {
+//            
+//        }
 
         let workflow = Selection<KeyedContainer>("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
             Fragment("... on Workflow") {
@@ -507,26 +527,3 @@ class ApplicationModel: NSObject, ObservableObject {
 
 
 }
-
-
-// TODO: Would need conformance.
-// TODO: Rename KeyedContainer to SelectionResult?
-//struct User {
-//
-//    static let login = Selection<String>("login")
-//    static let bio = Selection<String>("bio")
-//
-//    @SelectionBuilder static func selections() -> [any IdentifiableSelection] {
-//        login
-//        bio
-//    }
-//
-//    let login: String
-//    let bio: String
-//
-//    public init(_ result: KeyedContainer) throws {
-//        self.login = try result[Self.login]
-//        self.bio = try result[Self.bio]
-//    }
-//
-//}

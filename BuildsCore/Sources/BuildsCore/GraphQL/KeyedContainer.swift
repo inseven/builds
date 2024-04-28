@@ -61,3 +61,13 @@ public struct KeyedContainer {
     }
 
 }
+
+// TODO: Move elsewhere!
+extension KeyedDecodingContainer where K == UnknownCodingKey {
+
+    public func decode<T: Decodable>(_ selection: Selection<T>) throws -> T {
+        return try decode(T.self, forKey: UnknownCodingKey(stringValue: selection.resultKey)!)
+    }
+
+}
+

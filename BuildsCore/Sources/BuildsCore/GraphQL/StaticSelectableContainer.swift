@@ -21,18 +21,31 @@
 import Foundation
 
 // Structs whose selection can be defined statically.
-public protocol StaticSelectable: Resultable {
+
+// TODO: This currently models two behaviours which feels wrong.
+// Specifically, this models both containers and single value selectables.
+public protocol StaticSelectableContainer {
+
+    typealias DecodingContainer = KeyedDecodingContainer<UnknownCodingKey>
 
     @SelectionBuilder static func selections() -> [any Selectable]
+
+    init(from container: DecodingContainer) throws
+
+}
+
+// TODO: It might be possible to recombine these.
+public protocol StaticSelectable {
+
+    typealias DecodingContainer = SingleValueDecodingContainer
+
+    init(from container: DecodingContainer) throws
 
 }
 
 extension String: StaticSelectable {
 
-    @SelectionBuilder public static func selections() -> [any Selectable] {}
-
-    public init(from decoder: MyDecoder) throws {
-        let container = try decoder.singleValueContainer()
+    public init(from container: DecodingContainer) throws {
         self = try container.decode(String.self)
     }
 
@@ -40,11 +53,7 @@ extension String: StaticSelectable {
 
 extension Int: StaticSelectable {
 
-    // TODO: Can this actually be used to tell me whether something is nested?? That might be cool.
-    @SelectionBuilder public static func selections() -> [any Selectable] {}
-
-    public init(from decoder: MyDecoder) throws {
-        let container = try decoder.singleValueContainer()
+    public init(from container: DecodingContainer) throws {
         self = try container.decode(Int.self)
     }
 
@@ -52,10 +61,7 @@ extension Int: StaticSelectable {
 
 extension Date: StaticSelectable {
 
-    @SelectionBuilder public static func selections() -> [any Selectable] {}
-
-    public init(from decoder: MyDecoder) throws {
-        let container = try decoder.singleValueContainer()
+    public init(from container: DecodingContainer) throws {
         self = try container.decode(Date.self)
     }
 

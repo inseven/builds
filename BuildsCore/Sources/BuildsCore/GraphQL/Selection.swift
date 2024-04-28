@@ -54,6 +54,19 @@ public struct Selection<T>: Selectable {
         return try self._decode(resultKey, container)
     }
 
+    public init(name: String,
+                alias: String? = nil,
+                arguments: [String : Argument] = [:],
+                @SelectionBuilder selections: () -> [any Selectable],
+                // TODO: This transform should take a Decoder instead?
+                transform: @escaping (String, KeyedDecodingContainer<UnknownCodingKey>) -> KeyedContainer) {
+        self.selections = selections()
+        self.name = name
+        self.alias = alias
+        self.arguments = arguments
+        self._decode = transform
+    }
+
 }
 
 // TODO: We should constrain our children selections here to guarnatee that they're dictionaries. Like, can they actually
@@ -65,6 +78,7 @@ public struct Fragment: Selectable {
     public let prefix: String
     public let selections: [any Selectable]
 
+    // TODO: Use the convenience constructor.
     public init(_ condition: String, @SelectionBuilder selections: () -> [any Selectable]) {
         self.prefix = condition
         self.selections = selections()
@@ -85,6 +99,7 @@ public struct Fragment: Selectable {
 extension Selection where Datatype == KeyedContainer {
 
     // TODO: We should probably warn/crash on selection collisions
+    // TODO: Use the convenience constructor.
     public init(_ name: String,
                 alias: String? = nil,
                 arguments: [String: Argument] = [:],
@@ -105,8 +120,9 @@ extension Selection where Datatype == KeyedContainer {
 
 }
 
-extension Selection where Datatype: StaticSelectable {
+extension Selection where Datatype: StaticSelectableContainer {
 
+    // TODO: Use the convenience constructor.
     public init(_ name: String,
                 alias: String? = nil,
                 arguments: [String: Argument] = [:]) {
@@ -119,8 +135,34 @@ extension Selection where Datatype: StaticSelectable {
         self.selections = selections
         self._decode = { resultKey, container in
             let key = UnknownCodingKey(stringValue: resultKey)!
-            let decoder = MyDecoder(key: key, container: container)
-            return KeyedContainer(fields: [resultKey: try Datatype(from: decoder)])
+            let container = try container.nestedContainer(keyedBy: UnknownCodingKey.self, forKey: key)
+            return KeyedContainer(fields: [resultKey: try Datatype(from: container)])
+        }
+    }
+
+    // TODO: This feels like a hack.
+//    public init(_ name: CodingKey) {
+//        self.init(name.stringValue)
+//    }
+
+}
+
+extension Selection where Datatype: StaticSelectable {
+
+    // TODO: Use the convenience constructor.
+    public init(_ name: String,
+                alias: String? = nil,
+                arguments: [String: Argument] = [:]) {
+
+        self.name = name
+        self.alias = alias
+        self.arguments = arguments
+        self.selections = []
+        self._decode = { resultKey, container in
+            let key = UnknownCodingKey(stringValue: resultKey)!
+            let decoder = try container.superDecoder(forKey: key)
+            let singleValueContainer = try decoder.singleValueContainer()
+            return KeyedContainer(fields: [resultKey: try Datatype(from: singleValueContainer)])
         }
     }
 
@@ -132,6 +174,32 @@ extension Selection where Datatype: StaticSelectable {
 }
 
 extension Selection where Datatype == Array<KeyedContainer> {
+
+    public init(_ name: String,
+                alias: String? = nil,
+                arguments: [String: Argument] = [:],
+                @SelectionBuilder selections: () -> [any Selectable]) {
+
+        let selections = selections()
+
+        self.name = name
+        self.alias = alias
+        self.arguments = arguments
+        self.selections = selections
+        self._decode = { resultKey, container in
+            var container = try container.nestedUnkeyedContainer(forKey: UnknownCodingKey(stringValue: resultKey)!)
+            var results: [KeyedContainer] = []
+            while !container.isAtEnd {
+                let childContainer = try container.nestedContainer(keyedBy: UnknownCodingKey.self)
+                results.append(try KeyedContainer(from: childContainer, selections: selections))
+            }
+            return KeyedContainer(fields: [resultKey: results])
+        }
+    }
+
+}
+
+extension Selection where Datatype == Array<StaticSelectableContainer> {
 
     public init(_ name: String,
                 alias: String? = nil,

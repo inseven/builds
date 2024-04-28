@@ -64,7 +64,7 @@ final class QueryableTests: XCTestCase {
             Selection<String>("id")
         }.subquery(), "query { id }")
 
-        struct Foo: StaticSelectable {
+        struct Foo: StaticSelectableContainer {
 
             static func selections() -> [any Selectable] {[
                 Selection<Int>("id"),
@@ -74,7 +74,7 @@ final class QueryableTests: XCTestCase {
             let id: Int
             let name: String
 
-            init(from decoder: MyDecoder) throws {
+            init(from decoder: DecodingContainer) throws {
                 throw BuildsError.authenticationFailure
             }
 
@@ -82,7 +82,7 @@ final class QueryableTests: XCTestCase {
 
         XCTAssertEqual(Selection<Foo>("foo").subquery(), "foo { id name }")
 
-        struct Bar: StaticSelectable {
+        struct Bar: StaticSelectableContainer {
 
             static func selections() -> [any Selectable] {[
                 Selection<Int>("id"),
@@ -94,7 +94,7 @@ final class QueryableTests: XCTestCase {
             let name: String
             let foo: Foo
 
-            init(from decoder: MyDecoder) throws {
+            init(from decoder: DecodingContainer) throws {
                 throw BuildsError.authenticationFailure
             }
 
@@ -146,7 +146,7 @@ final class QueryableTests: XCTestCase {
 
     func testStaticSelectableStruct() throws {
 
-        struct Workflow: StaticSelectable {
+        struct Workflow: StaticSelectableContainer {
 
             static let id = Selection<String>("id")
             static let event = Selection<String>("event")
@@ -165,8 +165,7 @@ final class QueryableTests: XCTestCase {
 
             // TODO: Ideally this would take a KeyedContainer
             // TODO: Can we actually get away without the custom decoder if we pass in a single value container instead?
-            init(from decoder: MyDecoder) throws {
-                let container = try decoder.container()
+            init(from container: DecodingContainer) throws {
                 self.id = try container.decode(Self.id)
                 self.event = try container.decode(Self.event)
                 self.createdAt = try container.decode(Self.createdAt)
@@ -189,14 +188,6 @@ final class QueryableTests: XCTestCase {
         let result = try query.decode(data)
         XCTAssertEqual(try result[workflow].id, "WFR_kwLOCatyMs8AAAACEHvAIA")
         XCTAssertEqual(try result[workflow].event, "schedule")
-    }
-
-}
-
-extension KeyedDecodingContainer where K == UnknownCodingKey {
-
-    func decode<T: Decodable>(_ selection: Selection<T>) throws -> T {
-        return try decode(T.self, forKey: UnknownCodingKey(stringValue: selection.resultKey)!)
     }
 
 }
