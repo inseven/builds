@@ -190,4 +190,52 @@ final class QueryableTests: XCTestCase {
         XCTAssertEqual(try result[workflow].event, "schedule")
     }
 
+    func testStaticSelectableWithNestedSelectables() {
+    }
+
+    func testSelectableFragments() throws {
+        
+        let id = Selection<String>("id")
+        let event = Selection<String>("event")
+        let createdAt = Selection<Date>("createdAt")
+        let nodes = Selection<Array<KeyedContainer>>("nodes") {
+            id
+            event
+            createdAt
+        }
+        let runs = Selection<KeyedContainer>("runs", arguments: ["first" : 1]) {
+            nodes
+        }
+        let workflow = Selection<KeyedContainer>("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
+            Fragment("... on Workflow") {
+                runs
+            }
+        }
+        let query = Query {
+            workflow
+        }
+
+        XCTAssertEqual(query.query(), """
+        query { node(id: "MDg6V29ya2Zsb3c5ODk4MDM1") { ... on Workflow { runs(first: 1) { nodes { id event createdAt } } } } }
+        """)
+
+        let data = """
+        {"data":{"node":{"runs":{"nodes":[{"id":"WFR_kwLOCatyMs8AAAACEHvAIA","event":"schedule","createdAt":"2024-04-28T09:03:51Z"}]}}}}
+        """.data(using: .utf8)!
+
+        let result = try query.decode(data)
+        XCTAssertEqual(try result[workflow][runs][nodes].first![id], "WFR_kwLOCatyMs8AAAACEHvAIA")
+        XCTAssertEqual(try result[workflow][runs][nodes].first![event], "schedule")
+        XCTAssertEqual(try result[workflow][runs][nodes].first![createdAt], Date(iso8601: "2024-04-28T09:03:51Z"))
+    }
+
+}
+
+extension Date {
+
+    init(iso8601: String) {
+        let formatter = ISO8601DateFormatter()
+        self = formatter.date(from: iso8601)!
+    }
+
 }
