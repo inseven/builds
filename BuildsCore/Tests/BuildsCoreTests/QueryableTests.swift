@@ -144,7 +144,7 @@ final class QueryableTests: XCTestCase {
     // TODO: Test ararys!
     // TODO: Test fragments!
 
-    func testStaticSelectableStruct() {
+    func testStaticSelectableStruct() throws {
 
         struct Workflow: StaticSelectable {
 
@@ -164,6 +164,7 @@ final class QueryableTests: XCTestCase {
             let createdAt: Date
 
             // TODO: Ideally this would take a KeyedContainer
+            // TODO: Can we actually get away without the custom decoder if we pass in a single value container instead?
             init(from decoder: MyDecoder) throws {
                 let container = try decoder.container()
                 self.id = try container.decode(Self.id)
@@ -173,6 +174,21 @@ final class QueryableTests: XCTestCase {
 
         }
 
+        let workflow = Selection<Workflow>("workflow")
+        let query = Query {
+            workflow
+        }
+
+        XCTAssertEqual(workflow.subquery(), "workflow { id event createdAt }")
+        XCTAssertEqual(query.query(), "query { workflow { id event createdAt } }")
+
+        let data = """
+        {"data":{"workflow":{"id":"WFR_kwLOCatyMs8AAAACEHvAIA","event":"schedule","createdAt":"2024-04-28T09:03:51Z"}}}
+        """.data(using: .utf8)!
+
+        let result = try query.decode(data)
+        XCTAssertEqual(try result[workflow].id, "WFR_kwLOCatyMs8AAAACEHvAIA")
+        XCTAssertEqual(try result[workflow].event, "schedule")
     }
 
 }
