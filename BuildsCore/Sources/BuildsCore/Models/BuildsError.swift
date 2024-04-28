@@ -22,4 +22,5 @@ import Foundation
 
 public enum BuildsError: Error {
     case authenticationFailure
+    case unexpectedType
 }

@@ -26,22 +26,22 @@ final class QueryableTests: XCTestCase {
     func testQueries() throws {
         XCTAssertTrue(true)
 
-        XCTAssertEqual(Selection<String>("name").query(), "name")
-        XCTAssertEqual(Selection<Int>("id").query(), "id")
+        XCTAssertEqual(Selection<String>("name").subquery(), "name")
+        XCTAssertEqual(Selection<Int>("id").subquery(), "id")
 
-        XCTAssertEqual(Selection<String>("name", alias: "alias").query(), "alias:name")
+        XCTAssertEqual(Selection<String>("name", alias: "alias").subquery(), "alias:name")
 
-        XCTAssertEqual(Selection<String>("node", arguments: ["id" : 12]).query(), "node(id: 12)")
-        XCTAssertEqual(Selection<String>("node", arguments: ["id" : "12"]).query(), "node(id: \"12\")")
+        XCTAssertEqual(Selection<String>("node", arguments: ["id" : 12]).subquery(), "node(id: 12)")
+        XCTAssertEqual(Selection<String>("node", arguments: ["id" : "12"]).subquery(), "node(id: \"12\")")
 
         // TODO: Can we only allow the block-based selection constructor _when_ the destination is a keyed container?
 
         let login = Selection<String>("login")
-        let viewer = Selection("viewer") {
+        let viewer = Selection<KeyedContainer>("viewer") {
             login
         }
 
-        XCTAssertEqual(viewer.query(), "viewer { login }")
+        XCTAssertEqual(viewer.subquery(), "viewer { login }")
 
         let responseData = """
         {
@@ -56,17 +56,17 @@ final class QueryableTests: XCTestCase {
 //        print(result.fields)
 //        XCTAssertEqual(result[viewer][login], "cheese")
 
-        XCTAssertEqual(Selection("viewer", alias: "cheese") {
+        XCTAssertEqual(Selection<KeyedContainer>("viewer", alias: "cheese") {
             Selection<String>("login")
-        }.query(), "cheese:viewer { login }")
+        }.subquery(), "cheese:viewer { login }")
 
         XCTAssertEqual(Query {
             Selection<String>("id")
-        }.query(), "query { id }")
+        }.subquery(), "query { id }")
 
         struct Foo: StaticSelectable {
 
-            static func selections() -> [any IdentifiableSelection] {[
+            static func selections() -> [any Selectable] {[
                 Selection<Int>("id"),
                 Selection<String>("name"),
             ]}
@@ -80,11 +80,11 @@ final class QueryableTests: XCTestCase {
 
         }
 
-        XCTAssertEqual(Selection<Foo>("foo").query(), "foo { id name }")
+        XCTAssertEqual(Selection<Foo>("foo").subquery(), "foo { id name }")
 
         struct Bar: StaticSelectable {
 
-            static func selections() -> [any IdentifiableSelection] {[
+            static func selections() -> [any Selectable] {[
                 Selection<Int>("id"),
                 Selection<String>("name"),
                 Selection<Foo>("foo"),
@@ -100,8 +100,87 @@ final class QueryableTests: XCTestCase {
 
         }
 
-        XCTAssertEqual(Selection<Bar>("bar").query(), "bar { id name foo { id name } }")
+        XCTAssertEqual(Selection<Bar>("bar").subquery(), "bar { id name foo { id name } }")
 
+    }
+
+    func testPartialDecode() throws {
+
+        let fromage = Selection<String>("fromage")
+        let selection = Selection<KeyedContainer>("data") {
+            fromage
+        }
+        let data = """
+        {
+            "data": {
+                "fromage": "Cheese"
+            }
+        }
+        """.data(using: .utf8)!
+
+        let result = try selection.decodeKeyedContainer(data)
+        XCTAssertEqual(try result["data"][fromage], "Cheese")
+    }
+
+    func testViewerStructureDecode() throws {
+
+        let login = Selection<String>("login")
+        let bio = Selection<String>("bio")
+        let viewer = Selection<KeyedContainer>("viewer") {
+            login
+            bio
+        }
+        let query = Query {
+            viewer
+        }
+        let data = """
+        {"data":{"viewer":{"login":"jbmorley","bio":""}}}
+        """.data(using: .utf8)!
+
+        let result = try query.decode(data)
+        XCTAssertEqual(try result[viewer][login], "jbmorley")
+    }
+
+    // TODO: Test ararys!
+    // TODO: Test fragments!
+
+    func testStaticSelectableStruct() {
+
+        struct Workflow: StaticSelectable {
+
+            static let id = Selection<String>("id")
+            static let event = Selection<String>("event")
+            static let createdAt = Selection<Date>("createdAt")
+
+            // TODO: Push `SelectionBuilder` into the protocol?
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                id
+                event
+                createdAt
+            }
+
+            let id: String
+            let event: String
+            let createdAt: Date
+
+            // TODO: Ideally this would take a KeyedContainer
+            init(from decoder: MyDecoder) throws {
+                let container = try decoder.container()
+                self.id = try container.decode(Self.id)
+                self.event = try container.decode(Self.event)
+                self.createdAt = try container.decode(Self.createdAt)
+            }
+
+        }
+
+    }
+
+}
+
+extension KeyedDecodingContainer where K == UnknownCodingKey {
+
+    func decode<T: Decodable>(_ selection: Selection<T>) throws -> T {
+        return try decode(T.self, forKey: UnknownCodingKey(stringValue: selection.resultKey)!)
     }
 
 }

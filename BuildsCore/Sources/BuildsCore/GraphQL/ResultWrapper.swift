@@ -22,16 +22,15 @@ import Foundation
 
 // TODO: Move into the IdentifiableSelection extension that yields a result?
 // This is the magic that allows us to start the decoding stack by getting to the first-level container.
-public struct ResultWrapper<T: Selectable>: Decodable {
+public struct ResultWrapper: Decodable {
 
-    let value: T.Datatype
+    let value: KeyedContainer
 
     public init(from decoder: any Decoder) throws {
         // TODO: There's some crashy type stuff here that shouldn't be crashy.
         let selectable = decoder.userInfo[.selectable] as! any Selectable
-        let container = try decoder.container(keyedBy: UnknownCodingKeys.self)
-        let (_, value) = try selectable.decode(container)
-        self.value = value as! T.Datatype
+        let container = try decoder.container(keyedBy: UnknownCodingKey.self)
+        self.value = try selectable.decode(container)
     }
 
 }

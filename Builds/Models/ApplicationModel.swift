@@ -463,11 +463,10 @@ class ApplicationModel: NSObject, ObservableObject {
         let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
         let result = try await client.query(userQuery, accessToken: accessToken)
 
-        print(result[viewer][login])
+        print(try result[viewer][login])
 
 
         let id = Selection<String>("id")
-
         let event = Selection<String>("event")
         let createdAt = Selection<Date>("createdAt")
 
@@ -490,33 +489,14 @@ class ApplicationModel: NSObject, ObservableObject {
             workflow
         }
 
-        print(workflowQuery.query()!)
+        print(workflowQuery.query())
 
         let workflowResult = try await client.query(workflowQuery, accessToken: accessToken)
-        print(workflowResult[workflow][runs][nodes].first![id])
-        print(workflowResult[workflow][runs][nodes].first![event])
-        print(workflowResult[workflow][runs][nodes].first![createdAt])
 
-//        let completeWorkflowQuery = Query {
-//            Selection("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
-//                Fragment("Workflow") {
-//
-//                }
-//            }
-//        }
+        print(try workflowResult[workflow][runs][nodes].first![id])
+        print(try workflowResult[workflow][runs][nodes].first![event])
+        print(try workflowResult[workflow][runs][nodes].first![createdAt])
 
-
-//        let viewer = NamedSelection<User>("viewer")
-//        let userQuery = GQLQuery {
-//            viewer
-//        }
-//
-//        let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
-//        let result = try await client.query(userQuery, accessToken: accessToken)
-//
-//        print(result)
-//        let v = result[viewer]
-//        print(v.login)
 
         // TODO: Consider that it would also be possible to copy the RegexBuilder style inline transforms...
         // We could always keep the entire extraction process internal to the decode operation and simply call our

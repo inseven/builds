@@ -22,20 +22,24 @@ import Foundation
 
 public struct MyDecoder {
 
-    let key: UnknownCodingKeys
-    let container: KeyedDecodingContainer<UnknownCodingKeys>
+    let key: UnknownCodingKey
+    let _container: KeyedDecodingContainer<UnknownCodingKey>
 
-    init(key: UnknownCodingKeys, container: KeyedDecodingContainer<UnknownCodingKeys>) {
+    init(key: UnknownCodingKey, container: KeyedDecodingContainer<UnknownCodingKey>) {
         self.key = key
-        self.container = container
+        self._container = container
+    }
+
+    public func container() throws -> KeyedDecodingContainer<UnknownCodingKey> {
+        return try self.container(keyedBy: UnknownCodingKey.self)
     }
 
     public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key : CodingKey {
-        return try container.nestedContainer(keyedBy: Key.self, forKey: key)
+        return try _container.nestedContainer(keyedBy: Key.self, forKey: key)
     }
 
     public func singleValueContainer() throws -> any SingleValueDecodingContainer {
-        return MySingleVlaueDecodingContainer(key: key, container: container)
+        return MySingleVlaueDecodingContainer(key: key, container: _container)
     }
 
     // TODO: `unkeyedContainer...`

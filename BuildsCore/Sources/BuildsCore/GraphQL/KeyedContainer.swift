@@ -20,10 +20,10 @@
 
 import Foundation
 
-// TODO: We probably don't need half the constructors in here!
 public struct KeyedContainer {
 
     // TODO: Rename?
+    // TODO: Hide this and make this Sequence / iterable
     let fields: [String: Any]
 
     public init(fields: [String: Any]) {
@@ -31,41 +31,32 @@ public struct KeyedContainer {
     }
 
     // TODO: Doing it with an iniit like this feels messy at this point, but maybe it's more reusable?
-    public init(from container: KeyedDecodingContainer<UnknownCodingKeys>,
+    public init(from container: KeyedDecodingContainer<UnknownCodingKey>,
                 selections: [any Selectable]) throws {
         var fields: [String: Any] = [:]
         for selection in selections {
-            let (key, value) = try selection.decode(container)
-            fields[key!] = value  // TODO: This seems problematic.
-        }
-        self.fields = fields
-    }
-
-    public init(from decoder: MyDecoder, selections: [any Selectable]) throws {
-        let container = try decoder.container(keyedBy: UnknownCodingKeys.self)
-        var fields: [String: Any] = [:]
-        for selection in selections {
-            let (key, value) = try selection.decode(container)
-
-            // TODO: There's a lot of guesswork going on here and we should be able to make it typesafe.
-            // TODO: I can probably do this with some kind of type conditions to mean you can't actually compile it if
-            // this trick won't work?
-            if let key {
+            let keyedContainer = try selection.decode(container)
+            for (key, value) in keyedContainer.fields {
                 fields[key] = value
-            } else if let keyedContainer = value as? KeyedContainer {
-                for (key, value) in keyedContainer.fields {
-                    fields[key] = value
-                }
-            } else {
-                throw BuildsError.authenticationFailure
             }
         }
         self.fields = fields
     }
 
+    // TODO: Throws?
     public subscript<T>(key: Selection<T>) -> Selection<T>.Datatype {
+        get throws {
+            guard let value = fields[key.resultKey] as? Selection<T>.Datatype else {
+                throw BuildsError.unexpectedType
+            }
+            return value
+        }
+    }
+
+    // TODO: Test convenience
+    public subscript(key: String) -> KeyedContainer {
         get {
-            return fields[key.resultKey] as! Selection<T>.Datatype
+            return fields[key] as! KeyedContainer
         }
     }
 

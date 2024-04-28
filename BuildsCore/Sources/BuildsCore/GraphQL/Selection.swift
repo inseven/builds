@@ -48,9 +48,9 @@ public struct Selection<T>: Selectable {
     private let name: String
     private let alias: String?
     private let arguments: [String: Argument]
-    private let _decode: (String, KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, Datatype)
+    private let _decode: (String, KeyedDecodingContainer<UnknownCodingKey>) throws -> KeyedContainer
 
-    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, Datatype) {
+    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKey>) throws -> KeyedContainer {
         return try self._decode(resultKey, container)
     }
 
@@ -70,12 +70,14 @@ public struct Fragment: Selectable {
         self.selections = selections()
     }
 
-    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, KeyedContainer) {
+    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKey>) throws -> KeyedContainer {
         let fields = try self.selections.map { try $0.decode(container) }
-            .reduce(into: [String: Any]()) { partialResult, item in
-                partialResult[item.0!] = item.1  // TODO: GRIM GRIM GRIM.
+            .reduce(into: [String: Any]()) { partialResult, keyedContainer in
+                for (key, value) in keyedContainer.fields {
+                    partialResult[key] = value
+                }
             }
-        return (nil, KeyedContainer(fields: fields))
+        return KeyedContainer(fields: fields)
     }
 
 }
@@ -95,9 +97,9 @@ extension Selection where Datatype == KeyedContainer {
         self.arguments = arguments
         self.selections = selections
         self._decode = { resultKey, container in
-            // TODO: Assemble this inline!
-            let decoder = MyDecoder(key: UnknownCodingKeys(stringValue: resultKey)!, container: container)
-            return (resultKey, try KeyedContainer(from: decoder, selections: selections))
+            let key = UnknownCodingKey(stringValue: resultKey)!
+            let container = try container.nestedContainer(keyedBy: UnknownCodingKey.self, forKey: key)
+            return KeyedContainer(fields: [resultKey: try KeyedContainer(from: container, selections: selections)])
         }
     }
 
@@ -116,25 +118,15 @@ extension Selection where Datatype: StaticSelectable {
         self.arguments = arguments
         self.selections = selections
         self._decode = { resultKey, container in
-            // TODO: Assemble this inline!
-            let decoder = MyDecoder(key: UnknownCodingKeys(stringValue: resultKey)!, container: container)
-            return (resultKey, try Datatype(from: decoder))
+            let key = UnknownCodingKey(stringValue: resultKey)!
+            let decoder = MyDecoder(key: key, container: container)
+            return KeyedContainer(fields: [resultKey: try Datatype(from: decoder)])
         }
     }
 
+    // TODO: This feels like a hack.
     public init(_ name: CodingKey) {
-
-        let selections = Datatype.selections()
-
-        self.name = name.stringValue
-        self.alias = nil
-        self.arguments = [:]
-        self.selections = selections
-        self._decode = { resultKey, container in
-            // TODO: Assemble this inline!
-            let decoder = MyDecoder(key: UnknownCodingKeys(stringValue: resultKey)!, container: container)
-            return (resultKey, try Datatype(from: decoder))
-        }
+        self.init(name.stringValue)
     }
 
 }
@@ -153,16 +145,13 @@ extension Selection where Datatype == Array<KeyedContainer> {
         self.arguments = arguments
         self.selections = selections
         self._decode = { resultKey, container in
-            var container = try container.nestedUnkeyedContainer(forKey: UnknownCodingKeys(stringValue: resultKey)!)
+            var container = try container.nestedUnkeyedContainer(forKey: UnknownCodingKey(stringValue: resultKey)!)
             var results: [KeyedContainer] = []
             while !container.isAtEnd {
-                let childContainer = try container.nestedContainer(keyedBy: UnknownCodingKeys.self)
+                let childContainer = try container.nestedContainer(keyedBy: UnknownCodingKey.self)
                 results.append(try KeyedContainer(from: childContainer, selections: selections))
             }
-
-//            // TODO: Assemble this inline!
-//            let decoder = MyDecoder(key: UnknownCodingKeys(stringValue: resultKey)!, container: container)
-            return (resultKey, results)
+            return KeyedContainer(fields: [resultKey: results])
         }
     }
 

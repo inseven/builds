@@ -39,7 +39,7 @@ public struct GraphQLClient {
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
         let encoder = JSONEncoder()
-        request.httpBody = try encoder.encode(QueryContainer(query: query.query()!))  // TODO: !!!!!!!!
+        request.httpBody = try encoder.encode(QueryContainer(query: query.query()))  // TODO: !!!!!!!!
 
         let (data, response) = try await URLSession.shared.data(for: request)
         try response.checkHTTPStatusCode()

@@ -42,18 +42,32 @@ public struct Query: Selectable {
         return self._selections
     }
 
+    public func query() -> String {  // <-- TODO: Make this part of a query protocol?
+        return self.subquery()
+    }
+
+    // TODO: This should be part of the Queryable protocol
     public func decode(_ data: Data) throws -> Datatype {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        decoder.userInfo = [.selectable: self]
-        return try decoder.decode(ResultWrapper<Self>.self, from: data).value
+        return try decodeKeyedContainer(data)["data"]
     }
 
     // TODO: This could easily be a block based transform if the Datatype doesn't support the init method.
-    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, Datatype) {
-        let container = try container.nestedContainer(keyedBy: UnknownCodingKeys.self,
-                                                      forKey: UnknownCodingKeys(stringValue: "data")!)
-        return ("data", try KeyedContainer(from: container, selections: selections))
+    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKey>) throws -> KeyedContainer {
+        let key = UnknownCodingKey(stringValue: resultKey)!
+        let container = try container.nestedContainer(keyedBy: UnknownCodingKey.self, forKey: key)
+        return KeyedContainer(fields: [resultKey: try KeyedContainer(from: container, selections: selections)])
+    }
+
+}
+
+extension Selectable where Datatype == KeyedContainer {
+
+    // TODO: Test only?
+    public func decodeKeyedContainer(_ data: Data) throws -> Datatype {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        decoder.userInfo = [.selectable: self]
+        return try decoder.decode(ResultWrapper.self, from: data).value
     }
 
 }

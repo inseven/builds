@@ -27,16 +27,16 @@ public protocol Selectable {
     var prefix: String { get }
     var selections: [any Selectable] { get }
 
-    func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, Datatype)
+    func decode(_ container: KeyedDecodingContainer<UnknownCodingKey>) throws -> KeyedContainer
 }
 
 extension Selectable {
 
     // TODO: Why is this nullable??????
-    public func query() -> String? {
+    public func subquery() -> String {
         let subselection = selections
             .compactMap { selection in
-                selection.query()
+                selection.subquery()
             }
             .joined(separator: " ")
         guard !subselection.isEmpty else {

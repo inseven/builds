@@ -20,8 +20,7 @@
 
 import Foundation
 
-// Singular!!
-public struct UnknownCodingKeys: CodingKey {
+public struct UnknownCodingKey: CodingKey {
 
     public var stringValue: String
 

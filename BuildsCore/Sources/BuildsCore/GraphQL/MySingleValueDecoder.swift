@@ -23,8 +23,8 @@ import Foundation
 public struct MySingleVlaueDecodingContainer: SingleValueDecodingContainer {
 
     // TODO: INVERT THESEE
-    let key: UnknownCodingKeys
-    let container: KeyedDecodingContainer<UnknownCodingKeys>
+    let key: UnknownCodingKey
+    let container: KeyedDecodingContainer<UnknownCodingKey>
 
     public var codingPath: [any CodingKey] {
         return container.codingPath + [key]
