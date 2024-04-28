@@ -477,7 +477,36 @@ class ApplicationModel: NSObject, ObservableObject {
 //        print(result)
 //        let v = result[viewer]
 //        print(v.login)
+
+        // TODO: Consider that it would also be possible to copy the RegexBuilder style inline transforms...
+        // We could always keep the entire extraction process internal to the decode operation and simply call our
+        // custom inits with a `KeyedContainer` which would save the need for our random faked up Decoder which is
+        // quite misleading. If we do it this way we don't need to rely on the coding keys at all and we can reduce
+        // the risk of mismatched implementation.
     }
 
 
 }
+
+
+// TODO: Would need conformance.
+// TODO: Rename KeyedContainer to SelectionResult?
+//struct User {
+//
+//    static let login = Selection<String>("login")
+//    static let bio = Selection<String>("bio")
+//
+//    @SelectionBuilder static func selections() -> [any IdentifiableSelection] {
+//        login
+//        bio
+//    }
+//
+//    let login: String
+//    let bio: String
+//
+//    public init(_ result: KeyedContainer) throws {
+//        self.login = try result[Self.login]
+//        self.bio = try result[Self.bio]
+//    }
+//
+//}
