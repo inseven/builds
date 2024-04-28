@@ -64,7 +64,7 @@ final class QueryableTests: XCTestCase {
             Selection<String>("id")
         }.query(), "query { id }")
 
-        struct Foo: StaticSelectable, Resultable {
+        struct Foo: StaticSelectable {
 
             static func selections() -> [any IdentifiableSelection] {[
                 Selection<Int>("id"),
@@ -74,7 +74,7 @@ final class QueryableTests: XCTestCase {
             let id: Int
             let name: String
 
-            init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+            init(from decoder: MyDecoder) throws {
                 throw BuildsError.authenticationFailure
             }
 
@@ -82,7 +82,7 @@ final class QueryableTests: XCTestCase {
 
         XCTAssertEqual(Selection<Foo>("foo").query(), "foo { id name }")
 
-        struct Bar: StaticSelectable, Resultable {
+        struct Bar: StaticSelectable {
 
             static func selections() -> [any IdentifiableSelection] {[
                 Selection<Int>("id"),
@@ -94,7 +94,7 @@ final class QueryableTests: XCTestCase {
             let name: String
             let foo: Foo
 
-            init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+            init(from decoder: MyDecoder) throws {
                 throw BuildsError.authenticationFailure
             }
 

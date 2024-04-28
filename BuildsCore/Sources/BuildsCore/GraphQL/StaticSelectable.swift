@@ -23,21 +23,15 @@ import Foundation
 // Structs whose selection can be defined statically.
 public protocol StaticSelectable: Resultable {
 
-    @SelectionBuilder static func selections() -> [any IdentifiableSelection]
+    @SelectionBuilder static func selections() -> [any Selectable]
 
 }
 
 extension String: StaticSelectable {
 
-    @SelectionBuilder public static func selections() -> [any IdentifiableSelection] {}
+    @SelectionBuilder public static func selections() -> [any Selectable] {}
 
-    public init(with container: KeyedDecodingContainer<UnknownCodingKeys>,
-                key: UnknownCodingKeys,
-                selections: [any IdentifiableSelection]) throws {
-        self = try container.decode(String.self, forKey: key)
-    }
-
-    public init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+    public init(from decoder: MyDecoder) throws {
         let container = try decoder.singleValueContainer()
         self = try container.decode(String.self)
     }
@@ -46,17 +40,23 @@ extension String: StaticSelectable {
 
 extension Int: StaticSelectable {
 
-    @SelectionBuilder public static func selections() -> [any IdentifiableSelection] {}
+    // TODO: Can this actually be used to tell me whether something is nested?? That might be cool.
+    @SelectionBuilder public static func selections() -> [any Selectable] {}
 
-    public init(with container: KeyedDecodingContainer<UnknownCodingKeys>,
-                key: UnknownCodingKeys,
-                selections: [any IdentifiableSelection]) throws {
-        throw BuildsError.authenticationFailure
-    }
-
-    public init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+    public init(from decoder: MyDecoder) throws {
         let container = try decoder.singleValueContainer()
         self = try container.decode(Int.self)
+    }
+
+}
+
+extension Date: StaticSelectable {
+
+    @SelectionBuilder public static func selections() -> [any Selectable] {}
+
+    public init(from decoder: MyDecoder) throws {
+        let container = try decoder.singleValueContainer()
+        self = try container.decode(Date.self)
     }
 
 }

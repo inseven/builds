@@ -43,6 +43,7 @@ public struct GraphQLClient {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         try response.checkHTTPStatusCode()
+        print(String(data: data, encoding: .utf8) ?? "nil")
         do {
             return try query.decode(data)
         } catch {

@@ -20,34 +20,50 @@
 
 import Foundation
 
-public struct KeyedContainer: Resultable {
+// TODO: We probably don't need half the constructors in here!
+public struct KeyedContainer {
 
     // TODO: Rename?
     let fields: [String: Any]
 
+    public init(fields: [String: Any]) {
+        self.fields = fields
+    }
+
     // TODO: Doing it with an iniit like this feels messy at this point, but maybe it's more reusable?
     public init(from container: KeyedDecodingContainer<UnknownCodingKeys>,
-                selections: [any IdentifiableSelection]) throws {
+                selections: [any Selectable]) throws {
         var fields: [String: Any] = [:]
         for selection in selections {
-            fields[selection.resultKey] = try selection.decode(container)
+            let (key, value) = try selection.decode(container)
+            fields[key!] = value  // TODO: This seems problematic.
         }
         self.fields = fields
     }
 
-    public init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+    public init(from decoder: MyDecoder, selections: [any Selectable]) throws {
         let container = try decoder.container(keyedBy: UnknownCodingKeys.self)
         var fields: [String: Any] = [:]
         for selection in selections {
-            let codingKey = UnknownCodingKeys(stringValue: selection.resultKey)!
-            fields[selection.resultKey] = try selection.result(with: container,
-                                                           codingKey: codingKey,
-                                                           selections: selection.selections)
+            let (key, value) = try selection.decode(container)
+
+            // TODO: There's a lot of guesswork going on here and we should be able to make it typesafe.
+            // TODO: I can probably do this with some kind of type conditions to mean you can't actually compile it if
+            // this trick won't work?
+            if let key {
+                fields[key] = value
+            } else if let keyedContainer = value as? KeyedContainer {
+                for (key, value) in keyedContainer.fields {
+                    fields[key] = value
+                }
+            } else {
+                throw BuildsError.authenticationFailure
+            }
         }
         self.fields = fields
     }
 
-    public subscript<T: Resultable>(key: Selection<T>) -> Selection<T>.Datatype {
+    public subscript<T>(key: Selection<T>) -> Selection<T>.Datatype {
         get {
             return fields[key.resultKey] as! Selection<T>.Datatype
         }

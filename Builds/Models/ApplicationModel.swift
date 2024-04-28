@@ -431,7 +431,7 @@ class ApplicationModel: NSObject, ObservableObject {
                 case bio
             }
 
-            @SelectionBuilder static func selections() -> [any IdentifiableSelection] {
+            @SelectionBuilder static func selections() -> [any Selectable] {
                 Selection<String>(CodingKeys.login)
                 Selection<String>(CodingKeys.bio)
             }
@@ -439,7 +439,7 @@ class ApplicationModel: NSObject, ObservableObject {
             let login: String
             let bio: String
 
-            public init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+            public init(from decoder: MyDecoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 self.login = try container.decode(String.self, forKey: .login)
                 self.bio = try container.decode(String.self, forKey: .bio)
@@ -447,10 +447,9 @@ class ApplicationModel: NSObject, ObservableObject {
 
         }
 
-
         let login = Selection<String>("login")
         let bio = Selection<String>("bio")
-        let viewer = Selection("viewer") {
+        let viewer = Selection<KeyedContainer>("viewer") {
             login
             bio
         }
@@ -468,15 +467,35 @@ class ApplicationModel: NSObject, ObservableObject {
 
 
         let id = Selection<String>("id")
-        let workflow = Selection("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
+
+        let event = Selection<String>("event")
+        let createdAt = Selection<Date>("createdAt")
+
+        let nodes = Selection<Array<KeyedContainer>>("nodes") {
             id
+            event
+            createdAt
+        }
+
+        let runs = Selection<KeyedContainer>("runs", arguments: ["first" : 1]) {
+            nodes
+        }
+
+        let workflow = Selection<KeyedContainer>("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
+            Fragment("... on Workflow") {
+                runs
+            }
         }
         let workflowQuery = Query {
             workflow
         }
 
+        print(workflowQuery.query()!)
+
         let workflowResult = try await client.query(workflowQuery, accessToken: accessToken)
-        print(workflowResult[workflow][id])
+        print(workflowResult[workflow][runs][nodes].first![id])
+        print(workflowResult[workflow][runs][nodes].first![event])
+        print(workflowResult[workflow][runs][nodes].first![createdAt])
 
 //        let completeWorkflowQuery = Query {
 //            Selection("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {

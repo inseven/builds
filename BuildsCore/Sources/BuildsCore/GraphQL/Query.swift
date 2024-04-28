@@ -22,7 +22,7 @@ import Foundation
 
 // TODO: Do queries always returned a named selection and is that how this works? That makes extra sense for the keyed container to be on the result type.
 // I think the data type makes no sense here. Is this a side effect of getting the protocols insufficiently fine grained?
-public struct Query: IdentifiableSelection {
+public struct Query: Selectable {
 
     public typealias Datatype = KeyedContainer
 
@@ -32,13 +32,13 @@ public struct Query: IdentifiableSelection {
     public let arguments: [String : Argument] = [:]
     public let resultKey = "data"
 
-    private let _selections: [any IdentifiableSelection]
+    private let _selections: [any Selectable]
 
-    public init(@SelectionBuilder selection: () -> [any IdentifiableSelection]) {
+    public init(@SelectionBuilder selection: () -> [any Selectable]) {
         self._selections = selection()
     }
 
-    public var selections: [any IdentifiableSelection] {
+    public var selections: [any Selectable] {
         return self._selections
     }
 
@@ -50,10 +50,10 @@ public struct Query: IdentifiableSelection {
     }
 
     // TODO: This could easily be a block based transform if the Datatype doesn't support the init method.
-    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> Datatype {
+    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, Datatype) {
         let container = try container.nestedContainer(keyedBy: UnknownCodingKeys.self,
                                                       forKey: UnknownCodingKeys(stringValue: "data")!)
-        return try KeyedContainer(from: container, selections: selections)
+        return ("data", try KeyedContainer(from: container, selections: selections))
     }
 
 }

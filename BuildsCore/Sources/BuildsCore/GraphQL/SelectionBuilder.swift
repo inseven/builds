@@ -23,15 +23,15 @@ import Foundation
 @resultBuilder
 public struct SelectionBuilder {
 
-    public static func buildBlock(_ components: [any IdentifiableSelection]...) -> [any IdentifiableSelection] {
+    public static func buildBlock(_ components: [any Selectable]...) -> [any Selectable] {
         components.flatMap { $0 }
     }
 
-    public static func buildExpression(_ expression: any IdentifiableSelection) -> [any IdentifiableSelection] {
+    public static func buildExpression(_ expression: any Selectable) -> [any Selectable] {
         [expression]
     }
 
-    public static func buildExpression(_ expression: [any IdentifiableSelection]) -> [any IdentifiableSelection] {
+    public static func buildExpression(_ expression: [any Selectable]) -> [any Selectable] {
         expression
     }
 }

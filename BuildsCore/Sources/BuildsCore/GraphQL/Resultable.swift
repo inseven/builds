@@ -20,8 +20,9 @@
 
 import Foundation
 
+// TODO: I think this can now be rolled into StaticSelectable
 public protocol Resultable {
 
-    init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws
+    init(from decoder: MyDecoder) throws
 
 }

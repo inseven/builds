@@ -22,16 +22,17 @@ import Foundation
 
 public protocol Selectable {
 
-    associatedtype Datatype: Resultable
+    associatedtype Datatype
 
     var prefix: String { get }
-    var selections: [any IdentifiableSelection] { get }
-    
-    func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> Datatype
+    var selections: [any Selectable] { get }
+
+    func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> (String?, Datatype)
 }
 
 extension Selectable {
 
+    // TODO: Why is this nullable??????
     public func query() -> String? {
         let subselection = selections
             .compactMap { selection in

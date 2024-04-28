@@ -30,7 +30,8 @@ public struct ResultWrapper<T: Selectable>: Decodable {
         // TODO: There's some crashy type stuff here that shouldn't be crashy.
         let selectable = decoder.userInfo[.selectable] as! any Selectable
         let container = try decoder.container(keyedBy: UnknownCodingKeys.self)
-        self.value = try selectable.decode(container) as! T.Datatype  // TODO: The selections aren't needed
+        let (_, value) = try selectable.decode(container)
+        self.value = value as! T.Datatype
     }
 
 }
