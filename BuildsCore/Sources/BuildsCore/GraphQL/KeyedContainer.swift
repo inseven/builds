@@ -30,6 +30,7 @@ public struct KeyedContainer {
         self.fields = fields
     }
 
+    // TODO: I think it might be possible to replace this with a 'decoder' equivalent.
     // TODO: Doing it with an iniit like this feels messy at this point, but maybe it's more reusable?
     public init(from container: KeyedDecodingContainer<UnknownCodingKey>,
                 selections: [any Selectable]) throws {
@@ -69,5 +70,10 @@ extension KeyedDecodingContainer where K == UnknownCodingKey {
         return try decode(T.self, forKey: UnknownCodingKey(stringValue: selection.resultKey)!)
     }
 
-}
+    public func decode(_ selection: Selection<KeyedContainer>) throws -> KeyedContainer {
+        let container = try self.nestedContainer(keyedBy: UnknownCodingKey.self,
+                                                 forKey: UnknownCodingKey(stringValue: selection.resultKey)!)
+        return try KeyedContainer(from: container, selections: selection.selections)
+    }
 
+}

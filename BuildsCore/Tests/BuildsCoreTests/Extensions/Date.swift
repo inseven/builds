@@ -20,28 +20,11 @@
 
 import Foundation
 
-public protocol Selectable {
+extension Date {
 
-    associatedtype Datatype
-
-    var prefix: String { get }
-    var selections: [any Selectable] { get }
-
-    func decode(_ container: KeyedDecodingContainer<UnknownCodingKey>) throws -> KeyedContainer
-}
-
-extension Selectable {
-
-    public func subquery() -> String {
-        let subselection = selections
-            .compactMap { selection in
-                selection.subquery()
-            }
-            .joined(separator: " ")
-        guard !subselection.isEmpty else {
-            return prefix
-        }
-        return "\(prefix) { \(subselection) }"
+    init(iso8601: String) {
+        let formatter = ISO8601DateFormatter()
+        self = formatter.date(from: iso8601)!
     }
 
 }

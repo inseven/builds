@@ -190,7 +190,46 @@ final class QueryableTests: XCTestCase {
         XCTAssertEqual(try result[workflow].event, "schedule")
     }
 
-    func testStaticSelectableWithNestedSelectables() {
+    func testStaticSelectableWithNestedSelectables() throws {
+
+        struct Container: StaticSelectableContainer {
+
+            static let id = Selection<Int>("id")
+            static let name = Selection<String>("name")
+            static let contents = Selection<KeyedContainer>("contents") {
+                name
+            }
+
+            // TODO: Push `SelectionBuilder` into the protocol?
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                id
+                contents
+            }
+
+            let id: Int
+            let contents: KeyedContainer
+
+            init(from container: DecodingContainer) throws {
+                self.id = try container.decode(Self.id)
+                self.contents = try container.decode(Self.contents)
+            }
+
+        }
+
+        let container = Selection<Container>("container", alias: "bob")
+        let query = Query {
+            container
+        }
+
+        XCTAssertEqual(query.query(), "query { bob:container { id contents { name } } }")
+
+        let data = """
+        {"data":{"bob":{"id":12,"contents":{"name":"Robert"}}}}
+        """.data(using: .utf8)!
+
+        let result = try query.decode(data)
+        XCTAssertEqual(try result[container].id, 12)
+        XCTAssertEqual(try result[container].contents[Container.name], "Robert")
     }
 
     func testSelectableFragments() throws {
@@ -231,11 +270,3 @@ final class QueryableTests: XCTestCase {
 
 }
 
-extension Date {
-
-    init(iso8601: String) {
-        let formatter = ISO8601DateFormatter()
-        self = formatter.date(from: iso8601)!
-    }
-
-}

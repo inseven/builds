@@ -21,7 +21,5 @@
 import Foundation
 
 extension CodingUserInfoKey {
-    static let resultKey = CodingUserInfoKey(rawValue: "resultKey")!
-    static let selections = CodingUserInfoKey(rawValue: "selections")!
     static let selectable = CodingUserInfoKey(rawValue: "selectable")!
 }

@@ -140,11 +140,6 @@ extension Selection where Datatype: StaticSelectableContainer {
         }
     }
 
-    // TODO: This feels like a hack.
-//    public init(_ name: CodingKey) {
-//        self.init(name.stringValue)
-//    }
-
 }
 
 extension Selection where Datatype: StaticSelectable {

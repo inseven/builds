@@ -22,6 +22,7 @@ import Foundation
 
 // TODO: Move into the IdentifiableSelection extension that yields a result?
 // This is the magic that allows us to start the decoding stack by getting to the first-level container.
+// TODO: I think this should be private?
 public struct ResultWrapper: Decodable {
 
     let value: KeyedContainer
