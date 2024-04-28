@@ -20,43 +20,36 @@
 
 import Foundation
 
+// Operation
+// Field
+// Fragment
+
 // TODO: It really does make sense to fold all this stuff into NamedSelection we can likely get away with this alone.
+// TODO: I think this is a field.
 public protocol IdentifiableSelection: Selectable {
 
     var name: String { get }
     var alias: String? { get }
+    var arguments: [String: Argument] { get }
     var resultKey: String { get }
 
 }
 
 extension IdentifiableSelection {
 
-    public func query() -> String? {
-        var lookup = name
-        if let alias {
-            lookup = "\(alias):\(lookup)"
-        }
-        let subselection = selections()
-            .compactMap { selection in
-                selection.query()
+    public var prefix: String {
+        var prefix = name
+        if !arguments.isEmpty {
+            let arguments = arguments.map { key, value in
+                return "\(key): \(value.representation())"
             }
-            .joined(separator: " ")
-        guard !subselection.isEmpty else {
-            return lookup
+            .joined(separator: ", ")
+            prefix = "\(prefix)(\(arguments))"
         }
-        return "\(lookup) { \(subselection) }"
-    }
-
-    // TODO: Perhaps this should only exist on query classes? // Top level `Query` protocol for this?
-    // Public on query, and private internally?
-    public func decode(_ data: Data) throws -> Datatype {
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        decoder.userInfo = [
-            .resultKey: resultKey,
-            .selections: selections()
-        ]
-        return try decoder.decode(ResultWrapper<Self>.self, from: data).value
+        if let alias {
+            prefix = "\(alias):\(prefix)"
+        }
+        return prefix
     }
 
     public func result(with container: KeyedDecodingContainer<UnknownCodingKeys>,

@@ -20,10 +20,28 @@
 
 import Foundation
 
-// TODO: Perhaps this doesn't need to be a protocol?
 public protocol Selectable {
 
     associatedtype Datatype: Resultable
 
-    func selections() -> [any IdentifiableSelection]
+    var prefix: String { get }
+    var selections: [any IdentifiableSelection] { get }
+    
+    func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> Datatype
+}
+
+extension Selectable {
+
+    public func query() -> String? {
+        let subselection = selections
+            .compactMap { selection in
+                selection.query()
+            }
+            .joined(separator: " ")
+        guard !subselection.isEmpty else {
+            return prefix
+        }
+        return "\(prefix) { \(subselection) }"
+    }
+
 }

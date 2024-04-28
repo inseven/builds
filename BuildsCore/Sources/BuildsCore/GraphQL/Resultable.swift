@@ -23,5 +23,5 @@ import Foundation
 public protocol Resultable {
 
     init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws
-    
+
 }

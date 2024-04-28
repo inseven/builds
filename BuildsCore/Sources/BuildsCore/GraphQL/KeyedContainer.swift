@@ -25,6 +25,16 @@ public struct KeyedContainer: Resultable {
     // TODO: Rename?
     let fields: [String: Any]
 
+    // TODO: Doing it with an iniit like this feels messy at this point, but maybe it's more reusable?
+    public init(from container: KeyedDecodingContainer<UnknownCodingKeys>,
+                selections: [any IdentifiableSelection]) throws {
+        var fields: [String: Any] = [:]
+        for selection in selections {
+            fields[selection.resultKey] = try selection.decode(container)
+        }
+        self.fields = fields
+    }
+
     public init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
         let container = try decoder.container(keyedBy: UnknownCodingKeys.self)
         var fields: [String: Any] = [:]
@@ -32,7 +42,7 @@ public struct KeyedContainer: Resultable {
             let codingKey = UnknownCodingKeys(stringValue: selection.resultKey)!
             fields[selection.resultKey] = try selection.result(with: container,
                                                            codingKey: codingKey,
-                                                           selections: selection.selections())
+                                                           selections: selection.selections)
         }
         self.fields = fields
     }

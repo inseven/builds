@@ -27,11 +27,10 @@ public struct ResultWrapper<T: Selectable>: Decodable {
     let value: T.Datatype
 
     public init(from decoder: any Decoder) throws {
-        let resultKey = UnknownCodingKeys(stringValue: decoder.userInfo[.resultKey] as! String)!
-        let selections = decoder.userInfo[.selections] as! [any IdentifiableSelection]
+        // TODO: There's some crashy type stuff here that shouldn't be crashy.
+        let selectable = decoder.userInfo[.selectable] as! any Selectable
         let container = try decoder.container(keyedBy: UnknownCodingKeys.self)
-        let decoder = MyDecoder(key: resultKey, container: container)
-        self.value = try T.Datatype(from: decoder, selections: selections)
+        self.value = try selectable.decode(container) as! T.Datatype  // TODO: The selections aren't needed
     }
 
 }

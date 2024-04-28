@@ -20,8 +20,24 @@
 
 import Foundation
 
-extension CodingUserInfoKey {
-    static let resultKey = CodingUserInfoKey(rawValue: "resultKey")!
-    static let selections = CodingUserInfoKey(rawValue: "selections")!
-    static let selectable = CodingUserInfoKey(rawValue: "selectable")!
+public protocol Argument {
+
+    func representation() -> String
+
+}
+
+extension String: Argument {
+
+    public func representation() -> String {
+        return "\"" + self.replacingOccurrences(of: "\"", with: "\\\"") + "\""
+    }
+
+}
+
+extension Int: Argument {
+
+    public func representation() -> String {
+        return String(self)
+    }
+
 }

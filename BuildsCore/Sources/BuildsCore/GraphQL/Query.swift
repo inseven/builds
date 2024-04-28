@@ -26,8 +26,10 @@ public struct Query: IdentifiableSelection {
 
     public typealias Datatype = KeyedContainer
 
-    public let name = "query"
+    public let prefix = "query"
+    public let name = "query"  // TODO: Get rido fo this when we drop 'IdentifiableSelection'
     public let alias: String? = nil
+    public let arguments: [String : Argument] = [:]
     public let resultKey = "data"
 
     private let _selections: [any IdentifiableSelection]
@@ -36,8 +38,22 @@ public struct Query: IdentifiableSelection {
         self._selections = selection()
     }
 
-    public func selections() -> [any IdentifiableSelection] {
+    public var selections: [any IdentifiableSelection] {
         return self._selections
+    }
+
+    public func decode(_ data: Data) throws -> Datatype {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        decoder.userInfo = [.selectable: self]
+        return try decoder.decode(ResultWrapper<Self>.self, from: data).value
+    }
+
+    // TODO: This could easily be a block based transform if the Datatype doesn't support the init method.
+    public func decode(_ container: KeyedDecodingContainer<UnknownCodingKeys>) throws -> Datatype {
+        let container = try container.nestedContainer(keyedBy: UnknownCodingKeys.self,
+                                                      forKey: UnknownCodingKeys(stringValue: "data")!)
+        return try KeyedContainer(from: container, selections: selections)
     }
 
 }

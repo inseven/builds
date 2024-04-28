@@ -466,6 +466,27 @@ class ApplicationModel: NSObject, ObservableObject {
 
         print(result[viewer][login])
 
+
+        let id = Selection<String>("id")
+        let workflow = Selection("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
+            id
+        }
+        let workflowQuery = Query {
+            workflow
+        }
+
+        let workflowResult = try await client.query(workflowQuery, accessToken: accessToken)
+        print(workflowResult[workflow][id])
+
+//        let completeWorkflowQuery = Query {
+//            Selection("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
+//                Fragment("Workflow") {
+//
+//                }
+//            }
+//        }
+
+
 //        let viewer = NamedSelection<User>("viewer")
 //        let userQuery = GQLQuery {
 //            viewer

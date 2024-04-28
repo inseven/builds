@@ -22,7 +22,7 @@ import Foundation
 
 public struct GraphQLClient {
 
-    struct Query: Codable {
+    struct QueryContainer: Codable {
         let query: String
     }
 
@@ -33,13 +33,13 @@ public struct GraphQLClient {
     }
 
     // TODO: Did we loose some important type-safety in the top-level result?
-    public func query<T: IdentifiableSelection>(_ query: T, accessToken: String) async throws -> T.Datatype {
+    public func query(_ query: Query, accessToken: String) async throws -> Query.Datatype {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
         let encoder = JSONEncoder()
-        request.httpBody = try encoder.encode(Query(query: query.query()!))  // TODO: !!!!!!!!
+        request.httpBody = try encoder.encode(QueryContainer(query: query.query()!))  // TODO: !!!!!!!!
 
         let (data, response) = try await URLSession.shared.data(for: request)
         try response.checkHTTPStatusCode()
