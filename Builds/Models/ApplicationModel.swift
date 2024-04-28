@@ -424,23 +424,59 @@ class ApplicationModel: NSObject, ObservableObject {
 
     func testStuff(accessToken: String) async throws {
 
-        let login = Property<String>("login")
-        let bio = Property<String>("bio")
-        let viewer = Field("viewer") { // <- So this is really a User.
+        // TODO: If it's codable and conforms to coding keys can we magic this stuff up?
+        struct User: StaticSelectable, Resultable {
+
+            enum CodingKeys: String, CodingKey {
+                case login
+                case bio
+            }
+
+            @SelectionBuilder static func selection() -> [any IdentifiableSelection] {
+                Selection<String>(CodingKeys.login)
+                Selection<String>(CodingKeys.bio)
+            }
+
+            let login: String
+            let bio: String
+
+            public init(from decoder: MyDecoder, selections: [any IdentifiableSelection]) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.login = try container.decode(String.self, forKey: .login)
+                self.bio = try container.decode(String.self, forKey: .bio)
+            }
+
+        }
+
+
+        let login = Selection<String>("login")
+        let bio = Selection<String>("bio")
+        let viewer = Selection("viewer") {
             login
             bio
         }
 
-        let userQuery = Query {
+        // TODO: It's really really important we only allow the queries to be injected.
+        let userQuery = GQLQuery {
             viewer
         }
 
         let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
         let result = try await client.query(userQuery, accessToken: accessToken)
 
-        print(result)
-        print(result[viewer])
         print(result[viewer][login])
+
+//        let viewer = NamedSelection<User>("viewer")
+//        let userQuery = GQLQuery {
+//            viewer
+//        }
+//
+//        let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
+//        let result = try await client.query(userQuery, accessToken: accessToken)
+//
+//        print(result)
+//        let v = result[viewer]
+//        print(v.login)
     }
 
 

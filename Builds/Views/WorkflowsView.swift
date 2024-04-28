@@ -61,7 +61,7 @@ struct WorkflowsView: View, OpenContext {
                                openContext: self)
         } primaryAction: { selection in
 #if os(macOS)
-            let workflowInstances = workflows.filter(selection: selection)
+            let workflowInstances = workflows.filter(selections: selections)
             for workflowRunURL in workflowInstances.compactMap({ $0.workflowRunURL }) {
                 presentURL(workflowRunURL)
             }
