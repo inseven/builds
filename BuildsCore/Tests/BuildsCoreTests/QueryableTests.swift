@@ -59,7 +59,7 @@ final class QueryableTests: XCTestCase {
             Selection<String>("login")
         }.query(), "cheese:viewer { login }")
 
-        XCTAssertEqual(GQLQuery {
+        XCTAssertEqual(Query {
             Selection<String>("id")
         }.query(), "query { id }")
 

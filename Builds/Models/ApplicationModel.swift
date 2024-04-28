@@ -424,15 +424,14 @@ class ApplicationModel: NSObject, ObservableObject {
 
     func testStuff(accessToken: String) async throws {
 
-        // TODO: If it's codable and conforms to coding keys can we magic this stuff up?
-        struct User: StaticSelectable, Resultable {
+        struct User: StaticSelectable {
 
             enum CodingKeys: String, CodingKey {
                 case login
                 case bio
             }
 
-            @SelectionBuilder static func selection() -> [any IdentifiableSelection] {
+            @SelectionBuilder static func selections() -> [any IdentifiableSelection] {
                 Selection<String>(CodingKeys.login)
                 Selection<String>(CodingKeys.bio)
             }
@@ -456,8 +455,9 @@ class ApplicationModel: NSObject, ObservableObject {
             bio
         }
 
+
         // TODO: It's really really important we only allow the queries to be injected.
-        let userQuery = GQLQuery {
+        let userQuery = Query {
             viewer
         }
 
