@@ -18,15 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
-@testable import BuildsCore
+import Foundation
 
-final class BuildsCoreTests: XCTestCase {
-    func testExample() throws {
-        // XCTest Documentation
-        // https://developer.apple.com/documentation/xctest
+// TODO: Move into the IdentifiableSelection extension that yields a result?
+// This is the magic that allows us to start the decoding stack by getting to the first-level container.
+// TODO: I think this should be private?
+public struct ResultWrapper: Decodable {
 
-        // Defining Test Cases and Test Methods
-        // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
+    let value: KeyedContainer
+
+    public init(from decoder: any Decoder) throws {
+        // TODO: There's some crashy type stuff here that shouldn't be crashy.
+        let selectable = decoder.userInfo[.selectable] as! any Selectable
+        let container = try decoder.container(keyedBy: UnknownCodingKey.self)
+        self.value = try selectable.decode(container)
     }
+
 }
