@@ -59,12 +59,15 @@ public struct Selection<T>: Selectable {
                 arguments: [String : Argument] = [:],
                 @SelectionBuilder selections: () -> [any Selectable],
                 // TODO: This transform should take a Decoder instead?
-                transform: @escaping (String, KeyedDecodingContainer<UnknownCodingKey>) -> KeyedContainer) {
+                transform: @escaping (any Decoder) throws -> Datatype) {
         self.selections = selections()
         self.name = name
         self.alias = alias
         self.arguments = arguments
-        self._decode = transform
+        self._decode = { (key, container) throws -> KeyedContainer in
+            let decoder = try container.superDecoder(forKey: UnknownCodingKey(stringValue: key)!)
+            return KeyedContainer(fields: [key: try transform(decoder)])
+        }
     }
 
 }
@@ -79,8 +82,8 @@ public struct Fragment: Selectable {
     public let selections: [any Selectable]
 
     // TODO: Use the convenience constructor.
-    public init(_ condition: String, @SelectionBuilder selections: () -> [any Selectable]) {
-        self.prefix = condition
+    public init(on: String, @SelectionBuilder selections: () -> [any Selectable]) {
+        self.prefix = "... on \(on)"
         self.selections = selections()
     }
 
@@ -194,28 +197,67 @@ extension Selection where Datatype == Array<KeyedContainer> {
 
 }
 
-extension Selection where Datatype == Array<StaticSelectableContainer> {
+// TODO: Is there a way to do this as a constraint on `Selection`, not as a named function?
+extension Selection {
 
-    public init(_ name: String,
-                alias: String? = nil,
-                arguments: [String: Argument] = [:],
-                @SelectionBuilder selections: () -> [any Selectable]) {
-
-        let selections = selections()
-
-        self.name = name
-        self.alias = alias
-        self.arguments = arguments
-        self.selections = selections
-        self._decode = { resultKey, container in
-            var container = try container.nestedUnkeyedContainer(forKey: UnknownCodingKey(stringValue: resultKey)!)
-            var results: [KeyedContainer] = []
+    public static func array<E: StaticSelectableContainer>(_ type: E.Type,
+                                                           _ name: String,
+                                                           alias: String? = nil,
+                                                           arguments: [String: Argument] = [:]) -> Selection<Array<E>> {
+        return Selection<Array<E>>(name: name,
+                                   alias: alias,
+                                   arguments: arguments,
+                                   selections: E.selections) { decoder in
+            var container = try decoder.unkeyedContainer()
+            var results: [E] = []
             while !container.isAtEnd {
                 let childContainer = try container.nestedContainer(keyedBy: UnknownCodingKey.self)
-                results.append(try KeyedContainer(from: childContainer, selections: selections))
+                results.append(try E(from: childContainer))
             }
-            return KeyedContainer(fields: [resultKey: results])
+            return results
         }
     }
 
 }
+
+extension Selection where Datatype: StaticSelectableContainer {
+
+    // TODO: This might actually be easier to type if there was a typed tuple that captured the name, alias and type.
+    public static func first(_ name: String,
+                             alias: String? = nil,
+                             arguments: [String: Argument] = [:]) -> Selection<Datatype> {
+        return Self(name: name,
+                    alias: alias,
+                    arguments: arguments,
+                    selections: Datatype.selections) { decoder in
+            var container = try decoder.unkeyedContainer()
+            let firstContainer = try container.nestedContainer(keyedBy: UnknownCodingKey.self)
+            return try T(from: firstContainer)
+        }
+    }
+
+}
+
+//extension Selection where Datatype == Array<StaticSelectableContainer> {
+//
+//    public init(_ name: String,
+//                alias: String? = nil,
+//                arguments: [String: Argument] = [:]) {
+//        let selections = Datatype.Element.selections()
+//        self.name = name
+//        self.alias = alias
+//        self.arguments = arguments
+//        self.selections = selections
+//        self._decode = { resultKey, container in
+//            // TODO: Is there a generic implementation of this or do I have to keep hand-crafting expansions?
+//            var container = try container.nestedUnkeyedContainer(forKey: UnknownCodingKey(stringValue: resultKey)!)
+//            var results: [Element] = []
+//            while !container.isAtEnd {
+//                let childContainer = try container.nestedContainer(keyedBy: UnknownCodingKey.self)
+//                results.append(try F(from: childContainer))
+//            }
+//            return KeyedContainer(fields: [resultKey: results])
+//        }
+//    }
+//
+//}

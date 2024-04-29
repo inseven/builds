@@ -269,4 +269,3 @@ final class QueryableTests: XCTestCase {
     }
 
 }
-

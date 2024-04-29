@@ -28,8 +28,11 @@ public protocol StaticSelectableContainer {
 
     typealias DecodingContainer = KeyedDecodingContainer<UnknownCodingKey>
 
+    // TODO: Push `SelectionBuilder` into the protocol? Does a var let us do this?
     @SelectionBuilder static func selections() -> [any Selectable]
 
+    // TODO: Ideally this would take a KeyedContainer
+    // TODO: Can we actually get away without the custom decoder if we pass in a single value container instead?
     init(from container: DecodingContainer) throws
 
 }

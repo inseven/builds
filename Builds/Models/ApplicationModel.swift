@@ -451,57 +451,36 @@ class ApplicationModel: NSObject, ObservableObject {
 
     func testStuff(accessToken: String) async throws {
 
-        struct User: StaticSelectableContainer {
+        struct Workflow: StaticSelectableContainer {
 
-            static let login = Selection<String>("login")
-            static let bio = Selection<String>("bio")
+            static let id = Selection<String>("id")
+            static let event = Selection<String>("event")
+            static let createdAt = Selection<Date>("createdAt")
 
-            @SelectionBuilder static func selections() -> [any Selectable] {
-                login
-                bio
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                id
+                event
+                createdAt
             }
 
-            let login: String
-            let bio: String
+            let id: String
+            let event: String
+            let createdAt: Date
 
-            public init(from container: DecodingContainer) throws {
-                self.login = try container.decode(Self.login)
-                self.bio = try container.decode(Self.bio)
+            init(from container: DecodingContainer) throws {
+                self.id = try container.decode(Self.id)
+                self.event = try container.decode(Self.event)
+                self.createdAt = try container.decode(Self.createdAt)
             }
 
         }
 
-        let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
-
-        let viewer = Selection<User>("viewer")
-        let result = try await client.query(Query {
-            viewer
-        }, accessToken: accessToken)
-
-        print(try result[viewer].login)
-
-        let id = Selection<String>("id")
-        let event = Selection<String>("event")
-        let createdAt = Selection<Date>("createdAt")
-
-        let nodes = Selection<Array<KeyedContainer>>("nodes") {
-            id
-            event
-            createdAt
-        }
-
+        let nodes = Selection<Workflow>.first("nodes")
         let runs = Selection<KeyedContainer>("runs", arguments: ["first" : 1]) {
             nodes
         }
-
-//        let firstNodes = Selection("nodes") {
-//            
-//        } transform: {
-//            
-//        }
-
         let workflow = Selection<KeyedContainer>("node", arguments: ["id": "MDg6V29ya2Zsb3c5ODk4MDM1"]) {
-            Fragment("... on Workflow") {
+            Fragment(on: "Workflow") {
                 runs
             }
         }
@@ -511,11 +490,12 @@ class ApplicationModel: NSObject, ObservableObject {
 
         print(workflowQuery.query())
 
+        let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
         let workflowResult = try await client.query(workflowQuery, accessToken: accessToken)
 
-        print(try workflowResult[workflow][runs][nodes].first![id])
-        print(try workflowResult[workflow][runs][nodes].first![event])
-        print(try workflowResult[workflow][runs][nodes].first![createdAt])
+        print(try workflowResult[workflow][runs][nodes].id)
+        print(try workflowResult[workflow][runs][nodes].event)
+        print(try workflowResult[workflow][runs][nodes].createdAt)
 
 
         // TODO: Consider that it would also be possible to copy the RegexBuilder style inline transforms...
