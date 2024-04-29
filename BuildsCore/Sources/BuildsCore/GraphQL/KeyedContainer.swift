@@ -76,4 +76,10 @@ extension KeyedDecodingContainer where K == UnknownCodingKey {
         return try KeyedContainer(from: container, selections: selection.selections)
     }
 
+    public func decode<T: StaticSelectableContainer>(_ selection: Selection<T>) throws -> T {
+        let container = try self.nestedContainer(keyedBy: UnknownCodingKey.self,
+                                                 forKey: UnknownCodingKey(stringValue: selection.resultKey)!)
+        return try T(from: container)
+    }
+
 }

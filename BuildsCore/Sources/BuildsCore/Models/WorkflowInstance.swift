@@ -109,6 +109,36 @@ public struct WorkflowInstance: Identifiable, Hashable, Codable {
         self.workflowRunURL = result?.workflowRun.html_url
     }
 
+    public init(id: ID,
+                annotations: [Annotation],
+                createdAt: Date?,
+                jobs: [Job],
+                operationState: OperationState,
+                repositoryURL: URL?,
+                sha: String?,
+                title: String?,
+                updatedAt: Date?,
+                workflowFilePath: String?,
+                workflowName: String,
+                workflowRunAttempt: Int?,
+                workflowRunId: Int?,
+                workflowRunURL: URL?) {
+        self.id = id
+        self.annotations = annotations
+        self.createdAt = createdAt
+        self.jobs = jobs
+        self.operationState = operationState
+        self.repositoryURL = repositoryURL
+        self.sha = sha
+        self.title = title
+        self.updatedAt = updatedAt
+        self.workflowFilePath = workflowFilePath
+        self.workflowName = workflowName
+        self.workflowRunAttempt = workflowRunAttempt
+        self.workflowRunId = workflowRunId
+        self.workflowRunURL = workflowRunURL
+    }
+
     public func job(for annotation: Annotation) -> Job? {
         return jobs.first {
             return $0.id == annotation.jobId
