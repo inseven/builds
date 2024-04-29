@@ -455,7 +455,6 @@ class ApplicationModel: NSObject, ObservableObject {
             static let file = Selection<WorkflowRunFile>("file")
             static let checkSuite = Selection<CheckSuite>("checkSuite")
             static let updatedAt = Selection<Date>("updatedAt")
-            static let runNumber = Selection<Int>("runNumber")
 
             @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
                 id
@@ -464,7 +463,6 @@ class ApplicationModel: NSObject, ObservableObject {
                 file
                 checkSuite
                 updatedAt
-                runNumber
             }
 
             let id: String
@@ -473,7 +471,6 @@ class ApplicationModel: NSObject, ObservableObject {
             let file: WorkflowRunFile
             let checkSuite: CheckSuite
             let updatedAt: Date
-            let runNumber: Int
 
             init(from container: DecodingContainer) throws {
                 self.id = try container.decode(Self.id)
@@ -482,7 +479,6 @@ class ApplicationModel: NSObject, ObservableObject {
                 self.file = try container.decode(Self.file)
                 self.checkSuite = try container.decode(Self.checkSuite)
                 self.updatedAt = try container.decode(Self.updatedAt)
-                self.runNumber = try container.decode(Self.runNumber)
             }
 
         }
@@ -569,23 +565,13 @@ class ApplicationModel: NSObject, ObservableObject {
         let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
         let workflowResult = try await client.query(workflowQuery, accessToken: accessToken)
 
-        print(try workflowResult[workflow][runs][nodes].id)
-        print(try workflowResult[workflow][name])
-        print(try workflowResult[workflow][runs][nodes].event)
-        print(try workflowResult[workflow][runs][nodes].createdAt)
-        print(try workflowResult[workflow][runs][nodes].updatedAt)
-        print(try workflowResult[workflow][runs][nodes].file.path)
-        print(try workflowResult[workflow][runs][nodes].checkSuite.commit.oid)
-        print(try workflowResult[workflow][runs][nodes].checkSuite.conclusion)
-        print(try workflowResult[workflow][runs][nodes].checkSuite.status)
-        print(try workflowResult[workflow][runs][nodes].runNumber) // TODO: THis probably isn't right.
-
+        let operationState = OperationState(status: try workflowResult[workflow][runs][nodes].checkSuite.status,
+                                            conclusion: try workflowResult[workflow][runs][nodes].checkSuite.conclusion)
         let workflowInstance = WorkflowInstance(id: workflowIdentifier,
                                                 annotations: [],
                                                 createdAt: try workflowResult[workflow][runs][nodes].createdAt,
                                                 jobs: [],
-                                                operationState: OperationState(status: try workflowResult[workflow][runs][nodes].checkSuite.status,
-                                                                               conclusion: try workflowResult[workflow][runs][nodes].checkSuite.conclusion),
+                                                operationState: operationState,
                                                 repositoryURL: nil,
                                                 sha: try workflowResult[workflow][runs][nodes].checkSuite.commit.oid,
                                                 title: "Unknown",
