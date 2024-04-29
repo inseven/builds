@@ -447,45 +447,6 @@ class ApplicationModel: NSObject, ObservableObject {
 
     func testStuff(workflowIdentifier: WorkflowIdentifier, accessToken: String) async throws -> WorkflowInstance {
 
-        enum CheckConclusionState: String, Decodable, StaticSelectable {
-
-            case actionRequired = "ACTION_REQUIRED"
-            case timedOut = "TIMED_OUT"
-            case cancelled = "CANCELLED"
-            case failure = "FAILURE"
-            case success = "SUCCESS"
-            case neutral = "NEUTRAL"
-            case skipped = "SKIPPED"
-            case startupFailure = "STARTUP_FAILURE"
-            case stale = "STALE"
-
-            // TODO: This really should set up a decoder to make things easier.
-            init(from container: any DecodingContainer) throws {
-                let value = try container.decode(String.self)
-                // TODO: Needs to throw instead of crash.
-                self.init(rawValue: value)!
-            }
-
-        }
-
-        enum CheckSatusState: String, Decodable, StaticSelectable {
-
-            case requested = "REQUESTED"
-            case queued = "QUEUED"
-            case inProgress = "IN_PROGRESS"
-            case completed = "COMPLETED"
-            case waiting = "WAITING"
-            case pending = "PENDING"
-
-            // TODO: This really should set up a decoder to make things easier.
-            init(from container: any DecodingContainer) throws {
-                let value = try container.decode(String.self)
-                // TODO: Needs to throw instead of crash.
-                self.init(rawValue: value)!
-            }
-
-        }
-
         struct WorkflowRun: StaticSelectableContainer {
 
             static let id = Selection<String>("id")
@@ -549,8 +510,8 @@ class ApplicationModel: NSObject, ObservableObject {
         struct CheckSuite: StaticSelectableContainer {
 
             static let commit = Selection<Commit>("commit")
-            static let conclusion = Selection<CheckConclusionState>("conclusion")
-            static let status = Selection<CheckSatusState>("status")
+            static let conclusion = Selection<GraphQL.CheckConclusionState>("conclusion")
+            static let status = Selection<GraphQL.CheckSatusState>("status")
 
             @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
                 commit
@@ -559,8 +520,8 @@ class ApplicationModel: NSObject, ObservableObject {
             }
 
             let commit: Commit
-            let conclusion: CheckConclusionState
-            let status: CheckSatusState
+            let conclusion: GraphQL.CheckConclusionState
+            let status: GraphQL.CheckSatusState
 
             init(from container: DecodingContainer) throws {
                 self.commit = try container.decode(Self.commit)
@@ -623,7 +584,8 @@ class ApplicationModel: NSObject, ObservableObject {
                                                 annotations: [],
                                                 createdAt: try workflowResult[workflow][runs][nodes].createdAt,
                                                 jobs: [],
-                                                operationState: .failure,
+                                                operationState: OperationState(status: try workflowResult[workflow][runs][nodes].checkSuite.status,
+                                                                               conclusion: try workflowResult[workflow][runs][nodes].checkSuite.conclusion),
                                                 repositoryURL: nil,
                                                 sha: try workflowResult[workflow][runs][nodes].checkSuite.commit.oid,
                                                 title: "Unknown",
@@ -639,3 +601,76 @@ class ApplicationModel: NSObject, ObservableObject {
 
 }
 
+
+struct GraphQL {
+
+    enum CheckConclusionState: String, Decodable, StaticSelectable {
+
+        case actionRequired = "ACTION_REQUIRED"
+        case timedOut = "TIMED_OUT"
+        case cancelled = "CANCELLED"
+        case failure = "FAILURE"
+        case success = "SUCCESS"
+        case neutral = "NEUTRAL"
+        case skipped = "SKIPPED"
+        case startupFailure = "STARTUP_FAILURE"
+        case stale = "STALE"
+
+        // TODO: This really should set up a decoder to make things easier.
+        init(from container: any DecodingContainer) throws {
+            let value = try container.decode(String.self)
+            // TODO: Needs to throw instead of crash.
+            self.init(rawValue: value)!
+        }
+
+    }
+
+    enum CheckSatusState: String, Decodable, StaticSelectable {
+
+        case requested = "REQUESTED"
+        case queued = "QUEUED"
+        case inProgress = "IN_PROGRESS"
+        case completed = "COMPLETED"
+        case waiting = "WAITING"
+        case pending = "PENDING"
+
+        // TODO: This really should set up a decoder to make things easier.
+        init(from container: any DecodingContainer) throws {
+            let value = try container.decode(String.self)
+            // TODO: Needs to throw instead of crash.
+            self.init(rawValue: value)!
+        }
+
+    }
+
+}
+
+extension OperationState {
+
+    init(status: GraphQL.CheckSatusState?, conclusion: GraphQL.CheckConclusionState?) {
+        switch status {
+        case .queued, .requested:
+            self = .queued
+        case .waiting, .pending:
+            self = .waiting
+        case .inProgress:
+            self = .inProgress
+        case .completed:
+            switch conclusion {
+            case .success:
+                self = .success
+            case .failure, .startupFailure, .timedOut, .actionRequired:
+                self = .failure
+            case .cancelled:
+                self = .cancelled
+            case .skipped, .neutral, .stale:
+                self = .skipped
+            case .none:
+                self = .unknown
+            }
+        case .none:
+            self = .unknown
+        }
+    }
+
+}

@@ -143,7 +143,6 @@ public enum OperationState: Codable {
         case .none:
             self = .unknown
         }
-
     }
 
 }
