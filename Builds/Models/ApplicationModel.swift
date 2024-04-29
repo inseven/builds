@@ -440,8 +440,8 @@ class ApplicationModel: NSObject, ObservableObject {
 #endif
 
     func workflowInstances(_ workflowIdentifiers: [WorkflowIdentifier], accessToken: String) async throws -> [WorkflowInstance] {
-        return try await workflowIdentifiers.asyncMap { workflowIdentifier in
-            return try await self.testStuff(workflowIdentifier: workflowIdentifier, accessToken: accessToken)
+        return await workflowIdentifiers.asyncMap { workflowIdentifier in
+            return (try? await self.testStuff(workflowIdentifier: workflowIdentifier, accessToken: accessToken)) ?? WorkflowInstance(id: workflowIdentifier)
         }
     }
 
