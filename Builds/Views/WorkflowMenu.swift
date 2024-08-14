@@ -140,7 +140,7 @@ struct WorkflowMenu {
 
         MenuItem("Re-Run", systemImage: "memories") {
 
-            let disabled = workflowInstances.count != 1 || workflowInstances.first?.operationState != .unknown
+            let disabled = workflowInstances.count != 1 || workflowInstances.first?.operationState == .inProgress
             let hasFailedJobs = workflowInstances.first?.jobs.contains(where: { $0.operationState == .failure }) ?? false
 
             MenuItem("All Jobs", systemImage: "square.on.square") {
