@@ -131,7 +131,7 @@ public enum OperationState: Codable {
             switch conclusion {
             case .success:
                 self = .success
-            case .failure:
+            case .startupFailure, .failure:
                 self = .failure
             case .cancelled:
                 self = .cancelled
