@@ -121,6 +121,7 @@ public class GitHub {
     }
 
     public enum Conclusion: String, Codable {
+        case startupFailure = "startup_failure"
         case success
         case cancelled
         case failure
