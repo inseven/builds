@@ -197,6 +197,7 @@ public class GitHub {
     public enum Level: String, Codable {
         case failure
         case warning
+        case notice
     }
 
     public struct Annotation: Codable, Hashable {

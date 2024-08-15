@@ -56,6 +56,9 @@ struct AnnotationList: View {
                 case .warning:
                     Image(systemName: "exclamationmark.triangle")
                         .symbolRenderingMode(.multicolor)
+                case .notice:
+                    Image(systemName: "info.circle")
+                        .symbolRenderingMode(.multicolor)
                 }
             }
         }

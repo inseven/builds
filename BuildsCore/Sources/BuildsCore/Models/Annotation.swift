@@ -25,6 +25,7 @@ public struct Annotation: Codable, Identifiable, Hashable {
     public enum Level: String, Codable {
         case failure
         case warning
+        case notice
     }
 
     public var id: String {
@@ -68,6 +69,8 @@ extension Annotation.Level {
             self = .failure
         case .warning:
             self = .warning
+        case .notice:
+            self = .notice
         }
     }
 
