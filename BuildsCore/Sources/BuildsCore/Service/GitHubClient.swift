@@ -74,9 +74,14 @@ public class GitHubClient {
 
         var results = [GitHub.WorkflowRun]()
         for page in 1..<10 {
+            // Counter-intuitively, even though we want to reduce the number of fetches we make to avoid hitting rate
+            // limits, this only fetches 80 items per page (the max is 100). This is because the GitHub REST API _seems_
+            // to also have a hard coded response size which I've hit occasionally when fetching 100 items depending, I
+            // I guess, on the metadata sizes of those items. Hitting that limit causes GitHub to simply truncate the
+            // JSON and there's nothing we can do to recover, so we do our best to avoid it.
             let workflowRuns = try await api.workflowRuns(repositoryName: repositoryName,
                                                           page: page,
-                                                          perPage: 100,
+                                                          perPage: 80,
                                                           accessToken: accessToken)
 
             let responseWorkflowIds = workflowRuns.compactMap { (workflowRun) -> WorkflowInstance.ID? in
