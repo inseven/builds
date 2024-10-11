@@ -16,7 +16,7 @@
 		<string>Builds Widget App Store Profile</string>
 	</dict>
 	<key>signingCertificate</key>
-	<string>91DADFE184A1526FA94D4513D5B4C75E1DB3B252</string>
+	<string>Apple Distribution</string>
 	<key>signingStyle</key>
 	<string>manual</string>
 	<key>stripSwiftSymbols</key>
