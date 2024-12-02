@@ -18,15 +18,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
-@testable import BuildsCore
+import Foundation
 
-final class BuildsCoreTests: XCTestCase {
-    func testExample() throws {
-        // XCTest Documentation
-        // https://developer.apple.com/documentation/xctest
+@resultBuilder
+public struct SelectionBuilder {
 
-        // Defining Test Cases and Test Methods
-        // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
+    public static func buildBlock(_ components: [any Selectable]...) -> [any Selectable] {
+        components.flatMap { $0 }
+    }
+
+    public static func buildExpression(_ expression: any Selectable) -> [any Selectable] {
+        [expression]
+    }
+
+    public static func buildExpression(_ expression: [any Selectable]) -> [any Selectable] {
+        expression
     }
 }
