@@ -41,6 +41,7 @@ source "${ENVIRONMENT_PATH}"
 # This bootstraps itself by installing pipenv and relies on `environment.sh` to
 # correctly contain this to a local directory.
 python --version
+python3 -m site --user-base
 python -m pip install --upgrade pipenv wheel
 PIPENV_PIPFILE="$CHANGES_DIRECTORY/Pipfile" pipenv install
 PIPENV_PIPFILE="$BUILD_TOOLS_DIRECTORY/Pipfile" pipenv install
