@@ -38,5 +38,6 @@ fi
 source "${ENVIRONMENT_PATH}"
 
 # Install the Python dependencies
+python --version
 PIPENV_PIPFILE="$CHANGES_DIRECTORY/Pipfile" pipenv install
 PIPENV_PIPFILE="$BUILD_TOOLS_DIRECTORY/Pipfile" pipenv install
