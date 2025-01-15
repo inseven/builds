@@ -57,6 +57,10 @@ do
     esac
 done
 
+# Report the Ruby version for script debugging.
+ruby -v
+
+# Update the release notes.
 "$SCRIPTS_DIRECTORY/update-release-notes.sh"
 
 # Install the Jekyll dependencies.
