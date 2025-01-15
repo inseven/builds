@@ -37,7 +37,10 @@ if [ -d "${ROOT_DIRECTORY}/.local" ] ; then
 fi
 source "${ENVIRONMENT_PATH}"
 
-# Install the Python dependencies
+# Install the Python dependencies.
+# This bootstraps itself by installing pipenv and relies on `environment.sh` to
+# correctly contain this to a local directory.
 python --version
+python -m pip install --upgrade pipenv wheel
 PIPENV_PIPFILE="$CHANGES_DIRECTORY/Pipfile" pipenv install
 PIPENV_PIPFILE="$BUILD_TOOLS_DIRECTORY/Pipfile" pipenv install
