@@ -32,6 +32,9 @@ BUILD_TOOLS_DIRECTORY="${SCRIPTS_DIRECTORY}/build-tools"
 
 ENVIRONMENT_PATH="${SCRIPTS_DIRECTORY}/environment.sh"
 
+echo "*****"
+echo $PATH
+
 if [ -d "${ROOT_DIRECTORY}/.local" ] ; then
     rm -r "${ROOT_DIRECTORY}/.local"
 fi
