@@ -73,8 +73,7 @@ jobs:
       uses: jdx/mise-action@v2
 
     - name: Install dependencies
-      run: |
-        scripts/install-dependencies.sh
+      run: scripts/install-dependencies.sh
 
     - name: Build website
       run: |
