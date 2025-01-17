@@ -25,10 +25,11 @@ ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
 
 export LOCAL_TOOLS_PATH="${ROOT_DIRECTORY}/.local"
 
-export PYTHONUSERBASE="${LOCAL_TOOLS_PATH}/python"
+export PYTHONUSERBASE="$LOCAL_TOOLS_PATH/python"
 mkdir -p "$PYTHONUSERBASE"
-export PATH="${PYTHONUSERBASE}/bin":$PATH
+export PATH="$PYTHONUSERBASE/bin":$PATH
+export PYTHONPATH=$PYTHONUSERBASE
 
-export PATH=$PATH:"${SCRIPTS_DIRECTORY}/changes"
-export PATH=$PATH:"${SCRIPTS_DIRECTORY}/build-tools"
-export PATH=$PATH:"${ROOT_DIRECTORY}/diligence/scripts"
+export PATH=$PATH:"$SCRIPTS_DIRECTORY/changes"
+export PATH=$PATH:"$SCRIPTS_DIRECTORY/build-tools"
+export PATH=$PATH:"$ROOT_DIRECTORY/diligence/scripts"
