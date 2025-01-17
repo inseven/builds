@@ -26,25 +26,16 @@ set -x
 set -u
 
 SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
-CHANGES_DIRECTORY="${SCRIPTS_DIRECTORY}/changes"
-BUILD_TOOLS_DIRECTORY="${SCRIPTS_DIRECTORY}/build-tools"
+ROOT_DIRECTORY="$SCRIPTS_DIRECTORY/.."
+CHANGES_DIRECTORY="$SCRIPTS_DIRECTORY/changes"
+BUILD_TOOLS_DIRECTORY="$SCRIPTS_DIRECTORY/build-tools"
 
-ENVIRONMENT_PATH="${SCRIPTS_DIRECTORY}/environment.sh"
+source "$SCRIPTS_DIRECTORY/environment.sh"
 
-echo "*****"
-echo $PATH
-
-if [ -d "${ROOT_DIRECTORY}/.local" ] ; then
-    rm -r "${ROOT_DIRECTORY}/.local"
+if [ -d "$LOCAL_TOOLS_PATH" ] ; then
+    rm -r "$LOCAL_TOOLS_PATH"
 fi
-source "${ENVIRONMENT_PATH}"
 
-# Install the Python dependencies.
-# This bootstraps itself by installing pipenv and relies on `environment.sh` to
-# correctly contain this to a local directory.
-python --version
-python3 -m site --user-base
-python -m pip install --upgrade pipenv wheel
+python -m pip install --target "$PYTHONUSERBASE" --upgrade pipenv wheel
 PIPENV_PIPFILE="$CHANGES_DIRECTORY/Pipfile" pipenv install
 PIPENV_PIPFILE="$BUILD_TOOLS_DIRECTORY/Pipfile" pipenv install
