@@ -1,4 +1,4 @@
-// Copyright (c) 2022-2024 Jason Morley
+// Copyright (c) 2021-2025 Jason Morley
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ import SelectableCollectionView
 public struct Legal {
 
     public static let contents = Contents(repository: "inseven/builds",
-                                          copyright: "Copyright © 2021-2024 Jason Morley") {
+                                          copyright: "Copyright © 2021-2025 Jason Morley") {
         let subject = "Builds Support (\(Bundle.main.version ?? "Unknown Version"))"
         Action("Website", url: URL(string: "https://builds.jbmorley.co.uk")!)
         Action("Privacy Policy", url: URL(string: "https://builds.jbmorley.co.uk/privacy-policy")!)
