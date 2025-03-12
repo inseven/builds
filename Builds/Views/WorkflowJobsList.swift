@@ -49,11 +49,8 @@ struct WorkflowJobList: View {
                     }
                 } icon: {
                     StatusImage(operationState: job.operationState)
-                        .foregroundStyle(.tint)
                 }
             }
-            .tint(job.color)
-            .menuButtonStyleTintColor(job.color)
             .help(job.operationState.name)
         }
     }
