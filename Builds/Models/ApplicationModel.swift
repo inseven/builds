@@ -138,13 +138,15 @@ class ApplicationModel: NSObject, ObservableObject {
                 print("Refreshing...")
                 self.isUpdating = true
                 self.lastError = nil
-                _ = try await self.client.update(workflows: self.workflows) { [weak self] workflowInstance in
-                    guard let self else {
-                        return
-                    }
-                    // Don't update the cache unless the contents have changed as this will cause an unnecessary redraw.
+
+                guard let accessToken = settings.accessToken else {
+                    throw BuildsError.authenticationFailure
+                }
+
+                let workflowInstances = try await self.workflowInstances(self.workflows, accessToken: accessToken)
+                for workflowInstance in workflowInstances {
                     guard self.cachedStatus[workflowInstance.id] != workflowInstance else {
-                        return
+                        continue
                     }
                     self.cachedStatus[workflowInstance.id] = workflowInstance
                 }
@@ -408,6 +410,253 @@ class ApplicationModel: NSObject, ObservableObject {
         await refresh()
     }
 
+    struct Workflow: StaticSelectableContainer {
+
+        static let id = Selection<String>("id")
+        static let event = Selection<String>("event")
+        static let createdAt = Selection<Date>("createdAt")
+
+        // TODO: Push `SelectionBuilder` into the protocol?
+        @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+            id
+            event
+            createdAt
+        }
+
+        let id: String
+        let event: String
+        let createdAt: Date
+
+        // TODO: Ideally this would take a KeyedContainer
+        // TODO: Can we actually get away without the custom decoder if we pass in a single value container instead?
+        init(from container: DecodingContainer) throws {
+            self.id = try container.decode(Self.id)
+            self.event = try container.decode(Self.event)
+            self.createdAt = try container.decode(Self.createdAt)
+        }
+
+    }
+
 #endif
+
+    func workflowInstances(_ workflowIdentifiers: [WorkflowIdentifier], accessToken: String) async throws -> [WorkflowInstance] {
+        return await workflowIdentifiers.asyncMap { workflowIdentifier in
+            return (try? await self.testStuff(workflowIdentifier: workflowIdentifier, accessToken: accessToken)) ?? WorkflowInstance(id: workflowIdentifier)
+        }
+    }
+
+    func testStuff(workflowIdentifier: WorkflowIdentifier, accessToken: String) async throws -> WorkflowInstance {
+
+        struct WorkflowRun: StaticSelectableContainer {
+
+            static let id = Selection<String>("id")
+            static let event = Selection<String>("event")
+            static let createdAt = Selection<Date>("createdAt")
+            static let file = Selection<WorkflowRunFile>("file")
+            static let checkSuite = Selection<CheckSuite>("checkSuite")
+            static let updatedAt = Selection<Date>("updatedAt")
+
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                id
+                event
+                createdAt
+                file
+                checkSuite
+                updatedAt
+            }
+
+            let id: String
+            let event: String
+            let createdAt: Date
+            let file: WorkflowRunFile
+            let checkSuite: CheckSuite
+            let updatedAt: Date
+
+            init(from container: DecodingContainer) throws {
+                self.id = try container.decode(Self.id)
+                self.event = try container.decode(Self.event)
+                self.createdAt = try container.decode(Self.createdAt)
+                self.file = try container.decode(Self.file)
+                self.checkSuite = try container.decode(Self.checkSuite)
+                self.updatedAt = try container.decode(Self.updatedAt)
+            }
+
+        }
+
+        struct WorkflowRunFile: StaticSelectableContainer {
+
+            static let id = Selection<String>("id")
+            static let path = Selection<String>("path")
+
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                id
+                path
+            }
+
+            let id: String
+            let path: String
+
+            init(from container: DecodingContainer) throws {
+                self.id = try container.decode(Self.id)
+                self.path = try container.decode(Self.path)
+            }
+
+        }
+
+        struct CheckSuite: StaticSelectableContainer {
+
+            static let commit = Selection<Commit>("commit")
+            static let conclusion = Selection<GraphQL.CheckConclusionState>("conclusion")
+            static let status = Selection<GraphQL.CheckSatusState>("status")
+
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                commit
+                conclusion
+                status
+            }
+
+            let commit: Commit
+            let conclusion: GraphQL.CheckConclusionState
+            let status: GraphQL.CheckSatusState
+
+            init(from container: DecodingContainer) throws {
+                self.commit = try container.decode(Self.commit)
+                self.conclusion = try container.decode(Self.conclusion)
+                self.status = try container.decode(Self.status)
+            }
+
+        }
+
+        struct Commit: StaticSelectableContainer {
+
+            static let oid = Selection<String>("oid")
+
+            @SelectionBuilder static func selections() -> [any BuildsCore.Selectable] {
+                oid
+            }
+
+            let oid: String
+
+            init(from container: DecodingContainer) throws {
+                self.oid = try container.decode(Self.oid)
+            }
+
+        }
+
+        // Workflow.
+        let name = Selection<String>("name")
+
+        // Runs.
+        let nodes = Selection<WorkflowRun>.first("nodes")
+        let runs = Selection<KeyedContainer>("runs", arguments: ["first" : 1]) {
+            nodes
+        }
+
+        let workflow = Selection<KeyedContainer>("node", arguments: ["id": workflowIdentifier.workflowNodeId]) {
+            Fragment(on: "Workflow") {  // TODO: <-- support StaticSelectableContaiers here
+                name
+                runs
+            }
+        }
+        let workflowQuery = Query {
+            workflow
+        }
+
+        let client = GraphQLClient(url: URL(string: "https://api.github.com/graphql")!)
+        let workflowResult = try await client.query(workflowQuery, accessToken: accessToken)
+
+        let operationState = OperationState(status: try workflowResult[workflow][runs][nodes].checkSuite.status,
+                                            conclusion: try workflowResult[workflow][runs][nodes].checkSuite.conclusion)
+        let workflowInstance = WorkflowInstance(id: workflowIdentifier,
+                                                annotations: [],
+                                                createdAt: try workflowResult[workflow][runs][nodes].createdAt,
+                                                jobs: [],
+                                                operationState: operationState,
+                                                repositoryURL: nil,
+                                                sha: try workflowResult[workflow][runs][nodes].checkSuite.commit.oid,
+                                                title: "Unknown",
+                                                updatedAt: try workflowResult[workflow][runs][nodes].updatedAt,
+                                                workflowFilePath: try workflowResult[workflow][runs][nodes].file.path,
+                                                workflowName: try workflowResult[workflow][name],
+                                                workflowRunAttempt: -1,
+                                                workflowRunId: -1,
+                                                workflowRunURL: nil)
+
+        return workflowInstance
+    }
+
+}
+
+
+struct GraphQL {
+
+    enum CheckConclusionState: String, Decodable, StaticSelectable {
+
+        case actionRequired = "ACTION_REQUIRED"
+        case timedOut = "TIMED_OUT"
+        case cancelled = "CANCELLED"
+        case failure = "FAILURE"
+        case success = "SUCCESS"
+        case neutral = "NEUTRAL"
+        case skipped = "SKIPPED"
+        case startupFailure = "STARTUP_FAILURE"
+        case stale = "STALE"
+
+        // TODO: This really should set up a decoder to make things easier.
+        init(from container: any DecodingContainer) throws {
+            let value = try container.decode(String.self)
+            // TODO: Needs to throw instead of crash.
+            self.init(rawValue: value)!
+        }
+
+    }
+
+    enum CheckSatusState: String, Decodable, StaticSelectable {
+
+        case requested = "REQUESTED"
+        case queued = "QUEUED"
+        case inProgress = "IN_PROGRESS"
+        case completed = "COMPLETED"
+        case waiting = "WAITING"
+        case pending = "PENDING"
+
+        // TODO: This really should set up a decoder to make things easier.
+        init(from container: any DecodingContainer) throws {
+            let value = try container.decode(String.self)
+            // TODO: Needs to throw instead of crash.
+            self.init(rawValue: value)!
+        }
+
+    }
+
+}
+
+extension OperationState {
+
+    init(status: GraphQL.CheckSatusState?, conclusion: GraphQL.CheckConclusionState?) {
+        switch status {
+        case .queued, .requested:
+            self = .queued
+        case .waiting, .pending:
+            self = .waiting
+        case .inProgress:
+            self = .inProgress
+        case .completed:
+            switch conclusion {
+            case .success:
+                self = .success
+            case .failure, .startupFailure, .timedOut, .actionRequired:
+                self = .failure
+            case .cancelled:
+                self = .cancelled
+            case .skipped, .neutral, .stale:
+                self = .skipped
+            case .none:
+                self = .unknown
+            }
+        case .none:
+            self = .unknown
+        }
+    }
 
 }
