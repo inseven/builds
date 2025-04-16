@@ -84,7 +84,7 @@ class ApplicationModel: NSObject, ObservableObject {
     // set isSignedIn to false. This is to avoid explicitly polling for authentication changes when we already have a
     // mechanism which has to poll the GitHub API fairly frequently for updates and means we're not hitting the keychain
     // more than we need to.
-    @MainActor private var client: GitHubClient {
+    @MainActor var client: GitHubClient {
         get throws {
             do {
                 guard let accessToken = settings.accessToken else {
