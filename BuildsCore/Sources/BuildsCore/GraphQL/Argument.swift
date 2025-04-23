@@ -18,15 +18,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
-@testable import BuildsCore
+import Foundation
 
-final class BuildsCoreTests: XCTestCase {
-    func testExample() throws {
-        // XCTest Documentation
-        // https://developer.apple.com/documentation/xctest
+public protocol Argument {
 
-        // Defining Test Cases and Test Methods
-        // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
+    func representation() -> String
+
+}
+
+extension String: Argument {
+
+    public func representation() -> String {
+        return "\"" + self.replacingOccurrences(of: "\"", with: "\\\"") + "\""
     }
+
+}
+
+extension Int: Argument {
+
+    public func representation() -> String {
+        return String(self)
+    }
+
 }

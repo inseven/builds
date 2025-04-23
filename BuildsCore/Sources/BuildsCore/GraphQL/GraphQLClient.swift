@@ -18,15 +18,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import XCTest
-@testable import BuildsCore
+import Foundation
 
-final class BuildsCoreTests: XCTestCase {
-    func testExample() throws {
-        // XCTest Documentation
-        // https://developer.apple.com/documentation/xctest
+public struct GraphQLClient {
 
-        // Defining Test Cases and Test Methods
-        // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
+    struct QueryContainer: Codable {
+        let query: String
     }
+
+    let url: URL
+
+    public init(url: URL) {
+        self.url = url
+    }
+
+    // TODO: Did we loose some important type-safety in the top-level result?
+    public func query(_ query: Query, accessToken: String) async throws -> Query.Datatype {
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+
+        let encoder = JSONEncoder()
+        request.httpBody = try encoder.encode(QueryContainer(query: query.query()))  // TODO: !!!!!!!!
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        try response.checkHTTPStatusCode()
+        do {
+            return try query.decode(data)
+        } catch {
+            print("Failed to decode data with error \(error).")
+            print(String(data: data, encoding: .utf8) ?? "nil")
+            throw error
+        }
+    }
+
 }

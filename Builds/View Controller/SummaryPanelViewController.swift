@@ -33,7 +33,7 @@ class SummaryPanelViewController: NSViewController {
     private let whilte: SCNNode
     private let yellow: SCNNode
 
-    private var selection: SCNNode? = nil
+    private var selections: SCNNode? = nil
 
     @MainActor private var cancellables = Set<AnyCancellable>()
 
@@ -49,7 +49,7 @@ class SummaryPanelViewController: NSViewController {
         whilte = scene.rootNode.childNode(withName: "white", recursively: true)!
         yellow = scene.rootNode.childNode(withName: "yellow", recursively: true)!
 
-        selection = whilte
+        selections = whilte
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -116,12 +116,12 @@ class SummaryPanelViewController: NSViewController {
                 case .cancelled:
                     newSelection = red
                 }
-                guard newSelection != selection else {
+                guard newSelection != selections else {
                     return
                 }
                 newSelection.isHidden = false
-                selection?.isHidden = true
-                selection = newSelection
+                selections?.isHidden = true
+                selections = newSelection
             }
             .store(in: &cancellables)
     }
