@@ -78,7 +78,7 @@ struct SVGImage: View {
         guard let svg = SVG(fileURL: url) else {
             return nil
         }
-        return svg.rasterize(with: size)
+        return svg.rasterize(with: size, scale: 0)
     }
 
     // Return an image representing the SVG.
