@@ -191,6 +191,7 @@ sudo xcode-select --switch "$MACOS_XCODE_PATH"
 xcodebuild \
     -project Builds.xcodeproj \
     -scheme "Builds" \
+    -sdk macosx \
     -config Release \
     -archivePath "$MACOS_ARCHIVE_PATH" \
     OTHER_CODE_SIGN_FLAGS="--keychain=\"${KEYCHAIN_PATH}\"" \
