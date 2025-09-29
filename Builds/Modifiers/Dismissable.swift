@@ -38,7 +38,11 @@ fileprivate struct Dismissable: ViewModifier {
                     Button {
                         dismiss()
                     } label: {
-                        Text("Done")
+                        if #available(iOS 26, macOS 26, *) {
+                            Image(systemName: "xmark")
+                        } else {
+                            Text("Done")
+                        }
                     }
                 }
             }
