@@ -34,7 +34,7 @@ struct WorkflowPicker: View {
     }
 
     func binding(for workflow: WorkflowPickerModel.WorkflowDetails) -> Binding<Bool> {
-        let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.full_name,
+        let id = WorkflowInstance.ID(repositoryFullName: workflowPickerModel.repositoryDetails.repository.fullName,
                                      workflowId: workflow.workflowId,
                                      workflowNodeId: workflow.workflowNodeId,
                                      workflowNameSnapshot: workflow.workflowName,
@@ -62,7 +62,7 @@ struct WorkflowPicker: View {
                 }
             }
         } header: {
-            Text(workflowPickerModel.repositoryDetails.repository.full_name)
+            Text(workflowPickerModel.repositoryDetails.repository.fullName)
                 .textCase(.none)
         } footer: {
 #if os(macOS)

@@ -44,12 +44,12 @@ extension Job {
         self.id = workflowJob.id
         self.name = workflowJob.name
 
-        self.startedAt = workflowJob.started_at
-        self.completedAt = workflowJob.completed_at
+        self.startedAt = workflowJob.startedAt
+        self.completedAt = workflowJob.completedAt
 
         self.operationState = OperationState(status: workflowJob.status, conclusion: workflowJob.conclusion)
 
-        self.url = workflowJob.html_url
+        self.url = workflowJob.htmlUrl
     }
 
 }

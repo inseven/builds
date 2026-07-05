@@ -333,7 +333,7 @@ class ApplicationModel: NSObject, ObservableObject {
                                          workflows: workflows,
                                          branches: branches)
             }
-            .sorted { $0.repository.full_name.localizedStandardCompare($1.repository.full_name) == .orderedAscending }
+            .sorted { $0.repository.fullName.localizedStandardCompare($1.repository.fullName) == .orderedAscending }
         return repositories
     }
 
