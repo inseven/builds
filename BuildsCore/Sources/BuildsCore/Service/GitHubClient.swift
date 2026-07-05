@@ -85,19 +85,19 @@ public class GitHubClient {
                                                           accessToken: accessToken)
 
             let responseWorkflowIds = workflowRuns.compactMap { (workflowRun) -> WorkflowInstance.ID? in
-                guard let workflowNodeId = workflowIdToNodeIdMap[workflowRun.workflow_id] else {
+                guard let workflowNodeId = workflowIdToNodeIdMap[workflowRun.workflowId] else {
                     return nil
                 }
                 return WorkflowInstance.ID(repositoryFullName: repositoryName,
-                                           workflowId: workflowRun.workflow_id,
+                                           workflowId: workflowRun.workflowId,
                                            workflowNodeId: workflowNodeId,
                                            workflowNameSnapshot: workflowRun.name,
-                                           branch: workflowRun.head_branch)
+                                           branch: workflowRun.headBranch)
             }
 
             workflowIds.formUnion(responseWorkflowIds)
             results.append(contentsOf: workflowRuns.filter {
-                workflowIdToNodeIdMap[$0.workflow_id] != nil
+                workflowIdToNodeIdMap[$0.workflowId] != nil
             })
             if workflowRuns.isEmpty {
                 break
@@ -149,11 +149,11 @@ public class GitHubClient {
         let workflowRuns = try await self
             .workflowRuns(repositoryName: repository, seekingWorkflowIds: ids)
             .reduce(into: [WorkflowInstance.ID: GitHub.WorkflowRun]()) { partialResult, workflowRun in
-                let id = WorkflowInstance.ID(repositoryFullName: workflowRun.repository.full_name,
-                                             workflowId: workflowRun.workflow_id,
-                                             workflowNodeId: workflowIdToNodeIdMap[workflowRun.workflow_id]!,
+                let id = WorkflowInstance.ID(repositoryFullName: workflowRun.repository.fullName,
+                                             workflowId: workflowRun.workflowId,
+                                             workflowNodeId: workflowIdToNodeIdMap[workflowRun.workflowId]!,
                                              workflowNameSnapshot: workflowRun.name,
-                                             branch: workflowRun.head_branch)
+                                             branch: workflowRun.headBranch)
                 guard partialResult[id] == nil else {
                     return
                 }

@@ -94,19 +94,19 @@ public struct WorkflowInstance: Identifiable, Hashable, Codable {
         self.id = id
 
         self.annotations = result?.annotations ?? []
-        self.createdAt = result?.workflowRun.created_at
+        self.createdAt = result?.workflowRun.createdAt
         self.jobs = (result?.jobs ?? []).map { Job($0) }
         self.operationState = OperationState(status: result?.workflowRun.status,
                                              conclusion: result?.workflowRun.conclusion)
-        self.repositoryURL = result?.workflowRun.repository.html_url
-        self.sha = result?.workflowRun.head_sha
-        self.title = result?.workflowRun.display_title
-        self.updatedAt = result?.workflowRun.updated_at
+        self.repositoryURL = result?.workflowRun.repository.htmlUrl
+        self.sha = result?.workflowRun.headSha
+        self.title = result?.workflowRun.displayTitle
+        self.updatedAt = result?.workflowRun.updatedAt
         self.workflowFilePath = result?.workflowRun.path
         self.workflowName = result?.workflowRun.name ?? id.workflowNameSnapshot
-        self.workflowRunAttempt = result?.workflowRun.run_attempt
+        self.workflowRunAttempt = result?.workflowRun.runAttempt
         self.workflowRunId = result?.workflowRun.id
-        self.workflowRunURL = result?.workflowRun.html_url
+        self.workflowRunURL = result?.workflowRun.htmlUrl
     }
 
     public func job(for annotation: Annotation) -> Job? {

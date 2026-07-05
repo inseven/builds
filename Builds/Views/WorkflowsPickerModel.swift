@@ -64,8 +64,8 @@ class WorkflowPickerModel: ObservableObject, Runnable {
         self.applicationModel = applicationModel
         self.repositoryDetails = repositoryDetails
         self.workflows = repositoryDetails.workflows
-        self.branch = repositoryDetails.branches.first { repositoryDetails.repository.default_branch == $0.name }
-        self.branches = [repositoryDetails.repository.default_branch]
+        self.branch = repositoryDetails.branches.first { repositoryDetails.repository.defaultBranch == $0.name }
+        self.branches = [repositoryDetails.repository.defaultBranch]
     }
 
     @MainActor func start() {
@@ -75,7 +75,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
             .$workflows
             .map { workflows in
                 return workflows.filter { workflow in
-                    workflow.repositoryFullName == self.repositoryDetails.repository.full_name
+                    workflow.repositoryFullName == self.repositoryDetails.repository.fullName
                 }.reduce(into: Set<String>()) { partialResult, id in
                     partialResult.insert(id.branch)
                 }
@@ -97,7 +97,7 @@ class WorkflowPickerModel: ObservableObject, Runnable {
                     return self.workflows
                         .map { workflow in
                             return WorkflowDetails(workflowId: workflow.id,
-                                                   workflowNodeId: workflow.node_id,
+                                                   workflowNodeId: workflow.nodeId,
                                                    workflowName: workflow.name,
                                                    branch: branch)
                         }

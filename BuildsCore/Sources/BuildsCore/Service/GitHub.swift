@@ -29,9 +29,9 @@ public class GitHub {
 
     private struct AccessToken: Codable {
 
-        let access_token: String
+        let accessToken: String
         let scope: String
-        let token_type: String
+        let tokenType: String
     }
 
     public struct Workflow: Codable, Identifiable, Equatable, Hashable {
@@ -41,7 +41,7 @@ public class GitHub {
         }
 
         public let id: Int
-        public let node_id: String
+        public let nodeId: String
 
         public let name: String
         public let path: String
@@ -50,15 +50,15 @@ public class GitHub {
 
     public struct Workflows: Codable {
 
-        public let total_count: Int
+        public let totalCount: Int
         public let workflows: [Workflow]
     }
 
     public struct Repositories: Codable {
 
-        public let incomplete_results: Bool
+        public let incompleteResults: Bool
         public let items: [Repository]
-        public let total_count: Int
+        public let totalCount: Int
     }
 
     public struct Repository: Codable, Identifiable, Equatable, Hashable {
@@ -70,24 +70,24 @@ public class GitHub {
         public let id: Int
 
         public let archived: Bool
-        public let default_branch: String
-        public let full_name: String
+        public let defaultBranch: String
+        public let fullName: String
         public let name: String
-        public let node_id: String
+        public let nodeId: String
         public let owner: User
         public let url: URL
     }
 
     public struct WorkflowRuns: Codable {
 
-        public let total_count: Int
-        public let workflow_runs: [WorkflowRun]
+        public let totalCount: Int
+        public let workflowRuns: [WorkflowRun]
     }
 
     public struct WorkflowJobs: Codable {
 
         public let jobs: [WorkflowJob]
-        public let total_count: Int
+        public let totalCount: Int
 
     }
 
@@ -95,12 +95,12 @@ public class GitHub {
 
         public let id: Int
 
-        public let completed_at: Date?
+        public let completedAt: Date?
         public let conclusion: Conclusion?
-        public let html_url: URL
+        public let htmlUrl: URL
         public let name: String
-        public let run_id: Int
-        public let started_at: Date?
+        public let runId: Int
+        public let startedAt: Date?
         public let status: Status
     }
 
@@ -131,41 +131,41 @@ public class GitHub {
     public struct WorkflowRun: Codable, Identifiable, Hashable {
 
         public struct Repository: Codable, Hashable {
-            public let branches_url: URL
-            public let full_name: String
-            public let html_url: URL
+            public let branchesUrl: URL
+            public let fullName: String
+            public let htmlUrl: URL
         }
 
         public let id: Int
 
-        public let check_suite_id: Int
-        public let check_suite_node_id: String
+        public let checkSuiteId: Int
+        public let checkSuiteNodeId: String
         public let conclusion: Conclusion?
-        public let created_at: Date
-        public let display_title: String
+        public let createdAt: Date
+        public let displayTitle: String
         public let event: String
-        public let head_branch: String
-        public let head_sha: String
-        public let html_url: URL
+        public let headBranch: String
+        public let headSha: String
+        public let htmlUrl: URL
         public let name: String
-        public let node_id: String
+        public let nodeId: String
         public let path: String
         public let repository: Repository
-        public let rerun_url: URL
-        public let run_attempt: Int
-        public let run_number: Int
+        public let rerunUrl: URL
+        public let runAttempt: Int
+        public let runNumber: Int
         public let status: Status
-        public let updated_at: Date
+        public let updatedAt: Date
         public let url: URL
-        public let workflow_id: Int
+        public let workflowId: Int
     }
 
     public protocol RepositoryScope {
-        var repos_url: URL { get }
+        var reposUrl: URL { get }
     }
 
     public struct UserScope: RepositoryScope {
-        public var repos_url = URL(string: "https://api.github.com/user/repos")!
+        public var reposUrl = URL(string: "https://api.github.com/user/repos")!
     }
 
     public struct Organization: Codable, Identifiable, RepositoryScope {
@@ -174,7 +174,7 @@ public class GitHub {
 
         public let login: String
         public let name: String?
-        public let repos_url: URL
+        public let reposUrl: URL
     }
 
     public struct OrganizationReference: Codable, Identifiable, RepositoryScope {
@@ -183,15 +183,15 @@ public class GitHub {
 
         public let login: String
         public let url: URL
-        public let repos_url: URL
+        public let reposUrl: URL
     }
 
     public struct User: Codable, Hashable {
 
         public let login: String
         public let id: Int
-        public let node_id: String
-        public let avatar_url: URL
+        public let nodeId: String
+        public let avatarUrl: URL
     }
 
     public enum Level: String, Codable {
@@ -202,13 +202,13 @@ public class GitHub {
 
     public struct Annotation: Codable, Hashable {
 
-        public let annotation_level: Level
-        public let end_column: Int?
-        public let end_line: Int
+        public let annotationLevel: Level
+        public let endColumn: Int?
+        public let endLine: Int
         public let message: String
         public let path: String
-        public let start_column: Int?
-        public let start_line: Int
+        public let startColumn: Int?
+        public let startLine: Int
         public let title: String
     }
 
@@ -256,6 +256,7 @@ public class GitHub {
         let data = try await fetch(url, accessToken: accessToken)
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
@@ -302,13 +303,13 @@ public class GitHub {
         let url = URL(string: "https://api.github.com/repos/\(repositoryName)/actions/runs")!
             .settingQueryItems(queryItems)!
         let response: WorkflowRuns = try await fetch(url, accessToken: accessToken)
-        return response.workflow_runs
+        return response.workflowRuns
     }
 
     public func repositories(scope: RepositoryScope, accessToken: String) async throws -> [Repository] {
         var repositories: [Repository] = []
         for page in 1... {
-            let response: [Repository] = try await fetch(scope.repos_url,
+            let response: [Repository] = try await fetch(scope.reposUrl,
                                                          accessToken: accessToken,
                                                          page: page,
                                                          perPage: 100)
@@ -322,14 +323,14 @@ public class GitHub {
 
     // TODO: Owner and repo as parameters.
     public func branches(for repository: Repository, accessToken: String) async throws -> [Branch] {
-        let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/branches")!
+        let url = URL(string: "https://api.github.com/repos/\(repository.fullName)/branches")!
         let response: [Branch] = try await fetch(url, accessToken: accessToken)
         return response
     }
 
     // TODO: Owner and repo as parameters.
     public func workflows(for repository: Repository, accessToken: String) async throws -> [Workflow] {
-        let url = URL(string: "https://api.github.com/repos/\(repository.full_name)/actions/workflows")!
+        let url = URL(string: "https://api.github.com/repos/\(repository.fullName)/actions/workflows")!
         let response: Workflows = try await fetch(url, accessToken: accessToken)
         return response.workflows
     }
@@ -382,8 +383,9 @@ public class GitHub {
         try response.checkHTTPStatusCode()
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         let accessToken = try decoder.decode(AccessToken.self, from: data)
-        return accessToken.access_token
+        return accessToken.accessToken
     }
 
     public func deleteGrant(accessToken: String) async throws {
