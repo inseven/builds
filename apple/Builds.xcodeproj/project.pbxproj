@@ -472,10 +472,10 @@
 			);
 			mainGroup = D8FEADFF27F591AE00FDADFA;
 			packageReferences = (
-				D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */,
-				D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "diligence" */,
+				D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "dependencies/interact" */,
+				D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "dependencies/diligence" */,
 				D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */,
-				D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "SelectableCollectionView" */,
+				D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "dependencies/SelectableCollectionView" */,
 			);
 			productRefGroup = D8FEAE0927F591AE00FDADFA /* Products */;
 			projectDirPath = "";
@@ -1211,17 +1211,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "SelectableCollectionView" */ = {
+		D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "dependencies/SelectableCollectionView" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = SelectableCollectionView;
+			relativePath = dependencies/SelectableCollectionView;
 		};
-		D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */ = {
+		D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "dependencies/interact" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = interact;
+			relativePath = dependencies/interact;
 		};
-		D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "diligence" */ = {
+		D8DDD5F22B65FB11003FAB23 /* XCLocalSwiftPackageReference "dependencies/diligence" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = diligence;
+			relativePath = dependencies/diligence;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -1251,7 +1251,7 @@
 		};
 		D84D18732BC311D000C907B2 /* Interact */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "interact" */;
+			package = D8DDD5EF2B65F910003FAB23 /* XCLocalSwiftPackageReference "dependencies/interact" */;
 			productName = Interact;
 		};
 		D887C5D52BA0B48000E46174 /* SwiftDraw */ = {
