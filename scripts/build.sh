@@ -25,25 +25,26 @@ set -o pipefail
 set -x
 set -u
 
-SCRIPTS_DIRECTORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+ROOT_DIRECTORY="$( cd "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" &> /dev/null && pwd )"
 
-ROOT_DIRECTORY="${SCRIPTS_DIRECTORY}/.."
-BUILD_DIRECTORY="${ROOT_DIRECTORY}/build"
-TEMPORARY_DIRECTORY="${ROOT_DIRECTORY}/temp"
+SCRIPTS_DIRECTORY="$ROOT_DIRECTORY/scripts"
+SOURCE_DIRECTORY="$ROOT_DIRECTORY/apple"
+BUILD_DIRECTORY="$ROOT_DIRECTORY/build"
+TEMPORARY_DIRECTORY="$ROOT_DIRECTORY/temp"
 
-KEYCHAIN_PATH="${TEMPORARY_DIRECTORY}/temporary.keychain"
-IOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-iOS.xcarchive"
-MACOS_ARCHIVE_PATH="${BUILD_DIRECTORY}/Builds-macOS.xcarchive"
-ENV_PATH="${ROOT_DIRECTORY}/.env"
-CONFIGURATION_DIRECTORY="${ROOT_DIRECTORY}/BuildsCore/Sources/BuildsCore/Resources"
-CONFIGURATION_PATH="${CONFIGURATION_DIRECTORY}/configuration.json"
+KEYCHAIN_PATH="$TEMPORARY_DIRECTORY/temporary.keychain"
+IOS_ARCHIVE_PATH="$BUILD_DIRECTORY/Builds-iOS.xcarchive"
+MACOS_ARCHIVE_PATH="$BUILD_DIRECTORY/Builds-macOS.xcarchive"
+ENV_PATH="$ROOT_DIRECTORY/.env"
+CONFIGURATION_DIRECTORY="$SOURCE_DIRECTORY/BuildsCore/Sources/BuildsCore/Resources"
+CONFIGURATION_PATH="$CONFIGURATION_DIRECTORY/configuration.json"
 
-RELEASE_SCRIPT_PATH="${SCRIPTS_DIRECTORY}/release.sh"
+RELEASE_SCRIPT_PATH="$SCRIPTS_DIRECTORY/release.sh"
 
 IOS_XCODE_PATH=${IOS_XCODE_PATH:-/Applications/Xcode.app}
 MACOS_XCODE_PATH=${MACOS_XCODE_PATH:-/Applications/Xcode.app}
 
-source "${SCRIPTS_DIRECTORY}/environment.sh"
+source "$SCRIPTS_DIRECTORY/environment.sh"
 
 # Check that the GitHub command is available on the path.
 which gh || (echo "GitHub cli (gh) not available on the path." && exit 1)
@@ -75,21 +76,7 @@ if [ -f "$ENV_PATH" ] ; then
     source "$ENV_PATH"
 fi
 
-# Check for Apple Silicon hardware
-if sysctl -n hw.optional.arm64 > /dev/null 2>&1; then
-    echo "Hardware: Apple Silicon detected."
-    # Hardware check passed, now verify execution architecture
-    if [[ $(arch) != "arm64" ]]; then
-        echo "Error: Not running natively on Apple Silicon (likely under Rosetta)."
-        exit 1
-    else
-        echo "Success: Running natively on Apple Silicon."
-    fi
-else
-    echo "Hardware: Not Apple Silicon or unable to verify."
-fi
-
-cd "$ROOT_DIRECTORY"
+cd "$SOURCE_DIRECTORY"
 
 # Select the correct Xcode.
 sudo xcode-select --switch "$MACOS_XCODE_PATH"
@@ -130,7 +117,7 @@ echo $APP_CONFIGURATION > "$CONFIGURATION_PATH"
 
 # Determine the version and build number.
 VERSION_NUMBER=`changes version`
-BUILD_NUMBER=`build-number.swift`
+BUILD_NUMBER=`build-tools generate-build-number`
 
 # Import the certificates into our dedicated keychain.
 echo "$APPLE_DISTRIBUTION_CERTIFICATE_PASSWORD" | build-tools import-base64-certificate --password "$KEYCHAIN_PATH" "$APPLE_DISTRIBUTION_CERTIFICATE_BASE64"
