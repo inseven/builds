@@ -1,8 +1,8 @@
 [submodule "interact"]
-	path = interact
+	path = apple/dependencies/interact
 	url = https://github.com/inseven/interact.git
 [submodule "diligence"]
-	path = diligence
+	path = apple/dependencies/diligence
 	url = https://github.com/inseven/diligence.git
 [submodule "scripts/changes"]
 	path = scripts/changes
@@ -11,7 +11,7 @@
 	path = scripts/build-tools
 	url = https://github.com/jbmorley/build-tools.git
 [submodule "SelectableCollectionView"]
-	path = SelectableCollectionView
+	path = apple/dependencies/SelectableCollectionView
 	url = https://github.com/jbmorley/SelectableCollectionView.git
 [submodule "builds-resources"]
 	path = builds-resources
