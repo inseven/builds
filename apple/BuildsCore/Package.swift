@@ -16,7 +16,7 @@ let package = Package(
             targets: ["BuildsCore"]),
     ],
     dependencies: [
-        .package(path: "../interact"),
+        .package(path: "../dependencies/interact"),
     ],
     targets: [
         .target(
