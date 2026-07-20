@@ -20,3 +20,7 @@
 [submodule "builds-resources"]
 	path = apple/builds-resources
 	url = https://github.com/inseven/builds-resources.git
+[submodule "_theme"]
+	path = docs/_theme
+	url = https://github.com/jbmorley/showcase-theme.git
+	branch = main
