@@ -3,11 +3,10 @@ title: Builds
 author: Jason Morley
 email: support@jbmorley.co.uk
 description: GitHub Actions Status Board
-platforms: Mac, iPhone and iPad
 baseurl: ""
 url: "https://builds.jbmorley.co.uk"
 repository: https://github.com/inseven/builds
-copyright: 2021-2026 <a href="https://jbmorley.co.uk">Jason Morley</a>
+copyright: 2021-2026 <a href="https://jbmorley.co.uk/about">Jason Morley</a>
 
 navigation:
   - title: Builds
