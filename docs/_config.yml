@@ -21,6 +21,8 @@ navigation:
 footer:
   - title: Privacy Policy
     href: /privacy-policy
+  - title: Support
+    href: /support
 
 destination: ../_site
 
