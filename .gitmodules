@@ -17,6 +17,7 @@
 [submodule "SelectableCollectionView"]
 	path = apple/dependencies/SelectableCollectionView
 	url = https://github.com/jbmorley/SelectableCollectionView.git
+	branch = main
 [submodule "builds-resources"]
 	path = apple/builds-resources
 	url = https://github.com/inseven/builds-resources.git
