@@ -20,7 +20,7 @@
 
 import Foundation
 
-extension URL: Identifiable {
+extension URL: @retroactive Identifiable {
 
     public var id: Self {
         return self
@@ -31,6 +31,9 @@ extension URL: Identifiable {
     public static let manageWorkflows = URL(string: "x-builds://manage-workflows")!
 
     public static let gitHub = URL(string: "https://github.com")!
+
+    public static let donate = URL(string: "https://jbmorley.co.uk/donate")!
+    public static let software = URL(string: "https://jbmorley.co.uk/software")!
 
     public var components: URLComponents? {
         return URLComponents(string: absoluteString)

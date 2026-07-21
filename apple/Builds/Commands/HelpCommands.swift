@@ -18,50 +18,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Combine
 import SwiftUI
 
-import Diligence
+import BuildsCore
 
-@main
-struct BuildsApp: App {
+struct HelpCommands: Commands {
 
-    #if os(iOS)
-    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
-    #else
-    @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
-    #endif
+    @Environment(\.openURL) private var openURL
 
-    @MainActor init() {
-    }
+    var body: some Commands {
 
-    var body: some Scene {
+        CommandGroup(replacing: .help) {
 
-        MainWindow()
-            .commands {
-                WorkflowCommands()
-                AccountCommands(applicationModel: appDelegate.applicationModel)
-                LifecycleCommands(applicationModel: appDelegate.applicationModel)
-                InspectorCommands()
-                HelpCommands()
-#if DEBUG
-                SummaryCommands(applicationModel: appDelegate.applicationModel)
-#endif
+            Button("Donate", systemImage: "globe") {
+                openURL(.donate)
             }
-            .environmentObject(appDelegate.applicationModel)
 
-#if os(macOS)
+            Button("More Software by Jason Morley", systemImage: "globe") {
+                openURL(.software)
+            }
 
-        About(Legal.contents)
-
-        WorkflowsWindow()
-            .environmentObject(appDelegate.applicationModel)
-
-        InfoWindow()
-            .environmentObject(appDelegate.applicationModel)
-
-#endif
+        }
 
     }
-    
+
 }
