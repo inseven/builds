@@ -21,6 +21,7 @@ Builds relies on SwiftUI previews to test all the different widget scenarios. Un
 Builds is licensed under the MIT License (see [LICENSE](LICENSE)). It depends on the following separately licensed third-party libraries and components:
 
 - [CassowarySwift](https://github.com/tribalworldwidelondon/CassowarySwift), BSD 3-Clause License
+- [Diligence](https://github.com/inseven/diligence), MIT License
 - [Interact](https://github.com/inseven/interact), MIT License
 - [Licensable](https://github.com/inseven/licensable), MIT License
 - [Material Icons](https://github.com/google/material-design-icons), Apache License 2.0
