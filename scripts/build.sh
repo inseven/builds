@@ -140,9 +140,9 @@ build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_Ma
 # Build and test BuildsCore.
 pushd "BuildsCore"
 sudo xcode-select --switch "$MACOS_XCODE_PATH"
-xcodebuild -scheme FileawayCore -destination "platform=macOS" clean build test
+xcodebuild -scheme BuildsCore -destination "platform=macOS" clean build test
 sudo xcode-select --switch "$IOS_XCODE_PATH"
-xcodebuild -scheme FileawayCore -destination "$DEFAULT_IPHONE_DESTINATION" clean build test
+xcodebuild -scheme BuildsCore -destination "$DEFAULT_IPHONE_DESTINATION" clean build test
 popd
 
 # Smoke test builds of the SwiftUI preview targets.
