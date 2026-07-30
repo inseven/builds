@@ -24,10 +24,6 @@ import BuildsCore
 
 struct WorkflowInstanceCell: View {
 
-    @Environment(\.isSelected) var isSelected
-    @Environment(\.highlightState) var highlightState
-    @Environment(\.selectionColor) var selectionColor
-
     struct LayoutMetrics {
         static let cornerRadius = 12.0
         static let popoverButtonSpacing = 10.0
@@ -36,6 +32,15 @@ struct WorkflowInstanceCell: View {
         static let selectionLineWidth = 3.0
         static let selectionPadding = 2.5
     }
+
+    static let relativeDateTimeFormatter: RelativeDateTimeFormatter = {
+        let relativeDateTimeFormatter = RelativeDateTimeFormatter()
+        return relativeDateTimeFormatter
+    }()
+
+    @Environment(\.isSelected) var isSelected
+    @Environment(\.highlightState) var highlightState
+    @Environment(\.selectionColor) var selectionColor
 
     let workflowInstance: WorkflowInstance
 
@@ -88,8 +93,9 @@ struct WorkflowInstanceCell: View {
                 }
                 VStack {
                     if let createdAt = workflowInstance.createdAt {
-                        TimelineView(.periodic(from: createdAt, by: 1)) { _ in
-                            Text(createdAt, format: .relative(presentation: .numeric))
+                        TimelineView(.periodic(from: .now, by: 1)) { context in
+                            Text(Self.relativeDateTimeFormatter.localizedString(for: createdAt,
+                                                                                relativeTo: context.date))
                         }
                     } else {
                         Text("never")

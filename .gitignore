@@ -1,6 +1,6 @@
 .jekyll-cache
 .local
+/apple/BuildsCore/Package.resolved
+/docs/releases
 _site
 configuration.json
-
-/docs/releases
