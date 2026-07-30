@@ -6,14 +6,6 @@
 	path = apple/dependencies/diligence
 	url = https://github.com/inseven/diligence.git
     branch = main
-[submodule "scripts/changes"]
-	path = scripts/changes
-	url = https://github.com/jbmorley/changes.git
-    branch = main
-[submodule "scripts/build-tools"]
-	path = scripts/build-tools
-	url = https://github.com/jbmorley/build-tools.git
-    branch = main
 [submodule "SelectableCollectionView"]
 	path = apple/dependencies/SelectableCollectionView
 	url = https://github.com/jbmorley/SelectableCollectionView.git

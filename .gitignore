@@ -2,5 +2,6 @@
 .local
 /apple/BuildsCore/Package.resolved
 /docs/releases
+/scripts/Pipfile.lock
 _site
 configuration.json
