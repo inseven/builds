@@ -137,10 +137,16 @@ build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Mac_App_S
 build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_App_Store_Profile.mobileprovision"
 build-tools install-provisioning-profile "profiles/Builds_Preview_Host_Widget_Mac_App_Store_Profile.provisionprofile"
 
-# Select a suitable version of Xcode.
+# Build and test BuildsCore.
+pushd "BuildsCore"
+sudo xcode-select --switch "$MACOS_XCODE_PATH"
+xcodebuild -scheme BuildsCore -destination "platform=macOS" clean build test
 sudo xcode-select --switch "$IOS_XCODE_PATH"
+xcodebuild -scheme BuildsCore -destination "$DEFAULT_IPHONE_DESTINATION" clean build test
+popd
 
 # Smoke test builds of the SwiftUI preview targets.
+sudo xcode-select --switch "$IOS_XCODE_PATH"
 xcodebuild \
     -project Builds.xcodeproj \
     -scheme BuildsPreviewHost \
@@ -157,6 +163,7 @@ xcodebuild \
     build
 
 # Build and archive the iOS project.
+sudo xcode-select --switch "$IOS_XCODE_PATH"
 xcodebuild \
     -project Builds.xcodeproj \
     -scheme "Builds" \
