@@ -8,8 +8,6 @@ GitHub Actions status board for macOS and iOS.
 
 ## Development
 
-Builds follows the version numbering, build and signing conventions for InSeven apps. Further details can be found [here](https://github.com/inseven/build-documentation).
-
 ### SwiftUI Previews
 
 ![](images/previews-screenshot@2x.png)

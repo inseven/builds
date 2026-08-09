@@ -1,7 +1,6 @@
 .jekyll-cache
-.local
 /apple/BuildsCore/Package.resolved
 /docs/releases
-/scripts/Pipfile.lock
+/docs/vendor
 _site
 configuration.json
