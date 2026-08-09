@@ -25,6 +25,7 @@ public enum OperationState: Codable {
     case unknown
     case queued
     case waiting
+    case pending
     case inProgress
     case success
     case failure
@@ -36,6 +37,7 @@ public enum OperationState: Codable {
         .waiting,
         .inProgress,
         .queued,
+        .pending,
         .cancelled,
         .skipped,
         .success,
@@ -62,6 +64,8 @@ public enum OperationState: Codable {
             return "Queued"
         case .waiting:
             return "Waiting"
+        case .pending:
+            return "Pending"
         case .inProgress:
             return "In Progress"
         case .success:
@@ -82,6 +86,8 @@ public enum OperationState: Codable {
         case .queued:
             return .yellow
         case .waiting:
+            return .yellow
+        case .pending:
             return .yellow
         case .inProgress:
             return .yellow
@@ -104,6 +110,8 @@ public enum OperationState: Codable {
             return "circle"
         case .waiting:
             return "clock"
+        case .pending:
+            return "circle.dotted"
         case .inProgress:
             return "circle.dashed"
         case .success:
@@ -121,26 +129,30 @@ public enum OperationState: Codable {
 
     public init(status: GitHub.Status?, conclusion: GitHub.Conclusion?) {
         switch status {
-        case .queued:
+        case .queued, .requested:
             self = .queued
         case .waiting:
             self = .waiting
+        case .pending:
+            self = .pending
         case .inProgress:
             self = .inProgress
         case .completed:
             switch conclusion {
             case .success:
                 self = .success
-            case .startupFailure, .failure:
+            case .startupFailure, .failure, .timedOut:
                 self = .failure
             case .cancelled:
                 self = .cancelled
-            case .skipped:
+            case .actionRequired:
+                self = .waiting
+            case .neutral, .skipped, .stale:
                 self = .skipped
-            case .none:
+            case .unknown, .none:
                 self = .unknown
             }
-        case .none:
+        case .unknown, .none:
             self = .unknown
         }
 

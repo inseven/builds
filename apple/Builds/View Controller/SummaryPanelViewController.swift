@@ -113,6 +113,8 @@ class SummaryPanelViewController: NSViewController {
                     newSelection = yellow
                 case .waiting:
                     newSelection = yellow
+                case .pending:
+                    newSelection = yellow
                 case .cancelled:
                     newSelection = red
                 }
