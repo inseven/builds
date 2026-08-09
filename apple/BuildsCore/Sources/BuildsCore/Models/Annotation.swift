@@ -63,13 +63,13 @@ public struct Annotation: Codable, Identifiable, Hashable {
 
 extension Annotation.Level {
 
-    init(_ level: GitHub.Level) {
+    init(_ level: GitHub.Level?) {
         switch level {
         case .failure:
             self = .failure
         case .warning:
             self = .warning
-        case .notice:
+        case .notice, .none:
             self = .notice
         }
     }

@@ -36,6 +36,25 @@ public class GitHub {
 
     public struct Workflow: Codable, Identifiable, Equatable, Hashable {
 
+        public enum State: String, Codable {
+            case active
+            case deleted
+            case disabledFork = "disabled_fork"
+            case disabledInactivity = "disabled_inactivity"
+            case disabledManually = "disabled_manually"
+            case unknown
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                self = Self(rawValue: try container.decode(String.self)) ?? .unknown
+            }
+
+            /// Whether the workflow can currently run; disabled workflows will not produce new runs.
+            public var isActive: Bool {
+                return self == .active
+            }
+        }
+
         public static func == (lhs: Workflow, rhs: Workflow) -> Bool {
             return lhs.id == rhs.id
         }
@@ -45,7 +64,7 @@ public class GitHub {
 
         public let name: String
         public let path: String
-        public let state: String
+        public let state: State
     }
 
     public struct Workflows: Codable {
@@ -116,16 +135,34 @@ public class GitHub {
     public enum Status: String, Codable {
         case queued = "queued"
         case waiting = "waiting"
+        case requested = "requested"
+        case pending = "pending"
         case inProgress = "in_progress"
         case completed = "completed"
+        case unknown = "unknown"
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            self = Self(rawValue: try container.decode(String.self)) ?? .unknown
+        }
     }
 
     public enum Conclusion: String, Codable {
+        case actionRequired = "action_required"
         case startupFailure = "startup_failure"
+        case timedOut = "timed_out"
         case success
         case cancelled
         case failure
+        case neutral
         case skipped
+        case stale
+        case unknown
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            self = Self(rawValue: try container.decode(String.self)) ?? .unknown
+        }
     }
 
     public struct WorkflowRun: Codable, Identifiable, Hashable {
@@ -202,7 +239,7 @@ public class GitHub {
 
     public struct Annotation: Codable, Hashable {
 
-        public let annotationLevel: Level
+        public let annotationLevel: Level?
         public let endColumn: Int?
         public let endLine: Int
         public let message: String
