@@ -49,7 +49,6 @@ public class GitHub {
                 self = Self(rawValue: try container.decode(String.self)) ?? .unknown
             }
 
-            /// Whether the workflow can currently run; disabled workflows will not produce new runs.
             public var isActive: Bool {
                 return self == .active
             }
