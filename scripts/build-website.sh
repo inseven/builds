@@ -32,8 +32,6 @@ WEBSITE_DIRECTORY="$ROOT_DIRECTORY/docs"
 WEBSITE_SIMULATOR_DIRECTORY="$ROOT_DIRECTORY/docs/simulator"
 SIMULATOR_WEB_DIRECTORY="$ROOT_DIRECTORY/simulator/web"
 
-source "$SCRIPTS_DIRECTORY/environment.sh"
-
 # Process the command line arguments.
 POSITIONAL=()
 SERVE=false
@@ -59,10 +57,6 @@ ruby -v
 "$SCRIPTS_DIRECTORY/update-release-notes.sh"
 
 # Install the Jekyll dependencies.
-export GEM_HOME="$ROOT_DIRECTORY/.local/ruby"
-mkdir -p "$GEM_HOME"
-export PATH="$GEM_HOME/bin":$PATH
-gem install bundler
 cd "$WEBSITE_DIRECTORY"
 bundle install
 
