@@ -16,12 +16,14 @@ let package = Package(
             targets: ["BuildsCore"]),
     ],
     dependencies: [
-        .package(path: "../dependencies/interact"),
+        .package(url: "https://github.com/inseven/diligence.git", from: "2.0.1"),
+        .package(url: "https://github.com/inseven/interact.git", from: "3.10.5"),
     ],
     targets: [
         .target(
             name: "BuildsCore",
             dependencies: [
+                .product(name: "Diligence", package: "diligence"),
                 .product(name: "Interact", package: "interact"),
             ],
             resources: [
