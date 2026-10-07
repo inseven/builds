@@ -18,6 +18,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/inseven/diligence.git", from: "2.0.1"),
         .package(url: "https://github.com/inseven/interact.git", from: "3.10.5"),
+        .package(url: "https://github.com/inseven/SelectableCollectionView.git", from: "2.0.5"),
     ],
     targets: [
         .target(
@@ -25,6 +26,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Diligence", package: "diligence"),
                 .product(name: "Interact", package: "interact"),
+                .product(name: "SelectableCollectionView", package: "SelectableCollectionView"),
             ],
             resources: [
                 .process("Resources")

@@ -473,7 +473,6 @@
 			mainGroup = D8FEADFF27F591AE00FDADFA;
 			packageReferences = (
 				D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */,
-				D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "dependencies/SelectableCollectionView" */,
 			);
 			productRefGroup = D8FEAE0927F591AE00FDADFA /* Products */;
 			projectDirPath = "";
@@ -991,6 +990,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Builds/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1031,6 +1031,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Builds/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1207,13 +1208,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		D826A57B2BA23228006D25FF /* XCLocalSwiftPackageReference "dependencies/SelectableCollectionView" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = dependencies/SelectableCollectionView;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */ = {
