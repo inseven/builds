@@ -19,6 +19,8 @@ let package = Package(
         .package(url: "https://github.com/inseven/diligence.git", from: "2.0.1"),
         .package(url: "https://github.com/inseven/interact.git", from: "3.10.7"),
         .package(url: "https://github.com/inseven/SelectableCollectionView.git", from: "2.0.5"),
+        .package(url: "https://github.com/swhitty/SwiftDraw.git", from: "0.16.2"),
+
     ],
     targets: [
         .target(
@@ -27,6 +29,7 @@ let package = Package(
                 .product(name: "Diligence", package: "diligence"),
                 .product(name: "Interact", package: "interact"),
                 .product(name: "SelectableCollectionView", package: "SelectableCollectionView"),
+                .product(name: "SwiftDraw", package: "SwiftDraw"),
             ],
             resources: [
                 .process("Resources")
