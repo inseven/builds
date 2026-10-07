@@ -16,7 +16,6 @@
 		D85677F42BC1CFF6003D2DB6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85677F32BC1CFF6003D2DB6 /* SwiftUI.framework */; };
 		D85678022BC1CFF7003D2DB6 /* BuildsWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D85677F02BC1CFF6003D2DB6 /* BuildsWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D883F1B52B97EC9E00B00F1C /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D883F1B42B97EC9E00B00F1C /* Localizable.xcstrings */; };
-		D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */ = {isa = PBXBuildFile; productRef = D887C5D52BA0B48000E46174 /* SwiftDraw */; };
 		D889F49C2BAE58EF004CFC50 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D889F49B2BAE57BF004CFC50 /* PrivacyInfo.xcprivacy */; };
 		D8A1223A2BD131C4002BDF42 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85677F12BC1CFF6003D2DB6 /* WidgetKit.framework */; };
 		D8A1223B2BD131C4002BDF42 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85677F32BC1CFF6003D2DB6 /* SwiftUI.framework */; };
@@ -184,7 +183,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D820A0A82BC481F300FDD432 /* BuildsCore in Frameworks */,
-				D887C5D62BA0B48000E46174 /* SwiftDraw in Frameworks */,
 				D8DDD5F12B65F910003FAB23 /* Interact in Frameworks */,
 				D8DDD5F42B65FB11003FAB23 /* Diligence in Frameworks */,
 				D826A57D2BA23228006D25FF /* SelectableCollectionView in Frameworks */,
@@ -380,7 +378,6 @@
 			packageProductDependencies = (
 				D8DDD5F02B65F910003FAB23 /* Interact */,
 				D8DDD5F32B65FB11003FAB23 /* Diligence */,
-				D887C5D52BA0B48000E46174 /* SwiftDraw */,
 				D826A57C2BA23228006D25FF /* SelectableCollectionView */,
 				D820A0A72BC481F300FDD432 /* BuildsCore */,
 			);
@@ -472,7 +469,6 @@
 			);
 			mainGroup = D8FEADFF27F591AE00FDADFA;
 			packageReferences = (
-				D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */,
 			);
 			productRefGroup = D8FEAE0927F591AE00FDADFA /* Products */;
 			projectDirPath = "";
@@ -1215,17 +1211,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/swhitty/SwiftDraw.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.16.2;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		D820A0A52BC481EB00FDD432 /* BuildsCore */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1242,11 +1227,6 @@
 		D84D18732BC311D000C907B2 /* Interact */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Interact;
-		};
-		D887C5D52BA0B48000E46174 /* SwiftDraw */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D887C5D42BA0B46D00E46174 /* XCRemoteSwiftPackageReference "SwiftDraw" */;
-			productName = SwiftDraw;
 		};
 		D8A1224F2BD131E0002BDF42 /* BuildsCore */ = {
 			isa = XCSwiftPackageProductDependency;
