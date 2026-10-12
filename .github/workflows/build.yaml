@@ -78,6 +78,7 @@ jobs:
   website-build:
 
     runs-on: ubuntu-26.04
+    needs: app-build
 
     env:
 
