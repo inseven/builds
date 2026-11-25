@@ -69,7 +69,7 @@ struct WorkflowInstanceCell: View {
                         DetailsPopover(listRowInsets: LayoutMetrics.annotationListRowInsets) {
                             AnnotationList(workflowInstance: workflowInstance)
                         } label: {
-                            Image(systemName: "text.alignleft")
+                            Image(systemName: workflowInstance.annotations.map { $0.level }.max()?.systemImage ?? "text.alignleft")
                         }
                     }
                     DetailsPopover(listRowInsets: LayoutMetrics.worfklowJobListRowInsets) {

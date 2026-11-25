@@ -22,10 +22,38 @@ import Foundation
 
 public struct Annotation: Codable, Identifiable, Hashable {
 
-    public enum Level: String, Codable {
+    public enum Level: String, Codable, Comparable {
+
+        public static func < (lhs: borrowing Annotation.Level, rhs: borrowing Annotation.Level) -> Bool {
+            return lhs.rank < rhs.rank
+        }
+
         case failure
         case warning
         case notice
+
+        private var rank: Int {
+            switch self {
+            case .failure:
+                return 10
+            case .warning:
+                return 5
+            case .notice:
+                return 0
+            }
+        }
+
+        public var systemImage: String {
+            switch self {
+            case .failure:
+                return "exclamationmark.octagon"
+            case .warning:
+                return "exclamationmark.triangle"
+            case .notice:
+                return "info.circle"
+            }
+        }
+
     }
 
     public var id: String {
