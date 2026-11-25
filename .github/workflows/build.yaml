@@ -70,7 +70,6 @@ jobs:
 
         RELEASE: ${{ (github.event_name == 'schedule' || inputs.release) && github.ref == 'refs/heads/main' }}
 
-
       run: |
         scripts/build.sh
 
