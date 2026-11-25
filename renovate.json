@@ -4,5 +4,6 @@
     "local>inseven/renovate-config"
   ],
   "cloneSubmodules": true,
-  "cloneSubmodulesFilter": ["docs/_theme"]
+  "cloneSubmodulesFilter": ["docs/_theme"],
+  "ignoreDeps": ["apple/builds-resources"]
 }
