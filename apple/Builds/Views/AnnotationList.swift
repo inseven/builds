@@ -49,14 +49,7 @@ struct AnnotationList: View {
                     }
                 }
             } icon: {
-                switch annotation.level {
-                case .failure:
-                    Image(systemName: "exclamationmark.octagon")
-                case .warning:
-                    Image(systemName: "exclamationmark.triangle")
-                case .notice:
-                    Image(systemName: "info.circle")
-                }
+                Image(systemName: annotation.level.systemImage)
             }
         }
     }
