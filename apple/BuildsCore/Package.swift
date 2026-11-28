@@ -18,7 +18,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/inseven/diligence.git", from: "2.0.2"),
         .package(url: "https://github.com/inseven/interact.git", from: "3.10.8"),
-        .package(url: "https://github.com/inseven/SelectableCollectionView.git", from: "2.0.5"),
+        .package(url: "https://github.com/inseven/SelectableCollectionView.git", from: "2.0.6"),
         .package(url: "https://github.com/swhitty/SwiftDraw.git", from: "0.30.0"),
 
     ],
